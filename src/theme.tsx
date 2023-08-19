@@ -9,6 +9,7 @@ const theme = extendTheme({
     darkest: "#151515",
     success: "#00DF16",
     danger: "#FF0000",
+    textDark: "#858585",
   },
 });
 
