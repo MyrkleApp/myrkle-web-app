@@ -6,6 +6,7 @@ import AccountDetailButton from "../account-detail-button";
 import ExchangeIcon from "@/icons/exchange";
 import ArrowUpIcon from "@/icons/arrow-up";
 import ArrowDownIcon from "@/icons/arrow-down";
+import { MotionBox } from "@/components/motion-elements";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -15,12 +16,53 @@ const actionLinks = [
   { text: "Exchange", icon: ExchangeIcon },
 ];
 
+const animateSize: string[] = [
+  "130px",
+  "160px",
+  "140px",
+  "140px",
+  "190px",
+  "190px",
+  "190px",
+  "130px",
+];
+
 function WalletDetails() {
   return (
     <Flex h="200px" bg="dark" borderRadius="25px" align="center">
-      <Flex align="center" justify="center" width="250px" h="200px">
-        <Image src={xrpLogo} alt="" h="140px" />
-      </Flex>
+      <Box width="250px" h="200px" pos="relative">
+        <MotionBox
+          pos="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          borderRadius="50%"
+          bg="darkest"
+          animate={{
+            height: animateSize,
+            width: animateSize,
+          }}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore no problem in operation, although type error appears.
+          transition={{
+            duration: 0.9,
+            ease: "linear",
+            repeat: Infinity,
+            repeatType: "loop",
+          }}
+        />
+
+        <Image
+          src={xrpLogo}
+          alt=""
+          h="140px"
+          w="140px"
+          pos="absolute"
+          top="calc(50% - 1px)"
+          left="calc(50% - 1px)"
+          transform="translate(-50%, -50%)"
+        />
+      </Box>
 
       <Flex direction="column" justify="space-between" py={5} h="100%">
         <HStack spacing={5}>
