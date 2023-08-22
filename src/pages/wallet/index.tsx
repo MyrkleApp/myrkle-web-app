@@ -1,20 +1,28 @@
 import AddAsset from "@/features/wallet/components/add-asset";
+import ListTokens from "@/features/wallet/components/list-tokens";
 import MintAsset from "@/features/wallet/components/mint-asset";
 import TokenNftSwitch from "@/features/wallet/components/token-nft-switch";
 import WalletDetails from "@/features/wallet/components/wallet-details";
 import Layout from "@/layout";
-import { HStack, Spacer } from "@chakra-ui/react";
+import { Box, HStack, Spacer } from "@chakra-ui/react";
 
 function Wallet() {
   return (
     <Layout>
       <WalletDetails />
-      <HStack mt={5}>
-        <AddAsset />
-        <TokenNftSwitch />
-        <Spacer />
-        <MintAsset />
-      </HStack>
+
+      <Box h="calc(62% - 35px)" pos="absolute" bottom="0" w="100%">
+        <HStack mb={3}>
+          <AddAsset />
+          <TokenNftSwitch />
+          <Spacer />
+          <MintAsset />
+        </HStack>
+
+        <Box h="calc(100% - 60px)" pos="absolute" bottom="0" w="100%" overflowY="scroll">
+          <ListTokens />
+        </Box>
+      </Box>
     </Layout>
   );
 }

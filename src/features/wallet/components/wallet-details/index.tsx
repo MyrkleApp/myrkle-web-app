@@ -29,7 +29,7 @@ const animateSize: string[] = [
 
 function WalletDetails() {
   return (
-    <Flex h="200px" bg="dark" borderRadius="25px" align="center">
+    <Flex h="38%" bg="dark" borderRadius="25px" align="center">
       <Box width="250px" h="200px" pos="relative">
         <MotionBox
           pos="absolute"
@@ -64,21 +64,21 @@ function WalletDetails() {
         />
       </Box>
 
-      <Flex direction="column" justify="space-between" py={5} h="100%">
+      <Flex direction="column" justify="space-between" py={"2.2%"} h="100%">
         <HStack spacing={5}>
-          <Text color="textDark" fontSize="sm" fontWeight="bold">
+          <Text color="textDark" fontSize="md" fontWeight="bold">
             Welcome
           </Text>
-          <Text color="textDark" fontSize="sm" fontWeight="bold">
+          <Text color="textDark" fontSize="md" fontWeight="bold">
             AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF
           </Text>
         </HStack>
 
-        <Box mt="-15px">
-          <Text color="#d5d6d4" fontSize="5xl" fontWeight="bold">
+        <Box mt="-20px">
+          <Text color="#d5d6d4" fontSize={["5xl", null, null, null, "55px"]} fontWeight="bold">
             5,234.9
           </Text>
-          <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-2}>
+          <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-3}>
             $600,043.89
           </Text>
         </Box>

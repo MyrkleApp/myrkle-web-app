@@ -11,7 +11,7 @@ export interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <Box h="100vh" overflow="hidden" bg="darkest" position="relative">
+    <Box h="100vh" overflow="hidden" bg="darkest" pos="relative">
       <Box h="100%" w="270px" pos="absolute" top="0" left="0" pl="20px">
         <Flex h="70px" justify="center" align="center">
           <LogoIcon fontSize="100px" />
@@ -26,7 +26,9 @@ function Layout({ children }: LayoutProps) {
         <Box h="70px">
           <Navbar />
         </Box>
-        <Box h="calc(100% - 70px - 50px)">{children}</Box>
+        <Box h="calc(100% - 70px - 50px)" pos="relative">
+          {children}
+        </Box>
         <Box h="50px">{/* bottom */}</Box>
       </Box>
 
