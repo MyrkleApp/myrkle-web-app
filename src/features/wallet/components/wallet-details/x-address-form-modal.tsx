@@ -1,16 +1,14 @@
 import Button from "@/components/button";
+import Input from "@/components/input";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, CloseButton, Flex, Image, Text, useOutsideClick } from "@chakra-ui/react";
+import { Box, CloseButton, Flex, HStack, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
 
-export interface AddressModalProps {
+export interface XAddressFormModalProps {
   handleClose: () => void;
-  qrCodeImage: string;
-  address: string;
-  handleXAddress: () => void;
 }
 
-function AddressModal({ handleClose, qrCodeImage, address, handleXAddress }: AddressModalProps) {
+function XAddressFormModal({ handleClose }: XAddressFormModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -25,7 +23,7 @@ function AddressModal({ handleClose, qrCodeImage, address, handleXAddress }: Add
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="400px"
+      h="200px"
       w="270px"
       p={4}
       bg="darker"
@@ -38,24 +36,21 @@ function AddressModal({ handleClose, qrCodeImage, address, handleXAddress }: Add
         <CloseButton onClick={handleClose} />
       </Flex>
       <Box px={6} mt={1}>
-        <Box bg="#fff" p={2} borderRadius="15px" h="180px" w="100%" mb={3}>
-          <Image src={qrCodeImage} alt="" />
-        </Box>
-        <Box bg="secondary" borderRadius="5px" py={1} px={2} mb={1} cursor="pointer">
+        <HStack mb={1}>
           <Text fontSize="2xs" color="textDark" fontWeight="bold">
-            {address}
+            Destination tag
           </Text>
-        </Box>
-        <Text fontSize="2xs" color="textDark" textAlign="center" mb={4}>
-          click to copy address
-        </Text>
+          {/* info component goes here */}
+        </HStack>
 
-        <Button w="100%" h="40px" _hover={{ bg: "primary" }} onClick={handleXAddress}>
-          Generate X Address
+        <Input mb={2} />
+
+        <Button w="100%" h="40px" bg="secondary" color="textDark">
+          confirm
         </Button>
       </Box>
     </MotionBox>
   );
 }
 
-export default AddressModal;
+export default XAddressFormModal;

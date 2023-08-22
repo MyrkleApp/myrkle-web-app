@@ -5,9 +5,9 @@ function Button({ ...props }: any) {
     <ChakraButton
       bg="primary"
       borderRadius="10px"
-      h="45px"
+      h="40px"
       color="#fff"
-      fontSize="xs"
+      fontSize="sm"
       fontWeight="bold"
       {...props}
     />

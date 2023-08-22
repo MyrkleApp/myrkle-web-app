@@ -10,6 +10,9 @@ import { MotionBox } from "@/components/motion-elements";
 import Backdrop from "@/components/backdrop";
 import AddressModal from "./address-modal";
 import qrCodeImage from "@/assets/qr-code.png";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import XAddressFormModal from "./x-address-form-modal";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -37,8 +40,19 @@ function WalletDetails() {
     onClose: onAddressModalClose,
   } = useDisclosure();
 
+  const [addressModal, setAddressModal] = useState<"address" | "x-address-form">("address");
+
   const handleAddressClick = () => {
     onAddressModalOpen();
+  };
+
+  const handleModalClose = () => {
+    onAddressModalClose();
+    setAddressModal("address");
+  };
+
+  const handleXAddress = () => {
+    setAddressModal("x-address-form");
   };
 
   return (
@@ -106,11 +120,20 @@ function WalletDetails() {
       </Flex>
 
       <Backdrop isOpen={isAddressModalOpen}>
-        <AddressModal
-          handleClose={onAddressModalClose}
-          qrCodeImage={qrCodeImage}
-          address={`AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF`}
-        />
+        <AnimatePresence>
+          {addressModal === "address" && (
+            <AddressModal
+              handleClose={handleModalClose}
+              qrCodeImage={qrCodeImage}
+              address={`AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF`}
+              handleXAddress={handleXAddress}
+            />
+          )}
+
+          {addressModal === "x-address-form" && (
+            <XAddressFormModal handleClose={handleModalClose} />
+          )}
+        </AnimatePresence>
       </Backdrop>
     </>
   );
