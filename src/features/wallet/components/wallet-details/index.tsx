@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import ChecksIcon from "@/icons/checks";
 import HourGlassIcon from "@/icons/hour-glass";
@@ -7,6 +7,9 @@ import ExchangeIcon from "@/icons/exchange";
 import ArrowUpIcon from "@/icons/arrow-up";
 import ArrowDownIcon from "@/icons/arrow-down";
 import { MotionBox } from "@/components/motion-elements";
+import Backdrop from "@/components/backdrop";
+import AddressModal from "./address-modal";
+import qrCodeImage from "@/assets/qr-code.png";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -28,68 +31,88 @@ const animateSize: string[] = [
 ];
 
 function WalletDetails() {
+  const {
+    isOpen: isAddressModalOpen,
+    onOpen: onAddressModalOpen,
+    onClose: onAddressModalClose,
+  } = useDisclosure();
+
+  const handleAddressClick = () => {
+    onAddressModalOpen();
+  };
+
   return (
-    <Flex h="38%" bg="dark" borderRadius="25px" align="center">
-      <Box width="250px" h="200px" pos="relative">
-        <MotionBox
-          pos="absolute"
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-          borderRadius="50%"
-          bg="darkest"
-          animate={{
-            height: animateSize,
-            width: animateSize,
-          }}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore no problem in operation, although type error appears.
-          transition={{
-            duration: 0.9,
-            ease: "linear",
-            repeat: Infinity,
-            repeatType: "loop",
-          }}
-        />
+    <>
+      <Flex h="38%" bg="dark" borderRadius="25px" align="center">
+        <Box width="250px" h="200px" pos="relative">
+          <MotionBox
+            pos="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            borderRadius="50%"
+            bg="darkest"
+            animate={{
+              height: animateSize,
+              width: animateSize,
+            }}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore no problem in operation, although type error appears.
+            transition={{
+              duration: 0.9,
+              ease: "linear",
+              repeat: Infinity,
+              repeatType: "loop",
+            }}
+          />
 
-        <Image
-          src={xrpLogo}
-          alt=""
-          h="140px"
-          w="140px"
-          pos="absolute"
-          top="calc(50% - 1px)"
-          left="calc(50% - 1px)"
-          transform="translate(-50%, -50%)"
-        />
-      </Box>
-
-      <Flex direction="column" justify="space-between" py={"2.2%"} h="100%">
-        <HStack spacing={5}>
-          <Text color="textDark" fontSize="md" fontWeight="bold">
-            Welcome
-          </Text>
-          <Text color="textDark" fontSize="md" fontWeight="bold">
-            AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF
-          </Text>
-        </HStack>
-
-        <Box mt="-20px">
-          <Text color="#d5d6d4" fontSize={["5xl", null, null, null, "55px"]} fontWeight="bold">
-            5,234.9
-          </Text>
-          <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-3}>
-            $600,043.89
-          </Text>
+          <Image
+            src={xrpLogo}
+            alt=""
+            h="140px"
+            w="140px"
+            pos="absolute"
+            top="calc(50% - 1px)"
+            left="calc(50% - 1px)"
+            transform="translate(-50%, -50%)"
+          />
         </Box>
 
-        <HStack spacing={3}>
-          {actionLinks.map((actionLink, i) => (
-            <AccountDetailButton key={i} text={actionLink.text} icon={actionLink.icon} />
-          ))}
-        </HStack>
+        <Flex direction="column" justify="space-between" py={"2.2%"} h="100%">
+          <HStack spacing={5} cursor="pointer" onClick={handleAddressClick}>
+            <Text color="textDark" fontSize="md" fontWeight="bold">
+              Welcome
+            </Text>
+            <Text color="textDark" fontSize="md" fontWeight="bold">
+              AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF
+            </Text>
+          </HStack>
+
+          <Box mt="-20px">
+            <Text color="#d5d6d4" fontSize={["5xl", null, null, null, "55px"]} fontWeight="bold">
+              5,234.9
+            </Text>
+            <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-3}>
+              $600,043.89
+            </Text>
+          </Box>
+
+          <HStack spacing={3}>
+            {actionLinks.map((actionLink, i) => (
+              <AccountDetailButton key={i} text={actionLink.text} icon={actionLink.icon} />
+            ))}
+          </HStack>
+        </Flex>
       </Flex>
-    </Flex>
+
+      <Backdrop isOpen={isAddressModalOpen}>
+        <AddressModal
+          handleClose={onAddressModalClose}
+          qrCodeImage={qrCodeImage}
+          address={`AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF`}
+        />
+      </Backdrop>
+    </>
   );
 }
 

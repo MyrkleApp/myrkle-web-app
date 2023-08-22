@@ -24,7 +24,7 @@ function NavItem({ title, icon: NavItemIcon, link, isActive }: NavItemProps) {
         fontWeight="bold"
         borderRadius="20px"
       >
-        <NavItemIcon />
+        <NavItemIcon stroke="#fff" fill="none" />
         <Text>{title}</Text>
       </HStack>
     </Link>

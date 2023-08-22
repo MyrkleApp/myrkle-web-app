@@ -1,0 +1,40 @@
+import React from "react";
+import { Box } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
+import { MotionBox } from "./motion-elements";
+
+export interface BackdropProps {
+  isOpen: boolean;
+  zIndex?: number;
+  children?: React.ReactNode;
+  handleClick?: (event: any) => void;
+}
+
+function Backdrop({ isOpen, zIndex, children, handleClick }: BackdropProps) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <MotionBox
+          w="calc(100vw - 270px)"
+          h="calc(100vh - 120px)"
+          borderRadius="20px"
+          bg="#00000092"
+          pos="fixed"
+          top="70px"
+          right={0}
+          zIndex={zIndex || 100}
+          backdropFilter="blur(13px)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.5 } }}
+          exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        >
+          <Box width="100%" h="100%" pos="relative" onClick={handleClick}>
+            {children}
+          </Box>
+        </MotionBox>
+      )}
+    </AnimatePresence>
+  );
+}
+
+export default Backdrop;
