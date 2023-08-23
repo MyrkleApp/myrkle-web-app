@@ -13,6 +13,8 @@ import qrCodeImage from "@/assets/qr-code.png";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import XAddressFormModal from "./x-address-form-modal";
+import InfoIcon from "@/icons/info";
+import AccountInfoModal from "./account-info-modal";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -42,17 +44,27 @@ function WalletDetails() {
 
   const [addressModal, setAddressModal] = useState<"address" | "x-address-form">("address");
 
+  const {
+    isOpen: isAccountInfoModalOpen,
+    onOpen: onAccountInfoModalOpen,
+    onClose: onAccountInfoModalClose,
+  } = useDisclosure();
+
   const handleAddressClick = () => {
     onAddressModalOpen();
   };
 
-  const handleModalClose = () => {
+  const handleAddressModalClose = () => {
     onAddressModalClose();
     setAddressModal("address");
   };
 
   const handleXAddress = () => {
     setAddressModal("x-address-form");
+  };
+
+  const handleAccountInfoModalClose = () => {
+    onAccountInfoModalClose();
   };
 
   return (
@@ -115,6 +127,18 @@ function WalletDetails() {
             {actionLinks.map((actionLink, i) => (
               <AccountDetailButton key={i} text={actionLink.text} icon={actionLink.icon} />
             ))}
+            <Flex
+              justify="center"
+              align="center"
+              bg="secondary"
+              borderRadius="50%"
+              h="35px"
+              w="35px"
+              cursor="pointer"
+              onClick={onAccountInfoModalOpen}
+            >
+              <InfoIcon />
+            </Flex>
           </HStack>
         </Flex>
       </Flex>
@@ -123,7 +147,7 @@ function WalletDetails() {
         <AnimatePresence>
           {addressModal === "address" && (
             <AddressModal
-              handleClose={handleModalClose}
+              handleClose={handleAddressModalClose}
               qrCodeImage={qrCodeImage}
               address={`AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF`}
               handleXAddress={handleXAddress}
@@ -131,9 +155,13 @@ function WalletDetails() {
           )}
 
           {addressModal === "x-address-form" && (
-            <XAddressFormModal handleClose={handleModalClose} />
+            <XAddressFormModal handleClose={handleAddressModalClose} />
           )}
         </AnimatePresence>
+      </Backdrop>
+
+      <Backdrop isOpen={isAccountInfoModalOpen}>
+        <AccountInfoModal handleClose={handleAccountInfoModalClose} />
       </Backdrop>
     </>
   );
