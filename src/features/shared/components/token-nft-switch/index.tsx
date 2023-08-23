@@ -1,10 +1,14 @@
 import { MotionBox } from "@/components/motion-elements";
+import { selectAssetType } from "@/features/wallet/redux/wallet.selectors";
+import { toggleAssetType } from "@/features/wallet/redux/wallet.slice";
 import { HStack, Spacer, Text } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAssetType } from "../../redux/wallet.selectors";
-import { toggleAssetType } from "../../redux/wallet.slice";
 
-function TokenNftSwitch() {
+export interface TokenNftSwitchProps {
+  sliderProps?: any;
+}
+
+function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
   const assetType = useSelector(selectAssetType);
 
   const dispatch = useDispatch();
@@ -35,6 +39,7 @@ function TokenNftSwitch() {
           width: assetType === "token" ? 120 : 105,
           transition: { duration: 0.4 },
         }}
+        {...sliderProps}
       />
       <Text
         fontSize={assetType === "token" ? "sm" : "xs"}

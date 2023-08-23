@@ -1,7 +1,7 @@
+import TokenNftSwitch from "@/features/shared/components/token-nft-switch";
 import AddAsset from "@/features/wallet/components/add-asset";
 import ListTokens from "@/features/wallet/components/list-tokens";
 import MintAsset from "@/features/wallet/components/mint-asset";
-import TokenNftSwitch from "@/features/wallet/components/token-nft-switch";
 import WalletDetails from "@/features/wallet/components/wallet-details";
 import Layout from "@/layout";
 import { Box, HStack, Spacer } from "@chakra-ui/react";
