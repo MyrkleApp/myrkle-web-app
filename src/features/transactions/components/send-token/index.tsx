@@ -1,11 +1,21 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
+import { MotionBox } from "@/components/motion-elements";
 import AddressBookIcon from "@/icons/address-book";
 import QrCodeIcon from "@/icons/qr-code";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 function SendToken() {
+  const [isAdvancedOptions, setAdvancedOptions] = useState(false);
+
+  const toggleAdvancedOptions = () => {
+    if (isAdvancedOptions) setAdvancedOptions(false);
+    else setAdvancedOptions(true);
+  };
+
   return (
     <>
       <Text color="textDark" fontWeight="bold" pos="absolute" top="13%">
@@ -43,31 +53,59 @@ function SendToken() {
         </GridItem>
       </Grid>
 
-      <Flex justify="flex-end" align="center" pos="absolute" top="66%" w="100%">
-        <HStack cursor="pointer">
+      <MotionBox
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+        pos="absolute"
+        w="100%"
+        initial={{ top: "70%" }}
+        animate={{
+          top: isAdvancedOptions ? "66%" : "70%",
+          transition: { type: "spring", stiffness: 150 },
+        }}
+      >
+        <HStack cursor="pointer" onClick={toggleAdvancedOptions}>
           <ThickArrowDownIcon />
           <Text color="#fff" fontWeight="bold">
             Advanced options
           </Text>
         </HStack>
-      </Flex>
+      </MotionBox>
 
-      <SimpleGrid columns={2} h="9%" pos="absolute" top="72%" spacing={3}>
-        {Array(2)
-          .fill(null)
-          .map((_, i) => (
-            <Box key={i}>
-              <Text color="textDark" fontSize="sm" fontWeight="bold">
-                Address Book
-              </Text>
-              <Input h="90%" bg="secondary" borderRadius="7px" w="100%" />
-            </Box>
-          ))}
-      </SimpleGrid>
+      <AnimatePresence>
+        {isAdvancedOptions && (
+          <MotionBox initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <SimpleGrid columns={2} h="9%" pos="absolute" top="72%" spacing={3}>
+              {Array(2)
+                .fill(null)
+                .map((_, i) => (
+                  <Box key={i}>
+                    <Text color="textDark" fontSize="sm" fontWeight="bold">
+                      Address Book
+                    </Text>
+                    <Input h="90%" bg="secondary" borderRadius="7px" w="100%" />
+                  </Box>
+                ))}
+            </SimpleGrid>
+          </MotionBox>
+        )}
+      </AnimatePresence>
 
-      <Button pos="absolute" bottom="0" bg="secondary" w="100%" h="9%">
-        confirm
-      </Button>
+      <MotionBox
+        pos="absolute"
+        w="100%"
+        h="9%"
+        initial={{ bottom: "7%" }}
+        animate={{
+          bottom: isAdvancedOptions ? 0 : "7%",
+          transition: { type: "spring", stiffness: 150 },
+        }}
+      >
+        <Button bg="secondary" w="100%" h="100%">
+          confirm
+        </Button>
+      </MotionBox>
     </>
   );
 }
