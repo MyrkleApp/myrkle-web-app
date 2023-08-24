@@ -7,6 +7,7 @@ import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import AssetsDropdown from "../assets-dropdown";
 
 function SendToken() {
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
@@ -21,8 +22,21 @@ function SendToken() {
       <Text color="textDark" fontWeight="bold" pos="absolute" top="13%">
         Name
       </Text>
-      <Flex h="9%" bg="secondary" borderRadius="7px" pos="absolute" top="20%" w="100%">
-        content
+      <Flex
+        h="9%"
+        justify="space-between"
+        align="center"
+        p="5px"
+        bg="secondary"
+        borderRadius="7px"
+        pos="absolute"
+        top="20%"
+        w="100%"
+      >
+        <Box h="100%" pos="relative">
+          <AssetsDropdown />
+        </Box>
+        <Input w="50%" h="100%" textAlign="right" />
       </Flex>
 
       <Text color="textDark" fontWeight="bold" pos="absolute" top="34%">
@@ -66,7 +80,7 @@ function SendToken() {
         }}
       >
         <HStack cursor="pointer" onClick={toggleAdvancedOptions}>
-          <ThickArrowDownIcon />
+          <ThickArrowDownIcon color="#fff" />
           <Text color="#fff" fontWeight="bold">
             Advanced options
           </Text>
