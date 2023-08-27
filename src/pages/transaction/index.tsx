@@ -1,21 +1,30 @@
+import History from "@/features/transactions/components/history";
 import SendAssets from "@/features/transactions/components/send-assets";
+import HistoryIcon from "@/icons/history";
 import Layout from "@/layout";
-import { Grid, GridItem, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 
 function Transaction() {
   return (
     <Layout>
-      <Grid templateColumns="repeat(12, 1fr)" gap={4} h="100%" px={2}>
-        <GridItem colSpan={6}>
+      <Flex h="100%" justify="space-between" gap={5}>
+        <Box w="50%">
           <HStack h="45px">
             <Text fontWeight="bold">Send Assets</Text>
           </HStack>
 
           <SendAssets />
-        </GridItem>
+        </Box>
 
-        <GridItem colSpan={6} border="1px solid red"></GridItem>
-      </Grid>
+        <Box w="50%">
+          <HStack h="45px">
+            <Text fontWeight="bold">History</Text>
+            <HistoryIcon />
+          </HStack>
+
+          <History />
+        </Box>
+      </Flex>
     </Layout>
   );
 }
