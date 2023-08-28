@@ -1,5 +1,6 @@
 * {
   color: #fff;
+  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {

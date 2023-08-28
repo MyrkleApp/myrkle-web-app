@@ -136,8 +136,28 @@ function WalletDetails() {
               w="35px"
               cursor="pointer"
               onClick={onAccountInfoModalOpen}
+              gap={2}
+              transition="0.1s linear all"
+              _hover={{
+                width: "130px",
+                borderRadius: "40px",
+                transition: "0.1s linear all",
+                justify: "space-between",
+                "& > .account-info-text": {
+                  display: "block",
+                },
+              }}
             >
               <InfoIcon />
+              <Text
+                className="account-info-text"
+                display="none"
+                color="textDark"
+                fontSize="sm"
+                fontWeight={600}
+              >
+                account info
+              </Text>
             </Flex>
           </HStack>
         </Flex>

@@ -91,16 +91,18 @@ function SendToken() {
         {isAdvancedOptions && (
           <MotionBox initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <SimpleGrid columns={2} h="9%" pos="absolute" top="72%" spacing={3}>
-              {Array(2)
-                .fill(null)
-                .map((_, i) => (
-                  <Box key={i}>
-                    <Text color="textDark" fontSize="sm" fontWeight="bold">
-                      Address Book
-                    </Text>
-                    <Input h="90%" bg="secondary" borderRadius="7px" w="100%" />
-                  </Box>
-                ))}
+              <Box>
+                <Text color="textDark" fontSize="sm" fontWeight="bold">
+                  Note
+                </Text>
+                <Input h="85%" bg="secondary" borderRadius="7px" w="100%" />
+              </Box>
+              <Box>
+                <Text color="textDark" fontSize="sm" fontWeight="bold">
+                  Destination Tag
+                </Text>
+                <Input h="85%" bg="secondary" borderRadius="7px" w="100%" />
+              </Box>
             </SimpleGrid>
           </MotionBox>
         )}

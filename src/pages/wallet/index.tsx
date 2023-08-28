@@ -1,6 +1,6 @@
 import TokenNftSwitch from "@/features/shared/components/token-nft-switch";
 import AddAsset from "@/features/wallet/components/add-asset";
-import ListTokens from "@/features/wallet/components/list-tokens";
+import ListAssets from "@/features/wallet/components/list-assets";
 import MintAsset from "@/features/wallet/components/mint-asset";
 import WalletDetails from "@/features/wallet/components/wallet-details";
 import Layout from "@/layout";
@@ -19,9 +19,7 @@ function Wallet() {
           <MintAsset />
         </HStack>
 
-        <Box h="calc(100% - 60px)" pos="absolute" bottom="0" w="100%" overflowY="scroll">
-          <ListTokens />
-        </Box>
+        <ListAssets />
       </Box>
     </Layout>
   );
