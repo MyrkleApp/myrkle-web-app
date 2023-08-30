@@ -17,12 +17,14 @@ function AssetsDropdown() {
   });
 
   const handleDropdownItemClick = () => {
-    onToggle();
+    // onToggle();
+    console.log("dropdown item click");
   };
 
   return (
     <>
       <HStack
+        ref={ref}
         h="100%"
         w="130px"
         px={2}
@@ -47,7 +49,6 @@ function AssetsDropdown() {
       <AnimatePresence>
         {isOpen && (
           <MotionBox
-            ref={ref}
             px={2}
             pt={1}
             w="130px"
