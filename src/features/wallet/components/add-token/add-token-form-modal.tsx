@@ -14,12 +14,14 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { TAddTokenModalType } from "../../types";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;
+  handleTokenListIconClick: (type: TAddTokenModalType) => void;
 }
 
-function AddTokenFormModal({ handleClose }: AddTokenFormModalProps) {
+function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFormModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -44,7 +46,7 @@ function AddTokenFormModal({ handleClose }: AddTokenFormModalProps) {
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
       <HStack spacing={5} pl={3} pt={2} mb={8}>
-        <ArrowLeftIcon onClick={handleClose} />
+        <ArrowLeftIcon cursor="pointer" onClick={handleClose} />
         <Text fontSize="sm" fontWeight="bold">
           Add Token
         </Text>
@@ -60,7 +62,13 @@ function AddTokenFormModal({ handleClose }: AddTokenFormModalProps) {
         <InputGroup>
           <Input mb={5} pr={10} />
           <InputRightElement>
-            <Square bg="#535353" size="30px" borderRadius="5px" cursor="pointer">
+            <Square
+              bg="#535353"
+              size="30px"
+              borderRadius="5px"
+              cursor="pointer"
+              onClick={() => handleTokenListIconClick("select-token")}
+            >
               <TokenListIcon fill="none" />
             </Square>
           </InputRightElement>

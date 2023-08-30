@@ -4,6 +4,8 @@ import { Circle, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import AddTokenFormModal from "./add-token-form-modal";
+import SelectTokenModal from "./select-token-modal";
+import { TAddTokenModalType } from "../../types";
 
 function AddToken() {
   const {
@@ -12,11 +14,15 @@ function AddToken() {
     onClose: onBackdropClose,
   } = useDisclosure();
 
-  const [modalType, setModalType] = useState<"add-token-form" | "select-token">("add-token-form");
+  const [modalType, setModalType] = useState<TAddTokenModalType>("add-token-form");
 
   const handleBackdropClose = () => {
     onBackdropClose();
     setModalType("add-token-form");
+  };
+
+  const handleModalType = (modalType: TAddTokenModalType) => {
+    setModalType(modalType);
   };
 
   return (
@@ -31,7 +37,17 @@ function AddToken() {
       <Backdrop isOpen={isBackdropOpen}>
         <AnimatePresence>
           {modalType === "add-token-form" && (
-            <AddTokenFormModal handleClose={handleBackdropClose} />
+            <AddTokenFormModal
+              handleClose={handleBackdropClose}
+              handleTokenListIconClick={handleModalType}
+            />
+          )}
+
+          {modalType === "select-token" && (
+            <SelectTokenModal
+              handleClose={handleBackdropClose}
+              handleArrowLeftIconClick={handleModalType}
+            />
           )}
         </AnimatePresence>
       </Backdrop>
