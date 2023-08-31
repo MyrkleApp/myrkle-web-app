@@ -2,10 +2,11 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import nftImage from "@/assets/nft.png";
 import Button from "@/components/button";
 import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
 
 function NftCard() {
   return (
-    <Link to="/wallet/nft-detail">
+    <Link to={ROUTES.WALLET_NFT_DETAIL}>
       <Box
         w="100%"
         h="100%"

@@ -6,13 +6,14 @@ import SettingsIcon from "@/icons/settings";
 import { Box } from "@chakra-ui/react";
 import NavItem from "./nav-item";
 import { useLocation } from "react-router-dom";
+import ROUTES from "@/routes";
 
 const navItems = [
-  { title: "Wallet", icon: WalletIcon, link: "/wallet" },
-  { title: "Transaction", icon: TransactionIcon, link: "/transactions" },
-  { title: "Terminal", icon: TerminalIcon, link: "/terminal" },
-  { title: "Exchange", icon: ExchangeIcon, link: "/exchange" },
-  { title: "Settings", icon: SettingsIcon, link: "/settings" },
+  { title: "Wallet", icon: WalletIcon, link: ROUTES.WALLET },
+  { title: "Transaction", icon: TransactionIcon, link: ROUTES.TRANSACTIONS },
+  { title: "Terminal", icon: TerminalIcon, link: ROUTES.TERMINAL },
+  { title: "Exchange", icon: ExchangeIcon, link: ROUTES.EXCHANGE },
+  { title: "Settings", icon: SettingsIcon, link: ROUTES.SETTINGS },
 ];
 
 function Sidebar() {

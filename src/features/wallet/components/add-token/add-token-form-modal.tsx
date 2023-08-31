@@ -58,9 +58,8 @@ function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFo
       animate={{
         opacity: 1,
         height: showAdvancedOptions ? "480px" : "370px",
-        transition: { duration: 0.5 },
       }}
-      exit={{ opacity: 0, transition: { duration: 0.5 } }}
+      exit={{ opacity: 0 }}
     >
       <HStack spacing={5} pl={3} pt={2} mb={8}>
         <ArrowLeftIcon cursor="pointer" onClick={handleClose} />
@@ -76,7 +75,7 @@ function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFo
         height="260px"
         pos="relative"
         initial={{ height: "260px" }}
-        animate={{ height: showAdvancedOptions ? "370px" : "260px", transition: { duration: 0.5 } }}
+        animate={{ height: showAdvancedOptions ? "370px" : "260px" }}
       >
         <HStack mb={3}>
           <Text fontSize="2xs" color="textDark" fontWeight="bold">
