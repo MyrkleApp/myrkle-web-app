@@ -18,7 +18,21 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         borderRadius="20px"
         h="200px"
         mb={7}
+        cursor="pointer"
         {...props}
+        sx={{
+          "& .colored": {
+            display: "none",
+          },
+        }}
+        _hover={{
+          "& .colored": {
+            display: "inline-block",
+          },
+          "& .gray": {
+            display: "none",
+          },
+        }}
       >
         {children}
       </Flex>

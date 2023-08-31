@@ -6,33 +6,37 @@ import CogIcon from "@/icons/cog";
 import ChecksIcon from "@/icons/checks";
 import HourGlassIcon from "@/icons/hour-glass";
 import FlagIcon from "@/icons/flag";
+import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
 
 function Terminal() {
   return (
     <Layout>
       <SimpleGrid columns={4} px={10} spacing={8}>
-        <IconContainer title="Asset Manager">
-          <Box
-            pos="relative"
-            cursor="pointer"
-            _hover={{
-              ".cog-icon": {
-                transform: "rotate(-270deg)",
-                transition: "0.5s linear all",
-              },
-            }}
-          >
-            <FolderIcon fontSize="80px" />
-            <CogIcon
-              className="cog-icon"
-              position="absolute"
-              top="5px"
-              right="-5px"
-              fontSize="45px"
-              transition="0.5s linear all"
-            />
-          </Box>
-        </IconContainer>
+        <Link to={ROUTES.TERMINAL_ASSET_MANAGER}>
+          <IconContainer title="Asset Manager">
+            <Box
+              pos="relative"
+              cursor="pointer"
+              _hover={{
+                ".cog-icon": {
+                  transform: "rotate(-270deg)",
+                  transition: "0.5s linear all",
+                },
+              }}
+            >
+              <FolderIcon fontSize="80px" />
+              <CogIcon
+                className="cog-icon"
+                position="absolute"
+                top="5px"
+                right="-5px"
+                fontSize="45px"
+                transition="0.5s linear all"
+              />
+            </Box>
+          </IconContainer>
+        </Link>
         <IconContainer title="Checks">
           <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
         </IconContainer>

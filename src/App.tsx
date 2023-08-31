@@ -5,6 +5,7 @@ import NftGallery from "./features/wallet/pages/nft-gallery";
 import NftDetail from "./features/wallet/pages/nft-detail";
 import Terminal from "./features/terminal/pages";
 import ROUTES from "./routes";
+import AssetManager from "./features/terminal/pages/asset-manager";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />
         <Route path={ROUTES.TRANSACTIONS} element={<Transaction />} />
         <Route path={ROUTES.TERMINAL} element={<Terminal />} />
+        <Route path={ROUTES.TERMINAL_ASSET_MANAGER} element={<AssetManager />} />
         <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>
