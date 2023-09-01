@@ -5,6 +5,7 @@ const ROUTES = {
   TRANSACTIONS: "/transactions",
   TERMINAL: "/terminal",
   TERMINAL_ASSET_MANAGER: "/terminal/asset-manager",
+  TERMINAL_NEW_ASSET: "/terminal/asset-manager/new-asset",
   EXCHANGE: "/exchange",
   SETTINGS: "/settings",
 };

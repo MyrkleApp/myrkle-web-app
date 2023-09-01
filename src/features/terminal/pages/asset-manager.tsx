@@ -42,10 +42,12 @@ function AssetManager() {
 
         <Box h="calc(100% - 70px)" overflow="hidden auto">
           <SimpleGrid pr={3} pl={5} columns={5} spacingX={8} spacingY={10}>
-            <IconContainer title="New Asset" h="180px">
-              <Image src={newAssetGray} alt="New Asset" h="60px" className="gray" />
-              <Image src={newAssetColored} alt="New Asset" h="60px" className="colored" />
-            </IconContainer>
+            <Link to={ROUTES.TERMINAL_NEW_ASSET}>
+              <IconContainer title="New Asset" h="180px">
+                <Image src={newAssetGray} alt="New Asset" h="60px" className="gray" />
+                <Image src={newAssetColored} alt="New Asset" h="60px" className="colored" />
+              </IconContainer>
+            </Link>
             <IconContainer title="Add Asset" h="180px">
               <Image src={addAssetGray} alt="Add Asset" h="60px" className="gray" />
               <Image src={addAssetColored} alt="Add Asset" h="60px" className="colored" />
