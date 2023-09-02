@@ -3,7 +3,7 @@ import Layout from "@/layout";
 import ROUTES from "@/routes";
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import MintTokenForm from "../components/mint-token-form";
+import MintNftForm from "../components/mint-nft-form";
 
 function NewAsset() {
   return (
@@ -27,7 +27,7 @@ function NewAsset() {
           two
         </Box>
         <Box w="40%" overflow="hidden auto">
-          <MintTokenForm />
+          <MintNftForm />
         </Box>
       </Flex>
     </Layout>
