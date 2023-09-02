@@ -3,9 +3,9 @@ import { HStack, InputGroup, Box, Text, useOutsideClick, InputLeftElement } from
 import Input from "@/components/input";
 import { useRef } from "react";
 import ArrowLeftIcon from "@/icons/arrow-left";
-import { TAddTokenModalType } from "../../types";
-import TokenItem from "./token-item";
 import SearchIcon from "@/icons/search";
+import { TAddTokenModalType } from "@/features/wallet/types";
+import TokenItem from "./token-item";
 
 export interface SelectTokenModalProps {
   handleClose: () => void;

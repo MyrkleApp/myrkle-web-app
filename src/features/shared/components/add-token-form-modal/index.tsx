@@ -16,8 +16,8 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { TAddTokenModalType } from "../../types";
 import { AnimatePresence } from "framer-motion";
+import { TAddTokenModalType } from "@/features/wallet/types";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;

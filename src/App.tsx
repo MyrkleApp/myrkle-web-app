@@ -7,6 +7,7 @@ import Terminal from "./features/terminal/pages";
 import ROUTES from "./routes";
 import AssetManager from "./features/terminal/pages/asset-manager";
 import NewAsset from "./features/terminal/pages/new-asset";
+import AddAsset from "./features/terminal/pages/add-asset";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path={ROUTES.TERMINAL} element={<Terminal />} />
         <Route path={ROUTES.TERMINAL_ASSET_MANAGER} element={<AssetManager />} />
         <Route path={ROUTES.TERMINAL_NEW_ASSET} element={<NewAsset />} />
+        <Route path={ROUTES.TERMINAL_ADD_ASSET} element={<AddAsset />} />
         <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>

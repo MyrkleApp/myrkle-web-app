@@ -1,7 +1,7 @@
 import Backdrop from "@/components/backdrop";
+import AddNftModal from "@/features/shared/components/add-nft-modal";
 import PlusIcon from "@/icons/plus";
 import { Circle, HStack, Text, useDisclosure } from "@chakra-ui/react";
-import AddNftModal from "./add-nft-modal";
 
 function AddNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();

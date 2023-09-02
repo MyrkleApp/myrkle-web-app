@@ -1,13 +1,14 @@
 import Backdrop from "@/components/backdrop";
-import PlusIcon from "@/icons/plus";
-import { Circle, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { TAddTokenModalType } from "../../types";
 import AddTokenFormModal from "@/features/shared/components/add-token-form-modal";
 import SelectTokenModal from "@/features/shared/components/select-token-modal";
+import { TAddTokenModalType } from "@/features/wallet/types";
+import IconContainer from "../icon-container";
+import TokenListIcon from "@/icons/token-list";
 
-function AddToken() {
+function AddTokenTerminal() {
   const {
     isOpen: isBackdropOpen,
     onOpen: onBackdropOpen,
@@ -27,12 +28,9 @@ function AddToken() {
 
   return (
     <>
-      <HStack cursor="pointer" onClick={onBackdropOpen}>
-        <Text fontSize="2xs">Add Token</Text>
-        <Circle bg="textDark" size="17px" cursor="pointer">
-          <PlusIcon fontSize="2xs" />
-        </Circle>
-      </HStack>
+      <IconContainer title="Token" h="180px" handleClick={onBackdropOpen}>
+        <TokenListIcon fill="none" fontSize="50px" color="#4E4E4E" />
+      </IconContainer>
 
       <Backdrop isOpen={isBackdropOpen}>
         <AnimatePresence>
@@ -55,4 +53,4 @@ function AddToken() {
   );
 }
 
-export default AddToken;
+export default AddTokenTerminal;

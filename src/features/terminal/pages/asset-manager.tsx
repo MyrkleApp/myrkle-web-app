@@ -48,10 +48,12 @@ function AssetManager() {
                 <Image src={newAssetColored} alt="New Asset" h="60px" className="colored" />
               </IconContainer>
             </Link>
-            <IconContainer title="Add Asset" h="180px">
-              <Image src={addAssetGray} alt="Add Asset" h="60px" className="gray" />
-              <Image src={addAssetColored} alt="Add Asset" h="60px" className="colored" />
-            </IconContainer>
+            <Link to={ROUTES.TERMINAL_ADD_ASSET}>
+              <IconContainer title="Add Asset" h="180px">
+                <Image src={addAssetGray} alt="Add Asset" h="60px" className="gray" />
+                <Image src={addAssetColored} alt="Add Asset" h="60px" className="colored" />
+              </IconContainer>
+            </Link>
             <IconContainer title="Remove Asset" h="180px">
               <Image src={removeAssetGray} alt="remove Asset" h="60px" className="gray" />
               <Image src={removeAssetColored} alt="remove Asset" h="60px" className="colored" />
