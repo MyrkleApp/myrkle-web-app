@@ -4,8 +4,6 @@ import newAssetGray from "@/assets/asset-manager/new-gray.png";
 import newAssetColored from "@/assets/asset-manager/new-colored.png";
 import addAssetGray from "@/assets/asset-manager/add-gray.png";
 import addAssetColored from "@/assets/asset-manager/add-colored.png";
-import removeAssetGray from "@/assets/asset-manager/remove-gray.png";
-import removeAssetColored from "@/assets/asset-manager/remove-colored.png";
 import freezeAssetGray from "@/assets/asset-manager/freeze-gray.png";
 import freezeAssetColored from "@/assets/asset-manager/freeze-colored.png";
 import unfreezeAssetGray from "@/assets/asset-manager/unfreeze-gray.png";
@@ -17,6 +15,7 @@ import ArrowLeftIcon from "@/icons/arrow-left";
 import ArrowRightIcon from "@/icons/arrow-right";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
+import RemoveAsset from "../components/remove-asset";
 
 function AssetManager() {
   return (
@@ -54,10 +53,7 @@ function AssetManager() {
                 <Image src={addAssetColored} alt="Add Asset" h="60px" className="colored" />
               </IconContainer>
             </Link>
-            <IconContainer title="Remove Asset" h="180px">
-              <Image src={removeAssetGray} alt="remove Asset" h="60px" className="gray" />
-              <Image src={removeAssetColored} alt="remove Asset" h="60px" className="colored" />
-            </IconContainer>
+            <RemoveAsset />
             <IconContainer title="Freeze Asset" h="180px">
               <Image src={freezeAssetGray} alt="freeze Asset" h="60px" className="gray" />
               <Image src={freezeAssetColored} alt="freeze Asset" h="60px" className="colored" />
