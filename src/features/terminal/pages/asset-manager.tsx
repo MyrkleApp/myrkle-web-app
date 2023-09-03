@@ -4,10 +4,6 @@ import newAssetGray from "@/assets/asset-manager/new-gray.png";
 import newAssetColored from "@/assets/asset-manager/new-colored.png";
 import addAssetGray from "@/assets/asset-manager/add-gray.png";
 import addAssetColored from "@/assets/asset-manager/add-colored.png";
-import freezeAssetGray from "@/assets/asset-manager/freeze-gray.png";
-import freezeAssetColored from "@/assets/asset-manager/freeze-colored.png";
-import unfreezeAssetGray from "@/assets/asset-manager/unfreeze-gray.png";
-import unfreezeAssetColored from "@/assets/asset-manager/unfreeze-colored.png";
 import burnAssetGray from "@/assets/asset-manager/burn-gray.png";
 import burnAssetColored from "@/assets/asset-manager/burn-colored.png";
 import Layout from "@/layout";
@@ -16,6 +12,8 @@ import ArrowRightIcon from "@/icons/arrow-right";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
 import RemoveAsset from "../components/remove-asset";
+import FreezeAsset from "../components/freeze-asset";
+import UnfreezeAsset from "../components/unfreeze-asset";
 
 function AssetManager() {
   return (
@@ -54,14 +52,8 @@ function AssetManager() {
               </IconContainer>
             </Link>
             <RemoveAsset />
-            <IconContainer title="Freeze Asset" h="180px">
-              <Image src={freezeAssetGray} alt="freeze Asset" h="60px" className="gray" />
-              <Image src={freezeAssetColored} alt="freeze Asset" h="60px" className="colored" />
-            </IconContainer>
-            <IconContainer title="Unfreeze Asset" h="180px">
-              <Image src={unfreezeAssetGray} alt="unfreeze Asset" h="60px" className="gray" />
-              <Image src={unfreezeAssetColored} alt="unfreeze Asset" h="60px" className="colored" />
-            </IconContainer>
+            <FreezeAsset />
+            <UnfreezeAsset />
             <IconContainer title="Burn Asset" h="180px">
               <Image src={burnAssetGray} alt="burn Asset" h="60px" className="gray" />
               <Image src={burnAssetColored} alt="burn Asset" h="60px" className="colored" />

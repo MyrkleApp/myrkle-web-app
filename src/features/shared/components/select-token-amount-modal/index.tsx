@@ -18,11 +18,11 @@ import TokenItem from "./token-item";
 import ArrowFlatRightIcon from "@/icons/arrow-flat-right";
 import xrpLogo from "@/assets/xrp-logo.svg";
 
-export interface AddNftModalProps {
+export interface SelectTokenAmountModalProps {
   handleClose: () => void;
 }
 
-function SelectTokenAmountModal({ handleClose }: AddNftModalProps) {
+function SelectTokenAmountModal({ handleClose }: SelectTokenAmountModalProps) {
   const [selectedToken, setSelectedToken] = useState<null | string>(null);
   const [showTokenList, setShowTokenList] = useState(false);
 
