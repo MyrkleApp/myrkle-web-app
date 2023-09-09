@@ -4,9 +4,10 @@ export interface ShowDetailsOnHoverProps {
   fullText: string;
   shortText: string;
   color?: string;
+  alignLeft?: boolean;
 }
 
-function ShowDetailsOnHover({ fullText, shortText, color }: ShowDetailsOnHoverProps) {
+function ShowDetailsOnHover({ fullText, shortText, color, alignLeft }: ShowDetailsOnHoverProps) {
   return (
     <Box
       pos="relative"
@@ -30,8 +31,8 @@ function ShowDetailsOnHover({ fullText, shortText, color }: ShowDetailsOnHoverPr
         textAlign="center"
         position="absolute"
         top="0"
-        left="50%"
-        transform="translate(-50%, -100%)"
+        left={alignLeft ? "0" : "50%"}
+        transform={`translate(${alignLeft ? "0" : "-50%"}, -100%)`}
       >
         {fullText}
       </Text>

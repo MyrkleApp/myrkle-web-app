@@ -1,20 +1,22 @@
 import Layout from "@/layout";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid, useDisclosure } from "@chakra-ui/react";
 import IconContainer from "../components/icon-container";
 import FolderIcon from "@/icons/folder";
 import CogIcon from "@/icons/cog";
 import ChecksIcon from "@/icons/checks";
-import HourGlassIcon from "@/icons/hour-glass";
 import FlagIcon from "@/icons/flag";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
+import EscrowModal from "../components/escrow-modal";
 
 function Terminal() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Layout>
       <SimpleGrid columns={4} px={10} spacing={8}>
         <Link to={ROUTES.TERMINAL_ASSET_MANAGER}>
-          <IconContainer title="Asset Manager">
+          <IconContainer title="Asset Manager" visibility={isOpen ? "hidden" : "visible"}>
             <Box
               pos="relative"
               cursor="pointer"
@@ -38,24 +40,12 @@ function Terminal() {
           </IconContainer>
         </Link>
         <Link to={ROUTES.TERMINAL_CHECKS}>
-          <IconContainer title="Checks">
+          <IconContainer title="Checks" visibility={isOpen ? "hidden" : "visible"}>
             <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
           </IconContainer>
         </Link>
-        <IconContainer title="Escrow">
-          <HourGlassIcon
-            color="#686868"
-            fill="#686868"
-            fontSize="80px"
-            cursor="pointer"
-            transition="0.3s linear all"
-            _hover={{
-              transform: "rotate(-180deg)",
-              transition: "0.3s linear all",
-            }}
-          />
-        </IconContainer>
-        <IconContainer title="Flags">
+        <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} />
+        <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
           <Box>
             <FlagIcon
               fontSize="80px"

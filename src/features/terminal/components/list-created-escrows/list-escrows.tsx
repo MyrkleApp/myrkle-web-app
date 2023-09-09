@@ -1,9 +1,8 @@
-import Button from "@/components/button";
 import ShowDetailsOnHover from "@/components/show-details-on-hover";
 import { ellipsisAtCenter } from "@/helpers";
-import { HStack, Td, Tr } from "@chakra-ui/react";
+import { Td, Tr } from "@chakra-ui/react";
 
-function ListChecks() {
+function ListEscrows() {
   return (
     <>
       {Array(13)
@@ -11,7 +10,12 @@ function ListChecks() {
         .map((_, i) => (
           <Tr key={i} bg="#333333">
             <Td textAlign="center" fontSize="sm" fontWeight="bold">
-              UEU9478B9743
+              <ShowDetailsOnHover
+                fullText="UEU9478B9743UEU9478B9743"
+                shortText={ellipsisAtCenter("UEU9478B9743UEU9478B9743")}
+                color="#fff"
+                alignLeft
+              />
             </Td>
             <Td>
               <ShowDetailsOnHover
@@ -28,20 +32,16 @@ function ListChecks() {
               />
             </Td>
             <Td textAlign="center" fontSize="sm">
+              Outgoing
+            </Td>
+            <Td textAlign="center" fontSize="sm">
               2.04
             </Td>
             <Td textAlign="center" fontSize="sm" fontWeight="bold">
               03.02.2023
             </Td>
             <Td textAlign="center" fontSize="sm" fontWeight="bold">
-              <HStack>
-                <Button bg="danger" h="30px" px="30px">
-                  Cancel
-                </Button>
-                <Button bg="primary" h="30px" px="30px">
-                  Check
-                </Button>
-              </HStack>
+              03.02.2023
             </Td>
           </Tr>
         ))}
@@ -49,4 +49,4 @@ function ListChecks() {
   );
 }
 
-export default ListChecks;
+export default ListEscrows;

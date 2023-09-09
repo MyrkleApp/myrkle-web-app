@@ -9,6 +9,7 @@ const ROUTES = {
   TERMINAL_ADD_ASSET: "/terminal/asset-manager/add-asset",
   TERMINAL_CHECKS: "/terminal/checks",
   TERMINAL_CHECKS_CREATED_CHECKS: "/terminal/checks/created-checks",
+  TERMINAL_ESCROWS_CREATED_ESCROWS: "/terminal/escrows/created-escrows",
   EXCHANGE: "/exchange",
   SETTINGS: "/settings",
 };

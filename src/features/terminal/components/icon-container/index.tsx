@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import { MotionBox } from "@/components/motion-elements";
 
 export interface IconContainerProps {
   children: React.ReactNode;
@@ -11,9 +12,10 @@ export interface IconContainerProps {
 function IconContainer({ children, title, handleClick, ...props }: IconContainerProps) {
   return (
     <Box onClick={handleClick}>
-      <Flex
-        align="center"
-        justify="center"
+      <MotionBox
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
         bg="#242424"
         borderRadius="20px"
         h="250px"
@@ -35,8 +37,13 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         }}
       >
         {children}
-      </Flex>
-      <Text fontSize="sm" fontWeight="bold" textAlign="center">
+      </MotionBox>
+      <Text
+        fontSize="sm"
+        fontWeight="bold"
+        textAlign="center"
+        visibility={props.visibility || "visible"}
+      >
         {title}
       </Text>
     </Box>
