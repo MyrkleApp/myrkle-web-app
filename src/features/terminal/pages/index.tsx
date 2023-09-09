@@ -45,19 +45,21 @@ function Terminal() {
           </IconContainer>
         </Link>
         <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} />
-        <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
-          <Box>
-            <FlagIcon
-              fontSize="80px"
-              cursor="pointer"
-              transition="0.3s linear all"
-              _hover={{
-                transform: "rotateY(-180deg)",
-                transition: "0.3s linear all",
-              }}
-            />
-          </Box>
-        </IconContainer>
+        <Link to={ROUTES.TERMINAL_FLAGS}>
+          <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
+            <Box>
+              <FlagIcon
+                fontSize="80px"
+                cursor="pointer"
+                transition="0.3s linear all"
+                _hover={{
+                  transform: "rotateY(-180deg)",
+                  transition: "0.3s linear all",
+                }}
+              />
+            </Box>
+          </IconContainer>
+        </Link>
       </SimpleGrid>
     </Layout>
   );

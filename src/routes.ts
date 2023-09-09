@@ -10,6 +10,7 @@ const ROUTES = {
   TERMINAL_CHECKS: "/terminal/checks",
   TERMINAL_CHECKS_CREATED_CHECKS: "/terminal/checks/created-checks",
   TERMINAL_ESCROWS_CREATED_ESCROWS: "/terminal/escrows/created-escrows",
+  TERMINAL_FLAGS: "/terminal/flags",
   EXCHANGE: "/exchange",
   SETTINGS: "/settings",
 };
