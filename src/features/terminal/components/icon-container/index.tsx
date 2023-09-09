@@ -16,7 +16,7 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         justify="center"
         bg="#242424"
         borderRadius="20px"
-        h="200px"
+        h="250px"
         mb={7}
         cursor="pointer"
         {...props}

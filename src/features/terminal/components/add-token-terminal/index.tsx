@@ -28,7 +28,7 @@ function AddTokenTerminal() {
 
   return (
     <>
-      <IconContainer title="Token" h="180px" handleClick={onBackdropOpen}>
+      <IconContainer title="Token" h="210px" handleClick={onBackdropOpen}>
         <TokenListIcon fill="none" fontSize="50px" color="#4E4E4E" />
       </IconContainer>
 

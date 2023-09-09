@@ -13,7 +13,7 @@ function AddNftTerminal() {
 
   return (
     <>
-      <IconContainer title="NFT" h="180px" handleClick={onOpen}>
+      <IconContainer title="NFT" h="210px" handleClick={onOpen}>
         <NftIcon fill="none" fontSize="50px" />
       </IconContainer>
 

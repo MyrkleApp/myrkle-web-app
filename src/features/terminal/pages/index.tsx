@@ -37,9 +37,11 @@ function Terminal() {
             </Box>
           </IconContainer>
         </Link>
-        <IconContainer title="Checks">
-          <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
-        </IconContainer>
+        <Link to={ROUTES.TERMINAL_CHECKS}>
+          <IconContainer title="Checks">
+            <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
+          </IconContainer>
+        </Link>
         <IconContainer title="Escrow">
           <HourGlassIcon
             color="#686868"
