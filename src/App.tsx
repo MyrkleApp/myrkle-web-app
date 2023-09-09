@@ -9,6 +9,7 @@ import AssetManager from "./features/terminal/pages/asset-manager";
 import NewAsset from "./features/terminal/pages/new-asset";
 import AddAsset from "./features/terminal/pages/add-asset";
 import Checks from "./features/terminal/pages/checks";
+import CreatedChecks from "./features/terminal/pages/created-checks";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path={ROUTES.TERMINAL_NEW_ASSET} element={<NewAsset />} />
         <Route path={ROUTES.TERMINAL_ADD_ASSET} element={<AddAsset />} />
         <Route path={ROUTES.TERMINAL_CHECKS} element={<Checks />} />
+        <Route path={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS} element={<CreatedChecks />} />
         <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>

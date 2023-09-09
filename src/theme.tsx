@@ -11,6 +11,20 @@ const theme = extendTheme({
     danger: "#FF0000",
     textDark: "#858585",
   },
+  components: {
+    Table: {
+      variants: {
+        simple: {
+          th: {
+            borderColor: "transparent",
+          },
+          td: {
+            borderColor: "transparent",
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;

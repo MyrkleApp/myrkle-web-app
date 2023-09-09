@@ -52,9 +52,11 @@ function Checks() {
               </Text>
             </Box>
 
-            <Button w="100%" justifySelf="flex-end">
-              Created Checks
-            </Button>
+            <Link to={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS}>
+              <Button w="100%" justifySelf="flex-end">
+                Created Checks
+              </Button>
+            </Link>
           </Flex>
 
           <Box pl="30px" w="50%">
