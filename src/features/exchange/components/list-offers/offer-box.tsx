@@ -5,7 +5,7 @@ import { ellipsisAtCenter } from "@/helpers";
 
 function OfferBox() {
   return (
-    <Box w="50%" h="100%" bg="darkest" borderRadius="5px" p="3px 7px 25px 7px" cursor="pointer">
+    <Box w="50%" h="100%" bg="darkest" borderRadius="5px" p="3px 8px 25px 7px">
       <ItemLabel title="Give" mb={2} />
       <HStack>
         <Image src={xrpLogo} alt="" h="40px" />

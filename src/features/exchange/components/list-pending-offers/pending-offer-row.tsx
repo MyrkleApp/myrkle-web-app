@@ -1,23 +1,22 @@
 import { Circle, Flex } from "@chakra-ui/react";
-import OfferBox from "./offer-box";
+import PendingOfferBox from "./pending-offer-box";
 import ExchangeIcon from "@/icons/exchange";
 
-function OfferRow() {
+function PendingOfferRow() {
   return (
     <Flex
-      h="calc(50% - 10px)"
-      maxH="110px"
+      h="65px"
       bg="secondary"
-      borderRadius="12px"
-      p={3}
+      borderRadius="7px"
+      p={1}
       mb="10px"
-      gap="7px"
+      gap="30px"
       pos="relative"
       cursor="pointer"
     >
-      <OfferBox />
+      <PendingOfferBox />
       <Circle
-        bg="red"
+        bg="darkest"
         size="20px"
         cursor="pointer"
         pos="absolute"
@@ -27,10 +26,9 @@ function OfferRow() {
       >
         <ExchangeIcon stroke="gray" fill="none" />
       </Circle>
-
-      <OfferBox />
+      <PendingOfferBox />
     </Flex>
   );
 }
 
-export default OfferRow;
+export default PendingOfferRow;
