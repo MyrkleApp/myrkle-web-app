@@ -21,12 +21,12 @@ function Exchange() {
             <Text fontWeight="bold">Offers</Text>
           </HStack>
 
-          <Flex h="calc(100% - 45px)" direction="column" gap="15px">
-            <Box h="60%" bg="dark" borderRadius="20px" px={4} py={6}>
+          <Flex h="calc(100% - 45px)" direction="column">
+            <Box h="60%" bg="dark" borderRadius="20px" px={4} py={6} mb="15px">
               <ListOffers />
             </Box>
 
-            <Box h="40%" bg="dark" borderRadius="20px" px={4} py={4}>
+            <Box h="calc(40% - 15px)" bg="dark" borderRadius="20px" px={4} py={4}>
               <Text fontSize="sm" fontWeight="bold">
                 Pending offers
               </Text>
