@@ -12,6 +12,7 @@ import Checks from "./features/terminal/pages/checks";
 import CreatedChecks from "./features/terminal/pages/created-checks";
 import CreatedEscrows from "./features/terminal/pages/created-escrows";
 import Flags from "./features/terminal/pages/flags";
+import Exchange from "./features/exchange/pages";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS} element={<CreatedChecks />} />
         <Route path={ROUTES.TERMINAL_ESCROWS_CREATED_ESCROWS} element={<CreatedEscrows />} />
         <Route path={ROUTES.TERMINAL_FLAGS} element={<Flags />} />
+        <Route path={ROUTES.EXCHANGE} element={<Exchange />} />
         <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>
