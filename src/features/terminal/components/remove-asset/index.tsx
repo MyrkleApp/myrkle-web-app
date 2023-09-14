@@ -10,7 +10,7 @@ function RemoveAsset() {
 
   return (
     <>
-      <IconContainer title="Remove Asset" h="210px" handleClick={onOpen}>
+      <IconContainer title="Remove Asset" handleClick={onOpen}>
         <Image src={removeAssetGray} alt="remove Asset" h="60px" className="gray" />
         <Image src={removeAssetColored} alt="remove Asset" h="60px" className="colored" />
       </IconContainer>

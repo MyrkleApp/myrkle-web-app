@@ -40,13 +40,13 @@ function AssetManager() {
         <Box h="calc(100% - 70px)" overflow="hidden auto">
           <SimpleGrid pr={3} pl={5} columns={5} spacingX={8} spacingY={10}>
             <Link to={ROUTES.TERMINAL_NEW_ASSET}>
-              <IconContainer title="New Asset" h="210px">
+              <IconContainer title="New Asset">
                 <Image src={newAssetGray} alt="New Asset" h="60px" className="gray" />
                 <Image src={newAssetColored} alt="New Asset" h="60px" className="colored" />
               </IconContainer>
             </Link>
             <Link to={ROUTES.TERMINAL_ADD_ASSET}>
-              <IconContainer title="Add Asset" h="210px">
+              <IconContainer title="Add Asset">
                 <Image src={addAssetGray} alt="Add Asset" h="60px" className="gray" />
                 <Image src={addAssetColored} alt="Add Asset" h="60px" className="colored" />
               </IconContainer>
@@ -54,7 +54,7 @@ function AssetManager() {
             <RemoveAsset />
             <FreezeAsset />
             <UnfreezeAsset />
-            <IconContainer title="Burn Asset" h="210px">
+            <IconContainer title="Burn Asset">
               <Image src={burnAssetGray} alt="burn Asset" h="60px" className="gray" />
               <Image src={burnAssetColored} alt="burn Asset" h="60px" className="colored" />
             </IconContainer>

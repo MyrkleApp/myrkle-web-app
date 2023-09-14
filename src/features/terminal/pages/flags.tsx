@@ -23,7 +23,7 @@ function Flags() {
       </HStack>
 
       <Flex justify="center" h="calc(100% - 70px)" mt="20px" overflow="hidden scroll">
-        <SimpleGrid w="85%" h="100%" columns={3} spacing={8}>
+        <SimpleGrid w="85%" h="100%" columns={[1, null, 2, 3]} spacing="50px">
           <FlagCard title="Flag title" description="Flag description" />
           {Array(15)
             .fill(null)

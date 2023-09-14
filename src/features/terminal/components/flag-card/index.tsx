@@ -7,7 +7,7 @@ export interface FlagCardProps {
 
 function FlagCard({ title, description }: FlagCardProps) {
   return (
-    <Box bg="dark" borderRadius="30px" p="30px">
+    <Box bg="dark" borderRadius="30px" p="30px" w="100%" h="100%" aspectRatio={1 / 0.8}>
       <HStack mb="40px">
         <Text fontWeight="bold" fontSize="sm">
           {title || "Flags name"}

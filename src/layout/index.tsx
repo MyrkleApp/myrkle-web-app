@@ -22,7 +22,7 @@ function Layout({ children }: LayoutProps) {
         <Box h="50px">{/* bottom */}</Box>
       </Box>
 
-      <Box h="100%" minW="calc(100% - 270px - 10px)" pos="absolute" top="0" right="0" pr={10}>
+      <Box h="100%" w="calc(100% - 270px - 10px)" pos="absolute" top="0" right="0" pr={10}>
         <Box h="70px">
           <Navbar />
         </Box>

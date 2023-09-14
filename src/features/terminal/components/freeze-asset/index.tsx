@@ -10,7 +10,7 @@ function FreezeAsset() {
 
   return (
     <>
-      <IconContainer title="Freeze Asset" h="210px" onClick={onOpen}>
+      <IconContainer title="Freeze Asset" onClick={onOpen}>
         <Image src={freezeAssetGray} alt="freeze Asset" h="60px" className="gray" />
         <Image src={freezeAssetColored} alt="freeze Asset" h="60px" className="colored" />
       </IconContainer>

@@ -18,7 +18,8 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         justifyContent="center"
         bg="#242424"
         borderRadius="20px"
-        h="250px"
+        // h="250px"
+        aspectRatio={1 / 1.15}
         mb={7}
         cursor="pointer"
         {...props}
