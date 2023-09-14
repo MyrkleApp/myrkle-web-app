@@ -33,6 +33,7 @@ function ShowDetailsOnHover({ fullText, shortText, color, alignLeft }: ShowDetai
         top="0"
         left={alignLeft ? "0" : "50%"}
         transform={`translate(${alignLeft ? "0" : "-50%"}, -100%)`}
+        zIndex={10}
       >
         {fullText}
       </Text>

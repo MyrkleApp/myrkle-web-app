@@ -20,7 +20,7 @@ function Sidebar() {
   const { pathname } = useLocation();
 
   return (
-    <Box w="100%" h="100%" bg="dark" p="30px 10px 20px 15px" borderRadius="25px">
+    <Box w="100%" h="100%" bg="dark" p="20px 20px 20px 20px" borderRadius="25px">
       {navItems.map(({ title, icon, link }, i) => (
         <NavItem key={i} title={title} icon={icon} link={link} isActive={pathname.includes(link)} />
       ))}

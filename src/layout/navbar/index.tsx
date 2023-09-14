@@ -5,8 +5,8 @@ function Navbar() {
   return (
     <HStack h="100%">
       <HStack borderRight="1px solid #686666" pr={8}>
-        <Image src={xrpLogo} alt="xrp" h="40px" />
-        <Text fontWeight="bold" letterSpacing={1}>
+        <Image src={xrpLogo} alt="xrp" h="25px" />
+        <Text fontWeight="bold" fontSize="xs" letterSpacing={1}>
           XRP
         </Text>
       </HStack>

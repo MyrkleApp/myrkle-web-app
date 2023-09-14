@@ -19,7 +19,7 @@ function SendToken() {
 
   return (
     <>
-      <Text color="textDark" fontWeight="bold" pos="absolute" top="13%">
+      <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="13%">
         Name
       </Text>
       <Flex
@@ -39,7 +39,7 @@ function SendToken() {
         <Input w="50%" h="100%" textAlign="right" />
       </Flex>
 
-      <Text color="textDark" fontWeight="bold" pos="absolute" top="34%">
+      <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="34%">
         Recipient Address or ANS Name
       </Text>
       <Input h="9%" bg="secondary" borderRadius="7px" pos="absolute" top="41%" w="100%" />
@@ -80,8 +80,8 @@ function SendToken() {
         }}
       >
         <HStack cursor="pointer" onClick={toggleAdvancedOptions}>
-          <ThickArrowDownIcon color="#fff" />
-          <Text color="#fff" fontWeight="bold">
+          <ThickArrowDownIcon color="#fff" fontSize="sm" />
+          <Text color="#fff" fontSize="sm" fontWeight="bold">
             Advanced options
           </Text>
         </HStack>
@@ -118,7 +118,7 @@ function SendToken() {
           transition: { type: "spring", stiffness: 150 },
         }}
       >
-        <Button bg="secondary" w="100%" h="100%">
+        <Button bg="secondary" letterSpacing={1} w="100%" h="100%">
           confirm
         </Button>
       </MotionBox>

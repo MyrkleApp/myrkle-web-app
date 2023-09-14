@@ -4,7 +4,10 @@ import PlusIcon from "@/icons/plus";
 
 function ListNftsGallery() {
   return (
-    <SimpleGrid columns={4} spacingX={4} spacingY={10} pr={4}>
+    <SimpleGrid columns={4} spacing={4} pr={4}>
+      <Flex justify="center" align="center" bg="secondary" borderRadius="35px" cursor="pointer">
+        <PlusIcon color="#858585" fontSize="5xl" />
+      </Flex>
       {Array(6)
         .fill(null)
         .map((_, i) => (
@@ -12,9 +15,6 @@ function ListNftsGallery() {
             <NftCard />
           </Box>
         ))}
-      <Flex justify="center" align="center" bg="secondary" borderRadius="35px" cursor="pointer">
-        <PlusIcon color="#858585" fontSize="5xl" />
-      </Flex>
     </SimpleGrid>
   );
 }

@@ -6,7 +6,7 @@ import ExchangeBox from "../exchange-box";
 function Swap() {
   return (
     <>
-      <Text color="textDark" fontWeight="bold" pos="absolute" top="13%">
+      <Text color="textDark" fontSize="xs" fontWeight="bold" pos="absolute" top="13%">
         From
       </Text>
       <Box pos="absolute" top="19%" w="100%" h="20%">
@@ -25,7 +25,7 @@ function Swap() {
         <ExchangeIcon stroke="gray" fill="none" />
       </Circle>
 
-      <Text color="textDark" fontWeight="bold" pos="absolute" top="50%">
+      <Text color="textDark" fontSize="xs" fontWeight="bold" pos="absolute" top="50%">
         To
       </Text>
       <Box pos="absolute" top="56%" w="100%" h="20%">

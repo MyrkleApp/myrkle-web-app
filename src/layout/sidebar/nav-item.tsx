@@ -17,7 +17,7 @@ function NavItem({ title, icon: NavItemIcon, link, isActive }: NavItemProps) {
         spacing="10px"
         pl={5}
         py="7px"
-        mb={1}
+        mb={3}
         bg={isActive ? "rgba(0, 223, 22, 0.27)" : "none"}
         border={`1px solid ${isActive ? "#00DF16" : "transparent"}`}
         fontSize="sm"
@@ -25,7 +25,7 @@ function NavItem({ title, icon: NavItemIcon, link, isActive }: NavItemProps) {
         borderRadius="20px"
       >
         <NavItemIcon stroke="#fff" fill="none" />
-        <Text>{title}</Text>
+        <Text fontSize="xs">{title}</Text>
       </HStack>
     </Link>
   );

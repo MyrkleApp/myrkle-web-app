@@ -57,7 +57,7 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
 
       <SimpleGrid columns={2} h="calc(100% - 50px)" spacing="10px">
         <Flex direction="column" justify="space-between">
-          <HStack mb={"1%"}>
+          <HStack mt={-1} mb={"1%"}>
             <HStack>
               <Image src={xrpLogo} alt="logo" />
               <VStack align="flex-start" spacing="0">
@@ -91,7 +91,7 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
 
           <Box mb={"1%"}>
             <HStack mb={2}>
-              <Text fontWeight="bold" fontSize="2.3vh">
+              <Text fontWeight="bold" fontSize="xs">
                 Index
               </Text>
               {/* info popup here */}
@@ -106,7 +106,7 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
 
           <Box h="55%" mt="-4px">
             <HStack mb={2}>
-              <Text fontWeight="bold" fontSize="2.3vh">
+              <Text fontWeight="bold" fontSize="xs">
                 Description
               </Text>
               {/* info popup here */}
@@ -119,8 +119,8 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
               p={4}
               boxShadow="0 2px 8px #00000040"
             >
-              <Box h="95%" mt="10px" overflow="hidden auto">
-                <Text fontWeight="" fontSize="sm" maxW="calc(100% - 20px)">
+              <Box h="95%" mt="-5px" overflow="hidden auto">
+                <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
                   Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
                   pretium viverra. Libero vulputate lobortis pulvinar mauris vel sodales. Sed diam
                   non dolor ut donec magna bibendum nascetur. Urna volutpat velit molestie placerat.

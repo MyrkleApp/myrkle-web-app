@@ -33,7 +33,11 @@ function TokenCard() {
         <Flex justify="space-between" align="center" w="67%" h="100%" pr="20px">
           <HStack h="100%">
             <Image src={xrpLogo} alt="" h="60%" />
-            <Text fontSize="2.5vh" fontWeight="bold" textTransform="uppercase">
+            <Text
+              className="font-face-proxima-nova-extrabld"
+              fontSize="2.5vh"
+              textTransform="uppercase"
+            >
               usd
             </Text>
           </HStack>
@@ -45,7 +49,13 @@ function TokenCard() {
           </Text>
 
           <VStack spacing={0} align="flex-end">
-            <Text fontSize="sm" fontWeight="bold" textTransform="uppercase" mr={1}>
+            <Text
+              className="font-face-proxima-nova-extrabld"
+              fontSize="sm"
+              fontWeight="bold"
+              textTransform="uppercase"
+              mr={1}
+            >
               234.9
             </Text>
             <Text color="textDark" fontSize="2xs" fontWeight="bold">

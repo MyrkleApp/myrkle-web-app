@@ -3,11 +3,9 @@ import ArrowRightIcon from "@/icons/arrow-right";
 import { Box, Circle } from "@chakra-ui/react";
 import { useRef } from "react";
 import NftCard from "./nft-card";
-import useObserveElementSize from "../../hooks/use-observe-element-size";
 
 function ListNftsSlider() {
   const containerRef = useRef<any>(null);
-  const containerHeight = useObserveElementSize("nft-scrollable-container");
 
   const scrollRight = () => {
     if (!containerRef.current) return;
@@ -22,7 +20,6 @@ function ListNftsSlider() {
   return (
     <Box pos="relative" h="100%">
       <Box
-        id="nft-scrollable-container"
         ref={containerRef}
         h="100%"
         overflowX="scroll"
@@ -38,7 +35,7 @@ function ListNftsSlider() {
         {Array(10)
           .fill(null)
           .map((_, i) => (
-            <Box key={i} display="inline-block" w={`${containerHeight}px`} h="100%" mr={3}>
+            <Box key={i} display="inline-block" h="100%" aspectRatio={1} mr={3}>
               <NftCard />
             </Box>
           ))}

@@ -25,3 +25,45 @@ td:last-child,
 th:last-child {
   border-radius: 0 10px 10px 0;
 }
+
+@font-face {
+  font-family: "ProximaNova";
+  src:
+    local("ProximaNova"),
+    url("./assets/fonts/Proxima_Nova_Font.otf") format("truetype");
+  /* font-weight: 500; */
+}
+
+.font-face-proxima-nova {
+  font-family: "ProximaNova";
+}
+
+* {
+  font-family: "ProximaNova";
+}
+
+p {
+  margin-top: 3px;
+}
+
+@font-face {
+  font-family: "ProximaNovaBlack";
+  src:
+    local("ProximaNovaBlack"),
+    url("./assets/fonts/ProximaNova-Black/ProximaNova-Black.ttf") format("truetype");
+}
+
+.font-face-proxima-nova-black {
+  font-family: "ProximaNovaBlack";
+}
+
+@font-face {
+  font-family: "ProximaNovaExtraBold";
+  src:
+    local("ProximaNovaExtraBold"),
+    url("./assets/fonts/ProximaNova-Extrabld/ProximaNova-Extrabld.ttf") format("truetype");
+}
+
+.font-face-proxima-nova-extrabld {
+  font-family: "ProximaNovaExtraBold";
+}

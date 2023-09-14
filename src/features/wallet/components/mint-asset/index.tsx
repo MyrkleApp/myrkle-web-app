@@ -11,7 +11,7 @@ function MintAsset() {
       <Text color="textDark" fontSize="xs">
         Can't find what you're looking for?
       </Text>
-      <Button h="27px" p="7px 12px" bg="primary" _hover={{ bg: "primary" }}>
+      <Button h="27px" p="7px 12px" bg="primary" borderRadius="5px" _hover={{ bg: "primary" }}>
         Mint {assetType === "token" ? "Token" : "NFT"}
       </Button>
     </HStack>

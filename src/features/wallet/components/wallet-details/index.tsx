@@ -104,21 +104,21 @@ function WalletDetails() {
           />
         </Box>
 
-        <Flex direction="column" justify="space-between" py={"2.2%"} h="100%">
+        <Flex direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
           <HStack spacing={5} cursor="pointer" onClick={handleAddressClick}>
-            <Text color="textDark" fontSize="md" fontWeight="bold">
+            <Text color="textDark" fontSize="xs" fontWeight="bold">
               Welcome
             </Text>
-            <Text color="textDark" fontSize="md" fontWeight="bold">
+            <Text color="textDark" fontSize="xs" fontWeight="bold">
               AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF
             </Text>
           </HStack>
 
           <Box mt="-20px">
-            <Text color="#d5d6d4" fontSize={["5xl", null, null, null, "55px"]} fontWeight="bold">
+            <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
               5,234.9
             </Text>
-            <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-3}>
+            <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-2}>
               $600,043.89
             </Text>
           </Box>
@@ -153,7 +153,7 @@ function WalletDetails() {
                 className="account-info-text"
                 display="none"
                 color="textDark"
-                fontSize="sm"
+                fontSize="xs"
                 fontWeight={600}
               >
                 account info

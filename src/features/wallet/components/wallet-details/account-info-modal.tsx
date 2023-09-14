@@ -40,7 +40,7 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
       p={8}
       // pt={8}
       // px={8}
-      // pb={6}
+      // pb={4}
       bg="darker"
       borderRadius="30px"
       initial={{ opacity: 0 }}

@@ -15,8 +15,8 @@ function Backdrop({ isOpen, zIndex, children, handleClick }: BackdropProps) {
     <AnimatePresence>
       {isOpen && (
         <MotionBox
-          w="calc(100vw - 270px)"
-          h="calc(100vh - 120px)"
+          w="calc(100vw - 250px)"
+          h="calc(100vh - 100px)"
           borderRadius="20px"
           bg="#00000092"
           pos="fixed"
