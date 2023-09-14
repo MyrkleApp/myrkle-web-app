@@ -1,4 +1,4 @@
-import { Circle, Flex, HStack, Image, Spacer, Text, VStack, useDisclosure } from "@chakra-ui/react";
+import { Flex, HStack, IconButton, Image, Text, VStack, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import ChecksIcon from "@/icons/checks";
 import HourGlassIcon from "@/icons/hour-glass";
@@ -17,19 +17,23 @@ function TokenCard() {
 
   return (
     <>
-      <HStack
-        h="75px"
+      <Flex
+        justify="space-between"
+        align="center"
+        // minH="75px"
+        w="calc(100% - 15px)"
+        h="calc(100% / 3.25)"
+        flexShrink={0}
         bg="dark"
-        borderRadius="25px"
-        mb={2}
-        px={5}
+        borderRadius="4vh"
+        px="2.5%"
         cursor="pointer"
         onClick={onOpen}
       >
-        <Flex justify="space-between" align="center" w="100%">
-          <HStack>
-            <Image src={xrpLogo} alt="" />
-            <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
+        <Flex justify="space-between" align="center" w="67%" h="100%" pr="20px">
+          <HStack h="100%">
+            <Image src={xrpLogo} alt="" h="60%" />
+            <Text fontSize="2.5vh" fontWeight="bold" textTransform="uppercase">
               usd
             </Text>
           </HStack>
@@ -40,36 +44,74 @@ function TokenCard() {
             +0.02%
           </Text>
 
-          <VStack spacing={0}>
-            <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
+          <VStack spacing={0} align="flex-end">
+            <Text fontSize="sm" fontWeight="bold" textTransform="uppercase" mr={1}>
               234.9
             </Text>
-            <Text color="textDark" fontSize="xs" fontWeight="bold">
+            <Text color="textDark" fontSize="2xs" fontWeight="bold">
               $600,043.89
             </Text>
           </VStack>
         </Flex>
 
-        <Spacer />
-
-        <HStack borderLeft="1px solid #353535" pl={4} spacing={3}>
-          <Circle bg="secondary" size="40px">
-            <ChecksIcon stroke="textDark" fontSize="sm" />
-          </Circle>
-          <Circle bg="secondary" size="40px">
-            <HourGlassIcon color="textDark" fill="textDark" fontSize="sm" />
-          </Circle>
-          <Circle bg="secondary" size="40px">
-            <ArrowUpIcon stroke="textDark" fontSize="sm" />
-          </Circle>
-          <Circle bg="secondary" size="40px">
-            <ArrowDownIcon stroke="textDark" fontSize="sm" />
-          </Circle>
-          <Circle bg="secondary" size="40px">
-            <ExchangeIcon stroke="textDark" fill="none" fontSize="sm" />
-          </Circle>
+        <HStack justify="space-between" borderLeft="1px solid #353535" pl="20px" w="33%" h="55%">
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            _hover={{ bg: "secondary " }}
+          >
+            <ChecksIcon stroke="textDark" fontSize="2.8vh" />
+          </IconButton>
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            _hover={{ bg: "secondary " }}
+          >
+            <HourGlassIcon stroke="textDark" fill="textDark" fontSize="2.8vh" />
+          </IconButton>
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            _hover={{ bg: "secondary " }}
+          >
+            <ArrowUpIcon stroke="textDark" fontSize="2.8vh" />
+          </IconButton>
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            _hover={{ bg: "secondary " }}
+          >
+            <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
+          </IconButton>
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            _hover={{ bg: "secondary " }}
+          >
+            <ExchangeIcon stroke="textDark" fill="none" fontSize="2.8vh" />
+          </IconButton>
         </HStack>
-      </HStack>
+      </Flex>
 
       <Backdrop isOpen={isOpen}>
         <TokenCardModal handleClose={handleClose} />

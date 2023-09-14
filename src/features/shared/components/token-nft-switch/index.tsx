@@ -18,14 +18,14 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
     <HStack
       w="225px"
       pos="relative"
-      h="44px"
+      h="50px"
       bg="dark"
       borderRadius="30px"
       boxShadow="0 2px 5px #0f0f0f"
     >
       <MotionBox
         mt="2px"
-        h="40px"
+        h="46px"
         w="130px"
         bg="darkest"
         borderRadius="30px"
