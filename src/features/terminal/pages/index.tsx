@@ -7,10 +7,11 @@ import ChecksIcon from "@/icons/checks";
 import FlagIcon from "@/icons/flag";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
-import EscrowModal from "../components/escrow-modal";
+import HourGlassIcon from "@/icons/hour-glass";
 
 function Terminal() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // todo: remove this rubbish!
+  const { isOpen } = useDisclosure();
 
   return (
     <Layout>
@@ -44,7 +45,12 @@ function Terminal() {
             <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
           </IconContainer>
         </Link>
-        <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} />
+        <Link to={ROUTES.TERMINAL_ESCROWS}>
+          <IconContainer title="Escrows" visibility={isOpen ? "hidden" : "visible"}>
+            <HourGlassIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
+          </IconContainer>
+        </Link>
+        {/* <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} /> */}
         <Link to={ROUTES.TERMINAL_FLAGS}>
           <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
             <Box>
