@@ -1,8 +1,12 @@
-import { Grid, GridItem, HStack, Image, Text } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import txnIn from "@/assets/txn-in.png";
+import Backdrop from "@/components/backdrop";
+import TxnModal from "./txn-modal";
 
 function TxnCard() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <Grid
@@ -16,6 +20,7 @@ function TxnCard() {
         pl={4}
         mb={3}
         cursor="pointer"
+        onClick={onOpen}
       >
         <GridItem rowSpan={1} colSpan={4} display="flex" alignItems="center">
           <HStack>
@@ -48,6 +53,10 @@ function TxnCard() {
           </Text>
         </GridItem>
       </Grid>
+
+      <Backdrop isOpen={isOpen}>
+        <TxnModal handleClose={onClose} />
+      </Backdrop>
     </>
   );
 }
