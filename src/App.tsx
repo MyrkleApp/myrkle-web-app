@@ -14,6 +14,7 @@ import CreatedEscrows from "./features/terminal/pages/created-escrows";
 import Flags from "./features/terminal/pages/flags";
 import Exchange from "./features/exchange/pages";
 import Escrows from "./features/terminal/pages/escrows";
+import BurnAsset from "./features/terminal/pages/burn-asset";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path={ROUTES.TERMINAL_ASSET_MANAGER} element={<AssetManager />} />
         <Route path={ROUTES.TERMINAL_NEW_ASSET} element={<NewAsset />} />
         <Route path={ROUTES.TERMINAL_ADD_ASSET} element={<AddAsset />} />
+        <Route path={ROUTES.TERMINAL_BURN_ASSET} element={<BurnAsset />} />
         <Route path={ROUTES.TERMINAL_CHECKS} element={<Checks />} />
         <Route path={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS} element={<CreatedChecks />} />
         <Route path={ROUTES.TERMINAL_ESCROWS} element={<Escrows />} />

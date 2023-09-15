@@ -54,10 +54,12 @@ function AssetManager() {
             <RemoveAsset />
             <FreezeAsset />
             <UnfreezeAsset />
-            <IconContainer title="Burn Asset">
-              <Image src={burnAssetGray} alt="burn Asset" h="60px" className="gray" />
-              <Image src={burnAssetColored} alt="burn Asset" h="60px" className="colored" />
-            </IconContainer>
+            <Link to={ROUTES.TERMINAL_BURN_ASSET}>
+              <IconContainer title="Burn Asset">
+                <Image src={burnAssetGray} alt="burn Asset" h="60px" className="gray" />
+                <Image src={burnAssetColored} alt="burn Asset" h="60px" className="colored" />
+              </IconContainer>
+            </Link>
           </SimpleGrid>
         </Box>
       </Box>
