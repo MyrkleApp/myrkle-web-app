@@ -45,7 +45,7 @@ function MintNftForm() {
         <AttributeRow />
       </Grid>
 
-      <Box pos="absolute" bottom="0" w="100%" bg="darkest" borderRadius="20px" p={3}>
+      <Box pos="absolute" bottom="0" w="calc(100% - 7px)" bg="darkest" borderRadius="20px" p={3}>
         <HStack mb={5}>
           <ItemLabel title="Transaction Fee" mb={0} />
           <Spacer />

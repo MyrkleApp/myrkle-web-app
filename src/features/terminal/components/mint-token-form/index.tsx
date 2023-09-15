@@ -41,7 +41,8 @@ function MintTokenForm() {
             .map((_, i) => (
               <Button
                 key={i}
-                h="35px"
+                w="100%"
+                aspectRatio={1}
                 bg="#585858"
                 borderRadius="5px"
                 fontSize="sm"
