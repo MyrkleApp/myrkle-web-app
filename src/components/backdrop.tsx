@@ -8,9 +8,10 @@ export interface BackdropProps {
   zIndex?: number;
   children?: React.ReactNode;
   handleClick?: (event: any) => void;
+  [anyProp: string]: any;
 }
 
-function Backdrop({ isOpen, zIndex, children, handleClick }: BackdropProps) {
+function Backdrop({ isOpen, zIndex, children, handleClick, ...props }: BackdropProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -27,6 +28,7 @@ function Backdrop({ isOpen, zIndex, children, handleClick }: BackdropProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.5 } }}
           exit={{ opacity: 0, transition: { duration: 0.5 } }}
+          {...props}
         >
           <Box width="100%" h="100%" pos="relative" onClick={handleClick}>
             {children}

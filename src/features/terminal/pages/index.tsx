@@ -47,7 +47,17 @@ function Terminal() {
         </Link>
         <Link to={ROUTES.TERMINAL_ESCROWS}>
           <IconContainer title="Escrows" visibility={isOpen ? "hidden" : "visible"}>
-            <HourGlassIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
+            <HourGlassIcon
+              color="#686868"
+              fill="#686868"
+              fontSize="80px"
+              cursor="pointer"
+              transition="0.3s linear all"
+              _hover={{
+                transform: "rotate(-180deg)",
+                transition: "0.3s linear all",
+              }}
+            />
           </IconContainer>
         </Link>
         {/* <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} /> */}

@@ -8,3 +8,7 @@ export const MotionBox = chakra(motion.div, {
 export const MotionImage = chakra(motion.img, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
 });
+
+export const MotionText = chakra(motion.p, {
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
