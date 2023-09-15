@@ -3,9 +3,22 @@ import Button from "@/components/button";
 import PlusIcon from "@/icons/plus";
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import SelectNftModal from "./select-nft-modal";
+import { useState } from "react";
+import SelectedNft from "./selected-nft";
+
+// TODO: REMOVE DIRTY PROP-DRILLING !!!
 
 function SendNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isNftSelected, setIsNftSelected] = useState(false);
+
+  const handleNftItemClick = () => {
+    setIsNftSelected(true);
+  };
+
+  if (isNftSelected) {
+    return <SelectedNft />;
+  }
 
   return (
     <>
@@ -43,7 +56,7 @@ function SendNft() {
       </Button>
 
       <Backdrop isOpen={isOpen}>
-        <SelectNftModal handleClose={onClose} />
+        <SelectNftModal handleClose={onClose} handleNftItemClick={handleNftItemClick} />
       </Backdrop>
     </>
   );

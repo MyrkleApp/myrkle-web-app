@@ -34,7 +34,7 @@ function NftDetailContent() {
 
         <Box w="100%" h="60%" pos="absolute" bottom={0}>
           <Text fontSize="xs" fontWeight="bold">
-            Description
+            Details
           </Text>
 
           <Box
@@ -58,9 +58,15 @@ function NftDetailContent() {
         </Box>
       </Box>
 
-      <Box w="50%" border="1px solid red">
-        <Image src={nftImage} alt="" w="100%" h="75%" />
-      </Box>
+      <Flex direction="column" justify="space-between" w="50%">
+        <Image src={nftImage} alt="" w="100%" h="calc(100% - 130px)" borderRadius="20px" />
+        <Box h="120px">
+          <Text fontSize="xs" fontWeight="bold">
+            Attributes
+          </Text>
+          <Box h="97px" borderRadius="10px" bg="dark" p={2}></Box>
+        </Box>
+      </Flex>
     </Flex>
   );
 }

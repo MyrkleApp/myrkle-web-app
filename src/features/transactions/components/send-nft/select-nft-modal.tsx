@@ -5,9 +5,10 @@ import ListSendNft from "./list-send-nft";
 
 export interface SelectNftModalProps {
   handleClose: () => void;
+  handleNftItemClick: () => void;
 }
 
-function SelectNftModal({ handleClose }: SelectNftModalProps) {
+function SelectNftModal({ handleClose, handleNftItemClick }: SelectNftModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -37,7 +38,7 @@ function SelectNftModal({ handleClose }: SelectNftModalProps) {
       </Text>
 
       <Box h="calc(100% - 50px)" overflow="hidden auto">
-        <ListSendNft />
+        <ListSendNft handleNftItemClick={handleNftItemClick} />
       </Box>
 
       {/* <Flex justify="center" align="center" h="calc(100% - 50px)" bg="dark" borderRadius="20px">
