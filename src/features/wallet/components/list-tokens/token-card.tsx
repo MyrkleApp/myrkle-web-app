@@ -5,8 +5,8 @@ import HourGlassIcon from "@/icons/hour-glass";
 import ArrowUpIcon from "@/icons/arrow-up";
 import ArrowDownIcon from "@/icons/arrow-down";
 import ExchangeIcon from "@/icons/exchange";
-import TokenCardModal from "./token-card-modal";
 import Backdrop from "@/components/backdrop";
+import TokenCardModal from "./token-card-modal";
 
 function TokenCard() {
   const { isOpen, onOpen, onClose } = useDisclosure();

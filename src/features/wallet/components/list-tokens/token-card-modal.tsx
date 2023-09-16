@@ -1,4 +1,3 @@
-import { MotionBox } from "@/components/motion-elements";
 import {
   Box,
   Circle,
@@ -15,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import ItemLabel from "@/components/item-label";
 import ArrowDownIcon from "@/icons/arrow-down";
 import ArrowUpIcon from "@/icons/arrow-up";
 import ChecksIcon from "@/icons/checks";
@@ -35,166 +35,194 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
   });
 
   return (
-    <MotionBox
+    <Flex
       ref={ref}
       pos="absolute"
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="92%"
+      h="100%"
       w="850px"
-      p={8}
-      pt={2}
+      p={10}
       bg="darker"
-      borderRadius="30px"
-      // initial={{ opacity: 0 }}
-      // animate={{ opacity: 1, transition: { duration: 0.5 } }}
-      // exit={{ opacity: 0, transition: { duration: 0.5 } }}
+      borderRadius="25px"
+      gap={3}
     >
-      <Flex justify="flex-end" mb="10px">
-        <CloseButton onClick={handleClose} mr={-2} />
-      </Flex>
-
-      <SimpleGrid columns={2} h="calc(100% - 50px)" spacing="10px">
-        <Flex direction="column" justify="space-between">
-          <HStack mt={-1} mb={"1%"}>
-            <HStack>
-              <Image src={xrpLogo} alt="logo" />
-              <VStack align="flex-start" spacing="0">
-                <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
-                  xrpl
-                </Text>
-                <Text fontSize="2xs" mt="-2px" color="danger">
-                  -0.02%
-                </Text>
-              </VStack>
-            </HStack>
-
-            <Spacer />
-
-            <VStack align="flex-end" spacing="0">
-              <Text fontWeight="bold" fontSize="2xl" textTransform="uppercase">
-                234.9
+      <Box w="50%" pos="relative">
+        <HStack mb={2}>
+          <HStack>
+            <Image src={xrpLogo} alt="logo" />
+            <VStack align="flex-start" spacing="0">
+              <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
+                xrpl
               </Text>
-              <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">
-                $575,234.9
+              <Text fontSize="2xs" mt="-2px" color="danger">
+                -0.02%
               </Text>
             </VStack>
           </HStack>
 
-          <HStack mb={"0.5%"}>
-            <Text fontSize="sm" fontWeight="bold">
-              Ripple
+          <Spacer />
+
+          <VStack align="flex-end" spacing="0">
+            <Text fontWeight="bold" fontSize="2xl" textTransform="uppercase">
+              234.9
             </Text>
-            <Switch colorScheme="whatsapp" />
-          </HStack>
+            <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">
+              $575,234.9
+            </Text>
+          </VStack>
+        </HStack>
 
-          <Box mb={"1%"}>
-            <HStack mb={2}>
-              <Text fontWeight="bold" fontSize="xs">
-                Index
-              </Text>
-              {/* info popup here */}
-            </HStack>
+        <HStack mb={4}>
+          <Text fontSize="sm" fontWeight="bold">
+            Ripple
+          </Text>
+          <Switch colorScheme="whatsapp" />
+        </HStack>
 
-            <Box bg="dark" borderRadius="12px" p={4} boxShadow="0 2px 8px #00000040">
-              <Text fontWeight="bold" fontSize="sm">
-                sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
-              </Text>
-            </Box>
+        <ItemLabel title="Index" fontSize="sm" mb={0} />
+        <Box
+          w="100%"
+          bg="dark"
+          borderRadius="12px"
+          px={4}
+          py={3}
+          mb={2}
+          boxShadow="0 2px 8px #00000040"
+        >
+          <Text fontWeight="bold" fontSize="sm">
+            sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
+          </Text>
+        </Box>
+
+        <ItemLabel title="Issuer" fontSize="sm" mb={0} />
+        <Box
+          w="100%"
+          bg="dark"
+          borderRadius="12px"
+          px={4}
+          py={3}
+          mb={2}
+          boxShadow="0 2px 8px #00000040"
+        >
+          <Text fontWeight="bold" fontSize="sm">
+            sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
+          </Text>
+        </Box>
+
+        <ItemLabel title="Description" fontSize="sm" />
+        <Box
+          pos="absolute"
+          bottom={0}
+          bg="dark"
+          h="calc(100% - 290px)"
+          borderRadius="12px"
+          p={4}
+          boxShadow="0 2px 8px #00000040"
+        >
+          <Box h="95%" mt="-5px" overflow="hidden auto">
+            <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
+              Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
+              pretium viverra. Libero vulputate lobortis pulvinar mauris vel sodales. Sed diam non
+              dolor ut donec magna bibendum nascetur. Urna volutpat velit molestie placerat. Lorem
+              ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie pretium
+              viverr.
+            </Text>
           </Box>
+        </Box>
+      </Box>
 
-          <Box h="55%" mt="-4px">
-            <HStack mb={2}>
-              <Text fontWeight="bold" fontSize="xs">
-                Description
-              </Text>
-              {/* info popup here */}
-            </HStack>
+      <Box w="50%" pos="relative">
+        <CloseButton pos="absolute" top="-30px" right="-30px" onClick={handleClose} />
 
-            <Box
-              bg="dark"
-              h="calc(100% - 30px)"
-              borderRadius="12px"
-              p={4}
-              boxShadow="0 2px 8px #00000040"
-            >
-              <Box h="95%" mt="-5px" overflow="hidden auto">
-                <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
-                  Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
-                  pretium viverra. Libero vulputate lobortis pulvinar mauris vel sodales. Sed diam
-                  non dolor ut donec magna bibendum nascetur. Urna volutpat velit molestie placerat.
-                  Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
-                  pretium viverr.
-                </Text>
-              </Box>
-            </Box>
-          </Box>
+        <Flex justify="space-between">
+          <Circle bg="secondary" size="50px">
+            <ChecksIcon stroke="textDark" fontSize="lg" />
+          </Circle>
+          <Circle bg="secondary" size="50px">
+            <HourGlassIcon color="textDark" fill="textDark" fontSize="lg" />
+          </Circle>
+          <Circle bg="secondary" size="50px">
+            <ArrowUpIcon stroke="textDark" fontSize="lg" />
+          </Circle>
+          <Circle bg="secondary" size="50px">
+            <ArrowDownIcon stroke="textDark" fontSize="lg" />
+          </Circle>
+          <Circle bg="secondary" size="50px">
+            <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
+          </Circle>
         </Flex>
 
-        <Flex direction="column" justify="space-between">
-          <Flex justify="space-between">
-            <Circle bg="secondary" size="50px">
-              <ChecksIcon stroke="textDark" fontSize="lg" />
-            </Circle>
-            <Circle bg="secondary" size="50px">
-              <HourGlassIcon color="textDark" fill="textDark" fontSize="lg" />
-            </Circle>
-            <Circle bg="secondary" size="50px">
-              <ArrowUpIcon stroke="textDark" fontSize="lg" />
-            </Circle>
-            <Circle bg="secondary" size="50px">
-              <ArrowDownIcon stroke="textDark" fontSize="lg" />
-            </Circle>
-            <Circle bg="secondary" size="50px">
-              <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
-            </Circle>
-          </Flex>
-
-          <SimpleGrid columns={4} h="100px" spacing={3} mb={2}>
-            {Array(3)
-              .fill(null)
-              .map((_, i) => (
-                <VStack
-                  key={i}
-                  bg="dark"
-                  borderRadius="12px"
-                  pt={6}
-                  spacing={5}
-                  boxShadow="0 2px 8px #00000040"
-                >
-                  <Text fontSize="md">63</Text>
-                  <Text fontSize="2xs">Object Count</Text>
-                </VStack>
-              ))}
-            <VStack
-              bg="dark"
-              borderRadius="12px"
-              pt={6}
-              spacing={3}
-              boxShadow="0 2px 8px #00000040"
-              cursor="pointer"
-              _hover={{ bg: "danger" }}
-            >
-              <CancelIcon fontSize="3xl" />
-              <Text fontSize="2xs">Object Count</Text>
-            </VStack>
-          </SimpleGrid>
-
-          <Box bg="dark" h="55%" borderRadius="12px" boxShadow="0 2px 8px #00000040" pos="relative">
-            <Box
-              bg="#5757573B"
-              h="calc(100% - 20px)"
-              w="55%"
-              borderRadius="12px"
-              pos="absolute"
-              top="10px"
-              right="10px"
-            />
-          </Box>
+        <Flex
+          justify="center"
+          align="center"
+          w="100%"
+          pos="absolute"
+          top="70px"
+          bg="dark"
+          borderRadius="10px"
+          px={4}
+          py={1}
+          mb={2}
+          boxShadow="0 2px 8px #00000040"
+        >
+          <Text fontSize="xs" color="danger">
+            NOTE: This token is frozen
+          </Text>
         </Flex>
-      </SimpleGrid>
-    </MotionBox>
+
+        <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="110px">
+          {Array(3)
+            .fill(null)
+            .map((_, i) => (
+              <VStack
+                key={i}
+                bg="dark"
+                borderRadius="12px"
+                pt={6}
+                spacing={5}
+                boxShadow="0 2px 8px #00000040"
+              >
+                <Text fontSize="md">63</Text>
+                <Text fontSize="2xs">Object Count</Text>
+              </VStack>
+            ))}
+          <VStack
+            bg="dark"
+            borderRadius="12px"
+            pt={6}
+            spacing={3}
+            boxShadow="0 2px 8px #00000040"
+            cursor="pointer"
+            _hover={{ bg: "danger" }}
+          >
+            <CancelIcon fontSize="3xl" mb={1} />
+            <Text fontSize="2xs">Object Count</Text>
+          </VStack>
+        </SimpleGrid>
+
+        <Box
+          pos="absolute"
+          bottom={0}
+          bg="dark"
+          w="100%"
+          h="calc(100% - 230px)"
+          borderRadius="12px"
+          boxShadow="0 2px 8px #00000040"
+        >
+          <Box
+            bg="#5757573B"
+            h="calc(100% - 14px)"
+            w="55%"
+            borderRadius="12px"
+            pos="absolute"
+            top="7px"
+            right="7px"
+          />
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 

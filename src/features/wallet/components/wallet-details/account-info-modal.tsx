@@ -122,7 +122,9 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
               boxShadow="0 2px 8px #00000040"
             >
               <Text fontSize="2xl">63</Text>
-              <Text fontSize="2xs">Object Count</Text>
+              <Text fontSize="2xs" mt={-1.5}>
+                Object Count
+              </Text>
             </VStack>
 
             <VStack
@@ -133,7 +135,9 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
               boxShadow="0 2px 8px #00000040"
             >
               <Text fontSize="2xl">15</Text>
-              <Text fontSize="2xs">Tick size</Text>
+              <Text fontSize="2xs" mt={-1.5}>
+                Tick size
+              </Text>
             </VStack>
 
             <VStack
@@ -144,7 +148,7 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
               boxShadow="0 2px 8px #00000040"
             >
               <FlagIcon fontSize="2xl" />
-              <Text fontSize="2xs" textAlign="center" maxW="70%">
+              <Text fontSize="2xs" textAlign="center" maxW="70%" lineHeight={1.1}>
                 Account Root Flags
               </Text>
             </VStack>
@@ -156,8 +160,8 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
               spacing="12px"
               boxShadow="0 2px 8px #00000040"
             >
-              <RemoveAccountIcon fontSize="2xl" />
-              <Text fontSize="2xs" textAlign="center" maxW="70%">
+              <RemoveAccountIcon fontSize="2xl" mb={0} />
+              <Text fontSize="2xs" textAlign="center" maxW="70%" lineHeight={1.1}>
                 Remove Account
               </Text>
             </VStack>
