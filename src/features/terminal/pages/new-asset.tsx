@@ -40,7 +40,7 @@ function NewAsset() {
             bg={assetType === "token" ? "rgba(0, 223, 22, 0.27)" : "none"}
             fontWeight="400"
             textAlign="left"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             _hover={assetType === "token" ? "rgba(0, 223, 22, 0.27)" : "none"}
             onClick={() => setAssetType("token")}
           >
