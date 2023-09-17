@@ -1,6 +1,7 @@
 import { HStack, Image, Spacer, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import AccountTypeDropdown from "@/features/wallet/components/account-type-dropdown";
+import NetworkToggler from "@/features/wallet/components/network-toggler";
 
 function Navbar() {
   return (
@@ -14,6 +15,7 @@ function Navbar() {
       <Spacer />
       <HStack>
         <AccountTypeDropdown />
+        <NetworkToggler />
       </HStack>
     </HStack>
   );

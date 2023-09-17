@@ -4,6 +4,7 @@ import { useRef } from "react";
 import DropdownItem from "./dropdown-item";
 import { AnimatePresence } from "framer-motion";
 import { MotionBox } from "@/components/motion-elements";
+import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 
 function AccountTypeDropdown() {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -21,11 +22,13 @@ function AccountTypeDropdown() {
         w="130px"
         h="27px"
         bg="dark"
+        color="textDark"
         fontSize="2xs"
         borderRadius="30px"
         boxShadow="0 2px 2px #000"
         textAlign="left"
         justifyContent="space-between"
+        rightIcon={<ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />}
         _hover={{ bg: "dark" }}
         onClick={onToggle}
       >
