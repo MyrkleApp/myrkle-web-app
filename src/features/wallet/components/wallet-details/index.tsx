@@ -6,7 +6,7 @@ import AccountDetailButton from "../account-detail-button";
 import ExchangeIcon from "@/icons/exchange";
 import ArrowUpIcon from "@/icons/arrow-up";
 import ArrowDownIcon from "@/icons/arrow-down";
-import { MotionBox } from "@/components/motion-elements";
+import { MotionBox, MotionText } from "@/components/motion-elements";
 import Backdrop from "@/components/backdrop";
 import AddressModal from "./address-modal";
 import qrCodeImage from "@/assets/qr-code.png";
@@ -127,38 +127,40 @@ function WalletDetails() {
             {actionLinks.map((actionLink, i) => (
               <AccountDetailButton key={i} text={actionLink.text} icon={actionLink.icon} />
             ))}
-            <Flex
-              justify="center"
-              align="center"
+            <Box
+              display="flex"
+              alignItems="center"
               bg="secondary"
               borderRadius="50%"
               h="35px"
               w="35px"
               cursor="pointer"
               onClick={onAccountInfoModalOpen}
-              gap={2}
               transition="0.1s linear all"
               _hover={{
-                width: "130px",
-                borderRadius: "40px",
-                transition: "0.1s linear all",
-                justify: "space-between",
+                width: "115px",
+                borderRadius: "20px",
                 "& > .account-info-text": {
                   display: "block",
                 },
               }}
             >
-              <InfoIcon />
-              <Text
-                className="account-info-text"
-                display="none"
-                color="textDark"
-                fontSize="xs"
-                fontWeight={600}
-              >
-                account info
-              </Text>
-            </Flex>
+              <InfoIcon pos="absolute" ml="9px" />
+              <AnimatePresence>
+                <MotionText
+                  className="account-info-text"
+                  display="none"
+                  pos="absolute"
+                  ml={9}
+                  w="70px"
+                  color="textDark"
+                  fontSize="xs"
+                  fontWeight={600}
+                >
+                  account info
+                </MotionText>
+              </AnimatePresence>
+            </Box>
           </HStack>
         </Flex>
       </Flex>
