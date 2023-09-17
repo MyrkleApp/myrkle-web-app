@@ -12,7 +12,7 @@ function ExchangeBox() {
             xrpl
           </Text>
           <Text fontSize="xs" mt="-2px">
-            sfjjsfsjsfwjfejojojfwijjfojfjsljfj
+            AHFBUSKEBVDUSVBKFJAHFBUSK
           </Text>
         </VStack>
         <Spacer />

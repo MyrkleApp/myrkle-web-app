@@ -29,6 +29,7 @@ function NetworkToggler() {
       h="30px"
       w="80px"
       ml={3}
+      mr={7}
       cursor="pointer"
       onClick={handleNetworkToggle}
     >
