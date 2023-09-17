@@ -1,5 +1,6 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
+import { HStack, Image, Spacer, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import AccountTypeDropdown from "@/features/wallet/components/account-type-dropdown";
 
 function Navbar() {
   return (
@@ -9,6 +10,10 @@ function Navbar() {
         <Text fontWeight="bold" fontSize="xs" letterSpacing={1}>
           XRP
         </Text>
+      </HStack>
+      <Spacer />
+      <HStack>
+        <AccountTypeDropdown />
       </HStack>
     </HStack>
   );
