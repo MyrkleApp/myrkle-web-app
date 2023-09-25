@@ -16,6 +16,7 @@ import Exchange from "./features/exchange/pages";
 import Escrows from "./features/terminal/pages/escrows";
 import BurnAsset from "./features/terminal/pages/burn-asset";
 import Home from "./pages/home";
+import Settings from "./features/settings/pages";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path={ROUTES.TERMINAL_ESCROWS_CREATED_ESCROWS} element={<CreatedEscrows />} />
         <Route path={ROUTES.TERMINAL_FLAGS} element={<Flags />} />
         <Route path={ROUTES.EXCHANGE} element={<Exchange />} />
+        <Route path={ROUTES.SETTINGS} element={<Settings />} />
         <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>
