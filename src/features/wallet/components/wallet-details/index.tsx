@@ -15,6 +15,9 @@ import { AnimatePresence } from "framer-motion";
 import XAddressFormModal from "./x-address-form-modal";
 import InfoIcon from "@/icons/info";
 import AccountInfoModal from "./account-info-modal";
+import { TAccountInfoModal } from "../../types";
+import EnterPasswordModal from "./enter-password-modal";
+import SecretsModal from "./secrets-modal";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -50,6 +53,8 @@ function WalletDetails() {
     onClose: onAccountInfoModalClose,
   } = useDisclosure();
 
+  const [accountInfoModal, setAccountInfoModal] = useState<TAccountInfoModal>("account-info");
+
   const handleAddressClick = () => {
     onAddressModalOpen();
   };
@@ -65,6 +70,11 @@ function WalletDetails() {
 
   const handleAccountInfoModalClose = () => {
     onAccountInfoModalClose();
+    setAccountInfoModal("account-info");
+  };
+
+  const handleAccountInfoModal = (modal: TAccountInfoModal) => {
+    setAccountInfoModal(modal);
   };
 
   return (
@@ -136,7 +146,7 @@ function WalletDetails() {
               w="35px"
               cursor="pointer"
               onClick={onAccountInfoModalOpen}
-              transition="0.1s linear all"
+              transition="0.25s linear all"
               _hover={{
                 width: "115px",
                 borderRadius: "20px",
@@ -183,7 +193,23 @@ function WalletDetails() {
       </Backdrop>
 
       <Backdrop isOpen={isAccountInfoModalOpen}>
-        <AccountInfoModal handleClose={handleAccountInfoModalClose} />
+        {accountInfoModal === "account-info" && (
+          <AccountInfoModal
+            handleClose={handleAccountInfoModalClose}
+            handleAccountInfoModal={handleAccountInfoModal}
+          />
+        )}
+
+        {accountInfoModal === "enter-password" && (
+          <EnterPasswordModal
+            handleClose={() => setAccountInfoModal("account-info")}
+            handleAccountInfoModal={handleAccountInfoModal}
+          />
+        )}
+
+        {accountInfoModal === "secrets" && (
+          <SecretsModal handleClose={() => setAccountInfoModal("enter-password")} />
+        )}
       </Backdrop>
     </>
   );

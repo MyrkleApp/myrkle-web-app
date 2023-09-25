@@ -15,12 +15,14 @@ import { useRef } from "react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import FlagIcon from "@/icons/flag";
 import RemoveAccountIcon from "@/icons/remove-account";
+import { TAccountInfoModal } from "../../types";
 
 export interface AccountInfoModalProps {
   handleClose: () => void;
+  handleAccountInfoModal: (modal: TAccountInfoModal) => void;
 }
 
-function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
+function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -61,6 +63,22 @@ function AccountInfoModal({ handleClose }: AccountInfoModalProps) {
         </HStack>
         <CloseButton onClick={handleClose} />
       </Flex>
+      <HStack
+        bg="dark"
+        boxShadow="0 2px 3px #121312"
+        py={1}
+        px={2}
+        borderRadius="5px"
+        pos="absolute"
+        right={8}
+        top="85px"
+        cursor="pointer"
+        onClick={() => handleAccountInfoModal("enter-password")}
+      >
+        <Text fontWeight="bold" fontSize="xs">
+          secrets
+        </Text>
+      </HStack>
 
       <SimpleGrid columns={2} h="280px" spacing="10px">
         <Flex direction="column" justify="space-between" border="1px solid transparent">
