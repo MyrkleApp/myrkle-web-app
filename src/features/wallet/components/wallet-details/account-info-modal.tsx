@@ -16,6 +16,7 @@ import xrpLogo from "@/assets/xrp-logo.svg";
 import FlagIcon from "@/icons/flag";
 import RemoveAccountIcon from "@/icons/remove-account";
 import { TAccountInfoModal } from "../../types";
+import Editables from "./editables";
 
 export interface AccountInfoModalProps {
   handleClose: () => void;
@@ -190,12 +191,14 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
           <Box
             bg="#5757573B"
             h="calc(100% - 20px)"
-            w="55%"
+            w="60%"
             borderRadius="12px"
             pos="absolute"
             top="10px"
             right="10px"
+            zIndex={-1}
           />
+          <Editables />
         </Box>
       </SimpleGrid>
     </MotionBox>
