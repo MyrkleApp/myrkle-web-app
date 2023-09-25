@@ -15,11 +15,13 @@ import Flags from "./features/terminal/pages/flags";
 import Exchange from "./features/exchange/pages";
 import Escrows from "./features/terminal/pages/escrows";
 import BurnAsset from "./features/terminal/pages/burn-asset";
+import Home from "./pages/home";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.WALLET} element={<Wallet />} />
         <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />
         <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />
