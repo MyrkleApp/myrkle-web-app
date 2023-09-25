@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Wallet from "./features/wallet/pages";
 import Transaction from "./features/transactions/pages";
 import NftGallery from "./features/wallet/pages/nft-gallery";
@@ -39,7 +39,6 @@ function App() {
         <Route path={ROUTES.TERMINAL_FLAGS} element={<Flags />} />
         <Route path={ROUTES.EXCHANGE} element={<Exchange />} />
         <Route path={ROUTES.SETTINGS} element={<Settings />} />
-        <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
       </Routes>
     </BrowserRouter>
   );
