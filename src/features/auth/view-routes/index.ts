@@ -1,4 +1,5 @@
 const VIEW_ROUTES = {
+  CREATE_PASSWORD: "create-password",
   WALLET_PROVIDER: "wallet-provider",
   CREATE_IMPORT_WALLET: "create-import-wallet",
   CREATE_WALLET_OPTIONS: "create-wallet-options",

@@ -14,14 +14,21 @@ import ImportSeed from "@/features/auth/components/seed/import-seed";
 import ImportPrivateKey from "@/features/auth/components/private-key/import-private-key";
 import XummProvider from "@/features/auth/components/xumm-provider";
 import HomeLayout from "@/layout/home-layout";
+import CreatePassword from "@/features/auth/components/create-password";
 
 function Home() {
-  const [view, setView] = useState(VIEW_ROUTES.WALLET_PROVIDER);
+  const [view, setView] = useState(VIEW_ROUTES.CREATE_PASSWORD);
 
   const handleView = (view: string) => setView(view);
 
   return (
     <HomeLayout>
+      {view === VIEW_ROUTES.CREATE_PASSWORD && (
+        <CreatePassword
+          handleConfirmClick={() => handleView(VIEW_ROUTES.WALLET_PROVIDER)}
+          handleLoginClick={() => handleView(VIEW_ROUTES.LOGIN)}
+        />
+      )}
       {view === VIEW_ROUTES.WALLET_PROVIDER && (
         <SelectWalletProvider
           handleMyrkleClick={() => handleView(VIEW_ROUTES.CREATE_IMPORT_WALLET)}
