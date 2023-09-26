@@ -21,6 +21,7 @@ import ChecksIcon from "@/icons/checks";
 import ExchangeIcon from "@/icons/exchange";
 import HourGlassIcon from "@/icons/hour-glass";
 import CancelIcon from "@/icons/cancel";
+import TokenEditables from "./token-editables";
 
 export interface TokenCardModalProps {
   handleClose: () => void;
@@ -214,12 +215,14 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
           <Box
             bg="#5757573B"
             h="calc(100% - 14px)"
-            w="55%"
+            w="58%"
             borderRadius="12px"
             pos="absolute"
             top="7px"
             right="7px"
+            zIndex={-1}
           />
+          <TokenEditables />
         </Box>
       </Box>
     </Flex>

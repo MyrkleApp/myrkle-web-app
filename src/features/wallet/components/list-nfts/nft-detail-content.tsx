@@ -7,6 +7,7 @@ import Button from "@/components/button";
 import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
 import ArrowLeft2Icon from "@/icons/arrow-left-2";
+import NftEditables from "./nft-editables";
 
 function NftDetailContent() {
   const navigate = useNavigate();
@@ -59,16 +60,19 @@ function NftDetailContent() {
             bottom={0}
             bg="#292929"
             borderRadius="15px"
+            zIndex={0}
           >
             <Box
-              w="65%"
+              w="60%"
               h="calc(100% - 20px)"
               pos="absolute"
               top="10px"
               right="10px"
               bg="dark"
               borderRadius="15px"
+              zIndex={-1}
             />
+            <NftEditables />
           </Box>
         </Box>
       </Box>

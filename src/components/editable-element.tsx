@@ -7,13 +7,7 @@ function EditableElement() {
   return (
     <HStack>
       <EditIcon onClick={onToggle} fontSize="12px" cursor="pointer" />
-      {isOpen ? (
-        <Input h="25px" fontSize="xs" />
-      ) : (
-        <Text fontSize="xs" color="textDark">
-          default text
-        </Text>
-      )}
+      {isOpen ? <Input h="25px" fontSize="xs" /> : <Text fontSize="xs">default text</Text>}
     </HStack>
   );
 }

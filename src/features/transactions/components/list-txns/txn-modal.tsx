@@ -17,6 +17,7 @@ import { MotionBox } from "@/components/motion-elements";
 import ArrowLeftIcon from "@/icons/arrow-left";
 import { AnimatePresence } from "framer-motion";
 import ArrowRightFlatIcon from "@/icons/arrow-right-flat";
+import ListTxnsEditables from "./editables";
 
 export interface TxnModalProps {
   handleClose: () => void;
@@ -56,6 +57,7 @@ function TxnModal({ handleClose }: TxnModalProps) {
           fontWeight="bold"
           mb={7}
           leftIcon={<ArrowLeftIcon ml="-70px" />}
+          onClick={handleClose}
         >
           Transaction Detail
         </Button>
@@ -129,16 +131,19 @@ function TxnModal({ handleClose }: TxnModalProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              zIndex={0}
             >
               <Box
-                w="60%"
+                w="53%"
                 h="calc(100% - 20px)"
                 pos="absolute"
                 top="10px"
                 right="10px"
                 bg="dark"
                 borderRadius="15px"
+                zIndex={-1}
               />
+              <ListTxnsEditables />
             </MotionBox>
           )}
         </AnimatePresence>
