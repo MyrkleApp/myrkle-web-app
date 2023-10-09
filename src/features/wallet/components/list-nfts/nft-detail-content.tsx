@@ -1,16 +1,24 @@
 import ArrowLeftIcon from "@/icons/arrow-left";
 import { Box, Circle, Flex, HStack, Image, Spacer, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import nftImage from "@/assets/nft.png";
 import Button from "@/components/button";
 import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
 import ArrowLeft2Icon from "@/icons/arrow-left-2";
 import NftEditables from "./nft-editables";
+import { selectNet } from "../../redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import { useGetNftMetaDataQuery } from "@/features/shared/redux/xrp.api";
+import { nftFormatter } from "@/helpers";
+import Skeleton1 from "@/components/skeleton";
 
 function NftDetailContent() {
   const navigate = useNavigate();
+  const { id = "" } = useParams();
+
+  const net = useSelector(selectNet);
+  const { data, isLoading } = useGetNftMetaDataQuery({ id, net });
 
   const containerRef = useRef<any>(null);
 
@@ -24,6 +32,26 @@ function NftDetailContent() {
     containerRef.current.scrollLeft -= 300;
   };
 
+  if (isLoading) {
+    return (
+      <Flex justify="space-between" h="100%" gap={4}>
+        <Flex direction="column" justify="space-between" w="50%">
+          <HStack>
+            <ArrowLeftIcon cursor="pointer" mr={5} onClick={() => navigate(-1)} />
+            <Skeleton1 h="50px" borderRadius="0" w="100%" />
+          </HStack>
+          <Skeleton1 h="30%" borderRadius="0" />
+          <Skeleton1 h="50%" borderRadius="0" />
+        </Flex>
+
+        <Flex direction="column" justify="space-between" w="50%">
+          <Skeleton1 h="calc(100% - 130px)" borderRadius="0" />
+          <Skeleton1 h="110px" borderRadius="0" />
+        </Flex>
+      </Flex>
+    );
+  }
+
   return (
     <Flex justify="space-between" h="100%" gap={4}>
       <Box w="50%" pos="relative">
@@ -31,7 +59,7 @@ function NftDetailContent() {
           <ArrowLeftIcon cursor="pointer" mr={5} onClick={() => navigate(-1)} />
           <Image src={xrpLogo} alt="xrp" h="40px" />
           <Text fontSize="sm" fontWeight="bold">
-            Jackk X
+            {data?.name}
           </Text>
           <Spacer />
           <Button h="27px" p="15px 20px" bg="primary" fontSize="xs" _hover={{ bg: "primary" }}>
@@ -43,9 +71,7 @@ function NftDetailContent() {
           Description
         </Text>
         <Text fontSize="xs" mb={3}>
-          Lorem ipsum dolor sit amet consectetur. Aliquet sed dictum interdum a. Cursus ornare hac
-          fringilla ac. Lorem ipsum dolor sit amet consectetur. Aliquet sed dictum interdum a.
-          Cursus ornare hac fringilla ac.
+          {data?.description}
         </Text>
 
         <Box w="100%" h="60%" pos="absolute" bottom={0}>
@@ -78,7 +104,13 @@ function NftDetailContent() {
       </Box>
 
       <Flex direction="column" justify="space-between" w="50%">
-        <Image src={nftImage} alt="" w="100%" h="calc(100% - 130px)" borderRadius="20px" />
+        <Image
+          src={nftFormatter(data?.image)}
+          alt=""
+          w="100%"
+          h="calc(100% - 130px)"
+          borderRadius="20px"
+        />
         <Box h="120px" pos="relative">
           <Text fontSize="xs" fontWeight="bold">
             Attributes
@@ -100,31 +132,29 @@ function NftDetailContent() {
               },
             }}
           >
-            {Array(10)
-              .fill(null)
-              .map((_, i) => (
-                <Box
-                  key={i}
-                  display="inline-block"
-                  bg="dark"
-                  borderRadius="15px"
-                  h="100%"
-                  aspectRatio={1.1 / 1}
-                  mr={3}
-                >
-                  <Flex direction="column" mt={2}>
-                    <Text textAlign="center" fontSize="xs">
-                      Background
-                    </Text>
-                    <Text textAlign="center" fontSize="xs" fontWeight="bold">
-                      Red
-                    </Text>
-                    <Text textAlign="center" fontSize="xs">
+            {data?.attributes.map((attribute: any, i: number) => (
+              <Box
+                key={i}
+                display="inline-block"
+                bg="dark"
+                borderRadius="15px"
+                h="100%"
+                aspectRatio={1.1 / 1}
+                mr={3}
+              >
+                <Flex direction="column" mt={5}>
+                  <Text textAlign="center" fontSize="xs">
+                    {attribute.trait_type}
+                  </Text>
+                  <Text textAlign="center" fontSize="xs" fontWeight="bold">
+                    {attribute.value}
+                  </Text>
+                  {/* <Text textAlign="center" fontSize="xs">
                       5.56%
-                    </Text>
-                  </Flex>
-                </Box>
-              ))}
+                    </Text> */}
+                </Flex>
+              </Box>
+            ))}
           </Box>
           <Circle
             pos="absolute"

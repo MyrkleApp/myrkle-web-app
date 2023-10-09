@@ -9,7 +9,7 @@ function ListAssets() {
 
   if (assetType === "token") {
     return (
-      <Box h="calc(100% - 60px)" pos="absolute" bottom="0" w="100%" overflowY="scroll">
+      <Box h="calc(100% - 60px)" pos="absolute" bottom="0" w="100%" overflowY="auto">
         <ListTokens />
       </Box>
     );

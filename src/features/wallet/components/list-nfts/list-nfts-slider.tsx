@@ -3,8 +3,17 @@ import ArrowRightIcon from "@/icons/arrow-right";
 import { Box, Circle } from "@chakra-ui/react";
 import { useRef } from "react";
 import NftCard from "./nft-card";
+import { useSelector } from "react-redux";
+import { selectAddress, selectNet } from "../../redux/wallet.selectors";
+import { useGetAccountNftsQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
 
 function ListNftsSlider() {
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { data, isLoading } = useGetAccountNftsQuery({ address, net });
+
   const containerRef = useRef<any>(null);
 
   const scrollRight = () => {
@@ -16,6 +25,33 @@ function ListNftsSlider() {
     if (!containerRef.current) return;
     containerRef.current.scrollLeft -= 500;
   };
+
+  if (isLoading) {
+    return (
+      <Box pos="relative" h="100%">
+        <Box
+          h="100%"
+          overflowX="scroll"
+          whiteSpace="nowrap"
+          sx={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+        >
+          {Array(5)
+            .fill(null)
+            .map((_, i) => (
+              <Box key={i} display="inline-block" h="100%" aspectRatio={1} mr={3}>
+                <Skeleton1 w="100%" h="100%" />
+              </Box>
+            ))}
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box pos="relative" h="100%">
@@ -32,13 +68,11 @@ function ListNftsSlider() {
           },
         }}
       >
-        {Array(10)
-          .fill(null)
-          .map((_, i) => (
-            <Box key={i} display="inline-block" h="100%" aspectRatio={1} mr={3}>
-              <NftCard />
-            </Box>
-          ))}
+        {data?.map((nft: any, i: number) => (
+          <Box key={i} display="inline-block" h="100%" aspectRatio={1} mr={3}>
+            <NftCard id={nft.id} />
+          </Box>
+        ))}
       </Box>
 
       <Circle

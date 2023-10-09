@@ -17,8 +17,11 @@ import Escrows from "./features/terminal/pages/escrows";
 import BurnAsset from "./features/terminal/pages/burn-asset";
 import Home from "./pages/home";
 import Settings from "./features/settings/pages";
+import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
 
 function App() {
+  useRehydrateSignInData();
+
   return (
     <BrowserRouter>
       <Routes>

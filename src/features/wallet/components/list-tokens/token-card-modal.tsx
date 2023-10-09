@@ -13,7 +13,6 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import xrpLogo from "@/assets/xrp-logo.svg";
 import ItemLabel from "@/components/item-label";
 import ArrowDownIcon from "@/icons/arrow-down";
 import ArrowUpIcon from "@/icons/arrow-up";
@@ -24,10 +23,16 @@ import CancelIcon from "@/icons/cancel";
 import TokenEditables from "./token-editables";
 
 export interface TokenCardModalProps {
+  data: any;
+  isLoading: boolean;
   handleClose: () => void;
 }
 
-function TokenCardModal({ handleClose }: TokenCardModalProps) {
+// rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
+// BTC
+
+function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
+  console.log(data);
   const ref = useRef(null);
 
   useOutsideClick({
@@ -52,7 +57,7 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
       <Box w="50%" pos="relative">
         <HStack mb={2}>
           <HStack>
-            <Image src={xrpLogo} alt="logo" />
+            <Image src={data?.icon} alt="logo" h="35px" />
             <VStack align="flex-start" spacing="0">
               <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
                 xrpl
@@ -108,7 +113,7 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
           boxShadow="0 2px 8px #00000040"
         >
           <Text fontWeight="bold" fontSize="sm">
-            sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
+            {data?.issuer}
           </Text>
         </Box>
 
@@ -174,21 +179,18 @@ function TokenCardModal({ handleClose }: TokenCardModalProps) {
         </Flex>
 
         <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="110px">
-          {Array(3)
-            .fill(null)
-            .map((_, i) => (
-              <VStack
-                key={i}
-                bg="dark"
-                borderRadius="12px"
-                pt={6}
-                spacing={5}
-                boxShadow="0 2px 8px #00000040"
-              >
-                <Text fontSize="md">63</Text>
-                <Text fontSize="2xs">Object Count</Text>
-              </VStack>
-            ))}
+          <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
+            <Text fontSize="md">63</Text>
+            <Text fontSize="2xs">Tick</Text>
+          </VStack>
+          <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
+            <Text fontSize="md">{data?.price}</Text>
+            <Text fontSize="2xs">Price</Text>
+          </VStack>
+          <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
+            <Text fontSize="md">{data?.holders}</Text>
+            <Text fontSize="2xs">Holders</Text>
+          </VStack>
           <VStack
             bg="dark"
             borderRadius="12px"

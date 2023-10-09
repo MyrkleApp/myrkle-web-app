@@ -3,26 +3,187 @@ import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
 import TextSwitchSpaced from "@/components/text-switch-spaced";
 import GalleryIcon from "@/icons/gallery";
-import { Box, Flex, Grid, GridItem, HStack, Spacer, Square, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, Image, Spacer, Square, Text } from "@chakra-ui/react";
 import AttributeRow from "./attribute-row";
 import Button from "@/components/button";
 import PlusMinus from "@/components/plus-minus";
+import { NFTStorage, File } from "nft.storage";
+import TextArea from "@/components/text-area";
+import { useRef, useState } from "react";
+import { IAttribute } from "../../types";
+import { useMintNftMutation } from "@/features/shared/redux/xrp.api";
+import { useSelector } from "react-redux";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+// import { Buffer } from "buffer";
+
+const TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
+  // =============================================================================================
+  // selectors
+  // =============================================================================================
+
+  const address = useSelector(selectAddress);
+
+  // =============================================================================================
+  // state & ref
+  // =============================================================================================
+
+  const [imagePreview, setImagePreview] = useState<any>("");
+  const [imageData, setImageData] = useState<any>("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [taxon, setTaxon] = useState("");
+  const [attributes, setAttributes] = useState<IAttribute[]>([{ trait_type: "", value: "" }]);
+  const [isUploadNftLoading, setIsUploadNftLoading] = useState(false);
+
+  const fileRef = useRef<any>();
+
+  // =============================================================================================
+  // api
+  // =============================================================================================
+
+  const [mintNft, { isLoading: isMintNftLoading }] = useMintNftMutation();
+
+  // =============================================================================================
+  // handle change & plusIcon click
+  // =============================================================================================
+
+  const handleFileChange = (e: any) => {
+    setImagePreview(URL.createObjectURL(e.target.files[0]));
+    setImageData(Buffer.from(e.target.files[0]).toString("base64"));
+  };
+
+  const handleAttributeChange = (e: any, i: number, attr: keyof IAttribute) => {
+    const value = [...attributes];
+    value[i][attr] = e.target.value;
+    setAttributes(value);
+  };
+
+  const handlePlusIconClick = (i: number) => {
+    const value = [...attributes];
+    value.splice(i + 1, 0, { trait_type: "", value: "" });
+    setAttributes(value);
+  };
+
+  // =============================================================================================
+  // other handlers
+  // =============================================================================================
+
+  const uploadNft = async (name: string, description: string, image: any, attribute: any[]) => {
+    try {
+      const client = new NFTStorage({
+        token: TOKEN,
+      });
+      const imageFile = new File([image], name);
+      const meta = await client.store({
+        schema: "ipfs://bafkreidtjf2ihiwtptiyadjfmesplo555iy2jdcwhfr6hkenr2z3fvxn2y",
+        nftType: "art.v0",
+        name,
+        description,
+        image: imageFile,
+        animation: "",
+        audio: "",
+        video: "",
+        "3d_model": "",
+        collection: {},
+        attribute,
+      });
+      return meta.url;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const handleConfirmClick = async () => {
+    setIsUploadNftLoading(true);
+
+    uploadNft(name, description, imageData, attributes).then((uri: any) => {
+      console.log(uri);
+      setIsUploadNftLoading(false);
+
+      // mint nft
+      mintNft({
+        issuer_addr: address,
+        taxon,
+        is_transferable: false,
+        issuer_burn: false,
+        only_xrp: false,
+        transfer_fee: "1",
+        uri,
+      })
+        .unwrap()
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    });
+  };
+
   return (
     <Box pr={2} pb="150px" pos="relative">
       <ItemLabel title="NFT name" />
       <Flex gap="10px" mb={5}>
-        <Input w="100%" />
-        <Square size="40px" bg="secondary" borderRadius="5px" cursor="pointer">
-          <GalleryIcon />
-        </Square>
+        <Input w="100%" value={name} onChange={(e: any) => setName(e.target.value)} />
+        <input
+          type="file"
+          ref={fileRef}
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+        {!imagePreview && (
+          <Square
+            size="40px"
+            bg="secondary"
+            borderRadius="5px"
+            cursor="pointer"
+            onClick={() => fileRef.current.click()}
+          >
+            <GalleryIcon />
+          </Square>
+        )}
       </Flex>
+
+      {imagePreview && (
+        <Flex mb={3} gap={3}>
+          <Flex
+            w="50%"
+            justify="center"
+            align="center"
+            aspectRatio={1.1}
+            p={2}
+            borderRadius="5px"
+            bg="darkest"
+          >
+            <Image src={imagePreview} alt="" objectFit="contain" maxH="100%" maxW="100%" />
+          </Flex>
+          <Flex
+            w="50%"
+            justify="center"
+            align="center"
+            bg="secondary"
+            borderRadius="5px"
+            cursor="pointer"
+            aspectRatio={1.1}
+            onClick={() => fileRef.current.click()}
+          >
+            <GalleryIcon fontSize="50px" />
+          </Flex>
+        </Flex>
+      )}
+
+      <ItemLabel
+        title="Description"
+        value={description}
+        onChange={(e: any) => setDescription(e.target.value)}
+      />
+      <TextArea mb={5} />
 
       <MotionBox pos="relative" h="65px" mb={10}>
         <Box pos="absolute" bottom={0} w="100%">
           <ItemLabel title="Taxon" />
-          <Input w="100%" />
+          <Input w="100%" value={taxon} onChange={(e: any) => setTaxon(e.target.value)} />
         </Box>
       </MotionBox>
 
@@ -41,8 +202,16 @@ function MintNftForm() {
           <ItemLabel title="Value" mb={0} />
         </GridItem>
         <GridItem colSpan={2} />
-        <AttributeRow />
-        <AttributeRow />
+        {attributes.map(({ trait_type, value }, i: number) => (
+          <AttributeRow
+            key={i}
+            traitType={trait_type}
+            traitValue={value}
+            handleTraitTypeChange={(e) => handleAttributeChange(e, i, "trait_type")}
+            handleTraitValueChange={(e) => handleAttributeChange(e, i, "value")}
+            handlePlusIconClick={() => handlePlusIconClick(i)}
+          />
+        ))}
       </Grid>
 
       <Box pos="absolute" bottom="0" w="calc(100% - 7px)" bg="darkest" borderRadius="20px" p={3}>
@@ -54,7 +223,13 @@ function MintNftForm() {
             %
           </Text>
         </HStack>
-        <Button w="100%">confirm</Button>
+        <Button
+          w="100%"
+          onClick={handleConfirmClick}
+          isLoading={isUploadNftLoading || isMintNftLoading}
+        >
+          confirm
+        </Button>
       </Box>
     </Box>
   );

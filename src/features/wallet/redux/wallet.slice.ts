@@ -1,10 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IWalletInitialState, TNetwork } from "../types";
+import { ISignIn, IWalletInitialState, TNetwork } from "../types";
 
 const initialState: IWalletInitialState = {
   assetType: "token",
   network: "testnet",
+  address: "",
+  isConnected: false,
+  userToken: "",
 };
+
+// rGiyqjWjhsRZ8FUjBL2k5ciUa2tcptTX9W
 
 const walletSlice = createSlice({
   name: "wallet",
@@ -17,9 +22,16 @@ const walletSlice = createSlice({
     setNetwork(state, { payload }: PayloadAction<TNetwork>) {
       state.network = payload;
     },
+    signIn(state, { payload }: PayloadAction<ISignIn>) {
+      const { address, network, userToken } = payload;
+      state.address = address;
+      state.network = network;
+      state.isConnected = true;
+      state.userToken = userToken;
+    },
   },
 });
 
-export const { toggleAssetType, setNetwork } = walletSlice.actions;
+export const { toggleAssetType, setNetwork, signIn } = walletSlice.actions;
 
 export default walletSlice.reducer;

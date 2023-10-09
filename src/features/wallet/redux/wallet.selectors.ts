@@ -2,3 +2,11 @@ import { RootState } from "@/store";
 
 export const selectAssetType = (state: RootState) => state.wallet.assetType;
 export const selectNetwork = (state: RootState) => state.wallet.network;
+export const selectAddress = (state: RootState) => state.wallet.address;
+export const selectUserToken = (state: RootState) => state.wallet.userToken;
+export const selectNet = (state: RootState) => {
+  const network = state.wallet.network;
+  if (network === "testnet") return "net=test";
+  if (network === "devnet") return "net=dev";
+  return "";
+};

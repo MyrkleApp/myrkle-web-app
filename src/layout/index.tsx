@@ -4,6 +4,8 @@ import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 import LogoIcon from "@/icons/logo";
 import FooterLogoIcon from "@/icons/footer-logo";
+import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +16,9 @@ function Layout({ children }: LayoutProps) {
     <Box h="100vh" overflow="hidden" bg="darkest" pos="relative">
       <Box h="100%" w="250px" pos="absolute" top="0" left="0" pl="20px">
         <Flex h="70px" justify="center" align="center">
-          <LogoIcon fontSize="100px" />
+          <Link to={ROUTES.HOME}>
+            <LogoIcon fontSize="100px" />
+          </Link>
         </Flex>
         <Box h="calc(100% - 50px - 50px)">
           <Sidebar />

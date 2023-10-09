@@ -1,12 +1,32 @@
 import { MotionBox } from "@/components/motion-elements";
-import { HStack, Image, Spacer, Text, useDisclosure, useOutsideClick } from "@chakra-ui/react";
+import {
+  HStack,
+  Image,
+  Spacer,
+  Spinner,
+  Text,
+  useDisclosure,
+  useOutsideClick,
+} from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import DropdownItem from "./dropdown-item";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
 
-function AssetsDropdown() {
+export interface AssetsDropdownProps {
+  selectedToken: any;
+  handleSelectedToken: (token: any) => void;
+}
+function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownProps) {
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { isLoading, data } = useGetAccountTokensQuery({ address, net });
+
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const ref = useRef(null);
@@ -15,11 +35,6 @@ function AssetsDropdown() {
     ref,
     handler: onClose,
   });
-
-  const handleDropdownItemClick = () => {
-    // onToggle();
-    console.log("dropdown item click");
-  };
 
   return (
     <>
@@ -31,19 +46,19 @@ function AssetsDropdown() {
         pos="absolute"
         top="0"
         bg="#4F4F4F"
-        cursor="pointer"
+        cursor={isLoading ? "not-allowed" : "pointer"}
         zIndex={2}
         borderRadius={isOpen ? "5px 5px 0 0" : "5px"}
-        onClick={onToggle}
+        onClick={() => !isLoading && onToggle()}
       >
-        <Image src={xrpLogo} alt="logo" h="20px" />
+        <Image src={selectedToken.icon} alt="logo" h="20px" />
         <Text fontWeight="bold" fontSize="xs" textTransform="uppercase">
-          xrp
+          {selectedToken.token}
         </Text>
 
         <Spacer />
 
-        <ThickArrowDownIcon fontSize="2xs" color="#b4b4b4" />
+        {isLoading ? <Spinner size="sm" /> : <ThickArrowDownIcon fontSize="2xs" color="#b4b4b4" />}
       </HStack>
 
       <AnimatePresence>
@@ -52,27 +67,31 @@ function AssetsDropdown() {
             px={2}
             pt={1}
             w="130px"
+            maxH="250px"
             bg="#4F4F4F"
             borderRadius={isOpen ? "0 0 5px 5px" : "5px"}
             pos="absolute"
             top="100%"
             cursor="pointer"
-            overflow="hidden"
+            overflow="hidden auto"
             zIndex={1}
             initial={{ height: 0 }}
-            animate={{ height: "115px" }}
+            animate={{ height: "auto" }}
             exit={{ height: 0 }}
           >
-            {Array(3)
-              .fill(null)
-              .map((_, i) => (
-                <DropdownItem
-                  key={i}
-                  name="xrp"
-                  icon={xrpLogo}
-                  handleClick={() => handleDropdownItemClick()}
-                />
-              ))}
+            <DropdownItem
+              name="xrp"
+              icon={xrpLogo}
+              handleClick={() => handleSelectedToken({ token: "xrp" })}
+            />
+            {data?.map((tokenItem: any, i: number) => (
+              <DropdownItem
+                key={i}
+                name={tokenItem.token}
+                icon={xrpLogo}
+                handleClick={() => handleSelectedToken(tokenItem)}
+              />
+            ))}
           </MotionBox>
         )}
       </AnimatePresence>

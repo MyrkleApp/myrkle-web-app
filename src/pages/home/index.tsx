@@ -15,11 +15,24 @@ import ImportPrivateKey from "@/features/auth/components/private-key/import-priv
 import XummProvider from "@/features/auth/components/xumm-provider";
 import HomeLayout from "@/layout/home-layout";
 import CreatePassword from "@/features/auth/components/create-password";
+import { socket, xummSignInJson } from "@/features/shared/socket-io";
+import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 
 function Home() {
   const [view, setView] = useState(VIEW_ROUTES.CREATE_PASSWORD);
 
   const handleView = (view: string) => setView(view);
+
+  // =============================================================================================
+  // xumm
+  // =============================================================================================
+
+  const { qrCodeImage } = useXummSignIn();
+
+  const handleXummClick = () => {
+    handleView(VIEW_ROUTES.XUMM);
+    socket.emit("signIn", xummSignInJson);
+  };
 
   return (
     <HomeLayout>
@@ -32,7 +45,7 @@ function Home() {
       {view === VIEW_ROUTES.WALLET_PROVIDER && (
         <SelectWalletProvider
           handleMyrkleClick={() => handleView(VIEW_ROUTES.CREATE_IMPORT_WALLET)}
-          handleXummClick={() => handleView(VIEW_ROUTES.XUMM)}
+          handleXummClick={handleXummClick}
           handleLoginClick={() => handleView(VIEW_ROUTES.LOGIN)}
         />
       )}
@@ -111,6 +124,7 @@ function Home() {
         <XummProvider
           handleBackArrowClick={() => handleView(VIEW_ROUTES.WALLET_PROVIDER)}
           handleLoginClick={() => handleView(VIEW_ROUTES.LOGIN)}
+          qrCode={qrCodeImage}
         />
       )}
 

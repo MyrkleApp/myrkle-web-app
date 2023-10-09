@@ -1,8 +1,29 @@
 import TableHeader from "@/components/table-header";
 import { Box, Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react";
 import ListChecks from "./list-checks";
+import { useGetAccountChecksQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 function ListCreatedChecks() {
+  const net = useSelector(selectNet);
+  const address = useSelector(selectAddress);
+
+  const { data, isLoading } = useGetAccountChecksQuery({ address, net });
+
+  if (isLoading) {
+    return (
+      <>
+        {Array(12)
+          .fill(null)
+          .map((_, i) => (
+            <Skeleton1 key={i} borderRadius="0" h="50px" mb={2} mr={2} />
+          ))}
+      </>
+    );
+  }
+
   return (
     <TableContainer pr={2} mt={-2}>
       <Table
@@ -22,7 +43,7 @@ function ListCreatedChecks() {
         </Thead>
         <Box h="1px"></Box>
         <Tbody pt={3} border="none">
-          <ListChecks />
+          <ListChecks sent={data?.sent} received={data?.receive} />
         </Tbody>
       </Table>
     </TableContainer>

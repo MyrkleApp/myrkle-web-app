@@ -7,8 +7,26 @@ import ArrowDownIcon from "@/icons/arrow-down";
 import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TokenCardModal from "./token-card-modal";
+import { ellipsisAtCenter, isXrpToken } from "@/helpers";
+import { useGetTokenInfoQuery } from "@/features/shared/redux/token.api";
+import useGetXrpData from "../../hooks/use-get-xrp-data";
+import XrpModal from "./xrp-modal";
 
-function TokenCard() {
+export interface TokenCardProps {
+  token: string;
+  issuer: string;
+  amount: string;
+}
+
+// rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
+// BTC
+
+function TokenCard({ token, issuer, amount }: TokenCardProps) {
+  const xrpData = useGetXrpData();
+  const { data: tokenData, isLoading: isTokenDataLoading } = useGetTokenInfoQuery({
+    token: "BTC",
+    issuer: "rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL",
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClose = () => {
@@ -21,7 +39,6 @@ function TokenCard() {
         justify="space-between"
         align="center"
         // minH="75px"
-        w="calc(100% - 15px)"
         h="calc(100% / 3.25)"
         flexShrink={0}
         bg="dark"
@@ -38,11 +55,11 @@ function TokenCard() {
               fontSize="2.5vh"
               textTransform="uppercase"
             >
-              usd
+              {token}
             </Text>
           </HStack>
 
-          <Text fontSize="xs">WRUEI23...093T0G38</Text>
+          <Text fontSize="xs">{ellipsisAtCenter(issuer)}</Text>
 
           <Text fontSize="xs" fontWeight="bold" color="success">
             +0.02%
@@ -56,7 +73,7 @@ function TokenCard() {
               textTransform="uppercase"
               mr={1}
             >
-              234.9
+              {amount}
             </Text>
             <Text color="textDark" fontSize="2xs" fontWeight="bold">
               $600,043.89
@@ -124,7 +141,15 @@ function TokenCard() {
       </Flex>
 
       <Backdrop isOpen={isOpen}>
-        <TokenCardModal handleClose={handleClose} />
+        {isXrpToken({ token }) ? (
+          <XrpModal data={xrpData} handleClose={handleClose} />
+        ) : (
+          <TokenCardModal
+            data={tokenData}
+            isLoading={isTokenDataLoading}
+            handleClose={handleClose}
+          />
+        )}
       </Backdrop>
     </>
   );

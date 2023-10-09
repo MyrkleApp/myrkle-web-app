@@ -3,7 +3,11 @@ import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 
-function Editables() {
+export interface EditablesProps {
+  data: any;
+}
+
+function Editables({ data }: EditablesProps) {
   return (
     <Flex
       direction="column"
@@ -18,7 +22,7 @@ function Editables() {
           <ItemLabel title="Transfer fee" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement />
+          <EditableElement value={data?.token_transfer_fee} />
         </Box>
       </Flex>
 
@@ -29,7 +33,7 @@ function Editables() {
         <Box w="60%">
           <HStack>
             <Image src={xrpLogo} alt="logo" h="20px" />
-            <Text fontSize="sm">1.00</Text>
+            <Text fontSize="sm">{data?.balance}</Text>
           </HStack>
         </Box>
       </Flex>
@@ -41,7 +45,7 @@ function Editables() {
         <Box w="60%">
           <HStack>
             <Image src={xrpLogo} alt="logo" h="20px" />
-            <Text fontSize="sm">ACCOUNT</Text>
+            <Text fontSize="sm">{data?.object_type}</Text>
           </HStack>
         </Box>
       </Flex>
@@ -51,7 +55,7 @@ function Editables() {
           <ItemLabel title="Sequence" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement />
+          <Text fontSize="sm">{data?.sequence}</Text>
         </Box>
       </Flex>
 
@@ -60,7 +64,7 @@ function Editables() {
           <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement />
+          <EditableElement value={data?.email} />
         </Box>
       </Flex>
 
@@ -69,7 +73,7 @@ function Editables() {
           <ItemLabel title="Domain" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement />
+          <EditableElement value={data?.domain} />
         </Box>
       </Flex>
     </Flex>

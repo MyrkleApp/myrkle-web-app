@@ -18,6 +18,10 @@ import AccountInfoModal from "./account-info-modal";
 import { TAccountInfoModal } from "../../types";
 import EnterPasswordModal from "./enter-password-modal";
 import SecretsModal from "./secrets-modal";
+import RenderElement from "@/components/render-element";
+import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
+import { useSelector } from "react-redux";
+import { selectAddress, selectNet } from "../../redux/wallet.selectors";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -54,6 +58,22 @@ function WalletDetails() {
   } = useDisclosure();
 
   const [accountInfoModal, setAccountInfoModal] = useState<TAccountInfoModal>("account-info");
+
+  // =======================================================================================
+  // selectors
+  // =======================================================================================
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  // =======================================================================================
+  // api
+  // =======================================================================================
+
+  const { data: balanceData, isLoading: isBalanceLoading } = useGetBalanceQuery({ address, net });
+
+  // =======================================================================================
+  // handlers
+  // =======================================================================================
 
   const handleAddressClick = () => {
     onAddressModalOpen();
@@ -119,18 +139,24 @@ function WalletDetails() {
             <Text color="textDark" fontSize="xs" fontWeight="bold">
               Welcome
             </Text>
-            <Text color="textDark" fontSize="xs" fontWeight="bold">
-              AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF
-            </Text>
+            <RenderElement isLoading={false} h="20px">
+              <Text color="textDark" fontSize="xs" fontWeight="bold">
+                {address}
+              </Text>
+            </RenderElement>
           </HStack>
 
           <Box mt="-20px">
-            <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
-              5,234.9
-            </Text>
-            <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-2}>
-              $600,043.89
-            </Text>
+            <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
+              <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
+                {balanceData?.balance || "-- --"}
+              </Text>
+            </RenderElement>
+            <RenderElement isLoading={false} h="20px">
+              <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-2}>
+                $600,043.89
+              </Text>
+            </RenderElement>
           </Box>
 
           <HStack spacing={3}>
@@ -181,7 +207,7 @@ function WalletDetails() {
             <AddressModal
               handleClose={handleAddressModalClose}
               qrCodeImage={qrCodeImage}
-              address={`AHFBUSKEBVDUSVBKFJWEFWBUG,DV746234H4UIERHOOF`}
+              address={address}
               handleXAddress={handleXAddress}
             />
           )}

@@ -3,7 +3,14 @@ import ShowDetailsOnHover from "@/components/show-details-on-hover";
 import { ellipsisAtCenter } from "@/helpers";
 import { HStack, Td, Tr } from "@chakra-ui/react";
 
-function ListChecks() {
+export interface ListChecksProps {
+  sent: any[];
+  received: any[];
+}
+
+function ListChecks({ sent, received }: ListChecksProps) {
+  console.log(sent, received);
+
   return (
     <>
       {Array(13)

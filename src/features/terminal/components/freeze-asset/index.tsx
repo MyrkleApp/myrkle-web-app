@@ -4,9 +4,49 @@ import IconContainer from "../icon-container";
 import { Image, useDisclosure } from "@chakra-ui/react";
 import Backdrop from "@/components/backdrop";
 import SelectTokenAmountModal from "@/features/shared/components/select-token-amount-modal";
+import useSelectTokenAmount from "@/features/shared/hooks/use-select-token-amount";
+import { useToggleTokenFreezeMutation } from "@/features/shared/redux/xrp.api";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import ProceedModal from "@/features/shared/components/select-token-amount-modal/proceed-modal";
+import { useState } from "react";
+import { TSelectTokenAmountModalState } from "../../types";
 
 function FreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const address = useSelector(selectAddress);
+
+  const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
+
+  const [
+    { selectedToken, showTokenList, amount },
+    { handleShowTokenList, handleTokenClick, handleAmount, handleReset },
+  ] = useSelectTokenAmount();
+
+  const [freezeToken, { isLoading }] = useToggleTokenFreezeMutation();
+
+  const handleClose = () => {
+    onClose();
+    handleReset();
+    setModalState("select-token");
+  };
+
+  const handleConfirmClick = () => {
+    setModalState("proceed");
+  };
+
+  const handleProceed = () => {
+    freezeToken({
+      sender_addr: address,
+      target_addr: address,
+      token_name: selectedToken.token,
+      freeze: true,
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
 
   return (
     <>
@@ -16,7 +56,27 @@ function FreezeAsset() {
       </IconContainer>
 
       <Backdrop isOpen={isOpen}>
-        <SelectTokenAmountModal handleClose={onClose} />
+        {modalState === "select-token" && (
+          <SelectTokenAmountModal
+            selectedToken={selectedToken}
+            showTokenList={showTokenList}
+            amount={amount}
+            handleShowTokenList={handleShowTokenList}
+            handleTokenClick={handleTokenClick}
+            handleAmount={handleAmount}
+            handleConfirmClick={handleConfirmClick}
+            handleClose={handleClose}
+          />
+        )}
+
+        {modalState === "proceed" && (
+          <ProceedModal
+            text="You are about to freeze this token and keep it on hold"
+            isLoading={isLoading}
+            handleClose={handleClose}
+            handleProceed={handleProceed}
+          />
+        )}
       </Backdrop>
     </>
   );

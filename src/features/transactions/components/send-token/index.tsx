@@ -8,13 +8,59 @@ import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@ch
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
+import xrpLogo from "@/assets/xrp-logo.svg";
+import { useSendTokenMutation, useSendXrpMutation } from "@/features/shared/redux/xrp.api";
+import { isXrpToken } from "@/helpers";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import { numbersOnlyRegex } from "@/constants";
 
 function SendToken() {
+  const [selectedToken, setSelectedToken] = useState<any>({ token: "xrp", icon: xrpLogo });
+  const [receiverAddress, setReceiverAddress] = useState("");
+  const [amount, setAmount] = useState(0);
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
+
+  // ===========================================================================================
+  // selectors
+  // ===========================================================================================
+
+  const address = useSelector(selectAddress);
+
+  // ===========================================================================================
+  // api
+  // ===========================================================================================
+
+  const [sendXrp, { isLoading: isSendXrpLoading }] = useSendXrpMutation();
+  const [sendToken, { isLoading: isSendTokenLoading }] = useSendTokenMutation();
+
+  // ===========================================================================================
+  // handlers
+  // ===========================================================================================
+
+  const handleSelectedToken = (token: any) => setSelectedToken({ ...token, icon: xrpLogo });
 
   const toggleAdvancedOptions = () => {
     if (isAdvancedOptions) setAdvancedOptions(false);
     else setAdvancedOptions(true);
+  };
+
+  const handleSendAsset = () => {
+    if (isXrpToken(selectedToken)) {
+      sendXrp({
+        sender_addr: address,
+        receiver_addr: receiverAddress,
+        amount,
+      });
+    } else {
+      sendToken({
+        sender_addr: address,
+        receiver_addr: receiverAddress,
+        token: selectedToken.token,
+        issuer: selectedToken.issuer,
+        amount,
+      });
+    }
   };
 
   return (
@@ -34,15 +80,30 @@ function SendToken() {
         w="100%"
       >
         <Box h="100%" pos="relative">
-          <AssetsDropdown />
+          <AssetsDropdown selectedToken={selectedToken} handleSelectedToken={handleSelectedToken} />
         </Box>
-        <Input w="50%" h="100%" textAlign="right" />
+        <Input
+          w="50%"
+          h="100%"
+          textAlign="right"
+          value={amount}
+          onChange={(e: any) => e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)}
+        />
       </Flex>
 
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="34%">
         Recipient Address or ANS Name
       </Text>
-      <Input h="9%" bg="secondary" borderRadius="7px" pos="absolute" top="41%" w="100%" />
+      <Input
+        h="9%"
+        bg="secondary"
+        borderRadius="7px"
+        pos="absolute"
+        top="41%"
+        w="100%"
+        value={receiverAddress}
+        onChange={(e: any) => setReceiverAddress(e.target.value)}
+      />
 
       <Grid templateColumns="repeat(12, 1fr)" pos="absolute" top="55%">
         <GridItem colSpan={5}>
@@ -118,7 +179,15 @@ function SendToken() {
           transition: { type: "spring", stiffness: 150 },
         }}
       >
-        <Button bg="secondary" letterSpacing={1} w="100%" h="100%">
+        <Button
+          bg="secondary"
+          letterSpacing={1}
+          w="100%"
+          h="100%"
+          isLoading={isSendXrpLoading || isSendTokenLoading}
+          isDisabled={!amount || !receiverAddress}
+          onClick={handleSendAsset}
+        >
           confirm
         </Button>
       </MotionBox>

@@ -3,10 +3,27 @@ import nftImage from "@/assets/nft.png";
 import Button from "@/components/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
+import { useSelector } from "react-redux";
+import { selectNet } from "../../redux/wallet.selectors";
+import { useGetNftMetaDataQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
+import { nftFormatter } from "@/helpers";
 
-function NftCard() {
+export interface NftCardProps {
+  id: string;
+}
+
+function NftCard({ id }: NftCardProps) {
+  const net = useSelector(selectNet);
+
+  const { data, isLoading } = useGetNftMetaDataQuery({ id, net });
+
+  if (isLoading) {
+    return <Skeleton1 w="100%" h="100%" />;
+  }
+
   return (
-    <Link to={ROUTES.WALLET_NFT_DETAIL}>
+    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(id)}>
       <Box
         w="100%"
         h="100%"
@@ -22,7 +39,13 @@ function NftCard() {
           },
         }}
       >
-        <Image src={nftImage} alt="" w="100%" h="100%" objectFit="cover" />
+        <Image
+          src={nftFormatter(data?.image) || nftImage}
+          alt=""
+          w="100%"
+          h="100%"
+          objectFit="cover"
+        />
 
         <Flex
           align="center"
@@ -38,7 +61,7 @@ function NftCard() {
           gap={2}
         >
           <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" fontSize="sm">
-            Jack XXXXXXXXXXXXXX
+            {data?.name}
           </Text>
           <Button w="120px">Send</Button>
         </Flex>

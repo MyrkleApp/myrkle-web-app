@@ -1,0 +1,58 @@
+import { checkForCrossmark } from "@/features/shared/connections/crossmark";
+import { signIn } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn } from "@/features/wallet/types";
+import ROUTES from "@/routes";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "react-use";
+
+function useCrossmarkSignIn() {
+  const navigate = useNavigate();
+
+  const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
+
+  const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
+
+  const _signIn = (data: ISignIn) => dispatch(signIn(data));
+
+  const crossmarkSignIn = async () => {
+    try {
+      checkForCrossmark();
+      const sdk = window.xrpl.crossmark;
+      const { response } = await sdk.signInAndWait();
+      if (response.data.meta.isRejected) {
+        // console.log("You have to sign in to continue");
+        setError("You have to sign in to continue");
+      }
+      if (response.data.meta.isError) {
+        // console.log("Error encountered during signing");
+        setError("Error encountered during signing");
+      }
+      if (response.data.meta.isFailed) {
+        // console.log("Transaction Failed");
+        setError("Transaction Failed");
+      }
+      if (response.data.meta.isExpired) {
+        // console.log("Transaction Expired");
+        setError("Transaction Expired");
+      }
+      const network = response.data.network.type === "test" ? "testnet" : "mainnet";
+      const address = response.data.address;
+      if (response.data.meta.isSuccess) {
+        _signIn({ address, network, userToken: "" });
+        storeSignInData({ address, network, userToken: "" });
+        navigate(ROUTES.WALLET);
+      }
+    } catch (e) {
+      console.log(e);
+      // return e;
+    }
+  };
+
+  return [crossmarkSignIn, { error }] as const;
+}
+
+export default useCrossmarkSignIn;
