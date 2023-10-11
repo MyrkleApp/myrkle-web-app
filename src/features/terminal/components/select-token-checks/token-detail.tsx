@@ -2,47 +2,57 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, Flex, HStack, Spacer, Text, useDisclosure } from "@chakra-ui/react";
-import Backdrop from "@/components/backdrop";
-import GenerateProtedtedEscrowModal from "./generate-protected-escrow-modal";
-import { createPortal } from "react-dom";
+import { Box, HStack, Spacer, Text } from "@chakra-ui/react";
 import TokenItem from "../select-token-dropdown/token-item";
 import { useState } from "react";
-import { useCreateXrpEscrowMutation } from "@/features/shared/redux/xrp.api";
-import { isXrpToken } from "@/helpers";
+import { numbersOnlyRegex } from "@/constants";
+import {
+  useCreateTokenCheckMutation,
+  useCreateXrpCheckMutation,
+} from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { isXrpToken } from "@/helpers";
 
 export interface TokenDetailProps {
   token: any;
 }
 
 function TokenDetail({ token }: TokenDetailProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const address = useSelector(selectAddress);
 
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState("");
-  const [claimDate, setClaimDate] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
 
-  const [createXrpEscrow] = useCreateXrpEscrowMutation();
+  const [createTokenCheck, { isLoading: isCreateTokenCheckLoading }] =
+    useCreateTokenCheckMutation();
+  const [createXrpCheck, { isLoading: isCreateXrpCheckLoading }] = useCreateXrpCheckMutation();
 
   const handleConfirm = () => {
     if (isXrpToken(token)) {
-      createXrpEscrow({
+      createXrpCheck({
         sender_addr: address,
-        amount,
         receiver_addr: receiverAddress,
-        claim_date: claimDate,
+        amount,
         expiry_date: expiryDate,
-        condition: "",
       })
         .unwrap()
         .then((res) => console.log(res))
         .catch((err) => console.error(err));
+      return;
     }
+    createTokenCheck({
+      sender_addr: address,
+      receiver_addr: receiverAddress,
+      token: token?.token,
+      issuer: token?.issuer,
+      amount,
+      expiry_date: expiryDate,
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -71,20 +81,11 @@ function TokenDetail({ token }: TokenDetailProps) {
         </Box>
         <Box mb={2}>
           <ItemLabel title="Amount" mb={1} />
-          <Input value={amount} onChange={(e: any) => setAmount(e.target.value)} />
-        </Box>
-        <Box mb={2}>
-          <ItemLabel title="Claim Date" mb={1} />
           <Input
-            type="date"
-            value={claimDate}
-            onChange={(e: any) => setClaimDate(e.target.value)}
-            sx={{
-              "::-webkit-calendar-picker-indicator": {
-                filter: "invert(1)",
-                cursor: "pointer",
-              },
-            }}
+            value={amount}
+            onChange={(e: any) =>
+              e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)
+            }
           />
         </Box>
         <Box mb={3}>
@@ -96,16 +97,10 @@ function TokenDetail({ token }: TokenDetailProps) {
             sx={{
               "::-webkit-calendar-picker-indicator": {
                 filter: "invert(1)",
-                cursor: "pointer",
               },
             }}
           />
         </Box>
-        <Flex justify="center" mb={3}>
-          <Button h="35px" borderRadius="30px" px={10} onClick={onOpen}>
-            Generate Protected Escrow
-          </Button>
-        </Flex>
 
         <Box p={3} bg="darkest" borderRadius="20px">
           <HStack mb={4}>
@@ -113,19 +108,15 @@ function TokenDetail({ token }: TokenDetailProps) {
             <Spacer />
             <Text fontSize="xs">1.00</Text>
           </HStack>
-          <Button w="100%" onClick={handleConfirm}>
+          <Button
+            w="100%"
+            isLoading={isCreateXrpCheckLoading || isCreateTokenCheckLoading}
+            onClick={handleConfirm}
+          >
             confirm
           </Button>
         </Box>
       </MotionBox>
-
-      {isOpen &&
-        createPortal(
-          <Backdrop isOpen={isOpen}>
-            <GenerateProtedtedEscrowModal handleClose={onClose} />
-          </Backdrop>,
-          document.body,
-        )}
     </>
   );
 }

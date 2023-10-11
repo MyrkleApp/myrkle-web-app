@@ -8,8 +8,10 @@ import {
   ICreateNotification,
   ICreatePairingToken,
   ICreateToken,
+  ICreateTokenCheck,
   ICreateTrustline,
   ICreateXrpCheck,
+  ICreateXrpEscrow,
   IMintNft,
   IReceiveNft,
   IRemoveToken,
@@ -198,35 +200,15 @@ export const xrpApi = createApi({
         };
       },
     }),
-
-    // sendXrp: builder.mutation({
-    //   query(body: ISendXrp) {
-    //     return {
-    //       url: "send-xrp/",
-    //       method: "POST",
-    //       body,
-    //     };
-    //   },
-    // }),
-    // sendToken: builder.mutation({
-    //   query(body: ISendXrp) {
-    //     return {
-    //       url: "send-token/",
-    //       method: "POST",
-    //       body,
-    //     };
-    //   },
-    // }),
-    // createToken: builder.mutation({
-    //   query(body: ICreateToken) {
-    //     return {
-    //       url: "create-token/",
-    //       method: "POST",
-    //       body,
-    //     };
-    //   },
-    // }),
-
+    createTokenCheck: builder.mutation({
+      query(body: ICreateTokenCheck) {
+        return {
+          url: "object/create-token-check/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
     createXrpCheck: builder.mutation({
       query(body: ICreateXrpCheck) {
         return {
@@ -236,6 +218,16 @@ export const xrpApi = createApi({
         };
       },
     }),
+    createXrpEscrow: builder.mutation({
+      query(body: ICreateXrpEscrow) {
+        return {
+          url: "object/create-xrp-escrow/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+
     // =========================================
     // new
     // =========================================
@@ -324,6 +316,9 @@ export const {
   useSendXrpMutation,
   useMintNftMutation,
   useReceiveNftMutation,
+  useCreateTokenCheckMutation,
+  useCreateXrpCheckMutation,
+  useCreateXrpEscrowMutation,
 
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,

@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import TokenDetail from "./token-detail";
 import SelectTokenDropdown from "../select-token-dropdown";
 
-function SelectTokenEscrow() {
+function SelectTokenChecks() {
   const [view, setView] = useState<"list" | "detail">("list");
   const [token, setToken] = useState<any>(null);
 
@@ -21,4 +21,4 @@ function SelectTokenEscrow() {
   );
 }
 
-export default SelectTokenEscrow;
+export default SelectTokenChecks;

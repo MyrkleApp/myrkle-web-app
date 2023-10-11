@@ -71,14 +71,31 @@ export interface IMintNft {
 export interface ICreateXrpCheck {
   sender_addr: string;
   receiver_addr: string;
-  amount: number;
+  amount: number | string;
   expiry_date: string;
-  fee?: string;
+}
+
+export interface ICreateXrpEscrow {
+  sender_addr: string;
+  receiver_addr: string;
+  amount: number | string;
+  condition: string;
+  claim_date: string;
+  expiry_date: string;
 }
 
 // ========================================================================
 // *mutations*
 // ========================================================================
+
+export interface ICreateTokenCheck {
+  sender_addr: string;
+  receiver_addr: string;
+  token: string;
+  amount: string | number;
+  issuer: string;
+  expiry_date: string;
+}
 
 export interface IAccountSetIssuer {
   issuer_addr: string;

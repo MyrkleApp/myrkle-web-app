@@ -6,6 +6,7 @@ import ROUTES from "@/routes";
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import SelectTokenChecks from "../components/select-token-checks";
 
 function Checks() {
   return (
@@ -60,11 +61,7 @@ function Checks() {
           </Flex>
 
           <Box pl="30px" w="50%">
-            <HStack h="60px" bg="secondary" borderRadius="15px">
-              <Text fontSize="xs" px={8}>
-                Select Token
-              </Text>
-            </HStack>
+            <SelectTokenChecks />
           </Box>
         </MotionBox>
       </AnimatePresence>
