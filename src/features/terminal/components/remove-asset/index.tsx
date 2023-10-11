@@ -4,13 +4,13 @@ import IconContainer from "../icon-container";
 import { Image, useDisclosure } from "@chakra-ui/react";
 import Backdrop from "@/components/backdrop";
 import SelectTokenAmountModal from "@/features/shared/components/select-token-amount-modal";
-import ProceedModal from "@/features/shared/components/select-token-amount-modal/proceed-modal";
 import useSelectTokenAmount from "@/features/shared/hooks/use-select-token-amount";
 import { useRemoveTokenMutation } from "@/features/shared/redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { TSelectTokenAmountModalState } from "../../types";
+import ProceedModal from "@/features/shared/components/proceed-modal";
 
 function RemoveAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();

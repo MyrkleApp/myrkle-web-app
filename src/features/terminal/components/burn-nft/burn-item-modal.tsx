@@ -11,15 +11,16 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import nftImage from "@/assets/nft.png";
 import ItemLabel from "@/components/item-label";
+import { nftFormatter } from "@/helpers";
 
 export interface BurnItemModalProps {
+  selectedNft: any;
+  handleConfirmBurnClick: () => void;
   handleClose: () => void;
-  handleItemClick: () => void;
 }
 
-function BurnItemModal({ handleClose }: BurnItemModalProps) {
+function BurnItemModal({ selectedNft, handleConfirmBurnClick, handleClose }: BurnItemModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -56,14 +57,14 @@ function BurnItemModal({ handleClose }: BurnItemModalProps) {
       <Flex h="calc(100% - 60px)" overflow="hidden auto" gap={8}>
         <Flex w="50%" direction="column" justify="space-between">
           <Image
-            src={nftImage}
+            src={nftFormatter(selectedNft?.image)}
             alt=""
             h="calc(100% - 70px)"
             w="100%"
             border="6px solid #515151"
             borderRadius="35px"
           />
-          <Button bg="danger" letterSpacing={0.5} w="100%">
+          <Button bg="danger" letterSpacing={0.5} w="100%" onClick={handleConfirmBurnClick}>
             confirm burn
           </Button>
         </Flex>
@@ -72,30 +73,32 @@ function BurnItemModal({ handleClose }: BurnItemModalProps) {
           <Box>
             <ItemLabel title="NFT Name" mb={1} />
             <Flex align="center" bg="secondary" h="40px" px={3} borderRadius="10px">
-              <Text fontSize="xs">Jack XX</Text>
+              <Text fontSize="xs">{selectedNft?.name}</Text>
             </Flex>
           </Box>
 
           <Box>
             <ItemLabel title="Owner address" mb={1} />
             <Flex align="center" bg="secondary" h="40px" px={3} borderRadius="10px">
-              <Text fontSize="xs">AHFBUSKEBVDUSVBKFJWEFWBUGUSVB</Text>
+              <Text fontSize="xs">{selectedNft?.issuer}</Text>
             </Flex>
           </Box>
 
           <Box>
             <ItemLabel title="NFT ID" mb={1} />
-            <Flex align="center" bg="secondary" h="40px" px={3} borderRadius="10px">
-              <Text fontSize="xs">AHFBUSKEBVDUSVBKFJWEFWBUGUSVB</Text>
+            <Flex align="center" bg="secondary" h="45px" px={3} borderRadius="10px">
+              <Text fontSize="xs" wordBreak="break-word">
+                {selectedNft?.id}
+              </Text>
             </Flex>
           </Box>
 
           <Box h="45%">
             <ItemLabel title="Description" mb={1} />
-            <Box bg="secondary" h="150px" px={3} borderRadius="10px">
-              {/* <Text fontSize="xs">
-                AHFBUSKEBVDUSVBKFJWEFWBUGUSVB
-              </Text> */}
+            <Box bg="secondary" h="150px" px={3} py={1} borderRadius="10px">
+              <Text fontSize="xs" wordBreak="break-word">
+                {selectedNft?.description}
+              </Text>
             </Box>
           </Box>
         </Flex>

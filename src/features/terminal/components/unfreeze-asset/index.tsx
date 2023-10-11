@@ -10,7 +10,7 @@ import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { TSelectTokenAmountModalState } from "../../types";
-import ProceedModal from "@/features/shared/components/select-token-amount-modal/proceed-modal";
+import ProceedModal from "@/features/shared/components/proceed-modal";
 
 function UnfreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();

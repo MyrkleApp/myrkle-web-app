@@ -1,14 +1,24 @@
 import { MotionBox } from "@/components/motion-elements";
-import { Box, CloseButton, HStack, Spacer, useOutsideClick } from "@chakra-ui/react";
+import { Box, CloseButton, HStack, SimpleGrid, Spacer, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
-import ListNftItems from "./list-nft-items";
+import NftItem from "./nft-item";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import { useGetAccountNftsQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
 
 export interface BurnListModalProps {
   handleClose: () => void;
-  handleItemClick: () => void;
+  handleItemClick: (data: any) => void;
 }
 
 function BurnListModal({ handleClose, handleItemClick }: BurnListModalProps) {
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { data, isLoading } = useGetAccountNftsQuery({ address, net });
+  console.log(data);
+
   const ref = useRef(null);
 
   useOutsideClick({
@@ -39,10 +49,34 @@ function BurnListModal({ handleClose, handleItemClick }: BurnListModalProps) {
       </HStack>
 
       <Box h="calc(100% - 50px)" overflow="hidden auto">
-        <ListNftItems handleItemClick={handleItemClick} />
+        <RenderList isLoading={isLoading}>
+          <SimpleGrid columns={4} spacing={4} pr={4}>
+            {data?.map((nft: any, i: number) => (
+              <NftItem key={i} id={nft.id} issuer={nft.issuer} handleClick={handleItemClick} />
+            ))}
+          </SimpleGrid>
+        </RenderList>
       </Box>
     </MotionBox>
   );
 }
+
+const RenderList = ({ children, isLoading }: any) => {
+  if (isLoading) {
+    return (
+      <SimpleGrid columns={4} spacing={4} pr={4}>
+        {Array(6)
+          .fill(null)
+          .map((_, i) => (
+            <Box key={i} aspectRatio={1}>
+              <Skeleton1 w="100%" h="100%" />
+            </Box>
+          ))}
+      </SimpleGrid>
+    );
+  }
+
+  return <>{children}</>;
+};
 
 export default BurnListModal;

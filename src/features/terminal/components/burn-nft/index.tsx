@@ -6,23 +6,48 @@ import Backdrop from "@/components/backdrop";
 import { AnimatePresence } from "framer-motion";
 import BurnListModal from "./burn-list-modal";
 import BurnItemModal from "./burn-item-modal";
+import ProceedModal from "@/features/shared/components/proceed-modal";
+import { useBurnNftMutation } from "@/features/shared/redux/xrp.api";
+import { useSelector } from "react-redux";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 
 function BurnNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [modalType, setModalType] = useState<"list" | "item">("list");
+  const address = useSelector(selectAddress);
+
+  const [modalType, setModalType] = useState<"list" | "item" | "proceed">("list");
+  const [selectedNft, setSelectedNft] = useState<any>(null);
+
+  const [burnNft, { isLoading }] = useBurnNftMutation();
 
   const handleClose = () => {
     onClose();
   };
 
-  const handleItemClick = () => {
+  const handleItemClick = (nft: any) => {
     setModalType("item");
+    setSelectedNft(nft);
   };
 
   const handleBurnItemModalClose = () => {
     onClose();
     setModalType("list");
+  };
+
+  const handleConfirmBurnClick = () => {
+    setModalType("proceed");
+  };
+
+  const handleProceed = () => {
+    burnNft({
+      sender_addr: address,
+      nftoken_id: selectedNft?.id,
+      holder: "",
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -39,8 +64,18 @@ function BurnNft() {
 
           {modalType === "item" && (
             <BurnItemModal
+              selectedNft={selectedNft}
               handleClose={handleBurnItemModalClose}
-              handleItemClick={handleItemClick}
+              handleConfirmBurnClick={handleConfirmBurnClick}
+            />
+          )}
+
+          {modalType === "proceed" && (
+            <ProceedModal
+              text="You are about to burn this NFT from your wallet"
+              isLoading={isLoading}
+              handleClose={handleClose}
+              handleProceed={handleProceed}
             />
           )}
         </AnimatePresence>

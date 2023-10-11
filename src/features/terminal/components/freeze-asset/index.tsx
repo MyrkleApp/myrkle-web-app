@@ -8,9 +8,9 @@ import useSelectTokenAmount from "@/features/shared/hooks/use-select-token-amoun
 import { useToggleTokenFreezeMutation } from "@/features/shared/redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import ProceedModal from "@/features/shared/components/select-token-amount-modal/proceed-modal";
 import { useState } from "react";
 import { TSelectTokenAmountModalState } from "../../types";
+import ProceedModal from "@/features/shared/components/proceed-modal";
 
 function FreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
