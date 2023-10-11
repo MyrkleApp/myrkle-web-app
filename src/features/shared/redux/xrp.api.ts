@@ -189,6 +189,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    receiveNft: builder.mutation({
+      query(body: IReceiveNft) {
+        return {
+          url: "receive-nft/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // sendXrp: builder.mutation({
     //   query(body: ISendXrp) {
@@ -284,15 +293,6 @@ export const xrpApi = createApi({
         };
       },
     }),
-    receiveNft: builder.mutation({
-      query(body: IReceiveNft) {
-        return {
-          url: "receive-nft/",
-          method: "POST",
-          body,
-        };
-      },
-    }),
   }),
 });
 
@@ -302,6 +302,7 @@ export const {
   useGetAccountTokensQuery,
   useGetAccountNftsQuery,
   useGetNftMetaDataQuery,
+  useLazyGetNftMetaDataQuery,
   useGetNetworkFeeQuery,
   useGetPaymentTransactionsQuery,
   useGetTokenTransactionsQuery,
@@ -322,6 +323,7 @@ export const {
   useSendTokenMutation,
   useSendXrpMutation,
   useMintNftMutation,
+  useReceiveNftMutation,
 
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,
@@ -329,5 +331,4 @@ export const {
   useCreatePairingTokenMutation,
   useCreateTokenMutation,
   useCreateTrustlineMutation,
-  useReceiveNftMutation,
 } = xrpApi;
