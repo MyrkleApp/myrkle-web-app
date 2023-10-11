@@ -149,7 +149,7 @@ function WalletDetails() {
           <Box mt="-20px">
             <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
               <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
-                {balanceData?.balance || "-- --"}
+                {Number(balanceData?.balance).toFixed(2) || "-- --"}
               </Text>
             </RenderElement>
             <RenderElement isLoading={false} h="20px">

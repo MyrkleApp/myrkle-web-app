@@ -7,7 +7,7 @@ import ArrowDownIcon from "@/icons/arrow-down";
 import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TokenCardModal from "./token-card-modal";
-import { ellipsisAtCenter, isXrpToken } from "@/helpers";
+import { ellipsisAtCenter, isPositiveChange, isXrpToken } from "@/helpers";
 import { useGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
@@ -23,6 +23,7 @@ export interface TokenCardProps {
 
 function TokenCard({ token, issuer, amount }: TokenCardProps) {
   const xrpData = useGetXrpData();
+  console.log(xrpData);
   const { data: tokenData, isLoading: isTokenDataLoading } = useGetTokenInfoQuery({
     token: "BTC",
     issuer: "rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL",
@@ -61,8 +62,21 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
 
           <Text fontSize="xs">{ellipsisAtCenter(issuer)}</Text>
 
-          <Text fontSize="xs" fontWeight="bold" color="success">
-            +0.02%
+          <Text
+            fontSize="xs"
+            fontWeight="bold"
+            color={
+              isXrpToken({ token })
+                ? isPositiveChange(xrpData.percentageChange?.data)
+                  ? "success"
+                  : "danger"
+                : "success"
+            }
+          >
+            {isXrpToken({ token })
+              ? `${isPositiveChange(xrpData.percentageChange?.data) ? "+" : ""}${xrpData
+                  .percentageChange?.data}%`
+              : "+0.02%"}
           </Text>
 
           <VStack spacing={0} align="flex-end">
@@ -73,7 +87,7 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
               textTransform="uppercase"
               mr={1}
             >
-              {amount}
+              {Number(amount).toFixed(2)}
             </Text>
             <Text color="textDark" fontSize="2xs" fontWeight="bold">
               $600,043.89

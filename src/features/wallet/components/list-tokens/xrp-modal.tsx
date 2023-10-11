@@ -21,9 +21,10 @@ import ChecksIcon from "@/icons/checks";
 import ExchangeIcon from "@/icons/exchange";
 import HourGlassIcon from "@/icons/hour-glass";
 import CancelIcon from "@/icons/cancel";
-import TokenEditables from "./token-editables";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import RenderElement from "@/components/render-element";
+import XrpEditables from "./xrp-editables";
+import { isPositiveChange } from "@/helpers";
 
 export interface TokenCardModalProps {
   data: ReturnType<typeof useGetXrpData>;
@@ -35,7 +36,7 @@ export interface TokenCardModalProps {
 
 function XrpModal({ data, handleClose }: TokenCardModalProps) {
   const { holders, tick, price } = data;
-  console.log(data);
+  // console.log(data);
   const ref = useRef(null);
 
   useOutsideClick({
@@ -66,7 +67,8 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
                 xrpl
               </Text>
               <Text fontSize="2xs" mt="-2px" color="danger">
-                -0.02%
+                {`${isPositiveChange(data.percentageChange?.data) ? "+" : ""}${data.percentageChange
+                  ?.data}%`}
               </Text>
             </VStack>
           </HStack>
@@ -211,7 +213,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
             right="7px"
             zIndex={-1}
           />
-          <TokenEditables />
+          <XrpEditables data={data} />
         </Box>
       </Box>
     </Flex>

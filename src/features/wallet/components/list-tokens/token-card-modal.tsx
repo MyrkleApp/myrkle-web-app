@@ -32,7 +32,7 @@ export interface TokenCardModalProps {
 // BTC
 
 function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
-  console.log(data);
+  // console.log(data);
   const ref = useRef(null);
 
   useOutsideClick({

@@ -27,3 +27,5 @@ export const tokenFormatter = (text: string) => {
   }
   return text;
 };
+
+export const isPositiveChange = (change: string) => Number(change) > 0;

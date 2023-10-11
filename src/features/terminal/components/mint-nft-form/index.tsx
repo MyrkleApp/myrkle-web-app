@@ -52,7 +52,7 @@ function MintNftForm() {
 
   const handleFileChange = (e: any) => {
     setImagePreview(URL.createObjectURL(e.target.files[0]));
-    setImageData(Buffer.from(e.target.files[0]).toString("base64"));
+    setImageData(e.target.files[0]);
   };
 
   const handleAttributeChange = (e: any, i: number, attr: keyof IAttribute) => {
