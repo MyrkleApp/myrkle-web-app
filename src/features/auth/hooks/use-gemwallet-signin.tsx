@@ -24,8 +24,13 @@ function useGemWalletSignIn() {
       const network = (await getNetwork()).result?.network;
       if (address && network) {
         const myNetwork: any = network.toLowerCase();
-        _signIn({ address, network: myNetwork, userToken: "" });
-        storeSignInData({ address, network: myNetwork, userToken: "" });
+        _signIn({ address, network: myNetwork, userToken: "", walletProvider: "gemwallet" });
+        storeSignInData({
+          address,
+          network: myNetwork,
+          userToken: "",
+          walletProvider: "gemwallet",
+        });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

@@ -10,3 +10,4 @@ export const selectNet = (state: RootState) => {
   if (network === "devnet") return "net=dev";
   return "";
 };
+export const selectWalletProvider = (state: RootState) => state.wallet.walletProvider;

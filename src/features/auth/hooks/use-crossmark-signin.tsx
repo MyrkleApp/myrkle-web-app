@@ -42,8 +42,8 @@ function useCrossmarkSignIn() {
       const network = response.data.network.type === "test" ? "testnet" : "mainnet";
       const address = response.data.address;
       if (response.data.meta.isSuccess) {
-        _signIn({ address, network, userToken: "" });
-        storeSignInData({ address, network, userToken: "" });
+        _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
+        storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

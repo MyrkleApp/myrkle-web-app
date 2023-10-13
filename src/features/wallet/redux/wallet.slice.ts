@@ -7,6 +7,7 @@ const initialState: IWalletInitialState = {
   address: "",
   isConnected: false,
   userToken: "",
+  walletProvider: "",
 };
 
 // rGiyqjWjhsRZ8FUjBL2k5ciUa2tcptTX9W
@@ -23,11 +24,12 @@ const walletSlice = createSlice({
       state.network = payload;
     },
     signIn(state, { payload }: PayloadAction<ISignIn>) {
-      const { address, network, userToken } = payload;
+      const { address, network, userToken, walletProvider } = payload;
       state.address = address;
       state.network = network;
       state.isConnected = true;
       state.userToken = userToken;
+      state.walletProvider = walletProvider;
     },
   },
 });

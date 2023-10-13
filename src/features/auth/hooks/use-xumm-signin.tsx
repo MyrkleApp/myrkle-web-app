@@ -35,17 +35,15 @@ function useXummSignIn() {
         return;
       }
 
-      _signIn({
+      const signInData: ISignIn = {
         address: res.account,
         network: res.network.toLowerCase(),
         userToken: res.user_token,
-      });
+        walletProvider: "xumm",
+      };
 
-      storeSignInData({
-        address: res.account,
-        network: res.network.toLowerCase(),
-        userToken: res.user_token,
-      });
+      _signIn(signInData);
+      storeSignInData(signInData);
 
       navigate(ROUTES.WALLET);
     });
