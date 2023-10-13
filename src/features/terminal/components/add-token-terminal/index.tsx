@@ -16,6 +16,7 @@ function AddTokenTerminal() {
   } = useDisclosure();
 
   const [modalType, setModalType] = useState<TAddTokenModalType>("add-token-form");
+  const [token, setToken] = useState(null);
 
   const handleBackdropClose = () => {
     onBackdropClose();
@@ -24,6 +25,10 @@ function AddTokenTerminal() {
 
   const handleModalType = (modalType: TAddTokenModalType) => {
     setModalType(modalType);
+  };
+
+  const handleToken = (token: any) => {
+    setToken(token);
   };
 
   return (
@@ -38,13 +43,15 @@ function AddTokenTerminal() {
             <AddTokenFormModal
               handleClose={handleBackdropClose}
               handleTokenListIconClick={handleModalType}
+              token={token}
             />
           )}
 
           {modalType === "select-token" && (
             <SelectTokenModal
               handleClose={handleBackdropClose}
-              handleArrowLeftIconClick={handleModalType}
+              handleShowForm={handleModalType}
+              handleToken={handleToken}
             />
           )}
         </AnimatePresence>

@@ -43,7 +43,7 @@ function BurnNft() {
     burnNft({
       sender_addr: address,
       nftoken_id: selectedNft?.id,
-      holder: "",
+      holder: address,
     })
       .unwrap()
       .then((res) => console.log(res))

@@ -15,31 +15,65 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { TAddTokenModalType } from "@/features/wallet/types";
+import { IToken } from "../../types";
+import { useAddTokenMutation } from "../../redux/xrp.api";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;
   handleTokenListIconClick: (type: TAddTokenModalType) => void;
+  token: IToken | null;
 }
 
-function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFormModalProps) {
-  const [isAdvancedOptionsDisabled] = useState(false);
+function AddTokenFormModal({
+  handleClose,
+  handleTokenListIconClick,
+  token,
+}: AddTokenFormModalProps) {
+  const [tokenName, setTokenName] = useState("");
+  const [issuer, setIssuer] = useState("");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [rippling, setRippling] = useState(false);
 
   const ref = useRef(null);
+
+  const address = useSelector(selectAddress);
+
+  const [addToken, { isLoading }] = useAddTokenMutation();
 
   useOutsideClick({
     ref,
     handler: handleClose,
   });
 
-  const handleAdvancedOptionsClick = () => {
-    if (isAdvancedOptionsDisabled) return;
+  useEffect(() => {
+    if (token) {
+      setTokenName(token.token);
+      setIssuer(token.issuer);
+    }
+  }, [token]);
 
+  const handleAdvancedOptionsClick = () => {
     if (showAdvancedOptions) setShowAdvancedOptions(false);
     else setShowAdvancedOptions(true);
+  };
+
+  const handleConfirm = () => {
+    addToken({
+      sender_addr: address,
+      token: tokenName,
+      issuer,
+      rippling,
+      is_lp_token: false,
+      fee: "0",
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -84,7 +118,12 @@ function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFo
           {/* info component goes here */}
         </HStack>
         <InputGroup>
-          <Input mb={5} pr={10} />
+          <Input
+            mb={5}
+            pr={10}
+            value={tokenName}
+            onChange={(e: any) => setTokenName(e.target.value)}
+          />
           <InputRightElement>
             <Square
               bg="#535353"
@@ -104,22 +143,12 @@ function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFo
           </Text>
           {/* info component goes here */}
         </HStack>
-        <Input mb={5} />
+        <Input mb={5} value={issuer} onChange={(e: any) => setIssuer(e.target.value)} />
 
         <HStack justify="flex-end" mb={1}>
-          <HStack
-            cursor={isAdvancedOptionsDisabled ? "not-allowed" : "pointer"}
-            onClick={handleAdvancedOptionsClick}
-          >
-            <ThickArrowDownIcon
-              color={isAdvancedOptionsDisabled ? "#5e5c5c" : "#fff"}
-              fontSize="sm"
-            />
-            <Text
-              fontSize="sm"
-              fontWeight="bold"
-              color={isAdvancedOptionsDisabled ? "#5e5c5c" : "#fff"}
-            >
+          <HStack cursor={"pointer"} onClick={handleAdvancedOptionsClick}>
+            <ThickArrowDownIcon color={"#fff"} fontSize="sm" />
+            <Text fontSize="sm" fontWeight="bold" color={"#fff"}>
               Advanced options
             </Text>
           </HStack>
@@ -146,14 +175,25 @@ function AddTokenFormModal({ handleClose, handleTokenListIconClick }: AddTokenFo
                   Rippling
                 </Text>
                 <Spacer />
-                <Switch colorScheme="whatsapp" />
+                <Switch
+                  colorScheme="whatsapp"
+                  isChecked={rippling}
+                  onChange={() => setRippling((prev) => !prev)}
+                />
               </HStack>
             </MotionBox>
           )}
         </AnimatePresence>
 
         <Box pos="absolute" bottom={0} left={0} w="100%" px="inherit">
-          <Button w="100%" h="40px" bg="secondary" color="textDark">
+          <Button
+            w="100%"
+            h="40px"
+            bg="secondary"
+            color="textDark"
+            isLoading={isLoading}
+            onClick={handleConfirm}
+          >
             confirm
           </Button>
         </Box>

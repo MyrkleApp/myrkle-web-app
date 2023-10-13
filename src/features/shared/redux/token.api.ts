@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGetTokenInfo } from "../types/token-queries";
-import { tokenFormatter } from "@/helpers";
+import { cleanupTokenList, tokenFormatter } from "@/helpers";
 
 export const tokenApi = createApi({
   reducerPath: "tokenApi",
@@ -43,6 +43,12 @@ export const tokenApi = createApi({
     getPrice: builder.query({
       query: () => "https://data.messari.io/api/v1/assets/xrp/metrics",
     }),
+    getMainnetTokens: builder.query({
+      query: () => "https://s1.xrplmeta.org/tokens?limit=400",
+      transformResponse: (res: any) => {
+        return cleanupTokenList(res.tokens);
+      },
+    }),
   }),
 });
 
@@ -52,6 +58,7 @@ export const {
   useGetActiveAccountQuery,
   useGetFeeQuery,
   useGetPriceQuery,
+  useGetMainnetTokensQuery,
 } = tokenApi;
 
 // {

@@ -131,7 +131,7 @@ export const xrpApi = createApi({
     toggleTokenFreeze: builder.mutation({
       query(body: IToggleTokenFreeze) {
         return {
-          url: "eng/modify-token-freeze_state/",
+          url: "eng/modify-token-freeze-state/",
           method: "POST",
           body,
         };

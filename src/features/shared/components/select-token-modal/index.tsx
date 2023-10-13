@@ -6,19 +6,29 @@ import ArrowLeftIcon from "@/icons/arrow-left";
 import SearchIcon from "@/icons/search";
 import { TAddTokenModalType } from "@/features/wallet/types";
 import TokenItem from "./token-item";
+import { useGetMainnetTokensQuery } from "../../redux/token.api";
+import Skeleton1 from "@/components/skeleton";
 
 export interface SelectTokenModalProps {
   handleClose: () => void;
-  handleArrowLeftIconClick: (type: TAddTokenModalType) => void;
+  handleShowForm: (type: TAddTokenModalType) => void;
+  handleToken: (token: any) => void;
 }
 
-function SelectTokenModal({ handleClose, handleArrowLeftIconClick }: SelectTokenModalProps) {
+function SelectTokenModal({ handleClose, handleShowForm, handleToken }: SelectTokenModalProps) {
+  const { data, isLoading } = useGetMainnetTokensQuery({});
+
   const ref = useRef(null);
 
   useOutsideClick({
     ref,
     handler: handleClose,
   });
+
+  const handleTokenClick = (token: any) => {
+    handleToken(token);
+    handleShowForm("add-token-form");
+  };
 
   return (
     <MotionBox
@@ -38,10 +48,7 @@ function SelectTokenModal({ handleClose, handleArrowLeftIconClick }: SelectToken
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
       <HStack spacing={5} pl={3} pt={2} mb={8}>
-        <ArrowLeftIcon
-          cursor="pointer"
-          onClick={() => handleArrowLeftIconClick("add-token-form")}
-        />
+        <ArrowLeftIcon cursor="pointer" onClick={() => handleShowForm("add-token-form")} />
         <Text fontSize="sm" fontWeight="bold">
           Select Token
         </Text>
@@ -66,14 +73,36 @@ function SelectTokenModal({ handleClose, handleArrowLeftIconClick }: SelectToken
       </InputGroup>
 
       <Box px={4} mt={1} h="calc(100% - 140px)" overflow="hidden auto">
-        {Array(20)
-          .fill(null)
-          .map((_, i) => (
-            <TokenItem key={i} />
+        <RenderTokenList isLoading={isLoading}>
+          {data?.map((token, i) => (
+            <TokenItem
+              key={i}
+              token={token.token}
+              issuer={token.issuer}
+              icon={token.icon}
+              handleClick={() => handleTokenClick(token)}
+            />
           ))}
+        </RenderTokenList>
       </Box>
     </MotionBox>
   );
 }
+
+const RenderTokenList = ({ isLoading, children }: any) => {
+  if (isLoading) {
+    return (
+      <>
+        {Array(10)
+          .fill(null)
+          .map((_, i) => (
+            <Skeleton1 key={i} h="50px" borderRadius="0" mb={3} />
+          ))}
+      </>
+    );
+  }
+
+  return <>{children}</>;
+};
 
 export default SelectTokenModal;
