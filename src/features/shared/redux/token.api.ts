@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGetTokenInfo } from "../types/token-queries";
 import { cleanupTokenList, tokenFormatter } from "@/helpers";
+import { xrpToken } from "@/constants";
 
 export const tokenApi = createApi({
   reducerPath: "tokenApi",
@@ -46,7 +47,7 @@ export const tokenApi = createApi({
     getMainnetTokens: builder.query({
       query: () => "https://s1.xrplmeta.org/tokens?limit=400",
       transformResponse: (res: any) => {
-        return cleanupTokenList(res.tokens);
+        return [xrpToken, ...cleanupTokenList(res.tokens)];
       },
     }),
   }),

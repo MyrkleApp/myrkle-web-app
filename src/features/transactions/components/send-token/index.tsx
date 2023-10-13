@@ -51,7 +51,9 @@ function SendToken() {
         sender_addr: address,
         receiver_addr: receiverAddress,
         amount,
-      });
+      })
+        .unwrap()
+        .then((res) => console.log(res));
     } else {
       sendToken({
         sender_addr: address,
@@ -59,7 +61,9 @@ function SendToken() {
         token: selectedToken.token,
         issuer: selectedToken.issuer,
         amount,
-      });
+      })
+        .unwrap()
+        .then((res) => console.log(res));
     }
   };
 

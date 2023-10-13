@@ -22,7 +22,16 @@ function ExchangeBox({ token, handleToken }: ExchangeBoxProps) {
 
   return (
     <>
-      <Box h="100%" bg="darkest" borderRadius="13px" p={1} pb={3} cursor="pointer" onClick={onOpen}>
+      <Box
+        h="100%"
+        maxH="110px"
+        bg="darkest"
+        borderRadius="13px"
+        p={1}
+        pb={3}
+        cursor="pointer"
+        onClick={onOpen}
+      >
         <HStack bg="secondary" borderRadius="10px" h="calc(100% - 15px)" mb={1} pl={3} pr={1}>
           <Image src={(isXrpToken(token) ? xrpLogo : token?.icon) || coinIcon} alt="" h="55%" />
           <VStack spacing={0} align="flex-start">

@@ -25,7 +25,7 @@ export interface IBurnToken {
   issuer_addr: string;
   sender_addr: string;
   token: string;
-  amount: number;
+  amount: number | string;
 }
 
 export interface IBurnNft {
