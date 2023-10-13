@@ -212,7 +212,7 @@ export const xrpApi = createApi({
     createXrpCheck: builder.mutation({
       query(body: ICreateXrpCheck) {
         return {
-          url: "create-xrp-check/",
+          url: "object/create-xrp-check/",
           method: "POST",
           body,
         };
@@ -221,7 +221,7 @@ export const xrpApi = createApi({
     createXrpEscrow: builder.mutation({
       query(body: ICreateXrpEscrow) {
         return {
-          url: "object/create-xrp-escrow/",
+          url: "object/create-xrp-escrow",
           method: "POST",
           body,
         };

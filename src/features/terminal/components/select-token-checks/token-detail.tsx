@@ -18,6 +18,8 @@ export interface TokenDetailProps {
   token: any;
 }
 
+// wallet address 2 ====>>>  r4W82KKuXBbFTKJrJDiTkfaAnzz3SdBms9
+
 function TokenDetail({ token }: TokenDetailProps) {
   const address = useSelector(selectAddress);
 

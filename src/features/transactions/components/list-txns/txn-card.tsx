@@ -1,10 +1,17 @@
 import { Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import coinLogo from "@/assets/coin-dollar.svg";
 import txnIn from "@/assets/txn-in.png";
+import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
 import TxnModal from "./txn-modal";
 
-function TxnCard() {
+export interface TxnCardProps {
+  txn: any;
+  isCreditTxn: boolean;
+}
+
+function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -24,15 +31,19 @@ function TxnCard() {
       >
         <GridItem rowSpan={1} colSpan={4} display="flex" alignItems="center">
           <HStack>
-            <Image src={txnIn} alt="" h="23px" />
+            <Image src={isCreditTxn ? txnIn : txnOut} alt="" h="23px" />
             <Text fontSize="xs">Payment transaction</Text>
           </HStack>
         </GridItem>
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">
           <HStack>
-            <Image src={xrpLogo} alt="logo" h="28px" />
+            <Image
+              src={txn.token.toLowerCase() === "xrp" ? xrpLogo : coinLogo}
+              alt="logo"
+              h="28px"
+            />
             <Text fontSize="xs" textTransform="uppercase">
-              usd
+              {txn.token}
             </Text>
           </HStack>
         </GridItem>
@@ -43,13 +54,13 @@ function TxnCard() {
           alignItems="center"
           justifyContent="center"
         >
-          <Text fontSize="xs" textTransform="uppercase" color="success">
-            +23
+          <Text fontSize="xs" textTransform="uppercase" color={isCreditTxn ? "success" : "danger"}>
+            {`${isCreditTxn ? "+" : "-"}${Number(txn.amount).toFixed(2)}`}
           </Text>
         </GridItem>
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">
           <Text fontSize="xs" color="#fff">
-            03.02.2023
+            {txn.timestamp.split(" ")[0]}
           </Text>
         </GridItem>
       </Grid>

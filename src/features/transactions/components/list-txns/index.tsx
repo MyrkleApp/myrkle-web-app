@@ -9,7 +9,7 @@ function ListTxns() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
 
-  const { isLoading } = useGetPaymentTransactionsQuery({ address, net });
+  const { data, isLoading } = useGetPaymentTransactionsQuery({ address, net });
 
   if (isLoading) {
     return (
@@ -24,11 +24,8 @@ function ListTxns() {
   }
   return (
     <Box pr={2}>
-      {Array(15)
-        .fill(null)
-        .map((_, i) => (
-          <TxnCard key={i} />
-        ))}
+      {data?.sent?.map((txn: any) => <TxnCard key={txn.txid} txn={txn} isCreditTxn={false} />)}
+      {data?.received?.map((txn: any) => <TxnCard key={txn.txid} txn={txn} isCreditTxn={true} />)}
     </Box>
   );
 }

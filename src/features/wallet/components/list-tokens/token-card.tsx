@@ -74,8 +74,9 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
             }
           >
             {isXrpToken({ token })
-              ? `${isPositiveChange(xrpData.percentageChange?.data) ? "+" : ""}${xrpData
-                  .percentageChange?.data}%`
+              ? `${isPositiveChange(xrpData.percentageChange?.data) ? "+" : ""}${
+                  xrpData.percentageChange?.data || "??"
+                }%`
               : "+0.02%"}
           </Text>
 
