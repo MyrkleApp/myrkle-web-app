@@ -13,6 +13,9 @@ import {
   ICreateXrpCheck,
   ICreateXrpEscrow,
   IMintNft,
+  IModifyDomain,
+  IModifyEmail,
+  IModifyTickSize,
   IReceiveNft,
   IRemoveToken,
   ISendNft,
@@ -227,6 +230,33 @@ export const xrpApi = createApi({
         };
       },
     }),
+    modifyDomain: builder.mutation({
+      query(body: IModifyDomain) {
+        return {
+          url: "eng/modify-domain/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    modifyEmail: builder.mutation({
+      query(body: IModifyEmail) {
+        return {
+          url: "eng/modify-email/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    modifyTickSize: builder.mutation({
+      query(body: IModifyTickSize) {
+        return {
+          url: "eng/modify-ticksize/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // new
@@ -319,6 +349,9 @@ export const {
   useCreateTokenCheckMutation,
   useCreateXrpCheckMutation,
   useCreateXrpEscrowMutation,
+  useModifyDomainMutation,
+  useModifyEmailMutation,
+  useModifyTickSizeMutation,
 
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,

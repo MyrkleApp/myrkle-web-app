@@ -84,6 +84,24 @@ export interface ICreateXrpEscrow {
   expiry_date: string;
 }
 
+export interface IModifyDomain {
+  sender_addr: string;
+  domain: string;
+  fee?: string;
+}
+
+export interface IModifyEmail {
+  sender_addr: string;
+  email: string;
+  fee?: string;
+}
+
+export interface IModifyTickSize {
+  sender_addr: string;
+  tick_size: string;
+  fee?: string;
+}
+
 // ========================================================================
 // *mutations*
 // ========================================================================

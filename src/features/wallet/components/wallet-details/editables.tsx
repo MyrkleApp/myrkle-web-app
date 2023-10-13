@@ -2,12 +2,45 @@ import EditableElement from "@/components/editable-element";
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import { useModifyEmailMutation } from "@/features/shared/redux/xrp.api";
+import { useSelector } from "react-redux";
+import { selectAddress } from "../../redux/wallet.selectors";
+import { useState } from "react";
 
 export interface EditablesProps {
   data: any;
 }
 
 function Editables({ data }: EditablesProps) {
+  // ========================================================================================
+  // selectors
+  // ========================================================================================
+
+  const address = useSelector(selectAddress);
+
+  // ========================================================================================
+  // state
+  // ========================================================================================
+
+  const [email, setEmail] = useState("");
+
+  // ========================================================================================
+  // api
+  // ========================================================================================
+
+  const [modifyEmail, { isLoading: isModifyEmailLoading }] = useModifyEmailMutation();
+
+  // ========================================================================================
+  // handlers
+  // ========================================================================================
+
+  const handleModifyEmail = () => {
+    modifyEmail({ sender_addr: address, email })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Flex
       direction="column"
@@ -64,7 +97,13 @@ function Editables({ data }: EditablesProps) {
           <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement value={data?.email} />
+          <EditableElement
+            value={data?.email}
+            inputValue={email}
+            handleInputChange={(e: any) => setEmail(e.target.value)}
+            isLoading={isModifyEmailLoading}
+            handleSubmit={handleModifyEmail}
+          />
         </Box>
       </Flex>
 
