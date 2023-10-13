@@ -4,18 +4,21 @@ import Input from "@/components/input";
 import { useRef } from "react";
 import ArrowLeftIcon from "@/icons/arrow-left";
 import SearchIcon from "@/icons/search";
-import { TAddTokenModalType } from "@/features/wallet/types";
 import TokenItem from "./token-item";
 import { useGetMainnetTokensQuery } from "../../redux/token.api";
 import Skeleton1 from "@/components/skeleton";
 
 export interface SelectTokenModalProps {
   handleClose: () => void;
-  handleShowForm: (type: TAddTokenModalType) => void;
+  handleBackArrowClick?: () => void;
   handleToken: (token: any) => void;
 }
 
-function SelectTokenModal({ handleClose, handleShowForm, handleToken }: SelectTokenModalProps) {
+function SelectTokenModal({
+  handleClose,
+  handleBackArrowClick,
+  handleToken,
+}: SelectTokenModalProps) {
   const { data, isLoading } = useGetMainnetTokensQuery({});
 
   const ref = useRef(null);
@@ -24,11 +27,6 @@ function SelectTokenModal({ handleClose, handleShowForm, handleToken }: SelectTo
     ref,
     handler: handleClose,
   });
-
-  const handleTokenClick = (token: any) => {
-    handleToken(token);
-    handleShowForm("add-token-form");
-  };
 
   return (
     <MotionBox
@@ -48,7 +46,7 @@ function SelectTokenModal({ handleClose, handleShowForm, handleToken }: SelectTo
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
       <HStack spacing={5} pl={3} pt={2} mb={8}>
-        <ArrowLeftIcon cursor="pointer" onClick={() => handleShowForm("add-token-form")} />
+        {handleBackArrowClick && <ArrowLeftIcon cursor="pointer" onClick={handleBackArrowClick} />}
         <Text fontSize="sm" fontWeight="bold">
           Select Token
         </Text>
@@ -80,7 +78,7 @@ function SelectTokenModal({ handleClose, handleShowForm, handleToken }: SelectTo
               token={token.token}
               issuer={token.issuer}
               icon={token.icon}
-              handleClick={() => handleTokenClick(token)}
+              handleClick={() => handleToken(token)}
             />
           ))}
         </RenderTokenList>

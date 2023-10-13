@@ -28,6 +28,7 @@ function AddToken() {
 
   const handleToken = (token: any) => {
     setToken(token);
+    setModalType("add-token-form");
   };
 
   return (
@@ -52,7 +53,7 @@ function AddToken() {
           {modalType === "select-token" && (
             <SelectTokenModal
               handleClose={handleBackdropClose}
-              handleShowForm={handleModalType}
+              handleBackArrowClick={() => setModalType("add-token-form")}
               handleToken={handleToken}
             />
           )}
