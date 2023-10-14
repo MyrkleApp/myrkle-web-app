@@ -2,7 +2,7 @@ import { Circle, Flex, useDisclosure } from "@chakra-ui/react";
 import OfferBox from "./offer-box";
 import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
-import OfferModal from "../offer-modal";
+import TxnDetailsModal from "../txn-details-modal";
 
 function OfferRow() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,7 +37,7 @@ function OfferRow() {
         <OfferBox />
       </Flex>
       <Backdrop isOpen={isOpen}>
-        <OfferModal handleClose={onClose} />
+        <TxnDetailsModal handleClose={onClose} />
       </Backdrop>
     </>
   );

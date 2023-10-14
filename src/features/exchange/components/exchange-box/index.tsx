@@ -10,9 +10,11 @@ import coinIcon from "@/assets/coin-dollar.svg";
 export interface ExchangeBoxProps {
   token: IToken;
   handleToken: (token: IToken) => void;
+  amount: string | number;
+  handleAmount: (value: any) => void;
 }
 
-function ExchangeBox({ token, handleToken }: ExchangeBoxProps) {
+function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleTokenClick = (token: IToken) => {
@@ -48,10 +50,13 @@ function ExchangeBox({ token, handleToken }: ExchangeBoxProps) {
           </VStack>
           <Spacer />
           <Input
-            value="0.00"
+            value={amount}
+            onChange={handleAmount}
+            placeholder="0.00"
             fontSize="2xl"
             textAlign="right"
             w="30%"
+            border="none"
             onClick={(e: any) => e.stopPropagation()}
           />
         </HStack>

@@ -1,9 +1,12 @@
-import { selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
+import { selectUserToken, selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
 import { submitTransaction } from "@gemwallet/api";
 import { useSelector } from "react-redux";
+import { socket } from "../socket-io";
+import { useEffect } from "react";
 
 function useSubmitTxn() {
   const walletProvider = useSelector(selectWalletProvider);
+  const userToken = useSelector(selectUserToken);
 
   // =============================================================================================
   // CROSSMARK
@@ -57,6 +60,30 @@ function useSubmitTxn() {
   };
 
   // =============================================================================================
+  // XUMM
+  // =============================================================================================
+
+  useEffect(() => {
+    if (walletProvider !== "xumm") return;
+
+    socket.on("signTxn", (res) => {
+      if (res.qrCode) {
+        console.log(res.qrCode);
+        return;
+      }
+
+      if (!res.txSign) {
+        console.log("txn not-signed");
+        return;
+      }
+
+      if (res.txSign) {
+        console.log("txn signed");
+      }
+    });
+  }, [walletProvider]);
+
+  // =============================================================================================
   // handler
   // =============================================================================================
 
@@ -67,6 +94,13 @@ function useSubmitTxn() {
 
     if (walletProvider === "gemwallet") {
       submitGemWalletTxn(data);
+    }
+
+    if (walletProvider === "xumm") {
+      socket.emit("signTxn", {
+        txjson: data,
+        user_token: userToken,
+      });
     }
   };
 

@@ -3,11 +3,12 @@ import { Box, CloseButton, Flex, HStack, Spacer, Text, useOutsideClick } from "@
 import { useRef } from "react";
 import TokenItem from "./token-item";
 
-export interface OfferModalProps {
+export interface TxnDetailsModalProps {
   handleClose: () => void;
+  handleProceed?: () => void;
 }
 
-function OfferModal({ handleClose }: OfferModalProps) {
+function TxnDetailsModal({ handleClose, handleProceed }: TxnDetailsModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -85,7 +86,7 @@ function OfferModal({ handleClose }: OfferModalProps) {
           <Text fontSize="sm" mb={3}>
             Do you want to match offer?
           </Text>
-          <Button w="80%" letterSpacing={1}>
+          <Button w="80%" letterSpacing={1} onClick={handleProceed}>
             continue anyway
           </Button>
         </Flex>
@@ -94,4 +95,4 @@ function OfferModal({ handleClose }: OfferModalProps) {
   );
 }
 
-export default OfferModal;
+export default TxnDetailsModal;

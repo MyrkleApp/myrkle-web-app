@@ -16,6 +16,7 @@ import {
   IModifyDomain,
   IModifyEmail,
   IModifyTickSize,
+  IOrderBookSwap,
   IReceiveNft,
   IRemoveToken,
   ISendNft,
@@ -257,6 +258,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    orderBookSwap: builder.mutation({
+      query(body: IOrderBookSwap) {
+        return {
+          url: "exchange/order-book-swap/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // new
@@ -352,6 +362,7 @@ export const {
   useModifyDomainMutation,
   useModifyEmailMutation,
   useModifyTickSizeMutation,
+  useOrderBookSwapMutation,
 
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,

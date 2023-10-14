@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import SwapLiquiditySwitch from "../swap-liquidity-switch";
-import Swap from "../swap";
+import MakeExchange from "../make-exchange";
 
 function ExchangeAssets() {
   return (
@@ -10,7 +10,7 @@ function ExchangeAssets() {
           <SwapLiquiditySwitch />
         </Flex>
 
-        <Swap />
+        <MakeExchange />
       </Box>
     </Flex>
   );

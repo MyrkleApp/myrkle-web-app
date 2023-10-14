@@ -179,3 +179,16 @@ export interface ISendXrp {
   receiver_addr: string;
   amount: number | string;
 }
+
+export interface IOrderBookSwap {
+  sender_addr: string;
+  buy_type: string;
+  sell_type: string;
+  buy_amount: number | string;
+  sell_amount: number | string;
+  buy_issuer: string;
+  sell_issuer: string;
+  tf_sell: boolean;
+  tf_fill_or_kill: boolean;
+  tf_immediate_or_cancel: boolean;
+}
