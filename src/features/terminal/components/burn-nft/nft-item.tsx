@@ -1,4 +1,4 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { selectNet } from "@/features/wallet/redux/wallet.selectors";
 import Skeleton1 from "@/components/skeleton";
@@ -14,10 +14,26 @@ export interface NftItemProps {
 function NftItem({ id, issuer, handleClick }: NftItemProps) {
   const net = useSelector(selectNet);
 
-  const { data, isLoading } = useGetNftMetaDataQuery({ id, net });
+  const { data, isLoading, isError } = useGetNftMetaDataQuery({ id, net });
 
   if (isLoading) {
     return <Skeleton1 w="100%" h="auto" aspectRatio={1} />;
+  }
+
+  if (isError) {
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        border="1px solid red"
+        aspectRatio={1}
+        borderRadius="20px"
+      >
+        <Text fontSize="sm" color="danger">
+          Error fetching nft
+        </Text>
+      </Flex>
+    );
   }
 
   return (

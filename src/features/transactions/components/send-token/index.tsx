@@ -14,12 +14,15 @@ import { isXrpToken } from "@/helpers";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { numbersOnlyRegex } from "@/constants";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 function SendToken() {
   const [selectedToken, setSelectedToken] = useState<any>({ token: "xrp", icon: xrpLogo });
   const [receiverAddress, setReceiverAddress] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
+
+  const handleSubmitTxn = useSubmitTxn();
 
   // ===========================================================================================
   // selectors
@@ -53,7 +56,10 @@ function SendToken() {
         amount,
       })
         .unwrap()
-        .then((res) => console.log(res));
+        .then((res) => {
+          console.log(res);
+          handleSubmitTxn(res);
+        });
     } else {
       sendToken({
         sender_addr: address,
@@ -63,7 +69,10 @@ function SendToken() {
         amount,
       })
         .unwrap()
-        .then((res) => console.log(res));
+        .then((res) => {
+          console.log(res);
+          handleSubmitTxn(res);
+        });
     }
   };
 
@@ -87,9 +96,11 @@ function SendToken() {
           <AssetsDropdown selectedToken={selectedToken} handleSelectedToken={handleSelectedToken} />
         </Box>
         <Input
-          w="50%"
+          w="calc(100% - 150px)"
           h="100%"
           textAlign="right"
+          placeholder="0"
+          border="none"
           value={amount}
           onChange={(e: any) => e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)}
         />

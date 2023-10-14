@@ -22,6 +22,7 @@ import { IToken } from "../../types";
 import { useAddTokenMutation } from "../../redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
+import useSubmitTxn from "../../hooks/use-submit-txn";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;
@@ -42,6 +43,8 @@ function AddTokenFormModal({
   const ref = useRef(null);
 
   const address = useSelector(selectAddress);
+
+  const handleSubmitTxn = useSubmitTxn();
 
   const [addToken, { isLoading }] = useAddTokenMutation();
 
@@ -72,7 +75,10 @@ function AddTokenFormModal({
       fee: "0",
     })
       .unwrap()
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        handleSubmitTxn(res);
+      })
       .catch((err) => console.log(err));
   };
 

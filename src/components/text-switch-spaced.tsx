@@ -1,6 +1,8 @@
 import { HStack, Spacer, Switch, Text } from "@chakra-ui/react";
 
 export interface TextSwitchSpacedProps {
+  isChecked: boolean;
+  handleChange: (value: any) => void;
   title: string;
   fontSize?: string;
   fontWeight?: string;
@@ -8,7 +10,15 @@ export interface TextSwitchSpacedProps {
   [anyProp: string]: any;
 }
 
-function TextSwitchSpaced({ title, fontSize, fontWeight, color, ...props }: TextSwitchSpacedProps) {
+function TextSwitchSpaced({
+  isChecked,
+  handleChange,
+  title,
+  fontSize,
+  fontWeight,
+  color,
+  ...props
+}: TextSwitchSpacedProps) {
   return (
     <HStack mb={4} {...props}>
       <HStack>
@@ -19,7 +29,7 @@ function TextSwitchSpaced({ title, fontSize, fontWeight, color, ...props }: Text
 
       <Spacer />
 
-      <Switch colorScheme="whatsapp" />
+      <Switch colorScheme="whatsapp" isChecked={isChecked} onChange={handleChange} />
     </HStack>
   );
 }

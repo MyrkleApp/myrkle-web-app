@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { TSelectTokenAmountModalState } from "../../types";
 import ProceedModal from "@/features/shared/components/proceed-modal";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 function UnfreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -18,6 +19,8 @@ function UnfreezeAsset() {
   const address = useSelector(selectAddress);
 
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
+
+  const handleSubmitTxn = useSubmitTxn();
 
   const [
     { selectedToken, showTokenList, amount },
@@ -44,7 +47,10 @@ function UnfreezeAsset() {
       freeze: false,
     })
       .unwrap()
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        handleSubmitTxn(res);
+      })
       .catch((err) => console.error(err));
   };
 

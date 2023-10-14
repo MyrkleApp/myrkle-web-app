@@ -14,12 +14,14 @@ import { IAttribute } from "../../types";
 import { useMintNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
-// import { Buffer } from "buffer";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
+  const handleSubmitTxn = useSubmitTxn();
+
   // =============================================================================================
   // selectors
   // =============================================================================================
@@ -35,6 +37,9 @@ function MintNftForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [taxon, setTaxon] = useState("");
+  const [isTransferable, setIsTransferable] = useState(false);
+  const [issuerBurn, setIssuerBurn] = useState(false);
+  const [onlyXrp, setOnlyXrp] = useState(false);
   const [attributes, setAttributes] = useState<IAttribute[]>([{ trait_type: "", value: "" }]);
   const [isUploadNftLoading, setIsUploadNftLoading] = useState(false);
 
@@ -108,14 +113,17 @@ function MintNftForm() {
       mintNft({
         issuer_addr: address,
         taxon,
-        is_transferable: false,
-        issuer_burn: false,
-        only_xrp: false,
+        is_transferable: isTransferable,
+        issuer_burn: issuerBurn,
+        only_xrp: onlyXrp,
         transfer_fee: "1",
         uri,
       })
         .unwrap()
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          handleSubmitTxn(res);
+        })
         .catch((err) => console.log(err));
     });
   };
@@ -187,9 +195,21 @@ function MintNftForm() {
         </Box>
       </MotionBox>
 
-      <TextSwitchSpaced title="Transferrable" />
-      <TextSwitchSpaced title="Only XRP" />
-      <TextSwitchSpaced title="Issuer burn" />
+      <TextSwitchSpaced
+        isChecked={isTransferable}
+        handleChange={() => setIsTransferable(!isTransferable)}
+        title="Transferrable"
+      />
+      <TextSwitchSpaced
+        isChecked={onlyXrp}
+        handleChange={() => setOnlyXrp(!onlyXrp)}
+        title="Only XRP"
+      />
+      <TextSwitchSpaced
+        isChecked={issuerBurn}
+        handleChange={() => setIssuerBurn(!issuerBurn)}
+        title="Issuer burn"
+      />
 
       <Box bg="darkest" borderRadius="20px" px={3} py={1} mb={2}>
         <ItemLabel title="Attributes" mb={0} />

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { TSelectTokenAmountModalState } from "../../types";
 import IconContainer from "../icon-container";
 import TokenListIcon from "@/icons/token-list";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 function BurnToken() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -17,6 +18,8 @@ function BurnToken() {
   const address = useSelector(selectAddress);
 
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
+
+  const handleSubmitTxn = useSubmitTxn();
 
   const [
     { selectedToken, showTokenList, amount },
@@ -43,7 +46,10 @@ function BurnToken() {
       amount,
     })
       .unwrap()
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        handleSubmitTxn(res);
+      })
       .catch((err) => console.error(err));
   };
   return (

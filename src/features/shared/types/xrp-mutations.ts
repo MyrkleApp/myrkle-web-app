@@ -171,11 +171,11 @@ export interface ISendToken {
   receiver_addr: string;
   token: string;
   issuer: string;
-  amount: number;
+  amount: number | string;
 }
 
 export interface ISendXrp {
   sender_addr: string;
   receiver_addr: string;
-  amount: number;
+  amount: number | string;
 }

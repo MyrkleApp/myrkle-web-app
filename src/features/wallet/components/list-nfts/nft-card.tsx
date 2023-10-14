@@ -16,10 +16,27 @@ export interface NftCardProps {
 function NftCard({ id }: NftCardProps) {
   const net = useSelector(selectNet);
 
-  const { data, isLoading } = useGetNftMetaDataQuery({ id, net });
+  const { data, isLoading, isError } = useGetNftMetaDataQuery({ id, net });
 
   if (isLoading) {
     return <Skeleton1 w="100%" h="100%" />;
+  }
+
+  if (isError) {
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        w="100%"
+        h="100%"
+        border="1px solid red"
+        borderRadius="35px"
+      >
+        <Text fontSize="sm" color="danger">
+          Error fetching nft
+        </Text>
+      </Flex>
+    );
   }
 
   return (

@@ -10,6 +10,7 @@ import ProceedModal from "@/features/shared/components/proceed-modal";
 import { useBurnNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 function BurnNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,6 +21,8 @@ function BurnNft() {
   const [selectedNft, setSelectedNft] = useState<any>(null);
 
   const [burnNft, { isLoading }] = useBurnNftMutation();
+
+  const handleSubmitTxn = useSubmitTxn();
 
   const handleClose = () => {
     onClose();
@@ -46,7 +49,10 @@ function BurnNft() {
       holder: address,
     })
       .unwrap()
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        handleSubmitTxn(res);
+      })
       .catch((err) => console.log(err));
   };
 

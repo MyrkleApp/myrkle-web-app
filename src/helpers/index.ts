@@ -24,7 +24,7 @@ export const nftFormatter = (text: string) => {
 };
 
 export const tokenFormatter = (text: string) => {
-  if (!text.includes("https://")) {
+  if (!text?.includes("https://")) {
     return `https://${text}`;
   }
   return text;
