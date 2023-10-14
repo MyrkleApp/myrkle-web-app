@@ -192,3 +192,13 @@ export interface IOrderBookSwap {
   tf_fill_or_kill: boolean;
   tf_immediate_or_cancel: boolean;
 }
+
+export interface IFlag {
+  sender_addr: string;
+  state: boolean;
+  fee?: string;
+}
+
+export interface IAuthNftTokenMinter extends IFlag {
+  minter: string;
+}

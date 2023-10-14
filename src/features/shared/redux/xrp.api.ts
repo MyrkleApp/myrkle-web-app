@@ -3,6 +3,7 @@ import {
   IAccountSetIssuer,
   IAccountSetManager,
   IAddToken,
+  IAuthNftTokenMinter,
   IBurnNft,
   IBurnToken,
   ICreateNotification,
@@ -12,6 +13,7 @@ import {
   ICreateTrustline,
   ICreateXrpCheck,
   ICreateXrpEscrow,
+  IFlag,
   IMintNft,
   IModifyDomain,
   IModifyEmail,
@@ -269,6 +271,127 @@ export const xrpApi = createApi({
     }),
 
     // =========================================
+    // flags
+    // =========================================
+    accountTxnId: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-account-txn-id/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    authNftTokenMinter: builder.mutation({
+      query(body: IAuthNftTokenMinter) {
+        return {
+          url: "eng/asf-authorized-nft-token-minter/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    defaultRipple: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-default-ripple/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disableMaster: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disable-master/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disallowIncomingCheck: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disallow-incoming-check/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disallowIncomingNftTokenOffer: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disallow-incoming-nft-token-offer/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disallowIncomingPayChan: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disallow-incoming-payChan/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disallowIncomingTrustline: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disallow-incoming-trustline/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    disallowXrp: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-disallow-xrp/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    globalFreeze: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-global-freeze/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    noFreeze: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-no-freeze/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    requireAuth: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-require-auth/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    requireDest: builder.mutation({
+      query(body: IFlag) {
+        return {
+          url: "eng/asf-require-dest/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+
+    // =========================================
     // new
     // =========================================
     accountSetIssuer: builder.mutation({
@@ -363,6 +486,20 @@ export const {
   useModifyEmailMutation,
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
+  //flags
+  useAccountTxnIdMutation,
+  useAuthNftTokenMinterMutation,
+  useDefaultRippleMutation,
+  useDisableMasterMutation,
+  useDisallowIncomingCheckMutation,
+  useDisallowIncomingNftTokenOfferMutation,
+  useDisallowIncomingPayChanMutation,
+  useDisallowIncomingTrustlineMutation,
+  useDisallowXrpMutation,
+  useGlobalFreezeMutation,
+  useNoFreezeMutation,
+  useRequireAuthMutation,
+  useRequireDestMutation,
 
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,
