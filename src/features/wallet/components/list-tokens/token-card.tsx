@@ -7,7 +7,7 @@ import ArrowDownIcon from "@/icons/arrow-down";
 import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TokenCardModal from "./token-card-modal";
-import { ellipsisAtCenter, isPositiveChange, isXrpToken } from "@/helpers";
+import { ellipsisAtCenter, formatNumber, isPositiveChange, isXrpToken } from "@/helpers";
 import { useGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
@@ -88,7 +88,7 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
               textTransform="uppercase"
               mr={1}
             >
-              {Number(amount).toFixed(2)}
+              {formatNumber(amount)}
             </Text>
             <Text color="textDark" fontSize="2xs" fontWeight="bold">
               $600,043.89

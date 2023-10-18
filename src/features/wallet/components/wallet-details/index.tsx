@@ -22,6 +22,7 @@ import RenderElement from "@/components/render-element";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "../../redux/wallet.selectors";
+import { formatNumber } from "@/helpers";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon },
@@ -149,7 +150,7 @@ function WalletDetails() {
           <Box mt="-20px">
             <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
               <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
-                {Number(balanceData?.balance).toFixed(2) || "-- --"}
+                {formatNumber(balanceData?.balance) || "-- --"}
               </Text>
             </RenderElement>
             <RenderElement isLoading={false} h="20px">

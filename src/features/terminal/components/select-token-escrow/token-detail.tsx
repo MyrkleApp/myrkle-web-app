@@ -12,6 +12,7 @@ import { useCreateXrpEscrowMutation } from "@/features/shared/redux/xrp.api";
 import { isXrpToken } from "@/helpers";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 export interface TokenDetailProps {
   token: any;
@@ -29,18 +30,23 @@ function TokenDetail({ token }: TokenDetailProps) {
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
+  const handleSubmitTxn = useSubmitTxn();
+
   const handleConfirm = () => {
     if (isXrpToken(token)) {
       createXrpEscrow({
         sender_addr: address,
-        amount,
+        amount: Number(amount),
         receiver_addr: receiverAddress,
         claim_date: claimDate,
         expiry_date: expiryDate,
-        condition: "",
+        condition: "hello world",
       })
         .unwrap()
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          handleSubmitTxn(res);
+        })
         .catch((err) => console.error(err));
     }
   };

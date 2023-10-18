@@ -60,3 +60,11 @@ export const cleanupTokenList = (tokenList: any) => {
 
   return mainnetList;
 };
+
+export const numberWithCommas = (x: string | number) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const formatNumber = (x: number | string) => {
+  return numberWithCommas(Number(x).toFixed(2));
+};

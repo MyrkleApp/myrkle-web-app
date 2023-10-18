@@ -1,12 +1,14 @@
 import { HStack, Input, Spinner, Square, Text, useDisclosure } from "@chakra-ui/react";
 import EditIcon from "@/icons/edit";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 
 export interface EditableElementProps {
   value?: string | number;
   inputValue?: string;
   handleInputChange?: (e: any) => void;
   isLoading?: boolean;
-  handleSubmit?: () => void;
+  payload?: any;
+  mutation?: (payload: any) => any;
 }
 
 function EditableElement({
@@ -14,9 +16,24 @@ function EditableElement({
   inputValue,
   handleInputChange,
   isLoading,
-  handleSubmit,
+  payload,
+  mutation,
 }: EditableElementProps) {
   const { isOpen, onToggle } = useDisclosure();
+
+  const handleSubmitTxn = useSubmitTxn();
+
+  const handleSubmit = () => {
+    if (!mutation) return;
+
+    mutation(payload)
+      .unwrap()
+      .then((res: any) => {
+        console.log(res);
+        handleSubmitTxn(res);
+      })
+      .catch((err: any) => console.log(err));
+  };
 
   return (
     <HStack>

@@ -2,7 +2,7 @@ import EditableElement from "@/components/editable-element";
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import { useModifyEmailMutation } from "@/features/shared/redux/xrp.api";
+import { useModifyDomainMutation, useModifyEmailMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { useState } from "react";
@@ -23,23 +23,18 @@ function Editables({ data }: EditablesProps) {
   // ========================================================================================
 
   const [email, setEmail] = useState("");
+  const [domain, setDomain] = useState("");
 
   // ========================================================================================
   // api
   // ========================================================================================
 
   const [modifyEmail, { isLoading: isModifyEmailLoading }] = useModifyEmailMutation();
+  const [modifyDomain, { isLoading: isModifyDomainLoading }] = useModifyDomainMutation();
 
   // ========================================================================================
   // handlers
   // ========================================================================================
-
-  const handleModifyEmail = () => {
-    modifyEmail({ sender_addr: address, email })
-      .unwrap()
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-  };
 
   return (
     <Flex
@@ -102,7 +97,8 @@ function Editables({ data }: EditablesProps) {
             inputValue={email}
             handleInputChange={(e: any) => setEmail(e.target.value)}
             isLoading={isModifyEmailLoading}
-            handleSubmit={handleModifyEmail}
+            payload={{ sender_addr: address, email }}
+            mutation={modifyEmail}
           />
         </Box>
       </Flex>
@@ -112,7 +108,14 @@ function Editables({ data }: EditablesProps) {
           <ItemLabel title="Domain" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement value={data?.domain} />
+          <EditableElement
+            value={data?.domain}
+            inputValue={domain}
+            handleInputChange={(e: any) => setDomain(e.target.value)}
+            isLoading={isModifyDomainLoading}
+            payload={{ sender_addr: address, domain }}
+            mutation={modifyDomain}
+          />
         </Box>
       </Flex>
     </Flex>
