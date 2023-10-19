@@ -5,10 +5,12 @@ import Layout from "@/layout";
 import ROUTES from "@/routes";
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SelectTokenChecks from "../components/select-token-checks";
 
 function Checks() {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <AnimatePresence>
@@ -37,9 +39,7 @@ function Checks() {
           >
             <Box>
               <HStack mb={4}>
-                <Link to={ROUTES.TERMINAL}>
-                  <ArrowLeftIcon fontSize="lg" />
-                </Link>
+                <ArrowLeftIcon fontSize="lg" cursor="pointer" onClick={() => navigate(-1)} />
                 <Text fontWeight="bold" fontSize="sm">
                   Create Check
                 </Text>

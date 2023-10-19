@@ -23,13 +23,15 @@ import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "../../redux/wallet.selectors";
 import { formatNumber } from "@/helpers";
+import ROUTES from "@/routes";
+import { Link } from "react-router-dom";
 
 const actionLinks = [
-  { text: "Check", icon: ChecksIcon },
-  { text: "Escrow", icon: HourGlassIcon },
-  { text: "Send", icon: ArrowUpIcon },
-  { text: "Receive", icon: ArrowDownIcon },
-  { text: "Exchange", icon: ExchangeIcon },
+  { text: "Check", icon: ChecksIcon, link: ROUTES.TERMINAL_CHECKS },
+  { text: "Escrow", icon: HourGlassIcon, link: ROUTES.TERMINAL_ESCROWS },
+  { text: "Send", icon: ArrowUpIcon, link: ROUTES.TRANSACTIONS },
+  { text: "Receive", icon: ArrowDownIcon, link: ROUTES.TRANSACTIONS },
+  { text: "Exchange", icon: ExchangeIcon, link: ROUTES.EXCHANGE },
 ];
 
 const animateSize: string[] = [
@@ -162,7 +164,9 @@ function WalletDetails() {
 
           <HStack spacing={3}>
             {actionLinks.map((actionLink, i) => (
-              <AccountDetailButton key={i} text={actionLink.text} icon={actionLink.icon} />
+              <Link key={i} to={actionLink.link}>
+                <AccountDetailButton text={actionLink.text} icon={actionLink.icon} />
+              </Link>
             ))}
             <Box
               display="flex"

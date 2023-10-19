@@ -55,6 +55,7 @@ export const tokenApi = createApi({
 
 export const {
   useGetTokenInfoQuery,
+  useLazyGetTokenInfoQuery,
   useGetXrpInfoQuery,
   useGetActiveAccountQuery,
   useGetFeeQuery,

@@ -11,6 +11,8 @@ import { ellipsisAtCenter, formatNumber, isPositiveChange, isXrpToken } from "@/
 import { useGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
+import ROUTES from "@/routes";
+import { Link } from "react-router-dom";
 
 export interface TokenCardProps {
   token: string;
@@ -32,6 +34,10 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
 
   const handleClose = () => {
     onClose();
+  };
+
+  const tokenIconLink = (url: string) => {
+    return `${url}?token=${token}&issuer=${issuer}`;
   };
 
   return (
@@ -97,61 +103,71 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
         </Flex>
 
         <HStack justify="space-between" borderLeft="1px solid #353535" pl="20px" w="33%" h="55%">
-          <IconButton
-            bg="secondary"
-            h="100%"
-            aspectRatio={1}
-            borderRadius="50%"
-            flexShrink={0}
-            aria-label={""}
-            _hover={{ bg: "secondary " }}
-          >
-            <ChecksIcon stroke="textDark" fontSize="2.8vh" />
-          </IconButton>
-          <IconButton
-            bg="secondary"
-            h="100%"
-            aspectRatio={1}
-            borderRadius="50%"
-            flexShrink={0}
-            aria-label={""}
-            _hover={{ bg: "secondary " }}
-          >
-            <HourGlassIcon stroke="textDark" fill="textDark" fontSize="2.8vh" />
-          </IconButton>
-          <IconButton
-            bg="secondary"
-            h="100%"
-            aspectRatio={1}
-            borderRadius="50%"
-            flexShrink={0}
-            aria-label={""}
-            _hover={{ bg: "secondary " }}
-          >
-            <ArrowUpIcon stroke="textDark" fontSize="2.8vh" />
-          </IconButton>
-          <IconButton
-            bg="secondary"
-            h="100%"
-            aspectRatio={1}
-            borderRadius="50%"
-            flexShrink={0}
-            aria-label={""}
-            _hover={{ bg: "secondary " }}
-          >
-            <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
-          </IconButton>
-          <IconButton
-            bg="secondary"
-            h="100%"
-            aspectRatio={1}
-            borderRadius="50%"
-            flexShrink={0}
-            aria-label={""}
-            _hover={{ bg: "secondary " }}
-          >
-            <ExchangeIcon stroke="textDark" fill="none" fontSize="2.8vh" />
-          </IconButton>
+          <Link to={tokenIconLink(ROUTES.TERMINAL_CHECKS)}>
+            <IconButton
+              bg="secondary"
+              h="100%"
+              aspectRatio={1}
+              borderRadius="50%"
+              flexShrink={0}
+              aria-label={""}
+              _hover={{ bg: "secondary " }}
+            >
+              <ChecksIcon stroke="textDark" fontSize="2.8vh" />
+            </IconButton>
+          </Link>
+          <Link to={isXrpToken({ token }) ? tokenIconLink(ROUTES.TERMINAL_ESCROWS) : "#"}>
+            <IconButton
+              bg="secondary"
+              h="100%"
+              aspectRatio={1}
+              borderRadius="50%"
+              flexShrink={0}
+              aria-label={""}
+              _hover={{ bg: "secondary " }}
+            >
+              <HourGlassIcon stroke="textDark" fill="textDark" fontSize="2.8vh" />
+            </IconButton>
+          </Link>
+          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
+            <IconButton
+              bg="secondary"
+              h="100%"
+              aspectRatio={1}
+              borderRadius="50%"
+              flexShrink={0}
+              aria-label={""}
+              _hover={{ bg: "secondary " }}
+            >
+              <ArrowUpIcon stroke="textDark" fontSize="2.8vh" />
+            </IconButton>
+          </Link>
+          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
+            <IconButton
+              bg="secondary"
+              h="100%"
+              aspectRatio={1}
+              borderRadius="50%"
+              flexShrink={0}
+              aria-label={""}
+              _hover={{ bg: "secondary " }}
+            >
+              <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
+            </IconButton>
+          </Link>
+          <Link to={tokenIconLink(ROUTES.EXCHANGE)}>
+            <IconButton
+              bg="secondary"
+              h="100%"
+              aspectRatio={1}
+              borderRadius="50%"
+              flexShrink={0}
+              aria-label={""}
+              _hover={{ bg: "secondary " }}
+            >
+              <ExchangeIcon stroke="textDark" fill="none" fontSize="2.8vh" />
+            </IconButton>
+          </Link>
         </HStack>
       </Flex>
 

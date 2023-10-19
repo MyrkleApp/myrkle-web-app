@@ -6,7 +6,7 @@ import GalleryIcon from "@/icons/gallery";
 import { Box, Flex, Grid, GridItem, HStack, Image, Spacer, Square, Text } from "@chakra-ui/react";
 import AttributeRow from "./attribute-row";
 import Button from "@/components/button";
-import PlusMinus from "@/components/plus-minus";
+import PlusMinus from "@/features/terminal/components/plus-minus";
 import { NFTStorage, File } from "nft.storage";
 import TextArea from "@/components/text-area";
 import { useRef, useState } from "react";
@@ -15,12 +15,18 @@ import { useMintNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import usePlusMinus from "../../hooks/use-plus-minus";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
   const handleSubmitTxn = useSubmitTxn();
+
+  const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
+    min: 0,
+    max: 100,
+  });
 
   // =============================================================================================
   // selectors
@@ -216,7 +222,7 @@ function MintNftForm() {
       </Box>
       <Grid templateColumns="repeat(12, 1fr)" gap={2}>
         <GridItem colSpan={4}>
-          <ItemLabel title="key" mb={0} />
+          <ItemLabel title="Trait" mb={0} />
         </GridItem>
         <GridItem colSpan={6}>
           <ItemLabel title="Value" mb={0} />
@@ -238,7 +244,13 @@ function MintNftForm() {
         <HStack mb={5}>
           <ItemLabel title="Transaction Fee" mb={0} />
           <Spacer />
-          <PlusMinus />
+          <PlusMinus
+            value={percentage}
+            maxValue={100}
+            handlePlusClick={handlePlusClick}
+            handleMinusClick={handleMinusClick}
+            handleInputChange={handleInputChange}
+          />
           <Text fontSize="sm" fontWeight="bold">
             %
           </Text>

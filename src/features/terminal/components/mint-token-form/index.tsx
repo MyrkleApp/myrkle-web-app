@@ -1,9 +1,15 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
-import PlusMinus from "@/components/plus-minus";
+import PlusMinus from "@/features/terminal/components/plus-minus";
 import { Box, Flex, HStack, SimpleGrid, Text } from "@chakra-ui/react";
+import usePlusMinus from "../../hooks/use-plus-minus";
 
 function MintTokenForm() {
+  const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
+    min: 0,
+    max: 50,
+  });
+
   const getTickSize = (i: number) => (i <= 0 ? 0 : i + 2);
 
   return (
@@ -59,7 +65,13 @@ function MintTokenForm() {
           </Text>
         </HStack>
         <HStack mb={5}>
-          <PlusMinus />
+          <PlusMinus
+            value={percentage}
+            maxValue={50}
+            handlePlusClick={handlePlusClick}
+            handleMinusClick={handleMinusClick}
+            handleInputChange={handleInputChange}
+          />
           <Text fontSize="sm" fontWeight="bold">
             %
           </Text>
