@@ -122,7 +122,7 @@ function MintNftForm() {
         is_transferable: isTransferable,
         issuer_burn: issuerBurn,
         only_xrp: onlyXrp,
-        transfer_fee: "1",
+        transfer_fee: String(percentage),
         uri,
       })
         .unwrap()
@@ -242,11 +242,12 @@ function MintNftForm() {
 
       <Box pos="absolute" bottom="0" w="calc(100% - 7px)" bg="darkest" borderRadius="20px" p={3}>
         <HStack mb={5}>
-          <ItemLabel title="Transaction Fee" mb={0} />
+          <ItemLabel title="Royalties" mb={0} />
           <Spacer />
           <PlusMinus
             value={percentage}
             maxValue={100}
+            isDisabled={!isTransferable}
             handlePlusClick={handlePlusClick}
             handleMinusClick={handleMinusClick}
             handleInputChange={handleInputChange}

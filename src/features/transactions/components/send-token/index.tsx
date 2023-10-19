@@ -6,18 +6,30 @@ import QrCodeIcon from "@/icons/qr-code";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import coinDollar from "@/assets/coin-dollar.svg";
 import { useSendTokenMutation, useSendXrpMutation } from "@/features/shared/redux/xrp.api";
 import { isXrpToken } from "@/helpers";
-import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import { numbersOnlyRegex } from "@/constants";
+import { numbersOnlyRegex, xrpIssuer } from "@/constants";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import { IToken } from "@/features/shared/types";
+import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
+import { useSearchParams } from "react-router-dom";
 
 function SendToken() {
-  const [selectedToken, setSelectedToken] = useState<any>({ token: "xrp", icon: xrpLogo });
+  const [searchParams] = useSearchParams();
+  const urlToken = searchParams.get("token");
+  const urlIssuer = searchParams.get("issuer");
+
+  const [selectedToken, setSelectedToken] = useState<IToken>({
+    token: "xrp",
+    issuer: xrpIssuer,
+    icon: xrpLogo,
+  });
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
@@ -29,6 +41,7 @@ function SendToken() {
   // ===========================================================================================
 
   const address = useSelector(selectAddress);
+  const network = useSelector(selectNetwork);
 
   // ===========================================================================================
   // api
@@ -36,12 +49,35 @@ function SendToken() {
 
   const [sendXrp, { isLoading: isSendXrpLoading }] = useSendXrpMutation();
   const [sendToken, { isLoading: isSendTokenLoading }] = useSendTokenMutation();
+  const [getTokenInfo] = useLazyGetTokenInfoQuery();
+
+  // ===========================================================================================
+  // effects
+  // ===========================================================================================
+
+  useEffect(() => {
+    if (urlToken && urlIssuer) {
+      setSelectedToken({ token: urlToken, issuer: urlIssuer, icon: coinDollar });
+    }
+  }, [urlIssuer, urlToken]);
+
+  useEffect(() => {
+    if (network !== "mainnet") return;
+
+    if (isXrpToken(selectedToken)) {
+      setSelectedToken({ ...selectedToken, icon: xrpLogo });
+    } else {
+      getTokenInfo({ token: selectedToken.token, issuer: selectedToken.issuer })
+        .unwrap()
+        .then((res) => setSelectedToken({ ...selectedToken, icon: res.icon }));
+    }
+  }, [getTokenInfo, network, selectedToken, selectedToken.token]);
 
   // ===========================================================================================
   // handlers
   // ===========================================================================================
 
-  const handleSelectedToken = (token: any) => setSelectedToken({ ...token, icon: xrpLogo });
+  const handleSelectedToken = (token: IToken) => setSelectedToken(token);
 
   const toggleAdvancedOptions = () => {
     if (isAdvancedOptions) setAdvancedOptions(false);

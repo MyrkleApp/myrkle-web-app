@@ -13,6 +13,10 @@ import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
+import AddressModal from "../wallet-details/address-modal";
+import qrCodeImage from "@/assets/qr-code.png";
+import { selectAddress } from "../../redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 export interface TokenCardProps {
   token: string;
@@ -25,12 +29,16 @@ export interface TokenCardProps {
 
 function TokenCard({ token, issuer, amount }: TokenCardProps) {
   const xrpData = useGetXrpData();
-  console.log(xrpData);
+
+  const address = useSelector(selectAddress);
+
   const { data: tokenData, isLoading: isTokenDataLoading } = useGetTokenInfoQuery({
     token: "BTC",
     issuer: "rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL",
   });
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
 
   const handleClose = () => {
     onClose();
@@ -142,19 +150,21 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
               <ArrowUpIcon stroke="textDark" fontSize="2.8vh" />
             </IconButton>
           </Link>
-          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
-            <IconButton
-              bg="secondary"
-              h="100%"
-              aspectRatio={1}
-              borderRadius="50%"
-              flexShrink={0}
-              aria-label={""}
-              _hover={{ bg: "secondary " }}
-            >
-              <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
-            </IconButton>
-          </Link>
+          <IconButton
+            bg="secondary"
+            h="100%"
+            aspectRatio={1}
+            borderRadius="50%"
+            flexShrink={0}
+            aria-label={""}
+            onClick={(e: any) => {
+              e.stopPropagation();
+              onReceiveOpen();
+            }}
+            _hover={{ bg: "secondary " }}
+          >
+            <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
+          </IconButton>
           <Link to={tokenIconLink(ROUTES.EXCHANGE)}>
             <IconButton
               bg="secondary"
@@ -181,6 +191,18 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
             handleClose={handleClose}
           />
         )}
+      </Backdrop>
+
+      <Backdrop isOpen={isReceiveOpen}>
+        <AddressModal
+          handleClose={onReceiveClose}
+          qrCodeImage={qrCodeImage}
+          address={address}
+          handleXAddress={() => {
+            /** */
+          }}
+          hideXAddressButton
+        />
       </Backdrop>
     </>
   );

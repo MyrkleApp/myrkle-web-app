@@ -4,7 +4,7 @@ import { Box, Circle, Text, useDisclosure } from "@chakra-ui/react";
 import ExchangeBox from "../exchange-box";
 import { numbersOnlyRegex, xrpToken } from "@/constants";
 import { IToken } from "@/features/shared/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { useOrderBookSwapMutation } from "@/features/shared/redux/xrp.api";
@@ -12,8 +12,16 @@ import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import TxnDetailsModal from "../txn-details-modal";
 import Backdrop from "@/components/backdrop";
 import { selectExchangeType } from "../../redux/exchange.selectors";
+import { useSearchParams } from "react-router-dom";
+import xrpLogo from "@/assets/xrp-logo.svg";
+import coinDollar from "@/assets/coin-dollar.svg";
+import { isXrpToken } from "@/helpers";
 
 function MakeExchange() {
+  const [searchParams] = useSearchParams();
+  const urlToken = searchParams.get("token");
+  const urlIssuer = searchParams.get("issuer");
+
   const handleSubmitTxn = useSubmitTxn();
 
   // ============================================================================================
@@ -44,6 +52,20 @@ function MakeExchange() {
 
   const [orderBookSwap, { data: orderBookSwapData, isLoading: isOrderBookSwapLoading }] =
     useOrderBookSwapMutation();
+
+  // ============================================================================================
+  // effects
+  // ============================================================================================
+
+  useEffect(() => {
+    if (urlToken && urlIssuer) {
+      setFromToken({
+        token: urlToken,
+        issuer: urlIssuer,
+        icon: isXrpToken({ token: urlToken, issuer: urlIssuer }) ? xrpLogo : coinDollar,
+      });
+    }
+  }, [urlIssuer, urlToken]);
 
   // ============================================================================================
   // handlers

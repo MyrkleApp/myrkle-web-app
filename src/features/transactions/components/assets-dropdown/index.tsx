@@ -16,11 +16,14 @@ import DropdownItem from "./dropdown-item";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
+import { IToken } from "@/features/shared/types";
+import { xrpIssuer } from "@/constants";
 
 export interface AssetsDropdownProps {
   selectedToken: any;
-  handleSelectedToken: (token: any) => void;
+  handleSelectedToken: (token: IToken) => void;
 }
+
 function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownProps) {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
@@ -82,14 +85,16 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
             <DropdownItem
               name="xrp"
               icon={xrpLogo}
-              handleClick={() => handleSelectedToken({ token: "xrp" })}
+              handleClick={() =>
+                handleSelectedToken({ token: "xrp", issuer: xrpIssuer, icon: xrpLogo })
+              }
             />
-            {data?.map((tokenItem: any, i: number) => (
+            {data?.map(({ token, issuer }: any, i: number) => (
               <DropdownItem
                 key={i}
-                name={tokenItem.token}
+                name={token}
                 icon={xrpLogo}
-                handleClick={() => handleSelectedToken(tokenItem)}
+                handleClick={() => handleSelectedToken({ token, issuer, icon: xrpLogo })}
               />
             ))}
           </MotionBox>

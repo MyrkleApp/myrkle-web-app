@@ -8,9 +8,16 @@ export interface AddressModalProps {
   qrCodeImage: string;
   address: string;
   handleXAddress: () => void;
+  hideXAddressButton?: boolean;
 }
 
-function AddressModal({ handleClose, qrCodeImage, address, handleXAddress }: AddressModalProps) {
+function AddressModal({
+  handleClose,
+  qrCodeImage,
+  address,
+  handleXAddress,
+  hideXAddressButton,
+}: AddressModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -50,9 +57,11 @@ function AddressModal({ handleClose, qrCodeImage, address, handleXAddress }: Add
           click to copy address
         </Text>
 
-        <Button w="100%" h="40px" _hover={{ bg: "primary" }} onClick={handleXAddress}>
-          Generate X Address
-        </Button>
+        {!hideXAddressButton && (
+          <Button w="100%" h="40px" _hover={{ bg: "primary" }} onClick={handleXAddress}>
+            Generate X Address
+          </Button>
+        )}
       </Box>
     </MotionBox>
   );

@@ -9,26 +9,35 @@ export interface PlusMinusProps {
   handleMinusClick: () => void;
   handlePlusClick: () => void;
   handleInputChange: (e: any) => void;
-  minValue?: number;
   maxValue: number;
+  minValue?: number;
+  isDisabled?: boolean;
 }
 
 function PlusMinus({
   value,
   minValue = 0,
   maxValue,
+  isDisabled,
   handleMinusClick,
   handlePlusClick,
   handleInputChange,
 }: PlusMinusProps) {
   return (
-    <HStack bg="secondary" w="170px" p={1} justify="space-between" borderRadius="5px">
+    <HStack
+      bg="secondary"
+      w="170px"
+      p={1}
+      justify="space-between"
+      borderRadius="5px"
+      cursor={isDisabled ? "not-allowed" : "default"}
+    >
       <Button
         h="35px"
         w="35px"
         bg="#585858"
         borderRadius="5px"
-        isDisabled={value <= minValue}
+        isDisabled={value <= minValue || isDisabled}
         onClick={handleMinusClick}
       >
         <MinusIcon fontSize="sm" />
@@ -39,7 +48,7 @@ function PlusMinus({
         fontWeight="bold"
         border="none"
         value={value}
-        onChange={handleInputChange}
+        onChange={!isDisabled && handleInputChange}
         minValue={minValue}
         max={maxValue}
       />
@@ -49,7 +58,7 @@ function PlusMinus({
         w="35px"
         bg="#585858"
         borderRadius="5px"
-        isDisabled={value >= maxValue}
+        isDisabled={value >= maxValue || isDisabled}
         onClick={handlePlusClick}
       >
         <PlusIcon fontSize="sm" />
