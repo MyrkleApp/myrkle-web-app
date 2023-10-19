@@ -1,12 +1,16 @@
-import Button from "@/components/button";
-import { Box, useDisclosure, useOutsideClick } from "@chakra-ui/react";
+import { Box, Button, useDisclosure, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
 import DropdownItem from "./dropdown-item";
 import { AnimatePresence } from "framer-motion";
 import { MotionBox } from "@/components/motion-elements";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
+import { useSelector } from "react-redux";
+import { selectAddress } from "../../redux/wallet.selectors";
+import { ellipsisAtCenter } from "@/helpers";
 
 function AccountTypeDropdown() {
+  const address = useSelector(selectAddress);
+
   const { isOpen, onToggle, onClose } = useDisclosure();
   const ref = useRef(null);
 
@@ -18,7 +22,7 @@ function AccountTypeDropdown() {
   return (
     <Box>
       <Button
-        ref={ref} // you are using the ref of a custom component when it is not exposed.
+        ref={ref}
         w="130px"
         h="27px"
         bg="dark"
@@ -28,11 +32,30 @@ function AccountTypeDropdown() {
         boxShadow="0 2px 2px #000"
         textAlign="left"
         justifyContent="space-between"
-        rightIcon={<ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />}
+        rightIcon={
+          address ? (
+            <Box
+              h="10px"
+              w="10px"
+              borderRadius="50%"
+              bg="#ff0000"
+              _hover={{ w: "13px", h: "13px" }}
+              onClick={(e: any) => e.stopPropagation()}
+            />
+          ) : (
+            <ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />
+          )
+        }
         _hover={{ bg: "dark" }}
         onClick={onToggle}
       >
-        Switch account
+        {address ? (
+          <Box letterSpacing={0.7} color="textDark">
+            {ellipsisAtCenter(address)}
+          </Box>
+        ) : (
+          "Switch account"
+        )}
       </Button>
 
       <AnimatePresence>
@@ -76,8 +99,6 @@ function AccountTypeDropdown() {
           </MotionBox>
         )}
       </AnimatePresence>
-
-      {/* <DropdownItem>Switch account</DropdownItem> */}
     </Box>
   );
 }

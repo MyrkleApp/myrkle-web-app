@@ -6,7 +6,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import MintNftForm from "../components/mint-nft-form";
 import { useEffect, useState } from "react";
 import Button from "@/components/button";
-import MintTokenForm from "../components/mint-token-form";
+import MintToken from "../components/mint-token";
 
 function NewAsset() {
   const [searchParams] = useSearchParams();
@@ -82,7 +82,7 @@ function NewAsset() {
           </Text>
         </Box>
         <Box w="40%" overflow="hidden auto">
-          {assetType === "token" ? <MintTokenForm /> : <MintNftForm />}
+          {assetType === "token" ? <MintToken /> : <MintNftForm />}
         </Box>
       </Flex>
     </Layout>

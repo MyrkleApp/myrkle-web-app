@@ -269,6 +269,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    createToken: builder.mutation({
+      query(body: ICreateToken) {
+        return {
+          url: "create-token/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // flags
@@ -430,15 +439,7 @@ export const xrpApi = createApi({
         };
       },
     }),
-    createToken: builder.mutation({
-      query(body: ICreateToken) {
-        return {
-          url: "create-token/",
-          method: "POST",
-          body,
-        };
-      },
-    }),
+
     createTrustline: builder.mutation({
       query(body: ICreateTrustline) {
         return {
@@ -486,6 +487,7 @@ export const {
   useModifyEmailMutation,
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
+  useCreateTokenMutation,
   //flags
   useAccountTxnIdMutation,
   useAuthNftTokenMinterMutation,
@@ -505,6 +507,5 @@ export const {
   useAccountSetManagerMutation,
   useCreateNotificationMutation,
   useCreatePairingTokenMutation,
-  useCreateTokenMutation,
   useCreateTrustlineMutation,
 } = xrpApi;
