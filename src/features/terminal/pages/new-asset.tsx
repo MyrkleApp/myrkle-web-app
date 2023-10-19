@@ -2,14 +2,23 @@ import ArrowLeftIcon from "@/icons/arrow-left";
 import Layout from "@/layout";
 import ROUTES from "@/routes";
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import MintNftForm from "../components/mint-nft-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import MintTokenForm from "../components/mint-token-form";
 
 function NewAsset() {
+  const [searchParams] = useSearchParams();
+  const urlAssetType = searchParams.get("asset");
+
   const [assetType, setAssetType] = useState<"token" | "nft">("token");
+
+  useEffect(() => {
+    if (urlAssetType === "nft") {
+      setAssetType("nft");
+    }
+  }, [urlAssetType]);
 
   return (
     <Layout>

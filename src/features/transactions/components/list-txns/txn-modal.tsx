@@ -6,7 +6,6 @@ import {
   IconButton,
   Image,
   Spacer,
-  Switch,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
@@ -20,10 +19,11 @@ import ArrowRightFlatIcon from "@/icons/arrow-right-flat";
 import ListTxnsEditables from "./editables";
 
 export interface TxnModalProps {
+  txn: any;
   handleClose: () => void;
 }
 
-function TxnModal({ handleClose }: TxnModalProps) {
+function TxnModal({ txn, handleClose }: TxnModalProps) {
   const [isFlagView, setFlagView] = useState(false);
 
   const ref = useRef(null);
@@ -63,9 +63,12 @@ function TxnModal({ handleClose }: TxnModalProps) {
         </Button>
         <HStack px={4} bg="darkest" borderRadius="10px" mb={4}>
           <Image src={xrpLogo} alt="" h="30px" />
+          <Text className="font-face-proxima-nova-black" fontSize="3xl">
+            {txn?.token}
+          </Text>
           <Spacer />
           <Text className="font-face-proxima-nova-black" fontSize="3xl">
-            300.00
+            {Number(txn?.amount).toFixed(2)}
           </Text>
         </HStack>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
@@ -74,16 +77,16 @@ function TxnModal({ handleClose }: TxnModalProps) {
         </Box>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
           <ItemLabel title="Transaction ID" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT</Text>
+          <Text fontSize="sm">{txn?.txid}</Text>
         </Box>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2} pos="relative">
           <ItemLabel title="Sender" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT</Text>
+          <Text fontSize="sm">{txn?.sender}</Text>
           <Box w="5px" h="20px" bg="danger" pos="absolute" left={0} top={0} mt="14px" />
         </Box>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={7} pos="relative">
           <ItemLabel title="Receiver" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT</Text>
+          <Text fontSize="sm">{txn?.receiver}</Text>
           <Box w="5px" h="20px" bg="primary" pos="absolute" left={0} top={0} mt="14px" />
         </Box>
         <Button
@@ -123,7 +126,7 @@ function TxnModal({ handleClose }: TxnModalProps) {
           {!isFlagView && (
             <MotionBox
               w="100%"
-              h="270px"
+              h="300px"
               pos="absolute"
               top="62px"
               bg="#292929"
@@ -143,7 +146,7 @@ function TxnModal({ handleClose }: TxnModalProps) {
                 borderRadius="15px"
                 zIndex={-1}
               />
-              <ListTxnsEditables />
+              <ListTxnsEditables txn={txn} />
             </MotionBox>
           )}
         </AnimatePresence>
@@ -160,8 +163,6 @@ function TxnModal({ handleClose }: TxnModalProps) {
                 <Text color="textDark" fontWeight="bold" fontSize="xs">
                   tfNoDirectRipple
                 </Text>
-                <Spacer />
-                <Switch size="sm" colorScheme="whatsapp" />
               </HStack>
               <Text
                 color="textDark"
@@ -180,8 +181,6 @@ function TxnModal({ handleClose }: TxnModalProps) {
                 <Text color="textDark" fontWeight="bold" fontSize="xs">
                   tfPartialPayment
                 </Text>
-                <Spacer />
-                <Switch size="sm" colorScheme="whatsapp" />
               </HStack>
               <Text
                 color="textDark"
@@ -200,8 +199,6 @@ function TxnModal({ handleClose }: TxnModalProps) {
                 <Text color="textDark" fontWeight="bold" fontSize="xs">
                   tfLimitQuality
                 </Text>
-                <Spacer />
-                <Switch size="sm" colorScheme="whatsapp" />
               </HStack>
               <Text color="textDark" fontSize="xs" pb={2} lineHeight={1.4}>
                 Only take paths where all the conversions have an input:output ratio that is equal
@@ -211,7 +208,7 @@ function TxnModal({ handleClose }: TxnModalProps) {
           )}
         </AnimatePresence>
 
-        <Button w="100%" pos="absolute" bottom="28px">
+        <Button w="100%" pos="absolute" bottom="7px">
           View Block in Explorer
         </Button>
       </Box>

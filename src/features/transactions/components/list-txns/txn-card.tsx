@@ -66,7 +66,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
       </Grid>
 
       <Backdrop isOpen={isOpen}>
-        <TxnModal handleClose={onClose} />
+        <TxnModal txn={txn} handleClose={onClose} />
       </Backdrop>
     </>
   );

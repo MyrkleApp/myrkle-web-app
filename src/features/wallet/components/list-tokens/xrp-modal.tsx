@@ -64,7 +64,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
             <Image src={xrpLogo} alt="logo" />
             <VStack align="flex-start" spacing="0">
               <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
-                xrpl
+                xrp
               </Text>
               <Text fontSize="2xs" mt="-2px" color="danger">
                 {`${isPositiveChange(data.percentageChange?.data) ? "+" : ""}${data.percentageChange
@@ -163,7 +163,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
               spacing={5}
               boxShadow="0 2px 8px #00000040"
             >
-              <Text fontSize="md">{price.data}</Text>
+              <Text fontSize="md">${`${Number(price.data).toFixed(2)}`}</Text>
               <Text fontSize="2xs">Price</Text>
             </VStack>
           </RenderElement>

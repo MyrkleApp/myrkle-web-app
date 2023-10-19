@@ -61,7 +61,7 @@ function MintTokenForm() {
 
         <HStack mb={2}>
           <Text fontSize="xs" fontWeight="bold">
-            Royalties
+            Transfer fee
           </Text>
         </HStack>
         <HStack mb={5}>

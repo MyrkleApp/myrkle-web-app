@@ -7,7 +7,6 @@ import {
   Image,
   SimpleGrid,
   Spacer,
-  Switch,
   Text,
   VStack,
   useOutsideClick,
@@ -80,12 +79,12 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
           </VStack>
         </HStack>
 
-        <HStack mb={4}>
+        {/* <HStack mb={4}>
           <Text fontSize="sm" fontWeight="bold">
             Ripple
           </Text>
           <Switch colorScheme="whatsapp" />
-        </HStack>
+        </HStack> */}
 
         <ItemLabel title="Index" fontSize="sm" mb={0} />
         <Box
@@ -122,7 +121,7 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
           pos="absolute"
           bottom={0}
           bg="dark"
-          h="calc(100% - 290px)"
+          h="calc(100% - 255px)"
           borderRadius="12px"
           p={4}
           boxShadow="0 2px 8px #00000040"
@@ -184,7 +183,7 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
             <Text fontSize="2xs">Tick</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">{data?.price}</Text>
+            <Text fontSize="md">${`${Number(data?.price).toFixed(2)}`}</Text>
             <Text fontSize="2xs">Price</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">

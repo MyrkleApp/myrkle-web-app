@@ -2,7 +2,11 @@ import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 
-function ListTxnsEditables() {
+export interface ListTxnsEditables {
+  txn: any;
+}
+
+function ListTxnsEditables({ txn }: ListTxnsEditables) {
   return (
     <Flex
       direction="column"
@@ -17,7 +21,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Sequence" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">https://www.sally.com</Text>
+          <Text fontSize="xs">-- --</Text>
         </Box>
       </Flex>
 
@@ -28,7 +32,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Date" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">13 / 02 / 2023</Text>
+          <Text fontSize="xs">{txn?.timestamp.split(" ")[0]}</Text>
         </Box>
       </Flex>
 
@@ -39,7 +43,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Time" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">09:32 PM GMT</Text>
+          <Text fontSize="xs">{txn?.timestamp.split(" ")[1]}</Text>
         </Box>
       </Flex>
 
@@ -52,7 +56,7 @@ function ListTxnsEditables() {
         <Box w="50%">
           <HStack>
             <Image src={xrpLogo} alt="logo" h="18px" />
-            <Text fontSize="xs">1.00</Text>
+            <Text fontSize="xs">{txn?.fee}</Text>
           </HStack>
         </Box>
       </Flex>
@@ -64,7 +68,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Signature" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">soft boy</Text>
+          <Text fontSize="xs">-- --</Text>
         </Box>
       </Flex>
 
@@ -75,7 +79,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Transaction Type" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">Payment Transaction</Text>
+          <Text fontSize="xs">{txn?.tx_type}</Text>
         </Box>
       </Flex>
 
@@ -86,7 +90,7 @@ function ListTxnsEditables() {
           <ItemLabel title="Result" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">jonbak@gmail.com</Text>
+          <Text fontSize="xs">{txn?.result}</Text>
         </Box>
       </Flex>
     </Flex>
