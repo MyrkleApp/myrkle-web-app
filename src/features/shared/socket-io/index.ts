@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const endpoint = "https://xamm-xumm-connect.onrender.com";
+const endpoint = "https://myrkle-signing.onrender.com";
 
 export const socket = io(endpoint);
 

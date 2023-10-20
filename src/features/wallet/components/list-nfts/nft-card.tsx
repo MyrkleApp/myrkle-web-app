@@ -9,9 +9,13 @@ import { nftFormatter } from "@/helpers";
 
 export interface NftCardProps {
   uri: string;
+  serial: string;
+  taxon: string;
+  issuer: string;
+  fee: string;
 }
 
-function NftCard({ uri }: NftCardProps) {
+function NftCard({ uri, serial, taxon, issuer, fee }: NftCardProps) {
   const { data, isLoading, isError } = useGetNftMetaData2Query(uri);
 
   if (isLoading) {
@@ -36,7 +40,7 @@ function NftCard({ uri }: NftCardProps) {
   }
 
   return (
-    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri)}>
+    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri, serial, taxon, issuer, fee)}>
       <Box
         w="100%"
         h="100%"

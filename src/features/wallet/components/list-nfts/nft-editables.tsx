@@ -1,7 +1,14 @@
 import ItemLabel from "@/components/item-label";
-import { Box, Flex, HStack, Spacer, Switch, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
+import { useSearchParams } from "react-router-dom";
 
 function NftEditables() {
+  const [searchParams] = useSearchParams();
+  const serial = searchParams.get("serial") || "-- --";
+  const taxon = searchParams.get("taxon") || "-- --";
+  const issuer = searchParams.get("issuer") || "-- --";
+  const fee = searchParams.get("fee") || "-- --";
+
   return (
     <Box w="calc(100% - 40px)" h="calc(100% - 40px)" mt="20px" mx="auto" overflow="auto" pr={3}>
       <Flex justify="space-between" mb={2}>
@@ -9,7 +16,7 @@ function NftEditables() {
           <ItemLabel title="Serial" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">15</Text>
+          <Text fontSize="xs">{serial}</Text>
         </Box>
       </Flex>
 
@@ -18,7 +25,7 @@ function NftEditables() {
           <ItemLabel title="Issuer" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">BIU009RTONEOWJEWOSWOOE38599</Text>
+          <Text fontSize="xs">{issuer}</Text>
         </Box>
       </Flex>
 
@@ -27,7 +34,7 @@ function NftEditables() {
           <ItemLabel title="Taxon" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">16</Text>
+          <Text fontSize="xs">{taxon}</Text>
         </Box>
       </Flex>
 
@@ -36,7 +43,7 @@ function NftEditables() {
           <ItemLabel title="Owner" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">500</Text>
+          <Text fontSize="xs">-- --</Text>
         </Box>
       </Flex>
 
@@ -46,7 +53,7 @@ function NftEditables() {
         </Box>
         <Box w="57%">
           <Text fontSize="xs" letterSpacing={2}>
-            123456
+            -- --
           </Text>
         </Box>
       </Flex>
@@ -56,7 +63,7 @@ function NftEditables() {
           <ItemLabel title="URL" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">www.google.com</Text>
+          <Text fontSize="xs">-- --</Text>
         </Box>
       </Flex>
 
@@ -65,7 +72,7 @@ function NftEditables() {
           <ItemLabel title="Transfer fee" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">15%</Text>
+          <Text fontSize="xs">{fee}%</Text>
         </Box>
       </Flex>
 
@@ -79,7 +86,6 @@ function NftEditables() {
               tfBurnable
             </Text>
             <Spacer />
-            <Switch size="sm" colorScheme="whatsapp" />
           </HStack>
           <Text fontSize="2xs" color="textDark">
             Allow the issuer (or the entity authorized by the issuer) to destroy the minted NFToken.
@@ -95,7 +101,6 @@ function NftEditables() {
               tfOnlyXRP
             </Text>
             <Spacer />
-            <Switch size="sm" colorScheme="whatsapp" />
           </HStack>
           <Text fontSize="2xs" color="textDark">
             The minted NFToken can only be bought or sold for XRP. This can be desirable if the
@@ -112,7 +117,6 @@ function NftEditables() {
               tfTransferable
             </Text>
             <Spacer />
-            <Switch size="sm" colorScheme="whatsapp" />
           </HStack>
           <Text fontSize="2xs" color="textDark">
             The minted NFToken can be transferred to others. If this flag is not enabled, the token

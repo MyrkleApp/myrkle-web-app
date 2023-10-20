@@ -42,7 +42,13 @@ function ListNftsGallery() {
       </Flex>
       {data?.map((nft: any) => (
         <Box key={nft.id} aspectRatio={1}>
-          <NftCard uri={nft.uri} />
+          <NftCard
+            uri={nft.uri}
+            serial={nft?.serial}
+            taxon={nft?.taxon}
+            issuer={nft?.issuer}
+            fee={nft?.transfer_fee}
+          />
         </Box>
       ))}
     </SimpleGrid>
