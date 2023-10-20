@@ -17,7 +17,6 @@ function BurnListModal({ handleClose, handleItemClick }: BurnListModalProps) {
   const net = useSelector(selectNet);
 
   const { data, isLoading } = useGetAccountNftsQuery({ address, net });
-  console.log(data);
 
   const ref = useRef(null);
 
@@ -51,8 +50,14 @@ function BurnListModal({ handleClose, handleItemClick }: BurnListModalProps) {
       <Box h="calc(100% - 50px)" overflow="hidden auto">
         <RenderList isLoading={isLoading}>
           <SimpleGrid columns={4} spacing={4} pr={4}>
-            {data?.map((nft: any, i: number) => (
-              <NftItem key={i} id={nft.id} issuer={nft.issuer} handleClick={handleItemClick} />
+            {data?.map((nft: any) => (
+              <NftItem
+                key={nft.id}
+                id={nft.id}
+                uri={nft.uri}
+                issuer={nft.issuer}
+                handleClick={handleItemClick}
+              />
             ))}
           </SimpleGrid>
         </RenderList>

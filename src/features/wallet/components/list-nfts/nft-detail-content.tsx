@@ -1,24 +1,22 @@
 import ArrowLeftIcon from "@/icons/arrow-left";
 import { Box, Circle, Flex, HStack, Image, Spacer, Text } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import Button from "@/components/button";
 import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
 import ArrowLeft2Icon from "@/icons/arrow-left-2";
 import NftEditables from "./nft-editables";
-import { selectNet } from "../../redux/wallet.selectors";
-import { useSelector } from "react-redux";
-import { useGetNftMetaDataQuery } from "@/features/shared/redux/xrp.api";
+import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
 import { nftFormatter } from "@/helpers";
 import Skeleton1 from "@/components/skeleton";
 
 function NftDetailContent() {
   const navigate = useNavigate();
-  const { id = "" } = useParams();
+  const [searchParams] = useSearchParams();
+  const uri = searchParams.get("uri") || "";
 
-  const net = useSelector(selectNet);
-  const { data, isLoading } = useGetNftMetaDataQuery({ id, net });
+  const { data, isLoading } = useGetNftMetaData2Query(uri);
 
   const containerRef = useRef<any>(null);
 
@@ -132,7 +130,7 @@ function NftDetailContent() {
               },
             }}
           >
-            {data?.attributes.map((attribute: any, i: number) => (
+            {data?.attributes?.map((attribute: any, i: number) => (
               <Box
                 key={i}
                 display="inline-block"

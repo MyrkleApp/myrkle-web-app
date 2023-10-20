@@ -40,9 +40,9 @@ function ListNftsGallery() {
       >
         <PlusIcon color="#858585" fontSize="5xl" />
       </Flex>
-      {data?.map((nft: any, i: number) => (
-        <Box key={i} aspectRatio={1}>
-          <NftCard id={nft.id} />
+      {data?.map((nft: any) => (
+        <Box key={nft.id} aspectRatio={1}>
+          <NftCard uri={nft.uri} />
         </Box>
       ))}
     </SimpleGrid>

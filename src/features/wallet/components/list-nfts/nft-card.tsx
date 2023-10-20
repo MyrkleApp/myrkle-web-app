@@ -3,20 +3,16 @@ import nftImage from "@/assets/nft.png";
 import Button from "@/components/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
-import { useSelector } from "react-redux";
-import { selectNet } from "../../redux/wallet.selectors";
-import { useGetNftMetaDataQuery } from "@/features/shared/redux/xrp.api";
+import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
 import { nftFormatter } from "@/helpers";
 
 export interface NftCardProps {
-  id: string;
+  uri: string;
 }
 
-function NftCard({ id }: NftCardProps) {
-  const net = useSelector(selectNet);
-
-  const { data, isLoading, isError } = useGetNftMetaDataQuery({ id, net });
+function NftCard({ uri }: NftCardProps) {
+  const { data, isLoading, isError } = useGetNftMetaData2Query(uri);
 
   if (isLoading) {
     return <Skeleton1 w="100%" h="100%" />;
@@ -40,7 +36,7 @@ function NftCard({ id }: NftCardProps) {
   }
 
   return (
-    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(id)}>
+    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri)}>
       <Box
         w="100%"
         h="100%"
