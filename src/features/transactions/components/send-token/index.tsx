@@ -1,7 +1,6 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
 import { MotionBox } from "@/components/motion-elements";
-import AddressBookIcon from "@/icons/address-book";
 import QrCodeIcon from "@/icons/qr-code";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@chakra-ui/react";
@@ -19,6 +18,7 @@ import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { IToken } from "@/features/shared/types";
 import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import { useSearchParams } from "react-router-dom";
+import AddressBook from "../address-book";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
@@ -112,6 +112,10 @@ function SendToken() {
     }
   };
 
+  const handleAddress = (address: string) => {
+    setReceiverAddress(address);
+  };
+
   return (
     <>
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="13%">
@@ -168,14 +172,7 @@ function SendToken() {
           </HStack>
         </GridItem>
         <GridItem colSpan={5}>
-          <HStack>
-            <Square bg="secondary" size="50px" borderRadius="10px">
-              <AddressBookIcon fontSize="2xl" />
-            </Square>
-            <Text color="textDark" fontSize="sm" fontWeight="bold">
-              Address Book
-            </Text>
-          </HStack>
+          <AddressBook handleAddress={handleAddress} />
         </GridItem>
       </Grid>
 

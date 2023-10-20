@@ -27,7 +27,7 @@ function History() {
         </GridItem>
       </Grid>
 
-      <Box h="calc(100% - 45px)" overflow="hidden scroll">
+      <Box h="calc(100% - 45px)" overflow="hidden auto">
         <ListTxns />
       </Box>
     </Box>
