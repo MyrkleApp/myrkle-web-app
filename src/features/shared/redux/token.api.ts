@@ -23,7 +23,7 @@ export const tokenApi = createApi({
           icon: res.meta.token.icon,
           description: res.meta.token.description || "",
           marketCap: Number(res.metrics.marketcap).toFixed(3),
-          price: Number(res.metrics.price).toFixed(3),
+          price: Number(Number(res.metrics.price).toFixed(3)),
           pair: `${res.currency}/XRP`,
           percentageChange: res.metrics.changes["24h"].price.percent?.toFixed(2),
           holders: res.metrics.holders,

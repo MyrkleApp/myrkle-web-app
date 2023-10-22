@@ -1,51 +1,60 @@
 import { MotionBox } from "@/components/motion-elements";
-import CopyIcon from "@/icons/copy";
-import { Box, CloseButton, Flex, HStack, Spacer, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import AddressItem from "./address-item";
+import { IWalletAddress } from "@/features/wallet/types";
 
 export interface WalletAccordionProps {
-  wallet: React.ReactNode;
+  logo: React.ReactNode;
+  wallets: IWalletAddress[];
   [anyProp: string]: any;
 }
 
-function WalletAccordion({ wallet, ...props }: WalletAccordionProps) {
+function WalletAccordion({ logo, wallets, ...props }: WalletAccordionProps) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
     <MotionBox
       bg="darker"
+      opacity={wallets.length ? 1 : 0.3}
       borderRadius="30px"
-      cursor="pointer"
       pos="relative"
+      minH="80px"
       overflow="hidden"
-      onClick={onToggle}
       initial={{ height: 80 }}
-      animate={{ height: isOpen ? 170 : 80 }}
+      animate={{ height: isOpen ? "auto" : 80, paddingBottom: isOpen ? "20px" : "auto" }}
       {...props}
     >
-      <Flex align="center" h="80px" p="25px 35px">
-        {wallet}
+      <Flex align="center" h="80px" p="25px 35px" cursor="pointer" onClick={onToggle}>
+        {logo}
       </Flex>
 
       <Box as="hr" borderTop="1px solid gray" w="calc(100% - 70px)" mx="auto" mb={2} />
 
-      <Box w="calc(100% - 70px)" mx="auto">
-        <HStack mb={2}>
-          <Text fontSize="xs" fontWeight="bold">
-            Main surfer
-          </Text>
-          <Spacer />
-          <Box bg="darkest" p="0 5px" borderRadius="4px">
-            <CopyIcon fill="none" fontSize="sm" />
-          </Box>
-          <CloseButton bg="darkest" size="sm" />
-        </HStack>
-
-        <Text fontSize="xs" color="textDark">
-          lorem ipsum dolor sit amet, consectetur adipis
-        </Text>
-      </Box>
+      <RenderAddressItems hasWallet={wallets.length > 0}>
+        {wallets.map((_, i) => (
+          <AddressItem key={i} name={wallets[i].name} address={wallets[i].address} />
+        ))}
+      </RenderAddressItems>
     </MotionBox>
   );
 }
+
+const RenderAddressItems = ({
+  hasWallet,
+  children,
+}: {
+  hasWallet: boolean;
+  children: React.ReactNode;
+}) => {
+  if (!hasWallet) {
+    return (
+      <Text fontSize="sm" mx="auto" w="calc(100% - 70px)">
+        You have no wallets connected to this provider.
+      </Text>
+    );
+  }
+
+  return <>{children}</>;
+};
 
 export default WalletAccordion;

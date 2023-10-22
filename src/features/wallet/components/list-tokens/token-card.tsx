@@ -1,4 +1,13 @@
-import { Flex, HStack, IconButton, Image, Text, VStack, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  IconButton,
+  Image,
+  Text,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import ChecksIcon from "@/icons/checks";
 import HourGlassIcon from "@/icons/hour-glass";
@@ -8,37 +17,54 @@ import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TokenCardModal from "./token-card-modal";
 import { ellipsisAtCenter, formatNumber, isPositiveChange, isXrpToken } from "@/helpers";
-import { useGetTokenInfoQuery } from "@/features/shared/redux/token.api";
+import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
 import AddressModal from "../wallet-details/address-modal";
 import qrCodeImage from "@/assets/qr-code.png";
-import { selectAddress } from "../../redux/wallet.selectors";
+import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import iconPlaceholder from "@/assets/coin-dollar.svg";
 
 export interface TokenCardProps {
   token: string;
   issuer: string;
-  amount: string;
+  amount: number;
+  limit?: string;
+  handleTokenUsdAmountObj?: (val: any) => void;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
 // BTC
 
-function TokenCard({ token, issuer, amount }: TokenCardProps) {
+function TokenCard({ token, issuer, amount, limit, handleTokenUsdAmountObj }: TokenCardProps) {
   const xrpData = useGetXrpData();
 
   const address = useSelector(selectAddress);
+  const network = useSelector(selectNetwork);
 
-  const { data: tokenData, isLoading: isTokenDataLoading } = useGetTokenInfoQuery({
-    token: "BTC",
-    issuer: "rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL",
-  });
+  const [getTokenInfo, { data: tokenData, isLoading: isTokenDataLoading }] =
+    useLazyGetTokenInfoQuery();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
+
+  const xrpBalanceToUSD = xrpData?.price.data * amount;
+  const tokenBalanceToUSD = xrpData?.price.data * amount * (tokenData?.price || 0);
+
+  useEffect(() => {
+    if (network !== "mainnet" && !isXrpToken({ token })) return;
+
+    getTokenInfo({ token, issuer })
+      .unwrap()
+      .then(() => {
+        if (!handleTokenUsdAmountObj) return;
+        handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
+      });
+  }, [getTokenInfo, handleTokenUsdAmountObj, issuer, network, token, tokenBalanceToUSD]);
 
   const handleClose = () => {
     onClose();
@@ -64,7 +90,17 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
       >
         <Flex justify="space-between" align="center" w="67%" h="100%" pr="20px">
           <HStack h="100%">
-            <Image src={xrpLogo} alt="" h="60%" />
+            <Image
+              src={
+                isXrpToken({ token })
+                  ? xrpLogo
+                  : network === "mainnet"
+                  ? tokenData?.icon
+                  : iconPlaceholder
+              }
+              alt=""
+              h="60%"
+            />
             <Text
               className="font-face-proxima-nova-extrabld"
               fontSize="2.5vh"
@@ -76,23 +112,48 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
 
           <Text fontSize="xs">{ellipsisAtCenter(issuer)}</Text>
 
-          <Text
-            fontSize="xs"
-            fontWeight="bold"
-            color={
-              isXrpToken({ token })
-                ? isPositiveChange(xrpData.percentageChange?.data)
-                  ? "success"
-                  : "danger"
-                : "success"
-            }
-          >
-            {isXrpToken({ token })
-              ? `${isPositiveChange(xrpData.percentageChange?.data) ? "+" : ""}${
-                  xrpData.percentageChange?.data || "??"
-                }%`
-              : "+0.02%"}
-          </Text>
+          <RenderPercentChange isXrpToken={isXrpToken({ token })}>
+            <Box
+              pos="relative"
+              _hover={{
+                div: {
+                  display: "block",
+                },
+              }}
+            >
+              <Box
+                display="none"
+                pos="absolute"
+                top={-4}
+                left="50%"
+                transform="translateX(-50%)"
+                border="1px solid black"
+                borderRadius="10px"
+                bg="#000"
+                p="1px 5px"
+                fontSize="xs"
+              >
+                {isXrpToken({ token }) ? xrpData.pair : tokenData?.pair}
+              </Box>
+              <Text
+                fontSize="xs"
+                fontWeight="bold"
+                color={
+                  isXrpToken({ token })
+                    ? isPositiveChange(xrpData.percentageChange?.data)
+                      ? "success"
+                      : "danger"
+                    : "success"
+                }
+              >
+                {isXrpToken({ token })
+                  ? `${isPositiveChange(xrpData.percentageChange?.data) ? "+" : ""}${
+                      xrpData.percentageChange?.data || "??"
+                    }%`
+                  : "+0.02%"}
+              </Text>
+            </Box>
+          </RenderPercentChange>
 
           <VStack spacing={0} align="flex-end">
             <Text
@@ -105,7 +166,14 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
               {formatNumber(amount)}
             </Text>
             <Text color="textDark" fontSize="2xs" fontWeight="bold">
-              $600,043.89
+              $
+              {formatNumber(
+                isXrpToken({ token })
+                  ? xrpBalanceToUSD
+                  : network === "mainnet"
+                  ? tokenBalanceToUSD
+                  : "-- --",
+              )}
             </Text>
           </VStack>
         </Flex>
@@ -187,6 +255,11 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
         ) : (
           <TokenCardModal
             data={tokenData}
+            token={token}
+            issuer={issuer}
+            amount={amount}
+            tokenBalanceToUSD={tokenBalanceToUSD}
+            limit={limit}
             isLoading={isTokenDataLoading}
             handleClose={handleClose}
           />
@@ -207,5 +280,13 @@ function TokenCard({ token, issuer, amount }: TokenCardProps) {
     </>
   );
 }
+
+const RenderPercentChange = ({ isXrpToken, children }: any) => {
+  const network = useSelector(selectNetwork);
+
+  if (isXrpToken || network === "mainnet") return <>{children}</>;
+
+  return "-- --";
+};
 
 export default TokenCard;

@@ -11,3 +11,4 @@ export const selectNet = (state: RootState) => {
   return "";
 };
 export const selectWalletProvider = (state: RootState) => state.wallet.walletProvider;
+export const selectMyWallets = (state: RootState) => state.wallet.myWallets;

@@ -2,6 +2,8 @@ import { checkForCrossmark } from "@/features/shared/connections/crossmark";
 import { signIn } from "@/features/wallet/redux/wallet.slice";
 import { ISignIn } from "@/features/wallet/types";
 import ROUTES from "@/routes";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import { IAddExternalWallet } from "@/services/types";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +17,12 @@ function useCrossmarkSignIn() {
   const [error, setError] = useState("");
 
   const dispatch = useDispatch();
-
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
+
+  const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
+    const db = EXTERNAL_WALLET_DB();
+    await db.addWallet(wallet);
+  };
 
   const crossmarkSignIn = async () => {
     try {
@@ -44,6 +50,7 @@ function useCrossmarkSignIn() {
       if (response.data.meta.isSuccess) {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
         storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
+        handleSaveInBrowserDB({ address, walletProvider: "crossmark" });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

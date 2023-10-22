@@ -24,7 +24,10 @@ import CancelIcon from "@/icons/cancel";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import RenderElement from "@/components/render-element";
 import XrpEditables from "./xrp-editables";
-import { isPositiveChange } from "@/helpers";
+import { formatNumber, isPositiveChange } from "@/helpers";
+import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
+import { useSelector } from "react-redux";
+import { selectAddress, selectNet } from "../../redux/wallet.selectors";
 
 export interface TokenCardModalProps {
   data: ReturnType<typeof useGetXrpData>;
@@ -36,7 +39,14 @@ export interface TokenCardModalProps {
 
 function XrpModal({ data, handleClose }: TokenCardModalProps) {
   const { holders, tick, price } = data;
-  // console.log(data);
+
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { data: balanceData } = useGetBalanceQuery({ address, net });
+
+  const xrpBalanceToUSD = data?.price.data * balanceData?.balance;
+
   const ref = useRef(null);
 
   useOutsideClick({
@@ -66,7 +76,11 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
               <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
                 xrp
               </Text>
-              <Text fontSize="2xs" mt="-2px" color="danger">
+              <Text
+                fontSize="2xs"
+                mt="-2px"
+                color={isPositiveChange(data.percentageChange?.data) ? "success" : "danger"}
+              >
                 {`${isPositiveChange(data.percentageChange?.data) ? "+" : ""}${data.percentageChange
                   ?.data}%`}
               </Text>
@@ -77,10 +91,10 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
 
           <VStack align="flex-end" spacing="0">
             <Text fontWeight="bold" fontSize="2xl" textTransform="uppercase">
-              234.9
+              {formatNumber(balanceData?.balance)}
             </Text>
             <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">
-              $575,234.9
+              ${formatNumber(xrpBalanceToUSD)}
             </Text>
           </VStack>
         </HStack>
@@ -163,7 +177,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
               spacing={5}
               boxShadow="0 2px 8px #00000040"
             >
-              <Text fontSize="md">${`${Number(price.data).toFixed(2)}`}</Text>
+              <Text fontSize="md">${`${Number(price.data)}`}</Text>
               <Text fontSize="2xs">Price</Text>
             </VStack>
           </RenderElement>

@@ -7,8 +7,11 @@ import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { ellipsisAtCenter } from "@/helpers";
+import { useLocalStorage } from "react-use";
 
 function AccountTypeDropdown() {
+  const [, , clearSignInData] = useLocalStorage("sign-in-data");
+
   const address = useSelector(selectAddress);
 
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -18,6 +21,12 @@ function AccountTypeDropdown() {
     ref,
     handler: onClose,
   });
+
+  const handleDisconnect = (e: any) => {
+    e.stopPropagation();
+    clearSignInData();
+    document.location.reload();
+  };
 
   return (
     <Box>
@@ -40,7 +49,7 @@ function AccountTypeDropdown() {
               borderRadius="50%"
               bg="#ff0000"
               _hover={{ w: "13px", h: "13px" }}
-              onClick={(e: any) => e.stopPropagation()}
+              onClick={handleDisconnect}
             />
           ) : (
             <ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />

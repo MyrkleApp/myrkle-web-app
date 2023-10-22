@@ -66,5 +66,6 @@ export const numberWithCommas = (x: string | number) => {
 };
 
 export const formatNumber = (x: number | string) => {
+  if (isNaN(Number(x))) return "-- --";
   return numberWithCommas(Number(x).toFixed(2));
 };

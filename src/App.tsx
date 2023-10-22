@@ -18,9 +18,11 @@ import BurnAsset from "./features/terminal/pages/burn-asset";
 import Home from "./pages/home";
 import Settings from "./features/settings/pages";
 import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
+import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
 
 function App() {
   useRehydrateSignInData();
+  useRetrieveWallets();
 
   return (
     <BrowserRouter>

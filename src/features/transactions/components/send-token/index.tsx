@@ -147,7 +147,7 @@ function SendToken() {
       </Flex>
 
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="34%">
-        Recipient Address or ANS Name
+        Recipient Address
       </Text>
       <Input
         h="9%"
@@ -228,7 +228,7 @@ function SendToken() {
         }}
       >
         <Button
-          bg="secondary"
+          bg="primary"
           letterSpacing={1}
           w="100%"
           h="100%"

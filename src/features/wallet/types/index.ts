@@ -7,6 +7,8 @@ export interface IWalletInitialState {
   isConnected: boolean;
   userToken: string;
   walletProvider: TWalletProvider | "";
+  myWallets: IWalletAddress[];
+  totalBalance: number;
 }
 
 export type TAddTokenModalType = "add-token-form" | "select-token";
@@ -23,5 +25,11 @@ export interface ISignIn {
   address: string;
   network: TNetwork;
   userToken: string;
+  walletProvider: TWalletProvider;
+}
+
+export interface IWalletAddress {
+  name: string;
+  address: string;
   walletProvider: TWalletProvider;
 }

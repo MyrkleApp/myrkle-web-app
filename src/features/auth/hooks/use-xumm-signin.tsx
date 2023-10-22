@@ -7,6 +7,8 @@ import { ISignIn } from "@/features/wallet/types";
 import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
+import { IAddExternalWallet } from "@/services/types";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 
 function useXummSignIn() {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ function useXummSignIn() {
 
   const [signInStatus, setSignInStatus] = useState<TConnectionStatus>("loading");
   const [qrCodeImage, setQrCodeImage] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
@@ -44,11 +47,22 @@ function useXummSignIn() {
 
       _signIn(signInData);
       storeSignInData(signInData);
-
-      navigate(ROUTES.WALLET);
+      setWalletAddress(signInData.address);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
+      const db = EXTERNAL_WALLET_DB();
+      await db.addWallet(wallet);
+    };
+
+    if (walletAddress) {
+      handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm" });
+      navigate(ROUTES.WALLET);
+    }
+  }, [navigate, walletAddress]);
 
   return { signInStatus, qrCodeImage };
 }

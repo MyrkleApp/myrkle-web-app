@@ -149,15 +149,10 @@ function WalletDetails() {
             </RenderElement>
           </HStack>
 
-          <Box mt="-20px">
+          <Box mt="-15px">
             <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
-              <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"7vh"}>
-                {formatNumber(balanceData?.balance) || "-- --"}
-              </Text>
-            </RenderElement>
-            <RenderElement isLoading={false} h="20px">
-              <Text color="textDark" fontSize="xs" fontWeight="bold" mt={-2}>
-                $600,043.89
+              <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"9vh"}>
+                {formatNumber(balanceData?.balance)}
               </Text>
             </RenderElement>
           </Box>

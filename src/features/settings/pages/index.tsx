@@ -1,14 +1,9 @@
 import Button from "@/components/button";
 import Layout from "@/layout";
-import { Box, Flex, HStack, Image, Spacer, Text } from "@chakra-ui/react";
-import WalletAccordion from "../components/wallet-accordion";
-import MyrkleLogoIcon from "@/icons/logo";
-import XummLogoIcon from "@/icons/xumm-logo";
-import crossmarkLogo from "@/assets/crossmark-logo.png";
-import crossmarkText from "@/assets/crossmark-text.png";
-import gemWalletLogo from "@/assets/gem-wallet-logo.png";
+import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import PasswordItem from "../components/password-item";
 import AddressBookItem from "../components/address-book-item";
+import ListWalletProviders from "../components/list-wallet-providers";
 
 function Settings() {
   return (
@@ -23,30 +18,7 @@ function Settings() {
               <Spacer />
               <Button h="30px">Add Wallet</Button>
             </HStack>
-            <WalletAccordion wallet={<MyrkleLogoIcon fontSize="80px" />} />
-            <Text fontSize="sm" fontWeight="bold" my={4}>
-              External connected wallets
-            </Text>
-            <WalletAccordion mb={5} wallet={<XummLogoIcon fontSize="80px" />} />
-            <WalletAccordion
-              mb={5}
-              wallet={
-                <HStack cursor="pointer" w="fit-content">
-                  <Image src={crossmarkLogo} alt="logo" h="20px" />
-                  <Image src={crossmarkText} alt="logo" h="20px" />
-                </HStack>
-              }
-            />
-            <WalletAccordion
-              wallet={
-                <HStack cursor="pointer" w="fit-content">
-                  <Image src={gemWalletLogo} alt="logo" h="20px" />
-                  <Text fontWeight="bold" fontFamily="Inter">
-                    GemWallet
-                  </Text>
-                </HStack>
-              }
-            />
+            <ListWalletProviders />
           </Box>
 
           <Box w="65%">

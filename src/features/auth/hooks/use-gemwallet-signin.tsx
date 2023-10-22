@@ -6,6 +6,8 @@ import { signIn } from "@/features/wallet/redux/wallet.slice";
 import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import { IAddExternalWallet } from "@/services/types";
 
 function useGemWalletSignIn() {
   const navigate = useNavigate();
@@ -15,8 +17,12 @@ function useGemWalletSignIn() {
   const [error, setError] = useState("");
 
   const dispatch = useDispatch();
-
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
+
+  const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
+    const db = EXTERNAL_WALLET_DB();
+    await db.addWallet(wallet);
+  };
 
   const gemwalletSignIn = async () => {
     try {
@@ -31,6 +37,7 @@ function useGemWalletSignIn() {
           userToken: "",
           walletProvider: "gemwallet",
         });
+        handleSaveInBrowserDB({ address, walletProvider: "gemwallet" });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

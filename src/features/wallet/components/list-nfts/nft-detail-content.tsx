@@ -1,7 +1,6 @@
 import ArrowLeftIcon from "@/icons/arrow-left";
 import { Box, Circle, Flex, HStack, Image, Spacer, Text } from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import xrpLogo from "@/assets/xrp-logo.svg";
 import Button from "@/components/button";
 import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
@@ -55,7 +54,14 @@ function NftDetailContent() {
       <Box w="50%" pos="relative">
         <HStack mb={5}>
           <ArrowLeftIcon cursor="pointer" mr={5} onClick={() => navigate(-1)} />
-          <Image src={xrpLogo} alt="xrp" h="40px" />
+          <Image
+            src={nftFormatter(data?.image)}
+            alt="xrp"
+            w="40px"
+            h="40px"
+            objectFit="cover"
+            borderRadius="50%"
+          />
           <Text fontSize="sm" fontWeight="bold">
             {data?.name}
           </Text>

@@ -20,9 +20,18 @@ import ExchangeIcon from "@/icons/exchange";
 import HourGlassIcon from "@/icons/hour-glass";
 import CancelIcon from "@/icons/cancel";
 import TokenEditables from "./token-editables";
+import { selectNetwork } from "../../redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import iconPlaceholder from "@/assets/coin-dollar.svg";
+import { formatNumber } from "@/helpers";
 
 export interface TokenCardModalProps {
   data: any;
+  token: string;
+  issuer: string;
+  amount: number;
+  tokenBalanceToUSD: number;
+  limit?: string;
   isLoading: boolean;
   handleClose: () => void;
 }
@@ -30,9 +39,18 @@ export interface TokenCardModalProps {
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
 // BTC
 
-function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
-  // console.log(data);
+function TokenCardModal({
+  data,
+  token,
+  issuer,
+  amount,
+  tokenBalanceToUSD,
+  limit,
+  handleClose,
+}: TokenCardModalProps) {
   const ref = useRef(null);
+
+  const network = useSelector(selectNetwork);
 
   useOutsideClick({
     ref,
@@ -56,14 +74,16 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
       <Box w="50%" pos="relative">
         <HStack mb={2}>
           <HStack>
-            <Image src={data?.icon} alt="logo" h="35px" />
+            <Image src={data?.icon || iconPlaceholder} alt="logo" h="35px" />
             <VStack align="flex-start" spacing="0">
               <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
-                xrpl
+                {token}
               </Text>
-              <Text fontSize="2xs" mt="-2px" color="danger">
-                -0.02%
-              </Text>
+              {network === "mainnet" && (
+                <Text fontSize="2xs" mt="-2px" color="danger">
+                  -0.02%
+                </Text>
+              )}
             </VStack>
           </HStack>
 
@@ -71,10 +91,10 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
 
           <VStack align="flex-end" spacing="0">
             <Text fontWeight="bold" fontSize="2xl" textTransform="uppercase">
-              234.9
+              {formatNumber(amount)}
             </Text>
             <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">
-              $575,234.9
+              ${network === "mainnet" ? tokenBalanceToUSD : "-- --"}
             </Text>
           </VStack>
         </HStack>
@@ -112,7 +132,7 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
           boxShadow="0 2px 8px #00000040"
         >
           <Text fontWeight="bold" fontSize="sm">
-            {data?.issuer}
+            {issuer}
           </Text>
         </Box>
 
@@ -183,11 +203,11 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
             <Text fontSize="2xs">Tick</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">${`${Number(data?.price).toFixed(2)}`}</Text>
+            <Text fontSize="md">${network === "mainnet" ? data?.price : "-- --"}</Text>
             <Text fontSize="2xs">Price</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">{data?.holders}</Text>
+            <Text fontSize="md">{network === "mainnet" ? data?.holders : "-- --"}</Text>
             <Text fontSize="2xs">Holders</Text>
           </VStack>
           <VStack
@@ -223,7 +243,7 @@ function TokenCardModal({ data, handleClose }: TokenCardModalProps) {
             right="7px"
             zIndex={-1}
           />
-          <TokenEditables />
+          <TokenEditables data={data} limit={limit} />
         </Box>
       </Box>
     </Flex>

@@ -1,15 +1,23 @@
 import { Flex } from "@chakra-ui/react";
 import TokenCard from "./token-card";
-import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
+import { useGetAccountTokensQuery, useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { selectAddress, selectNet } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import Skeleton1 from "@/components/skeleton";
+import { useState } from "react";
 
 function ListTokens() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
 
   const { isLoading, data } = useGetAccountTokensQuery({ address, net });
+  const { data: xrpBalanceData } = useGetBalanceQuery({ address, net });
+
+  const [tokenUsdAmountObj, setTokenUsdAmountObj] = useState({});
+
+  const handleTokenUsdAmountObj = (data: any) => {
+    setTokenUsdAmountObj({ ...tokenUsdAmountObj, ...data });
+  };
 
   if (isLoading) {
     return (
@@ -25,13 +33,19 @@ function ListTokens() {
 
   return (
     <Flex direction="column" h="100%" gap={2} pr={4}>
-      <TokenCard token="xrp" issuer={"000000000000000000000000"} amount={"0"} />
+      <TokenCard
+        token="xrp"
+        issuer={"000000000000000000000000"}
+        amount={Number(xrpBalanceData?.balance)}
+      />
       {data?.map((tokenItem: any, i: number) => (
         <TokenCard
           key={i}
           token={tokenItem.token}
           issuer={tokenItem.issuer}
-          amount={tokenItem.amount}
+          limit={tokenItem?.limit}
+          amount={Number(tokenItem.amount)}
+          handleTokenUsdAmountObj={handleTokenUsdAmountObj}
         />
       ))}
     </Flex>
