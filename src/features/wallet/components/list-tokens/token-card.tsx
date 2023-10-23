@@ -34,15 +34,21 @@ export interface TokenCardProps {
   issuer: string;
   amount: number;
   limit?: string;
-  handleTokenUsdAmountObj?: (val: any) => void;
+  xrpData: ReturnType<typeof useGetXrpData>;
+  handleTokenUsdAmountObj: (val: any) => void;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
 // BTC
 
-function TokenCard({ token, issuer, amount, limit, handleTokenUsdAmountObj }: TokenCardProps) {
-  const xrpData = useGetXrpData();
-
+function TokenCard({
+  token,
+  issuer,
+  amount,
+  limit,
+  xrpData,
+  handleTokenUsdAmountObj,
+}: TokenCardProps) {
   const address = useSelector(selectAddress);
   const network = useSelector(selectNetwork);
 
@@ -56,15 +62,21 @@ function TokenCard({ token, issuer, amount, limit, handleTokenUsdAmountObj }: To
   const tokenBalanceToUSD = xrpData?.price.data * amount * (tokenData?.price || 0);
 
   useEffect(() => {
-    if (network !== "mainnet" && !isXrpToken({ token })) return;
+    if (isXrpToken({ token })) {
+      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: xrpBalanceToUSD });
+    }
 
-    getTokenInfo({ token, issuer })
-      .unwrap()
-      .then(() => {
-        if (!handleTokenUsdAmountObj) return;
-        handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
-      });
-  }, [getTokenInfo, handleTokenUsdAmountObj, issuer, network, token, tokenBalanceToUSD]);
+    if (network !== "mainnet") return;
+
+    if (!isXrpToken({ token })) {
+      getTokenInfo({ token, issuer })
+        .unwrap()
+        .then(() => {
+          handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD]);
 
   const handleClose = () => {
     onClose();

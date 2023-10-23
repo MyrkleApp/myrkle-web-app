@@ -21,7 +21,7 @@ import SecretsModal from "./secrets-modal";
 import RenderElement from "@/components/render-element";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
-import { selectAddress, selectNet } from "../../redux/wallet.selectors";
+import { selectAddress, selectNet, selectTotalBalance } from "../../redux/wallet.selectors";
 import { formatNumber } from "@/helpers";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
@@ -67,12 +67,13 @@ function WalletDetails() {
   // =======================================================================================
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
+  const totalBalance = useSelector(selectTotalBalance);
 
   // =======================================================================================
   // api
   // =======================================================================================
 
-  const { data: balanceData, isLoading: isBalanceLoading } = useGetBalanceQuery({ address, net });
+  const { isLoading: isBalanceLoading } = useGetBalanceQuery({ address, net });
 
   // =======================================================================================
   // handlers
@@ -152,7 +153,7 @@ function WalletDetails() {
           <Box mt="-15px">
             <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
               <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"9vh"}>
-                {formatNumber(balanceData?.balance)}
+                ${formatNumber(totalBalance)}
               </Text>
             </RenderElement>
           </Box>
