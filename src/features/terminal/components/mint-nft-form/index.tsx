@@ -21,7 +21,7 @@ const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
     min: 0,

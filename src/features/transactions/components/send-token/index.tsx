@@ -3,7 +3,17 @@ import Input from "@/components/input";
 import { MotionBox } from "@/components/motion-elements";
 import QrCodeIcon from "@/icons/qr-code";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
-import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Square,
+  SimpleGrid,
+  Text,
+  Box,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
@@ -19,11 +29,20 @@ import { IToken } from "@/features/shared/types";
 import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import { useSearchParams } from "react-router-dom";
 import AddressBook from "../address-book";
+import BackdropLoader from "@/components/backdrop-loader";
+import Backdrop from "@/components/backdrop";
+import ResponseModal from "@/components/response-modal";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
+
+  const {
+    isOpen: isResponseOpen,
+    onOpen: onOpenResponse,
+    onClose: onCloseResponse,
+  } = useDisclosure();
 
   const [selectedToken, setSelectedToken] = useState<IToken>({
     token: "xrp",
@@ -34,7 +53,8 @@ function SendToken() {
   const [amount, setAmount] = useState("");
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [{ isSubmitTxnError, isSubmitTxnResOpen }, { handleSubmitTxn, handleCloseSubmitTxnRes }] =
+    useSubmitTxn();
 
   // ===========================================================================================
   // selectors
@@ -47,8 +67,9 @@ function SendToken() {
   // api
   // ===========================================================================================
 
-  const [sendXrp, { isLoading: isSendXrpLoading }] = useSendXrpMutation();
-  const [sendToken, { isLoading: isSendTokenLoading }] = useSendTokenMutation();
+  const [sendXrp, { isLoading: isSendXrpLoading, isError: isSendXrpError }] = useSendXrpMutation();
+  const [sendToken, { isLoading: isSendTokenLoading, isError: isSendTokenError }] =
+    useSendTokenMutation();
   const [getTokenInfo] = useLazyGetTokenInfoQuery();
 
   // ===========================================================================================
@@ -93,9 +114,9 @@ function SendToken() {
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
           handleSubmitTxn(res);
-        });
+        })
+        .catch(() => onOpenResponse());
     } else {
       sendToken({
         sender_addr: address,
@@ -106,9 +127,9 @@ function SendToken() {
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
           handleSubmitTxn(res);
-        });
+        })
+        .catch(() => onOpenResponse());
     }
   };
 
@@ -232,13 +253,28 @@ function SendToken() {
           letterSpacing={1}
           w="100%"
           h="100%"
-          isLoading={isSendXrpLoading || isSendTokenLoading}
           isDisabled={!amount || !receiverAddress}
           onClick={handleSendAsset}
         >
           confirm
         </Button>
       </MotionBox>
+
+      <Backdrop isOpen={isResponseOpen || isSubmitTxnResOpen}>
+        {isXrpToken(selectedToken) ? (
+          <>
+            <ResponseModal isError={isSendXrpError} handleClose={onCloseResponse} />
+            <ResponseModal isError={isSubmitTxnError} handleClose={handleCloseSubmitTxnRes} />
+          </>
+        ) : (
+          <>
+            <ResponseModal isError={isSendTokenError} handleClose={onCloseResponse} />
+            <ResponseModal isError={isSubmitTxnError} handleClose={handleCloseSubmitTxnRes} />
+          </>
+        )}
+      </Backdrop>
+
+      <BackdropLoader isOpen={isSendXrpLoading || isSendTokenLoading} />
     </>
   );
 }

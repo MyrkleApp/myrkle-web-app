@@ -22,7 +22,7 @@ function MakeExchange() {
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   // ============================================================================================
   // selectors

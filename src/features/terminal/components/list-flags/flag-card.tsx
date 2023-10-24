@@ -16,7 +16,7 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
 
   const [switchValue, setSwitchValue] = useState(false);
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   useEffect(() => {
     setSwitchValue(!!currentValue);

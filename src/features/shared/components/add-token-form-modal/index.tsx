@@ -44,7 +44,7 @@ function AddTokenFormModal({
 
   const address = useSelector(selectAddress);
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const [addToken, { isLoading }] = useAddTokenMutation();
 

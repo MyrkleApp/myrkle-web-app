@@ -21,7 +21,7 @@ function EditableElement({
 }: EditableElementProps) {
   const { isOpen, onToggle } = useDisclosure();
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const handleSubmit = () => {
     if (!mutation) return;

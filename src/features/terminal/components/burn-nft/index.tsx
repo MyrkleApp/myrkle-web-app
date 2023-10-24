@@ -22,7 +22,7 @@ function BurnNft() {
 
   const [burnNft, { isLoading }] = useBurnNftMutation();
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const handleClose = () => {
     onClose();

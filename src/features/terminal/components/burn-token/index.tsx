@@ -19,7 +19,7 @@ function BurnToken() {
 
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const [
     { selectedToken, showTokenList, amount },

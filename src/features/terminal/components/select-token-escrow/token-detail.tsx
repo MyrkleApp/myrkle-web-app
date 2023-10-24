@@ -30,7 +30,7 @@ function TokenDetail({ token }: TokenDetailProps) {
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
-  const handleSubmitTxn = useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const handleConfirm = () => {
     if (isXrpToken(token)) {
