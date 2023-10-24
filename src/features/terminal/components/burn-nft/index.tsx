@@ -11,13 +11,17 @@ import { useBurnNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 function BurnNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const address = useSelector(selectAddress);
 
-  const [modalType, setModalType] = useState<"list" | "item" | "proceed">("list");
+  const [modalType, setModalType] = useState<
+    "list" | "item" | "proceed" | "loading" | "error-1" | "error-2" | "success"
+  >("list");
   const [selectedNft, setSelectedNft] = useState<any>(null);
 
   const [burnNft, { isLoading }] = useBurnNftMutation();
@@ -26,6 +30,7 @@ function BurnNft() {
 
   const handleClose = () => {
     onClose();
+    setModalType("list");
   };
 
   const handleItemClick = (nft: any) => {
@@ -43,6 +48,8 @@ function BurnNft() {
   };
 
   const handleProceed = () => {
+    setModalType("loading");
+
     burnNft({
       sender_addr: address,
       nftoken_id: selectedNft?.id,
@@ -50,10 +57,11 @@ function BurnNft() {
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        handleSubmitTxn(res);
+        const successCallback = () => setModalType("success");
+        const errorCallback = () => setModalType("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
       })
-      .catch((err) => console.log(err));
+      .catch(() => setModalType("error-1"));
   };
 
   return (
@@ -84,6 +92,14 @@ function BurnNft() {
               handleProceed={handleProceed}
             />
           )}
+
+          {modalType === "loading" && <MyrkleLoader />}
+
+          {modalType === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+          {modalType === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+          {modalType === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
         </AnimatePresence>
       </Backdrop>
     </>

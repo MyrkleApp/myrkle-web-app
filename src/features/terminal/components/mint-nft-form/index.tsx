@@ -3,18 +3,7 @@ import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
 import TextSwitchSpaced from "@/components/text-switch-spaced";
 import GalleryIcon from "@/icons/gallery";
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Image,
-  Spacer,
-  Square,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, Image, Spacer, Square, Text } from "@chakra-ui/react";
 import AttributeRow from "./attribute-row";
 import Button from "@/components/button";
 import PlusMinus from "@/features/terminal/components/plus-minus";
@@ -27,16 +16,16 @@ import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import usePlusMinus from "../../hooks/use-plus-minus";
-import BackdropLoader from "@/components/backdrop-loader";
 import ResponseModal from "@/components/response-modal";
 import Backdrop from "@/components/backdrop";
+import { TTxnPipeline } from "@/features/shared/types";
+import MyrkleLoader from "@/components/myrkle-loader";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
-  const [{ isSubmitTxnError, isSubmitTxnResOpen }, { handleSubmitTxn, handleCloseSubmitTxnRes }] =
-    useSubmitTxn();
+  const [, { handleSubmitTxn }] = useSubmitTxn();
 
   const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
     min: 0,
@@ -50,7 +39,7 @@ function MintNftForm() {
   const address = useSelector(selectAddress);
 
   // =============================================================================================
-  // state & disclosure & ref
+  // state & ref
   // =============================================================================================
 
   const [imagePreview, setImagePreview] = useState<any>("");
@@ -62,14 +51,7 @@ function MintNftForm() {
   const [issuerBurn, setIssuerBurn] = useState(false);
   const [onlyXrp, setOnlyXrp] = useState(false);
   const [attributes, setAttributes] = useState<IAttribute[]>([{ trait_type: "", value: "" }]);
-  const [isUploadNftLoading, setIsUploadNftLoading] = useState(false);
-  const [isUploadNftError, setIsUploadNftError] = useState(false);
-
-  const {
-    isOpen: isResponseOpen,
-    onOpen: onOpenResponse,
-    onClose: onCloseResponse,
-  } = useDisclosure();
+  const [view, setView] = useState<TTxnPipeline>("default");
 
   const fileRef = useRef<any>();
 
@@ -77,7 +59,7 @@ function MintNftForm() {
   // api
   // =============================================================================================
 
-  const [mintNft, { isLoading: isMintNftLoading, isError: isMintNftError }] = useMintNftMutation();
+  const [mintNft] = useMintNftMutation();
 
   // =============================================================================================
   // handle change & plusIcon click
@@ -126,17 +108,14 @@ function MintNftForm() {
       return meta.url;
     } catch (err) {
       console.log(err);
-      setIsUploadNftError(true);
+      setView("error-1");
     }
   };
 
   const handleConfirmClick = async () => {
-    setIsUploadNftLoading(true);
-    setIsUploadNftError(false);
+    setView("loading");
 
     uploadNft(name, description, imageData, attributes).then((uri: any) => {
-      setIsUploadNftLoading(false);
-
       // mint nft
       mintNft({
         issuer_addr: address,
@@ -149,11 +128,16 @@ function MintNftForm() {
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
-          handleSubmitTxn(res);
+          const successCallback = () => setView("success");
+          const errorCallback = () => setView("error-2");
+          handleSubmitTxn(res, successCallback, errorCallback);
         })
-        .catch(() => onOpenResponse());
+        .catch(() => setView("error-1"));
     });
+  };
+
+  const handleReset = () => {
+    setView("default");
   };
 
   return (
@@ -285,15 +269,12 @@ function MintNftForm() {
         </Box>
       </Box>
 
-      <Backdrop isOpen={isResponseOpen}>
-        <ResponseModal isError={isMintNftError || isUploadNftError} handleClose={onCloseResponse} />
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
-
-      <Backdrop isOpen={isSubmitTxnResOpen}>
-        <ResponseModal isError={isSubmitTxnError} handleClose={handleCloseSubmitTxnRes} />
-      </Backdrop>
-
-      <BackdropLoader isOpen={isUploadNftLoading || isMintNftLoading} />
     </>
   );
 }
