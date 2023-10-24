@@ -23,6 +23,8 @@ import { useAddTokenMutation } from "../../redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import useSubmitTxn from "../../hooks/use-submit-txn";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;
@@ -35,6 +37,9 @@ function AddTokenFormModal({
   handleTokenListIconClick,
   token,
 }: AddTokenFormModalProps) {
+  const [view, setView] = useState<"default" | "loading" | "error-1" | "error-2" | "success">(
+    "default",
+  );
   const [tokenName, setTokenName] = useState("");
   const [issuer, setIssuer] = useState("");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -50,7 +55,10 @@ function AddTokenFormModal({
 
   useOutsideClick({
     ref,
-    handler: handleClose,
+    handler: () => {
+      if (view === "loading") return;
+      handleClose();
+    },
   });
 
   useEffect(() => {
@@ -66,6 +74,8 @@ function AddTokenFormModal({
   };
 
   const handleConfirm = () => {
+    setView("loading");
+
     addToken({
       sender_addr: address,
       token: tokenName,
@@ -76,11 +86,26 @@ function AddTokenFormModal({
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        handleSubmitTxn(res);
+        const successCallback = () => setView("success");
+        const errorCallback = () => setView("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
       })
-      .catch((err) => console.log(err));
+      .catch(() => setView("error-1"));
   };
+
+  if (view !== "default") {
+    return (
+      <>
+        {view === "loading" && <MyrkleLoader />}
+
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {view === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
+      </>
+    );
+  }
 
   return (
     <MotionBox

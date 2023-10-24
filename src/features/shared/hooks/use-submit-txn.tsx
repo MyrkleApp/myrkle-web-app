@@ -11,12 +11,17 @@ function useSubmitTxn() {
   const [isError, setIsError] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // =============================================================================================
   // CROSSMARK
   // =============================================================================================
 
-  const submitCrossmarkTxn = async (TxnReq: any) => {
+  const submitCrossmarkTxn = async (
+    TxnReq: any,
+    successCallback?: () => void,
+    errorCallback?: () => void,
+  ) => {
     try {
       const sdk = window.xrpl.crossmark;
       const { response } = await sdk.signAndSubmitAndWait(TxnReq);
@@ -25,12 +30,16 @@ function useSubmitTxn() {
         setIsError(true);
         setResponseMessage("Transaction rejected");
         setIsOpen(true);
+        setIsLoading(false);
+        if (errorCallback) errorCallback();
         return "Transaction Rejected";
       }
       if (response.data.meta.isError) {
         setIsError(true);
         setResponseMessage("Error encountered during signing");
         setIsOpen(true);
+        setIsLoading(false);
+        if (errorCallback) errorCallback();
         console.log("Error encountered during signing");
         return "Error encountered during signing";
       }
@@ -38,6 +47,8 @@ function useSubmitTxn() {
         setIsError(true);
         setResponseMessage("Transaction failed");
         setIsOpen(true);
+        setIsLoading(false);
+        if (errorCallback) errorCallback();
         console.log("Transaction Failed");
         return "Transaction Failed";
       }
@@ -45,6 +56,8 @@ function useSubmitTxn() {
         setIsError(true);
         setResponseMessage("Transaction expired");
         setIsOpen(true);
+        setIsLoading(false);
+        if (errorCallback) errorCallback();
         console.log("Transaction Expired");
         return "Transaction Expired";
       }
@@ -52,6 +65,8 @@ function useSubmitTxn() {
         setIsError(false);
         setResponseMessage("Transaction successful");
         setIsOpen(true);
+        setIsLoading(false);
+        if (successCallback) successCallback();
         console.log({ status: "SUCCESS", hash: response.data.resp.result.hash });
         return { status: "SUCCESS", hash: response.data.resp.result.hash };
       }
@@ -59,6 +74,8 @@ function useSubmitTxn() {
       setIsError(true);
       setResponseMessage("something went wrong");
       setIsOpen(true);
+      setIsLoading(false);
+      if (errorCallback) errorCallback();
       console.log(e);
       return e;
     }
@@ -68,7 +85,11 @@ function useSubmitTxn() {
   // GEMWALLET
   // =============================================================================================
 
-  const submitGemWalletTxn = async (transaction: any) => {
+  const submitGemWalletTxn = async (
+    transaction: any,
+    successCallback?: () => void,
+    errorCallback?: () => void,
+  ) => {
     try {
       const resp = await submitTransaction({ transaction });
       if (resp.result?.hash) {
@@ -76,12 +97,16 @@ function useSubmitTxn() {
         setIsError(false);
         setResponseMessage("Transaction successful");
         setIsOpen(true);
+        setIsLoading(false);
+        if (successCallback) successCallback();
         return { status: "SUCCESS", hash: resp.result.hash };
       }
     } catch (e) {
       setIsError(true);
       setResponseMessage("Error occured");
       setIsOpen(true);
+      setIsLoading(false);
+      if (errorCallback) errorCallback();
       console.log(e);
       return e;
     }
@@ -104,6 +129,7 @@ function useSubmitTxn() {
         setIsError(true);
         setResponseMessage("Transaction not signed");
         setIsOpen(true);
+        setIsLoading(false);
         console.log("txn not-signed");
         return;
       }
@@ -112,6 +138,7 @@ function useSubmitTxn() {
         setIsError(false);
         setResponseMessage("Transaction signed");
         setIsOpen(true);
+        setIsLoading(false);
         console.log("txn signed");
       }
     });
@@ -121,14 +148,16 @@ function useSubmitTxn() {
   // handler
   // =============================================================================================
 
-  const handleSubmitTxn = (data: any) => {
+  const handleSubmitTxn = (data: any, successCallback?: () => void, errorCallback?: () => void) => {
+    setIsLoading(true);
+
     if (walletProvider === "crossmark") {
-      submitCrossmarkTxn(data);
+      submitCrossmarkTxn(data, successCallback, errorCallback);
       setIsOpen(false);
     }
 
     if (walletProvider === "gemwallet") {
-      submitGemWalletTxn(data);
+      submitGemWalletTxn(data, successCallback, errorCallback);
       setIsOpen(false);
     }
 
@@ -148,6 +177,7 @@ function useSubmitTxn() {
       isSubmitTxnError: isError,
       submitTxnResponseMsg: responseMessage,
       isSubmitTxnResOpen: isOpen,
+      isSubmitTxnLoading: isLoading,
     },
     { handleSubmitTxn, handleCloseSubmitTxnRes },
   ] as const;

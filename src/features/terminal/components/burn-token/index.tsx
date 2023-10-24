@@ -11,6 +11,8 @@ import { TSelectTokenAmountModalState } from "../../types";
 import IconContainer from "../icon-container";
 import TokenListIcon from "@/icons/token-list";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 function BurnToken() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,6 +41,8 @@ function BurnToken() {
   };
 
   const handleProceed = () => {
+    setModalState("loading");
+
     burnToken({
       sender_addr: address,
       issuer_addr: selectedToken.issuer,
@@ -47,11 +51,13 @@ function BurnToken() {
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        handleSubmitTxn(res);
+        const successCallback = () => setModalState("success");
+        const errorCallback = () => setModalState("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
       })
-      .catch((err) => console.error(err));
+      .catch(() => setModalState("error-1"));
   };
+
   return (
     <>
       <IconContainer title="Token" h="210px" onClick={onOpen}>
@@ -80,6 +86,14 @@ function BurnToken() {
             handleProceed={handleProceed}
           />
         )}
+
+        {modalState === "loading" && <MyrkleLoader />}
+
+        {modalState === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
       </Backdrop>
     </>
   );

@@ -12,6 +12,8 @@ import { useState } from "react";
 import { TSelectTokenAmountModalState } from "../../types";
 import ProceedModal from "@/features/shared/components/proceed-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 function FreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +42,8 @@ function FreezeAsset() {
   };
 
   const handleProceed = () => {
+    setModalState("loading");
+
     freezeToken({
       sender_addr: address,
       target_addr: address,
@@ -48,10 +52,11 @@ function FreezeAsset() {
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        handleSubmitTxn(res);
+        const successCallback = () => setModalState("success");
+        const errorCallback = () => setModalState("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
       })
-      .catch((err) => console.error(err));
+      .catch(() => setModalState("error-1"));
   };
 
   return (
@@ -83,6 +88,14 @@ function FreezeAsset() {
             handleProceed={handleProceed}
           />
         )}
+
+        {modalState === "loading" && <MyrkleLoader />}
+
+        {modalState === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
       </Backdrop>
     </>
   );

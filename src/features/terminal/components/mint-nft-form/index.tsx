@@ -3,7 +3,18 @@ import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
 import TextSwitchSpaced from "@/components/text-switch-spaced";
 import GalleryIcon from "@/icons/gallery";
-import { Box, Flex, Grid, GridItem, HStack, Image, Spacer, Square, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Image,
+  Spacer,
+  Square,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import AttributeRow from "./attribute-row";
 import Button from "@/components/button";
 import PlusMinus from "@/features/terminal/components/plus-minus";
@@ -16,12 +27,16 @@ import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import usePlusMinus from "../../hooks/use-plus-minus";
+import BackdropLoader from "@/components/backdrop-loader";
+import ResponseModal from "@/components/response-modal";
+import Backdrop from "@/components/backdrop";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnError, isSubmitTxnResOpen }, { handleSubmitTxn, handleCloseSubmitTxnRes }] =
+    useSubmitTxn();
 
   const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
     min: 0,
@@ -35,7 +50,7 @@ function MintNftForm() {
   const address = useSelector(selectAddress);
 
   // =============================================================================================
-  // state & ref
+  // state & disclosure & ref
   // =============================================================================================
 
   const [imagePreview, setImagePreview] = useState<any>("");
@@ -48,6 +63,13 @@ function MintNftForm() {
   const [onlyXrp, setOnlyXrp] = useState(false);
   const [attributes, setAttributes] = useState<IAttribute[]>([{ trait_type: "", value: "" }]);
   const [isUploadNftLoading, setIsUploadNftLoading] = useState(false);
+  const [isUploadNftError, setIsUploadNftError] = useState(false);
+
+  const {
+    isOpen: isResponseOpen,
+    onOpen: onOpenResponse,
+    onClose: onCloseResponse,
+  } = useDisclosure();
 
   const fileRef = useRef<any>();
 
@@ -55,7 +77,7 @@ function MintNftForm() {
   // api
   // =============================================================================================
 
-  const [mintNft, { isLoading: isMintNftLoading }] = useMintNftMutation();
+  const [mintNft, { isLoading: isMintNftLoading, isError: isMintNftError }] = useMintNftMutation();
 
   // =============================================================================================
   // handle change & plusIcon click
@@ -104,15 +126,15 @@ function MintNftForm() {
       return meta.url;
     } catch (err) {
       console.log(err);
-      return err;
+      setIsUploadNftError(true);
     }
   };
 
   const handleConfirmClick = async () => {
     setIsUploadNftLoading(true);
+    setIsUploadNftError(false);
 
     uploadNft(name, description, imageData, attributes).then((uri: any) => {
-      console.log(uri);
       setIsUploadNftLoading(false);
 
       // mint nft
@@ -130,141 +152,149 @@ function MintNftForm() {
           console.log(res);
           handleSubmitTxn(res);
         })
-        .catch((err) => console.log(err));
+        .catch(() => onOpenResponse());
     });
   };
 
   return (
-    <Box pr={2} pb="150px" pos="relative">
-      <ItemLabel title="NFT name" />
-      <Flex gap="10px" mb={5}>
-        <Input w="100%" value={name} onChange={(e: any) => setName(e.target.value)} />
-        <input
-          type="file"
-          ref={fileRef}
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-        {!imagePreview && (
-          <Square
-            size="40px"
-            bg="secondary"
-            borderRadius="5px"
-            cursor="pointer"
-            onClick={() => fileRef.current.click()}
-          >
-            <GalleryIcon />
-          </Square>
-        )}
-      </Flex>
-
-      {imagePreview && (
-        <Flex mb={3} gap={3}>
-          <Flex
-            w="50%"
-            justify="center"
-            align="center"
-            aspectRatio={1.1}
-            p={2}
-            borderRadius="5px"
-            bg="darkest"
-          >
-            <Image src={imagePreview} alt="" objectFit="contain" maxH="100%" maxW="100%" />
-          </Flex>
-          <Flex
-            w="50%"
-            justify="center"
-            align="center"
-            bg="secondary"
-            borderRadius="5px"
-            cursor="pointer"
-            aspectRatio={1.1}
-            onClick={() => fileRef.current.click()}
-          >
-            <GalleryIcon fontSize="50px" />
-          </Flex>
+    <>
+      <Box pr={2} pb="150px" pos="relative">
+        <ItemLabel title="NFT name" />
+        <Flex gap="10px" mb={5}>
+          <Input w="100%" value={name} onChange={(e: any) => setName(e.target.value)} />
+          <input
+            type="file"
+            ref={fileRef}
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
+          {!imagePreview && (
+            <Square
+              size="40px"
+              bg="secondary"
+              borderRadius="5px"
+              cursor="pointer"
+              onClick={() => fileRef.current.click()}
+            >
+              <GalleryIcon />
+            </Square>
+          )}
         </Flex>
-      )}
 
-      <ItemLabel
-        title="Description"
-        value={description}
-        onChange={(e: any) => setDescription(e.target.value)}
-      />
-      <TextArea mb={5} />
+        {imagePreview && (
+          <Flex mb={3} gap={3}>
+            <Flex
+              w="50%"
+              justify="center"
+              align="center"
+              aspectRatio={1.1}
+              p={2}
+              borderRadius="5px"
+              bg="darkest"
+            >
+              <Image src={imagePreview} alt="" objectFit="contain" maxH="100%" maxW="100%" />
+            </Flex>
+            <Flex
+              w="50%"
+              justify="center"
+              align="center"
+              bg="secondary"
+              borderRadius="5px"
+              cursor="pointer"
+              aspectRatio={1.1}
+              onClick={() => fileRef.current.click()}
+            >
+              <GalleryIcon fontSize="50px" />
+            </Flex>
+          </Flex>
+        )}
 
-      <MotionBox pos="relative" h="65px" mb={10}>
-        <Box pos="absolute" bottom={0} w="100%">
-          <ItemLabel title="Taxon" />
-          <Input w="100%" value={taxon} onChange={(e: any) => setTaxon(e.target.value)} />
+        <ItemLabel
+          title="Description"
+          value={description}
+          onChange={(e: any) => setDescription(e.target.value)}
+        />
+        <TextArea mb={5} />
+
+        <MotionBox pos="relative" h="65px" mb={10}>
+          <Box pos="absolute" bottom={0} w="100%">
+            <ItemLabel title="Taxon" />
+            <Input w="100%" value={taxon} onChange={(e: any) => setTaxon(e.target.value)} />
+          </Box>
+        </MotionBox>
+
+        <TextSwitchSpaced
+          isChecked={isTransferable}
+          handleChange={() => setIsTransferable(!isTransferable)}
+          title="Transferrable"
+        />
+        <TextSwitchSpaced
+          isChecked={onlyXrp}
+          handleChange={() => setOnlyXrp(!onlyXrp)}
+          title="Only XRP"
+        />
+        <TextSwitchSpaced
+          isChecked={issuerBurn}
+          handleChange={() => setIssuerBurn(!issuerBurn)}
+          title="Issuer burn"
+        />
+
+        <Box bg="darkest" borderRadius="20px" px={3} py={1} mb={2}>
+          <ItemLabel title="Attributes" mb={0} />
         </Box>
-      </MotionBox>
+        <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+          <GridItem colSpan={4}>
+            <ItemLabel title="Trait" mb={0} />
+          </GridItem>
+          <GridItem colSpan={6}>
+            <ItemLabel title="Value" mb={0} />
+          </GridItem>
+          <GridItem colSpan={2} />
+          {attributes.map(({ trait_type, value }, i: number) => (
+            <AttributeRow
+              key={i}
+              traitType={trait_type}
+              traitValue={value}
+              handleTraitTypeChange={(e) => handleAttributeChange(e, i, "trait_type")}
+              handleTraitValueChange={(e) => handleAttributeChange(e, i, "value")}
+              handlePlusIconClick={() => handlePlusIconClick(i)}
+            />
+          ))}
+        </Grid>
 
-      <TextSwitchSpaced
-        isChecked={isTransferable}
-        handleChange={() => setIsTransferable(!isTransferable)}
-        title="Transferrable"
-      />
-      <TextSwitchSpaced
-        isChecked={onlyXrp}
-        handleChange={() => setOnlyXrp(!onlyXrp)}
-        title="Only XRP"
-      />
-      <TextSwitchSpaced
-        isChecked={issuerBurn}
-        handleChange={() => setIssuerBurn(!issuerBurn)}
-        title="Issuer burn"
-      />
-
-      <Box bg="darkest" borderRadius="20px" px={3} py={1} mb={2}>
-        <ItemLabel title="Attributes" mb={0} />
+        <Box pos="absolute" bottom="0" w="calc(100% - 7px)" bg="darkest" borderRadius="20px" p={3}>
+          <HStack mb={5}>
+            <ItemLabel title="Royalties" mb={0} />
+            <Spacer />
+            <PlusMinus
+              value={percentage}
+              maxValue={100}
+              isDisabled={!isTransferable}
+              handlePlusClick={handlePlusClick}
+              handleMinusClick={handleMinusClick}
+              handleInputChange={handleInputChange}
+            />
+            <Text fontSize="sm" fontWeight="bold">
+              %
+            </Text>
+          </HStack>
+          <Button w="100%" onClick={handleConfirmClick}>
+            confirm
+          </Button>
+        </Box>
       </Box>
-      <Grid templateColumns="repeat(12, 1fr)" gap={2}>
-        <GridItem colSpan={4}>
-          <ItemLabel title="Trait" mb={0} />
-        </GridItem>
-        <GridItem colSpan={6}>
-          <ItemLabel title="Value" mb={0} />
-        </GridItem>
-        <GridItem colSpan={2} />
-        {attributes.map(({ trait_type, value }, i: number) => (
-          <AttributeRow
-            key={i}
-            traitType={trait_type}
-            traitValue={value}
-            handleTraitTypeChange={(e) => handleAttributeChange(e, i, "trait_type")}
-            handleTraitValueChange={(e) => handleAttributeChange(e, i, "value")}
-            handlePlusIconClick={() => handlePlusIconClick(i)}
-          />
-        ))}
-      </Grid>
 
-      <Box pos="absolute" bottom="0" w="calc(100% - 7px)" bg="darkest" borderRadius="20px" p={3}>
-        <HStack mb={5}>
-          <ItemLabel title="Royalties" mb={0} />
-          <Spacer />
-          <PlusMinus
-            value={percentage}
-            maxValue={100}
-            isDisabled={!isTransferable}
-            handlePlusClick={handlePlusClick}
-            handleMinusClick={handleMinusClick}
-            handleInputChange={handleInputChange}
-          />
-          <Text fontSize="sm" fontWeight="bold">
-            %
-          </Text>
-        </HStack>
-        <Button
-          w="100%"
-          onClick={handleConfirmClick}
-          isLoading={isUploadNftLoading || isMintNftLoading}
-        >
-          confirm
-        </Button>
-      </Box>
-    </Box>
+      <Backdrop isOpen={isResponseOpen}>
+        <ResponseModal isError={isMintNftError || isUploadNftError} handleClose={onCloseResponse} />
+      </Backdrop>
+
+      <Backdrop isOpen={isSubmitTxnResOpen}>
+        <ResponseModal isError={isSubmitTxnError} handleClose={handleCloseSubmitTxnRes} />
+      </Backdrop>
+
+      <BackdropLoader isOpen={isUploadNftLoading || isMintNftLoading} />
+    </>
   );
 }
 

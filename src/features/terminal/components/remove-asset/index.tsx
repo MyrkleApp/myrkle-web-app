@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { TSelectTokenAmountModalState } from "../../types";
 import ProceedModal from "@/features/shared/components/proceed-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import ResponseModal from "@/components/response-modal";
+import MyrkleLoader from "@/components/myrkle-loader";
 
 function RemoveAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +42,8 @@ function RemoveAsset() {
   };
 
   const handleProceed = () => {
+    setModalState("loading");
+
     removeToken({
       sender_addr: address,
       token: selectedToken.token,
@@ -47,10 +51,11 @@ function RemoveAsset() {
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        handleSubmitTxn(res);
+        const successCallback = () => setModalState("success");
+        const errorCallback = () => setModalState("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
       })
-      .catch((err) => console.error(err));
+      .catch(() => setModalState("error-1"));
   };
 
   return (
@@ -82,6 +87,14 @@ function RemoveAsset() {
             handleProceed={handleProceed}
           />
         )}
+
+        {modalState === "loading" && <MyrkleLoader />}
+
+        {modalState === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
       </Backdrop>
     </>
   );

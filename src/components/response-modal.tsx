@@ -46,7 +46,7 @@ function ResponseModal({ isError, handleClose }: ResponseModalProps) {
         mb={4}
         color={isError ? "danger" : "success"}
       >
-        Success!
+        {isError ? "Error!" : "Success!"}
       </Text>
       <Text fontSize="sm" fontWeight="bold" mb={4}>
         {isError ? "Oops, something went wrong" : "Your transaction was successful"}
