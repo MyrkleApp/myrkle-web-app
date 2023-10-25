@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
 import { IToken } from "@/features/shared/types";
 import { xrpIssuer } from "@/constants";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 
 export interface AssetsDropdownProps {
   selectedToken: any;
@@ -93,8 +94,14 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
               <DropdownItem
                 key={i}
                 name={token}
-                icon={xrpLogo}
-                handleClick={() => handleSelectedToken({ token, issuer, icon: xrpLogo })}
+                icon={tokenPlaceholder}
+                handleClick={() =>
+                  handleSelectedToken({
+                    token,
+                    issuer,
+                    icon: tokenPlaceholder,
+                  })
+                }
               />
             ))}
           </MotionBox>

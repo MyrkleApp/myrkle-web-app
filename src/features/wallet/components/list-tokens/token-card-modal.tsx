@@ -22,7 +22,7 @@ import CancelIcon from "@/icons/cancel";
 import TokenEditables from "./token-editables";
 import { selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import iconPlaceholder from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { formatNumber } from "@/helpers";
 
 export interface TokenCardModalProps {
@@ -74,7 +74,7 @@ function TokenCardModal({
       <Box w="50%" pos="relative">
         <HStack mb={2}>
           <HStack>
-            <Image src={data?.icon || iconPlaceholder} alt="logo" h="35px" />
+            <Image src={data?.icon || tokenPlaceholder} alt="logo" h="35px" />
             <VStack align="flex-start" spacing="0">
               <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
                 {token}

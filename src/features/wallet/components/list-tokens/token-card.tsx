@@ -27,7 +27,7 @@ import qrCodeImage from "@/assets/qr-code.png";
 import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import iconPlaceholder from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 
 export interface TokenCardProps {
   token: string;
@@ -108,7 +108,7 @@ function TokenCard({
                   ? xrpLogo
                   : network === "mainnet"
                   ? tokenData?.icon
-                  : iconPlaceholder
+                  : tokenPlaceholder
               }
               alt=""
               h="60%"

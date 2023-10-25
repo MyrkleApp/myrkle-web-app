@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ISignIn, IWalletAddress, IWalletInitialState, TNetwork } from "../types";
+import { ISignIn, IWalletAddress, IWalletInitialState, TNetwork, TWalletProvider } from "../types";
 
 const initialState: IWalletInitialState = {
   assetType: "token",
@@ -51,6 +51,12 @@ const walletSlice = createSlice({
     setTotalBalance(state, { payload }: PayloadAction<number>) {
       state.totalBalance = payload;
     },
+    setAddress(state, { payload }: PayloadAction<string>) {
+      state.address = payload;
+    },
+    setWalletProvider(state, { payload }: PayloadAction<TWalletProvider>) {
+      state.walletProvider = payload;
+    },
   },
 });
 
@@ -62,6 +68,8 @@ export const {
   addWallet,
   removeWallet,
   setTotalBalance,
+  setAddress,
+  setWalletProvider,
 } = walletSlice.actions;
 
 export default walletSlice.reducer;

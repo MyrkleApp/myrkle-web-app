@@ -1,6 +1,6 @@
 import { Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import coinLogo from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
@@ -38,7 +38,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">
           <HStack>
             <Image
-              src={txn.token.toLowerCase() === "xrp" ? xrpLogo : coinLogo}
+              src={txn.token.toLowerCase() === "xrp" ? xrpLogo : tokenPlaceholder}
               alt="logo"
               h="28px"
             />
