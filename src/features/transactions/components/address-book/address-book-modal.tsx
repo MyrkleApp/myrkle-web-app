@@ -1,9 +1,9 @@
 import Button from "@/components/button";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, CloseButton, HStack, Spacer, useOutsideClick } from "@chakra-ui/react";
+import { Box, CloseButton, HStack, Spacer, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import AddressItem from "./address-item";
+// import AddressItem from "./address-item";
 
 export interface AddressBookModalProps {
   handleClose: () => void;
@@ -12,7 +12,7 @@ export interface AddressBookModalProps {
 
 function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps) {
   const ref = useRef(null);
-  const [preSelectedAddress, setPreSelectedAddress] = useState(-1);
+  const [preSelectedAddress] = useState(-1);
 
   useOutsideClick({
     ref,
@@ -48,7 +48,10 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
       </HStack>
 
       <Box pr={1} mb={4} mt={3} h="calc(100% - 110px)" overflow="hidden auto">
-        {Array(10)
+        <Text fontSize="sm" mt={5}>
+          We could not find any addresses in your address book.
+        </Text>
+        {/* {Array(10)
           .fill(null)
           .map((_, i) => (
             <AddressItem
@@ -58,9 +61,14 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
               isActive={i === preSelectedAddress}
               handleClick={() => setPreSelectedAddress(i)}
             />
-          ))}
+          ))} */}
       </Box>
-      <Button w="100%" isDisabled={preSelectedAddress < 0} onClick={handleConfirmClick}>
+      <Button
+        w="100%"
+        bg={preSelectedAddress < 0 ? "secondary" : "primary"}
+        isDisabled={preSelectedAddress < 0}
+        onClick={handleConfirmClick}
+      >
         confirm
       </Button>
     </MotionBox>

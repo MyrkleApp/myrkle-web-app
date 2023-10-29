@@ -71,6 +71,7 @@ function RemoveAsset() {
             selectedToken={selectedToken}
             showTokenList={showTokenList}
             amount={amount}
+            hideAmount
             handleShowTokenList={handleShowTokenList}
             handleTokenClick={handleTokenClick}
             handleAmount={handleAmount}

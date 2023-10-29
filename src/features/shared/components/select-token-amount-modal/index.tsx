@@ -26,6 +26,7 @@ export interface SelectTokenAmountModalProps {
   selectedToken: any;
   showTokenList: boolean;
   amount: number | string;
+  hideAmount?: boolean;
   handleShowTokenList: (isOpen: boolean) => void;
   handleTokenClick: (token: any) => void;
   handleAmount: (value: number | string) => void;
@@ -37,6 +38,7 @@ function SelectTokenAmountModal({
   selectedToken,
   showTokenList,
   amount,
+  hideAmount,
   handleShowTokenList,
   handleTokenClick,
   handleAmount,
@@ -143,7 +145,7 @@ function SelectTokenAmountModal({
               exit={{ opacity: 0 }}
             >
               <HStack
-                w="50%"
+                w={!hideAmount ? "50%" : "100%"}
                 bg="#4F4F4F"
                 borderRadius="inherit"
                 py={1}
@@ -161,18 +163,20 @@ function SelectTokenAmountModal({
                 <Spacer />
                 <ArrowFlatRightIcon color="#D9D9D9" fontSize="2xs" />
               </HStack>
-              <Input
-                placeholder="0"
-                value={amount}
-                onChange={(e: any) =>
-                  e.target.value.match(numbersOnlyRegex) && handleAmount(e.target.value)
-                }
-                h="100%"
-                w="50%"
-                textAlign="right"
-                fontSize="sm"
-                border="none"
-              />
+              {!hideAmount && (
+                <Input
+                  placeholder="0"
+                  value={amount}
+                  onChange={(e: any) =>
+                    e.target.value.match(numbersOnlyRegex) && handleAmount(e.target.value)
+                  }
+                  h="100%"
+                  w="50%"
+                  textAlign="right"
+                  fontSize="sm"
+                  border="none"
+                />
+              )}
             </MotionBox>
           )}
         </AnimatePresence>
@@ -183,7 +187,7 @@ function SelectTokenAmountModal({
             h="40px"
             bg="secondary"
             color="textDark"
-            isDisabled={showTokenList || !amount}
+            isDisabled={hideAmount ? false : showTokenList || !amount}
             onClick={handleConfirmClick}
           >
             confirm

@@ -10,15 +10,21 @@ import { xrpToken } from "@/constants";
 
 export interface SelectTokenDropdownProps {
   handleTokenClick: (token: any) => void;
+  isTokenDisabled?: boolean;
 }
 
-function SelectTokenDropdown({ handleTokenClick }: SelectTokenDropdownProps) {
+function SelectTokenDropdown({ handleTokenClick, isTokenDisabled }: SelectTokenDropdownProps) {
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);
 
   const { data, isLoading } = useGetAccountTokensQuery({ net, address });
 
   const { isOpen, onToggle } = useDisclosure();
+
+  const handleToken = (token: any) => {
+    if (isTokenDisabled) return;
+    handleTokenClick(token);
+  };
 
   return (
     <MotionBox
@@ -48,7 +54,12 @@ function SelectTokenDropdown({ handleTokenClick }: SelectTokenDropdownProps) {
             <RenderTokenList isLoading={isLoading}>
               <TokenItem token={xrpToken} handleClick={() => handleTokenClick(xrpToken)} />
               {data?.map((token: any, i: number) => (
-                <TokenItem key={i} token={token} handleClick={() => handleTokenClick(token)} />
+                <TokenItem
+                  key={i}
+                  token={token}
+                  handleClick={() => handleToken(token)}
+                  isDisabled={isTokenDisabled}
+                />
               ))}
             </RenderTokenList>
           </MotionBox>

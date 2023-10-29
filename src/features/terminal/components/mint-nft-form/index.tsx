@@ -20,6 +20,7 @@ import ResponseModal from "@/components/response-modal";
 import Backdrop from "@/components/backdrop";
 import { TTxnPipeline } from "@/features/shared/types";
 import MyrkleLoader from "@/components/myrkle-loader";
+import { numbersOnlyRegex } from "@/constants";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
@@ -204,7 +205,13 @@ function MintNftForm() {
         <MotionBox pos="relative" h="65px" mb={10}>
           <Box pos="absolute" bottom={0} w="100%">
             <ItemLabel title="Taxon" />
-            <Input w="100%" value={taxon} onChange={(e: any) => setTaxon(e.target.value)} />
+            <Input
+              w="100%"
+              value={taxon}
+              onChange={(e: any) =>
+                e.target.value.match(numbersOnlyRegex) && setTaxon(e.target.value)
+              }
+            />
           </Box>
         </MotionBox>
 

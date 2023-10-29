@@ -27,7 +27,9 @@ function SelectTokenEscrow() {
 
   return (
     <AnimatePresence>
-      {view === "list" && <SelectTokenDropdown handleTokenClick={handleTokenClick} />}
+      {view === "list" && (
+        <SelectTokenDropdown handleTokenClick={handleTokenClick} isTokenDisabled />
+      )}
 
       {view === "detail" && <TokenDetail token={token} />}
     </AnimatePresence>
