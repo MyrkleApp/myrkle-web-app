@@ -26,7 +26,9 @@ function TokenEditables({ data, limit }: TokenEditablesProps) {
           <ItemLabel title="Market cap" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <EditableElement value={network === "mainnet" ? data?.marketCap : "-- --"} />
+          <Text fontSize="xs" ml={5}>
+            -- --
+          </Text>
         </Box>
       </Flex>
 
@@ -74,7 +76,9 @@ function TokenEditables({ data, limit }: TokenEditablesProps) {
           <ItemLabel title="Sequence" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <EditableElement value="-- --" />
+          <Text fontSize="xs" ml={5}>
+            -- --
+          </Text>
         </Box>
       </Flex>
 

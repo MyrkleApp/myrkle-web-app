@@ -30,7 +30,7 @@ const actionLinks = [
   { text: "Check", icon: ChecksIcon, link: ROUTES.TERMINAL_CHECKS },
   { text: "Escrow", icon: HourGlassIcon, link: ROUTES.TERMINAL_ESCROWS },
   { text: "Send", icon: ArrowUpIcon, link: ROUTES.TRANSACTIONS },
-  { text: "Receive", icon: ArrowDownIcon, link: ROUTES.TRANSACTIONS },
+  { text: "Receive", icon: ArrowDownIcon, link: "#" },
   { text: "Exchange", icon: ExchangeIcon, link: ROUTES.EXCHANGE },
 ];
 
@@ -161,7 +161,13 @@ function WalletDetails() {
           <HStack spacing={3}>
             {actionLinks.map((actionLink, i) => (
               <Link key={i} to={actionLink.link}>
-                <AccountDetailButton text={actionLink.text} icon={actionLink.icon} />
+                <AccountDetailButton
+                  text={actionLink.text}
+                  icon={actionLink.icon}
+                  handleClick={
+                    actionLink.text.toLowerCase() === "receive" ? onAddressModalOpen : undefined
+                  }
+                />
               </Link>
             ))}
             <Box

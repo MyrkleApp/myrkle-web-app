@@ -19,8 +19,12 @@ import { TAccountInfoModal } from "../../types";
 import Editables from "./editables";
 import Skeleton1 from "@/components/skeleton";
 import { useSelector } from "react-redux";
-import { selectAddress, selectNet } from "../../redux/wallet.selectors";
-import { useGetAccountInfoQuery } from "@/features/shared/redux/xrp.api";
+import { selectAddress, selectNet, selectWalletProvider } from "../../redux/wallet.selectors";
+import { useGetAccountInfoQuery, useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
+import ROUTES from "@/routes";
+import { useNavigate } from "react-router-dom";
+import { formatNumber } from "@/helpers";
+import RenderElement from "@/components/render-element";
 
 export interface AccountInfoModalProps {
   handleClose: () => void;
@@ -28,11 +32,14 @@ export interface AccountInfoModalProps {
 }
 
 function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoModalProps) {
+  const navigate = useNavigate();
+
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);
+  const walletProvider = useSelector(selectWalletProvider);
 
   const { data, isLoading } = useGetAccountInfoQuery({ address, net });
-  console.log(data);
+  const { isLoading: isXrpBalanceLoading, data: xrpBalance } = useGetBalanceQuery({ address, net });
 
   const ref = useRef(null);
 
@@ -40,6 +47,12 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
     ref,
     handler: handleClose,
   });
+
+  const handleSecretsClick = () => {
+    if (walletProvider !== "myrkle") return;
+
+    handleAccountInfoModal("enter-password");
+  };
 
   return (
     <MotionBox
@@ -62,7 +75,15 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
           <Text fontWeight="bold" fontSize="2xl">
             Account Info
           </Text>
-          <HStack bg="dark" boxShadow="0 2px 3px #121312" py={1} px={2} borderRadius="5px">
+          <HStack
+            bg="dark"
+            boxShadow="0 2px 3px #121312"
+            py={1}
+            px={2}
+            borderRadius="5px"
+            opacity={walletProvider === "myrkle" ? 1 : 0.4}
+            cursor={walletProvider === "myrkle" ? "pointer" : "not-allowed"}
+          >
             <PlusIcon fontSize="2xs" />
             <Text fontWeight="bold" fontSize="xs">
               add account
@@ -73,6 +94,7 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
       </Flex>
       <HStack
         bg="dark"
+        opacity={walletProvider === "myrkle" ? 1 : 0.4}
         boxShadow="0 2px 3px #121312"
         py={1}
         px={2}
@@ -80,8 +102,8 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
         pos="absolute"
         right={8}
         top="85px"
-        cursor="pointer"
-        onClick={() => handleAccountInfoModal("enter-password")}
+        cursor={walletProvider === "myrkle" ? "pointer" : "not-allowed"}
+        onClick={handleSecretsClick}
       >
         <Text fontWeight="bold" fontSize="xs">
           secrets
@@ -107,20 +129,28 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
             </Box>
 
             <HStack spacing="10px">
-              <HStack bg="dark" borderRadius="12px" p={4} w="60%" boxShadow="0 2px 8px #00000040">
-                <Image src={xrpLogo} alt="logo" />
-                <VStack align="flex-start" spacing="0">
-                  <Text fontWeight="bold" fontSize="2xl">
-                    5,004.00
-                  </Text>
-                  <HStack mt="-5px">
-                    <Text fontSize="2xs">Spendable balance</Text>
-                    {/* info popup here */}
-                  </HStack>
-                </VStack>
-              </HStack>
+              <RenderElement isLoading={isXrpBalanceLoading} h="77px">
+                <HStack
+                  bg="dark"
+                  borderRadius="12px"
+                  p={4}
+                  w="100%"
+                  boxShadow="0 2px 8px #00000040"
+                >
+                  <Image src={xrpLogo} alt="logo" />
+                  <VStack align="flex-start" spacing="0">
+                    <Text fontWeight="bold" fontSize="2xl">
+                      {formatNumber(xrpBalance?.balance)}
+                    </Text>
+                    <HStack mt="-5px">
+                      <Text fontSize="2xs">Balance</Text>
+                      {/* info popup here */}
+                    </HStack>
+                  </VStack>
+                </HStack>
+              </RenderElement>
 
-              <VStack
+              {/* <VStack
                 align="flex-start"
                 bg="dark"
                 borderRadius="12px"
@@ -135,9 +165,8 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
                 </Text>
                 <HStack mt="-5px">
                   <Text fontSize="2xs">Spendable balance</Text>
-                  {/* info popup here */}
                 </HStack>
-              </VStack>
+              </VStack> */}
             </HStack>
 
             <SimpleGrid columns={4} h="90px" spacing={2}>
@@ -173,6 +202,8 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
                 pt={4}
                 spacing="12px"
                 boxShadow="0 2px 8px #00000040"
+                cursor="pointer"
+                onClick={() => navigate(ROUTES.TERMINAL_FLAGS)}
               >
                 <FlagIcon fontSize="2xl" />
                 <Text fontSize="2xs" textAlign="center" maxW="70%" lineHeight={1.1}>
@@ -186,10 +217,12 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
                 pt={4}
                 spacing="12px"
                 boxShadow="0 2px 8px #00000040"
+                opacity={walletProvider === "myrkle" ? 1 : 0.4}
+                cursor={walletProvider === "myrkle" ? "pointer" : "not-allowed"}
               >
                 <RemoveAccountIcon fontSize="2xl" mb={0} />
                 <Text fontSize="2xs" textAlign="center" maxW="70%" lineHeight={1.1}>
-                  Remove Account
+                  Delete Account
                 </Text>
               </VStack>
             </SimpleGrid>

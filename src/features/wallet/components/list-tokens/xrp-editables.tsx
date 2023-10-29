@@ -1,6 +1,8 @@
 import ItemLabel from "@/components/item-label";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
+import { formatNumber } from "@/helpers";
+import xrpLogo from "@/assets/xrp-logo.svg";
 
 export interface XrpEditablesProps {
   data: ReturnType<typeof useGetXrpData>;
@@ -21,8 +23,21 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Market cap" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.marketCap?.data}
+          <Text fontSize="xs" letterSpacing={1} ml={3}>
+            ${formatNumber(data.marketCap?.data)}
+          </Text>
+        </Box>
+      </Flex>
+
+      <Box as="hr" borderTop="1px solid #4b4a4a" w="30%" />
+
+      <Flex justify="space-between">
+        <Box w="30%">
+          <ItemLabel title="Market dominance" fontWeight="400" mb={0} />
+        </Box>
+        <Box w="57%">
+          <Text fontSize="xs" letterSpacing={1} ml={3}>
+            {data.marketDominance?.data} %
           </Text>
         </Box>
       </Flex>
@@ -34,22 +49,12 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Transfer fee" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.fee?.data}
-          </Text>
-        </Box>
-      </Flex>
-
-      <Box as="hr" borderTop="1px solid #4b4a4a" w="30%" />
-
-      <Flex justify="space-between">
-        <Box w="30%">
-          <ItemLabel title="Limit" fontWeight="400" mb={0} />
-        </Box>
-        <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            -- --
-          </Text>
+          <HStack ml={3}>
+            <Image src={xrpLogo} alt="xrp" h="20px" />
+            <Text fontSize="xs" letterSpacing={1}>
+              {data.fee?.data}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -60,9 +65,12 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Max supply" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.maxSupply?.data}
-          </Text>
+          <HStack ml={3}>
+            <Image src={xrpLogo} alt="xrp" h="20px" />
+            <Text fontSize="xs" letterSpacing={1}>
+              {formatNumber(data.maxSupply?.data)}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -73,9 +81,12 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Circulating supply" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.circulatingSupply?.data}
-          </Text>
+          <HStack ml={3}>
+            <Image src={xrpLogo} alt="xrp" h="20px" />
+            <Text fontSize="xs" letterSpacing={1}>
+              {formatNumber(data.circulatingSupply?.data)}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -86,9 +97,12 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Burned coins" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.burnedCoins?.data}
-          </Text>
+          <HStack ml={3}>
+            <Image src={xrpLogo} alt="xrp" h="20px" />
+            <Text fontSize="xs" letterSpacing={1}>
+              {formatNumber(data.burnedCoins?.data)}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -99,9 +113,12 @@ function XrpEditables({ data }: XrpEditablesProps) {
           <ItemLabel title="Escrowed coins" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {data.escrowedCoins?.data}
-          </Text>
+          <HStack ml={3}>
+            <Image src={xrpLogo} alt="xrp" h="20px" />
+            <Text fontSize="xs" letterSpacing={1}>
+              {formatNumber(data.escrowedCoins?.data)}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
     </Flex>

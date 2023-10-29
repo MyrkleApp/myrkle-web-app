@@ -242,7 +242,7 @@ function SendToken() {
         }}
       >
         <Button
-          bg="primary"
+          bg={amount && receiverAddress ? "primary" : "secondary"}
           letterSpacing={1}
           w="100%"
           h="100%"

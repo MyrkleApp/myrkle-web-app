@@ -6,6 +6,7 @@ import { useModifyDomainMutation, useModifyEmailMutation } from "@/features/shar
 import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { useState } from "react";
+import { formatNumber } from "@/helpers";
 
 export interface EditablesProps {
   data: any;
@@ -56,12 +57,12 @@ function Editables({ data }: EditablesProps) {
 
       <Flex justify="space-between">
         <Box w="30%" borderBottom="1px solid #4b4a4a">
-          <ItemLabel title="Balance" fontWeight="400" />
+          <ItemLabel title="Total balance" fontWeight="400" />
         </Box>
         <Box w="60%">
           <HStack>
             <Image src={xrpLogo} alt="logo" h="20px" />
-            <Text fontSize="sm">{data?.balance}</Text>
+            <Text fontSize="sm">{formatNumber(data?.balance)}</Text>
           </HStack>
         </Box>
       </Flex>

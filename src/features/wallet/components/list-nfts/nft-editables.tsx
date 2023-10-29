@@ -49,17 +49,6 @@ function NftEditables() {
 
       <Flex justify="space-between" mb={2}>
         <Box w="30%">
-          <ItemLabel title="Sequence" fontWeight="400" mb={0} />
-        </Box>
-        <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2}>
-            -- --
-          </Text>
-        </Box>
-      </Flex>
-
-      <Flex justify="space-between" mb={2}>
-        <Box w="30%">
           <ItemLabel title="URL" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">

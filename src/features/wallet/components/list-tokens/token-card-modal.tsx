@@ -220,7 +220,7 @@ function TokenCardModal({
             _hover={{ bg: "danger" }}
           >
             <CancelIcon fontSize="3xl" mb={1} />
-            <Text fontSize="2xs">Object Count</Text>
+            <Text fontSize="2xs">Remove</Text>
           </VStack>
         </SimpleGrid>
 

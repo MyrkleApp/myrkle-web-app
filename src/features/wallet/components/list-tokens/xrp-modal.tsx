@@ -7,7 +7,6 @@ import {
   Image,
   SimpleGrid,
   Spacer,
-  Switch,
   Text,
   VStack,
   useOutsideClick,
@@ -99,14 +98,14 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
           </VStack>
         </HStack>
 
-        <HStack mb={4}>
+        {/* <HStack mb={4}>
           <Text fontSize="sm" fontWeight="bold">
             Ripple
           </Text>
           <Switch colorScheme="whatsapp" />
-        </HStack>
+        </HStack> */}
 
-        <ItemLabel title="Index" fontSize="sm" mb={0} />
+        {/* <ItemLabel title="Index" fontSize="sm" mb={0} />
         <Box
           w="100%"
           bg="dark"
@@ -119,14 +118,14 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
           <Text fontWeight="bold" fontSize="sm">
             sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
           </Text>
-        </Box>
+        </Box> */}
 
-        <ItemLabel title="Description" fontSize="sm" />
+        <ItemLabel title="Description" fontSize="sm" mt={4} />
         <Box
           pos="absolute"
           bottom={0}
           bg="dark"
-          h="calc(100% - 210px)"
+          h="calc(100% - 111px)"
           borderRadius="12px"
           p={4}
           boxShadow="0 2px 8px #00000040"
@@ -200,8 +199,9 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
             pt={6}
             spacing={3}
             boxShadow="0 2px 8px #00000040"
-            cursor="pointer"
-            _hover={{ bg: "danger" }}
+            opacity={0.5}
+            cursor="not-allowed"
+            // _hover={{ bg: "danger" }}
           >
             <CancelIcon fontSize="3xl" mb={1} />
             <Text fontSize="2xs">Remove</Text>

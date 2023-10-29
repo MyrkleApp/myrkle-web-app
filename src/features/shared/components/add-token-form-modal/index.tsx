@@ -122,7 +122,7 @@ function AddTokenFormModal({
       initial={{ opacity: 0 }}
       animate={{
         opacity: 1,
-        height: showAdvancedOptions ? "480px" : "370px",
+        height: showAdvancedOptions ? "440px" : "370px",
       }}
       exit={{ opacity: 0 }}
     >
@@ -140,7 +140,7 @@ function AddTokenFormModal({
         height="260px"
         pos="relative"
         initial={{ height: "260px" }}
-        animate={{ height: showAdvancedOptions ? "370px" : "260px" }}
+        animate={{ height: showAdvancedOptions ? "330px" : "260px" }}
       >
         <HStack mb={3}>
           <Text fontSize="2xs" color="textDark" fontWeight="bold">
@@ -193,13 +193,12 @@ function AddTokenFormModal({
               animate={{ opacity: 1, transition: { duration: 0.5 } }}
               exit={{ opacity: 0, transition: { duration: 0.5 } }}
             >
-              <HStack mb={3}>
+              {/* <HStack mb={3}>
                 <Text fontSize="2xs" color="textDark" fontWeight="bold">
                   Limit
                 </Text>
-                {/* info component goes here */}
               </HStack>
-              <Input mb={3} />
+              <Input mb={3} /> */}
 
               <HStack mb={3}>
                 <Text fontSize="2xs" color="textDark" fontWeight="bold">
