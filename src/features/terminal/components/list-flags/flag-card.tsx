@@ -54,7 +54,7 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
     <>
       <Box bg="dark" borderRadius="30px" p="30px" w="100%" h="100%" aspectRatio={1 / 0.8}>
         <HStack mb="40px">
-          <Text fontWeight="bold" fontSize="sm">
+          <Text fontWeight="bold" fontSize="sm" maxW="80%" textOverflow="break-work">
             {title || "Flags name"}
           </Text>
           <Spacer />

@@ -38,33 +38,61 @@ function ListFlags() {
         mutation={accountTxnId}
       />
       <FlagCard title="Auth nft token minter" description="Flag description" />
-      <FlagCard title="Default ripple" description="Flag description" mutation={defaultRipple} />
-      <FlagCard title="Disable master" description="Flag description" mutation={disableMaster} />
       <FlagCard
-        title="Disallow incoming check"
-        description="Flag description"
+        title="lsfDefaultRipple"
+        description="enable rippling on this address's trust lines by default. Required for issuing addresses; discouraged for others"
+        mutation={defaultRipple}
+      />
+      <FlagCard
+        title="lsfDisableMaster"
+        description="Disallows use of the master key to sign transactions for this account"
+        mutation={disableMaster}
+      />
+      <FlagCard
+        title="lsfDisallowIncomingCheck"
+        description="To block incoming check"
         mutation={disallowIncomingCheck}
       />
       <FlagCard
-        title="Disallow incoming nft token offer"
-        description="Flag description"
+        title="lsfDisallowIncomingNFTokenOffer"
+        description="To block incoming nftoken offers"
         mutation={disallowIncomingNftTokenOffer}
       />
       <FlagCard
-        title="Disallow incoming payChan"
-        description="Flag description"
+        title="lsfDisallowIncomingPayChannel"
+        description="To block incoming pay channels"
         mutation={disallowIncomingPayChan}
       />
       <FlagCard
-        title="Disallow incoming trustline"
-        description="Flag description"
+        title="lsfDisallowIncomingTrustline"
+        description="To block incoming trustline"
         mutation={disallowIncomingTrustline}
       />
-      <FlagCard title="Disallow xrp" description="Flag description" mutation={disallowXrp} />
-      <FlagCard title="Global freeze" description="Flag description" mutation={globalFreeze} />
-      <FlagCard title="No freeze" description="Flag description" mutation={noFreeze} />
-      <FlagCard title="Require auth" description="Flag description" mutation={requireAuth} />
-      <FlagCard title="Require destination" description="Flag description" mutation={requireDest} />
+      <FlagCard
+        title="lsfDisallowXRP"
+        description="Client applications should not send xrp to this account. Not enforced by ripple."
+        mutation={disallowXrp}
+      />
+      <FlagCard
+        title="lsfGlobalFreeze"
+        description="All assets issued by this address are frozen"
+        mutation={globalFreeze}
+      />
+      <FlagCard
+        title="lsfNoFreeze"
+        description="This address cannot freeze trustlines connected to it. Once enabled, cannot be disabled."
+        mutation={noFreeze}
+      />
+      <FlagCard
+        title="lsfRequireAuth"
+        description="This account must individually aprove other users for those users to hold this account's tokens"
+        mutation={requireAuth}
+      />
+      <FlagCard
+        title="lsfRequireDestTag"
+        description="Requires incoming payments to specify a destination tag"
+        mutation={requireDest}
+      />
     </SimpleGrid>
   );
 }
