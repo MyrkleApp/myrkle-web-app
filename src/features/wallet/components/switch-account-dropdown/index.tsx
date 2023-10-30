@@ -11,9 +11,13 @@ import { providersList } from "./data";
 import SwitchAccountModal from "./switch-account-modal";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
 import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
+import ConnectXummModal from "./connect-xumm-modal";
+import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
+import { socket, xummSignInJson } from "@/features/shared/socket-io";
 
 function SwitchAccountDropdown() {
   const { newExternalProvider, newAddress, isWalletInStorage } = useExternalWalletEvent();
+  const { qrCodeImage } = useXummSignIn();
 
   // ======================================================================================================
   // selectors
@@ -47,6 +51,7 @@ function SwitchAccountDropdown() {
   } = useDisclosure();
 
   const [selectedWallet, setSelectedWallet] = useState<null | IWalletAddress>(null);
+  const [newWallet, setNewWallet] = useState<null | TWalletProvider>(null);
 
   const ref = useRef(null);
 
@@ -76,9 +81,22 @@ function SwitchAccountDropdown() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newExternalProvider, newAddress]);
 
+  useEffect(() => {
+    if (newWallet) {
+      onCloseDropdown();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newWallet]);
+
   // ======================================================================================================
   // handlers & other functions
   // ======================================================================================================
+
+  const handleNewWallet = (wallet: null | TWalletProvider) => {
+    if (wallet !== "xumm") return;
+    socket.emit("signIn", xummSignInJson);
+    setNewWallet(wallet);
+  };
 
   const getProviderWallets = (provider: TWalletProvider) => {
     return myWallets.filter((wallet) => wallet.walletProvider === provider);
@@ -147,6 +165,7 @@ function SwitchAccountDropdown() {
                     wallets={getProviderWallets(provider.name)}
                     isActiveProvider={walletProvider === provider.name}
                     handleSelectedWallet={handleSelectedWallet}
+                    handleNewWallet={() => handleNewWallet(provider.name)}
                   />
                 ))}
               </Accordion>
@@ -175,6 +194,10 @@ function SwitchAccountDropdown() {
           handleProceed={handleSwitchWallet2}
           isWalletInStorage={isWalletInStorage}
         />
+      </Backdrop>
+
+      <Backdrop isOpen={!!newWallet}>
+        <ConnectXummModal qrCodeImage={qrCodeImage} handleClose={() => setNewWallet(null)} />
       </Backdrop>
     </>
   );

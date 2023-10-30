@@ -18,12 +18,24 @@ export interface AccountItemProps {
   wallets: IWalletAddress[];
   isActiveProvider: boolean;
   handleSelectedWallet: (walletAddress: IWalletAddress) => void;
+  handleNewWallet: () => void;
 }
 
-function AccountItem({ logo, wallets, isActiveProvider, handleSelectedWallet }: AccountItemProps) {
+function AccountItem({
+  logo,
+  wallets,
+  isActiveProvider,
+  handleSelectedWallet,
+  handleNewWallet,
+}: AccountItemProps) {
   const handleWalletAddressClick = (wallet: IWalletAddress) => {
     if (isActiveProvider) return;
     handleSelectedWallet(wallet);
+  };
+
+  const handlePlusIconClick = (e: any) => {
+    e.stopPropagation();
+    handleNewWallet();
   };
 
   return (
@@ -40,7 +52,7 @@ function AccountItem({ logo, wallets, isActiveProvider, handleSelectedWallet }: 
               {logo}
             </Box>
             {isExpanded ? (
-              <PlusIcon fontSize="2xs" mr={1} />
+              <PlusIcon fontSize="2xs" mr={1} onClick={handlePlusIconClick} />
             ) : (
               <Text fontSize="2xs" color="gray" mr={1}>
                 {wallets?.length || "-"}

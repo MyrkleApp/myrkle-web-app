@@ -73,7 +73,7 @@ function useExternalWalletEvent() {
     try {
       on("networkChanged", async (resp: any) => {
         const network = resp.network.name;
-        console.log(network);
+        // console.log(network);
         const processedNetwork = network?.toLowerCase()?.includes("test")
           ? "testnet"
           : network?.toLowerCase()?.includes("main")
@@ -85,6 +85,7 @@ function useExternalWalletEvent() {
 
       on("walletChanged", (resp: any) => {
         const address = resp.wallet.publicAddress;
+        console.log("gemwallet address >>> ", address);
         setAddress(address);
         setProvider("gemwallet");
       });
