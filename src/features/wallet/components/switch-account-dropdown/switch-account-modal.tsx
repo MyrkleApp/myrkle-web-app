@@ -8,9 +8,16 @@ export interface AddressModalProps {
   provider: string;
   handleClose: () => void;
   handleProceed: () => void;
+  isWalletInStorage: boolean;
 }
 
-function SwitchAccountModal({ address, provider, handleClose, handleProceed }: AddressModalProps) {
+function SwitchAccountModal({
+  address,
+  provider,
+  handleClose,
+  handleProceed,
+  isWalletInStorage,
+}: AddressModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -41,7 +48,9 @@ function SwitchAccountModal({ address, provider, handleClose, handleProceed }: A
         {address}
       </Text>
       <Text fontSize="sm" mb={6}>
-        that exists on your <strong>{provider}</strong> account
+        {isWalletInStorage
+          ? `that exists on your ${provider} account`
+          : "which you have not connected to"}
       </Text>
 
       <HStack>
@@ -50,7 +59,7 @@ function SwitchAccountModal({ address, provider, handleClose, handleProceed }: A
           Cancel
         </Button>
         <Button h="35px" onClick={handleProceed}>
-          Proceed
+          {isWalletInStorage ? "Proceed" : "Connect"}
         </Button>
       </HStack>
     </MotionBox>

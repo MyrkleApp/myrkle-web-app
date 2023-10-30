@@ -18,6 +18,7 @@ import {
   IModifyDomain,
   IModifyEmail,
   IModifyTickSize,
+  IModifyTokenTransferFee,
   IOrderBookSwap,
   IReceiveNft,
   IRemoveToken,
@@ -258,6 +259,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    modifyTokenTransferFee: builder.mutation({
+      query(body: IModifyTokenTransferFee) {
+        return {
+          url: "eng/modify-token-transfer-fee/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
     modifyTickSize: builder.mutation({
       query(body: IModifyTickSize) {
         return {
@@ -493,6 +503,7 @@ export const {
   useCreateXrpEscrowMutation,
   useModifyDomainMutation,
   useModifyEmailMutation,
+  useModifyTokenTransferFeeMutation,
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
   useCreateTokenMutation,

@@ -1,7 +1,7 @@
 import { MotionText } from "@/components/motion-elements";
 import { HStack, Image, Spacer } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNetwork } from "../../redux/wallet.selectors";
+import { selectNetwork, selectWalletProvider } from "../../redux/wallet.selectors";
 import { TNetwork } from "../../types";
 import { setNetwork } from "../../redux/wallet.slice";
 import { AnimatePresence } from "framer-motion";
@@ -12,11 +12,14 @@ function NetworkToggler() {
   const [twinArrowsAngle, setTwinArrowsAngle] = useState(0);
 
   const network = useSelector(selectNetwork);
+  const walletProvider = useSelector(selectWalletProvider);
 
   const dispatch = useDispatch();
   const _setNetwork = (network: TNetwork) => dispatch(setNetwork(network));
 
   const handleNetworkToggle = () => {
+    if (walletProvider !== "myrkle") return;
+
     if (network === "testnet") _setNetwork("devnet");
     if (network === "devnet") _setNetwork("mainnet");
     if (network === "mainnet") _setNetwork("testnet");
@@ -30,7 +33,7 @@ function NetworkToggler() {
       w="80px"
       ml={3}
       mr={7}
-      cursor="pointer"
+      cursor={walletProvider === "myrkle" ? "pointer" : "not-allowed"}
       onClick={handleNetworkToggle}
     >
       <AnimatePresence>

@@ -10,8 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
 import SwitchAccountModal from "./switch-account-modal";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
+import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
 
 function SwitchAccountDropdown() {
+  const { newExternalProvider, newAddress, isWalletInStorage } = useExternalWalletEvent();
+
   // ======================================================================================================
   // selectors
   // ======================================================================================================
@@ -31,7 +34,17 @@ function SwitchAccountDropdown() {
   // state & disclosure & ref
   // ======================================================================================================
 
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const {
+    isOpen: isDropdownOpen,
+    onToggle: onToggleDropdown,
+    onClose: onCloseDropdown,
+  } = useDisclosure();
+
+  const {
+    isOpen: isExternalProviderChangeOpen,
+    onOpen: onOpenExternalChange,
+    onClose: onCloseExternalChange,
+  } = useDisclosure();
 
   const [selectedWallet, setSelectedWallet] = useState<null | IWalletAddress>(null);
 
@@ -43,14 +56,25 @@ function SwitchAccountDropdown() {
 
   useOutsideClick({
     ref,
-    handler: onClose,
+    handler: onCloseDropdown,
   });
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isDropdownOpen) {
       setSelectedWallet(null);
     }
-  }, [isOpen]);
+  }, [isDropdownOpen]);
+
+  useEffect(() => {
+    // close other modal if open
+    setSelectedWallet(null);
+    onCloseDropdown();
+
+    if (!newExternalProvider || !newAddress) return;
+    onOpenExternalChange();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newExternalProvider, newAddress]);
 
   // ======================================================================================================
   // handlers & other functions
@@ -71,6 +95,19 @@ function SwitchAccountDropdown() {
     _setWalletProvider(selectedWallet.walletProvider);
   };
 
+  const handleSwitchWallet2 = () => {
+    if (!newExternalProvider || !newAddress) return;
+
+    if (!isWalletInStorage) {
+      // TODO: prompt them to connect the new wallet
+      return;
+    }
+
+    _setAddress(newAddress);
+    _setWalletProvider(newExternalProvider);
+    onCloseExternalChange();
+  };
+
   return (
     <>
       <Box ref={ref}>
@@ -85,12 +122,12 @@ function SwitchAccountDropdown() {
           textAlign="left"
           justifyContent="space-between"
           _hover={{ bg: "dark" }}
-          onClick={onToggle}
+          onClick={onToggleDropdown}
         >
           Switch Account
         </Button>
 
-        {isOpen && (
+        {isDropdownOpen && (
           <AnimatePresence>
             <MotionBox
               pos="absolute"
@@ -118,15 +155,26 @@ function SwitchAccountDropdown() {
         )}
       </Box>
 
-      <Backdrop isOpen={isOpen || !!selectedWallet}>
+      <Backdrop isOpen={isDropdownOpen || !!selectedWallet}>
         {selectedWallet && selectedWallet.walletProvider !== "xumm" && (
           <SwitchAccountModal
             address={selectedWallet.address}
             provider={selectedWallet.walletProvider}
-            handleClose={onClose}
+            handleClose={onCloseDropdown}
             handleProceed={handleSwitchWallet}
+            isWalletInStorage={isWalletInStorage}
           />
         )}
+      </Backdrop>
+
+      <Backdrop isOpen={isExternalProviderChangeOpen}>
+        <SwitchAccountModal
+          address={newAddress}
+          provider={newExternalProvider}
+          handleClose={onCloseExternalChange}
+          handleProceed={handleSwitchWallet2}
+          isWalletInStorage={isWalletInStorage}
+        />
       </Backdrop>
     </>
   );

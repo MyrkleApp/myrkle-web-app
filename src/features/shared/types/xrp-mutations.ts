@@ -96,6 +96,12 @@ export interface IModifyEmail {
   fee?: string;
 }
 
+export interface IModifyTokenTransferFee {
+  sender_addr: string;
+  transfer_fee: number;
+  fee?: string;
+}
+
 export interface IModifyTickSize {
   sender_addr: string;
   tick_size: string;
