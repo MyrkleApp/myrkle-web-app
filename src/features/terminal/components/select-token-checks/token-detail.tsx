@@ -4,7 +4,7 @@ import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
 import { Box, HStack, Spacer, Text } from "@chakra-ui/react";
 import TokenItem from "../select-token-dropdown/token-item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { numbersOnlyRegex } from "@/constants";
 import {
   useCreateTokenCheckMutation,
@@ -13,6 +13,11 @@ import {
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { isXrpToken } from "@/helpers";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import { TTxnPipeline } from "@/features/shared/types";
+import Backdrop from "@/components/backdrop";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 export interface TokenDetailProps {
   token: any;
@@ -26,12 +31,24 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [createTokenCheck, { isLoading: isCreateTokenCheckLoading }] =
-    useCreateTokenCheckMutation();
-  const [createXrpCheck, { isLoading: isCreateXrpCheckLoading }] = useCreateXrpCheckMutation();
+  const [createTokenCheck] = useCreateTokenCheckMutation();
+  const [createXrpCheck] = useCreateXrpCheckMutation();
+
+  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   const handleConfirm = () => {
+    setView("loading");
+
     if (isXrpToken(token)) {
       createXrpCheck({
         sender_addr: address,
@@ -40,8 +57,8 @@ function TokenDetail({ token }: TokenDetailProps) {
         expiry_date: expiryDate,
       })
         .unwrap()
-        .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+        .then((res) => handleSubmitTxn(res))
+        .catch(() => setView("error-1"));
       return;
     }
     createTokenCheck({
@@ -53,8 +70,16 @@ function TokenDetail({ token }: TokenDetailProps) {
       expiry_date: expiryDate,
     })
       .unwrap()
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+      .then((res) => handleSubmitTxn(res))
+      .catch(() => setView("error-1"));
+  };
+
+  const handleReset = () => {
+    setView("default");
+    resetSubmitTxnResponse();
+    setReceiverAddress("");
+    setAmount("");
+    setExpiryDate("");
   };
 
   return (
@@ -110,15 +135,18 @@ function TokenDetail({ token }: TokenDetailProps) {
             <Spacer />
             <Text fontSize="xs">1.00</Text>
           </HStack>
-          <Button
-            w="100%"
-            isLoading={isCreateXrpCheckLoading || isCreateTokenCheckLoading}
-            onClick={handleConfirm}
-          >
+          <Button w="100%" onClick={handleConfirm}>
             confirm
           </Button>
         </Box>
       </MotionBox>
+
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
+      </Backdrop>
     </>
   );
 }

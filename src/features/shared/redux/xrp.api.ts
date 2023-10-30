@@ -486,6 +486,7 @@ export const {
   useGetCheckInfoQuery,
   useGetAccountEscrowsQuery,
   useGetEscrowInfoQuery,
+  useGetPayTxnInfoQuery,
 
   // mutations
   useBurnTokenMutation,

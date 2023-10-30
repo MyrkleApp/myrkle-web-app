@@ -8,7 +8,7 @@ function useSubmitTxn() {
   const walletProvider = useSelector(selectWalletProvider);
   const userToken = useSelector(selectUserToken);
 
-  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
   const [responseMessage, setResponseMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ function useSubmitTxn() {
       const { response } = await sdk.signAndSubmitAndWait(TxnReq);
       if (response.data.meta.isRejected) {
         console.log("Transaction Rejected");
-        setIsError(true);
+        setIsSuccess(false);
         setResponseMessage("Transaction rejected");
         setIsOpen(true);
         setIsLoading(false);
@@ -35,7 +35,7 @@ function useSubmitTxn() {
         return "Transaction Rejected";
       }
       if (response.data.meta.isError) {
-        setIsError(true);
+        setIsSuccess(false);
         setResponseMessage("Error encountered during signing");
         setIsOpen(true);
         setIsLoading(false);
@@ -44,7 +44,7 @@ function useSubmitTxn() {
         return "Error encountered during signing";
       }
       if (response.data.meta.isFail) {
-        setIsError(true);
+        setIsSuccess(false);
         setResponseMessage("Transaction failed");
         setIsOpen(true);
         setIsLoading(false);
@@ -53,7 +53,7 @@ function useSubmitTxn() {
         return "Transaction Failed";
       }
       if (response.data.meta.isExpired) {
-        setIsError(true);
+        setIsSuccess(false);
         setResponseMessage("Transaction expired");
         setIsOpen(true);
         setIsLoading(false);
@@ -62,7 +62,7 @@ function useSubmitTxn() {
         return "Transaction Expired";
       }
       if (response.data.meta.isSuccess) {
-        setIsError(false);
+        setIsSuccess(true);
         setResponseMessage("Transaction successful");
         setIsOpen(true);
         setIsLoading(false);
@@ -71,7 +71,7 @@ function useSubmitTxn() {
         return { status: "SUCCESS", hash: response.data.resp.result.hash };
       }
     } catch (e) {
-      setIsError(true);
+      setIsSuccess(false);
       setResponseMessage("something went wrong");
       setIsOpen(true);
       setIsLoading(false);
@@ -94,7 +94,7 @@ function useSubmitTxn() {
       const resp = await submitTransaction({ transaction });
       if (resp.result?.hash) {
         console.log({ status: "SUCCESS", hash: resp.result.hash });
-        setIsError(false);
+        setIsSuccess(true);
         setResponseMessage("Transaction successful");
         setIsOpen(true);
         setIsLoading(false);
@@ -102,7 +102,7 @@ function useSubmitTxn() {
         return { status: "SUCCESS", hash: resp.result.hash };
       }
     } catch (e) {
-      setIsError(true);
+      setIsSuccess(false);
       setResponseMessage("Error occured");
       setIsOpen(true);
       setIsLoading(false);
@@ -126,7 +126,7 @@ function useSubmitTxn() {
       }
 
       if (!res.txSign) {
-        setIsError(true);
+        setIsSuccess(false);
         setResponseMessage("Transaction not signed");
         setIsOpen(true);
         setIsLoading(false);
@@ -135,7 +135,7 @@ function useSubmitTxn() {
       }
 
       if (res.txSign) {
-        setIsError(false);
+        setIsSuccess(true);
         setResponseMessage("Transaction signed");
         setIsOpen(true);
         setIsLoading(false);
@@ -171,15 +171,16 @@ function useSubmitTxn() {
   };
 
   const handleCloseSubmitTxnRes = () => setIsOpen(false);
+  const resetSubmitTxnResponse = () => setIsSuccess(null);
 
   return [
     {
-      isSubmitTxnError: isError,
+      isSubmitTxnSuccess: isSuccess,
       submitTxnResponseMsg: responseMessage,
       isSubmitTxnResOpen: isOpen,
       isSubmitTxnLoading: isLoading,
     },
-    { handleSubmitTxn, handleCloseSubmitTxnRes },
+    { handleSubmitTxn, handleCloseSubmitTxnRes, resetSubmitTxnResponse },
   ] as const;
 }
 
