@@ -4,11 +4,30 @@ import { useRef } from "react";
 import TokenItem from "./token-item";
 
 export interface TxnDetailsModalProps {
+  fromTokenName: string;
+  fromTokenIssuer: string;
+  fromTokenIcon: string;
+  fromTokenAmount: number | string;
+  toTokenName: string;
+  toTokenIssuer: string;
+  toTokenIcon: string;
+  toTokenAmount: number | string;
   handleClose: () => void;
   handleProceed?: () => void;
 }
 
-function TxnDetailsModal({ handleClose, handleProceed }: TxnDetailsModalProps) {
+function TxnDetailsModal({
+  fromTokenName,
+  fromTokenIssuer,
+  fromTokenIcon,
+  fromTokenAmount,
+  toTokenName,
+  toTokenIssuer,
+  toTokenIcon,
+  toTokenAmount,
+  handleClose,
+  handleProceed,
+}: TxnDetailsModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -41,14 +60,24 @@ function TxnDetailsModal({ handleClose, handleProceed }: TxnDetailsModalProps) {
           Give
         </Text>
         <Box pos="absolute" top="calc(10% + 25px)" w="100%" h="15%">
-          <TokenItem />
+          <TokenItem
+            token={fromTokenName}
+            issuer={fromTokenIssuer}
+            icon={fromTokenIcon}
+            amount={fromTokenAmount}
+          />
         </Box>
 
         <Text color="textDark" fontSize="xs" fontWeight="bold" pos="absolute" top="33%">
           Get
         </Text>
         <Box pos="absolute" top="calc(33% + 25px)" w="100%" h="15%">
-          <TokenItem />
+          <TokenItem
+            token={toTokenName}
+            issuer={toTokenIssuer}
+            icon={toTokenIcon}
+            amount={toTokenAmount}
+          />
         </Box>
 
         <Flex

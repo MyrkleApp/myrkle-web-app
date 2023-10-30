@@ -1,9 +1,9 @@
 import Button from "@/components/button";
 import ExchangeIcon from "@/icons/exchange";
-import { Box, Circle, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Circle, Text } from "@chakra-ui/react";
 import ExchangeBox from "../exchange-box";
 import { numbersOnlyRegex, xrpToken } from "@/constants";
-import { IToken } from "@/features/shared/types";
+import { IToken, TTxnPipeline } from "@/features/shared/types";
 import { useEffect, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
@@ -14,15 +14,17 @@ import Backdrop from "@/components/backdrop";
 import { selectExchangeType } from "../../redux/exchange.selectors";
 import { useSearchParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import coinDollar from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { isXrpToken } from "@/helpers";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
 
   // ============================================================================================
   // selectors
@@ -32,19 +34,16 @@ function MakeExchange() {
   const exchangeType = useSelector(selectExchangeType);
 
   // ============================================================================================
-  // state & disclosure
+  // state
   // ============================================================================================
-
-  const {
-    isOpen: isTxnModalOpen,
-    onOpen: onOpenTxnModal,
-    onClose: onCloseTxnModal,
-  } = useDisclosure();
 
   const [fromToken, setFromToken] = useState<IToken>(xrpToken);
   const [toToken, setToToken] = useState<IToken>(xrpToken);
   const [fromTokenAmount, setFromTokenAmount] = useState("");
   const [toTokenAmount, setToTokenAmount] = useState("");
+  const [view, setView] = useState<TTxnPipeline | "success-1">("default");
+
+  const isSameToken = fromToken.token === toToken.token && fromToken.issuer === toToken.issuer;
 
   // ============================================================================================
   // api
@@ -62,10 +61,18 @@ function MakeExchange() {
       setFromToken({
         token: urlToken,
         issuer: urlIssuer,
-        icon: isXrpToken({ token: urlToken, issuer: urlIssuer }) ? xrpLogo : coinDollar,
+        icon: isXrpToken({ token: urlToken, issuer: urlIssuer }) ? xrpLogo : tokenPlaceholder,
       });
     }
   }, [urlIssuer, urlToken]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   // ============================================================================================
   // handlers
@@ -89,6 +96,8 @@ function MakeExchange() {
   };
 
   const handleConfirmClick = () => {
+    setView("loading");
+
     orderBookSwap({
       sender_addr: address,
       buy_type: toToken.token,
@@ -102,16 +111,23 @@ function MakeExchange() {
       tf_immediate_or_cancel: false,
     })
       .unwrap()
-      .then((res) => {
-        console.log(res);
-        onOpenTxnModal();
-      });
+      .then(() => {
+        setView("success-1");
+      })
+      .catch(() => setView("error-1"));
   };
 
   const handleProceed = () => {
+    setView("loading");
+
     if (exchangeType === "swap") {
       handleSubmitTxn(orderBookSwapData);
     }
+  };
+
+  const handleReset = () => {
+    resetSubmitTxnResponse();
+    setView("default");
   };
 
   return (
@@ -158,18 +174,36 @@ function MakeExchange() {
       </Box>
 
       <Button
-        bg="secondary"
+        bg={!fromTokenAmount || !toTokenAmount || isSameToken ? "secondary" : "primary"}
         w="100%"
         pos="absolute"
         bottom="3%"
+        isDisabled={!fromTokenAmount || !toTokenAmount || isSameToken}
         isLoading={isOrderBookSwapLoading}
         onClick={handleConfirmClick}
       >
         confirm
       </Button>
 
-      <Backdrop isOpen={isTxnModalOpen}>
-        <TxnDetailsModal handleClose={onCloseTxnModal} handleProceed={handleProceed} />
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "success-1" && (
+          <TxnDetailsModal
+            handleClose={handleReset}
+            handleProceed={handleProceed}
+            fromTokenName={fromToken.token}
+            fromTokenIssuer={fromToken.issuer}
+            fromTokenIcon={fromToken.icon}
+            fromTokenAmount={fromTokenAmount}
+            toTokenName={toToken.token}
+            toTokenIssuer={toToken.issuer}
+            toTokenIcon={toToken.icon}
+            toTokenAmount={toTokenAmount}
+          />
+        )}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>
   );

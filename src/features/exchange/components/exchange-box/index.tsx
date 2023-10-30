@@ -5,7 +5,7 @@ import Backdrop from "@/components/backdrop";
 import SelectTokenModal from "@/features/shared/components/select-token-modal";
 import { IToken } from "@/features/shared/types";
 import { isXrpToken } from "@/helpers";
-import coinIcon from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 
 export interface ExchangeBoxProps {
   token: IToken;
@@ -35,7 +35,11 @@ function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxPr
         onClick={onOpen}
       >
         <HStack bg="secondary" borderRadius="10px" h="calc(100% - 15px)" mb={1} pl={3} pr={1}>
-          <Image src={(isXrpToken(token) ? xrpLogo : token?.icon) || coinIcon} alt="" h="55%" />
+          <Image
+            src={(isXrpToken(token) ? xrpLogo : token?.icon) || tokenPlaceholder}
+            alt=""
+            h="55%"
+          />
           <VStack spacing={0} align="flex-start">
             <Text
               className="font-face-proxima-nova-extrabld"

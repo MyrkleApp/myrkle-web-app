@@ -1,5 +1,5 @@
 import { HStack, Image, Text, VStack } from "@chakra-ui/react";
-import coinIcon from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 
 export interface TokenItemProps {
   token: string;
@@ -11,7 +11,7 @@ export interface TokenItemProps {
 function TokenItem({ token, issuer, icon, handleClick }: TokenItemProps) {
   return (
     <HStack cursor="pointer" mb={5} onClick={handleClick}>
-      <Image src={icon || coinIcon} alt="" h="40px" />
+      <Image src={icon || tokenPlaceholder} alt="" h="40px" />
       <VStack spacing={0} align="flex-start" ml={2}>
         <Text fontSize="sm" textTransform="uppercase">
           {token}
