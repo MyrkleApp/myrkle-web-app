@@ -7,12 +7,15 @@ import Backdrop from "@/components/backdrop";
 import GenerateProtedtedEscrowModal from "./generate-protected-escrow-modal";
 import { createPortal } from "react-dom";
 import TokenItem from "../select-token-dropdown/token-item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateXrpEscrowMutation } from "@/features/shared/redux/xrp.api";
 import { isXrpToken } from "@/helpers";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import { TTxnPipeline } from "@/features/shared/types";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
 
 export interface TokenDetailProps {
   token: any;
@@ -27,28 +30,47 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [amount, setAmount] = useState("");
   const [claimDate, setClaimDate] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [view, setView] = useState<TTxnPipeline>("default");
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   const handleConfirm = () => {
-    if (isXrpToken(token)) {
-      createXrpEscrow({
-        sender_addr: address,
-        amount: Number(amount),
-        receiver_addr: receiverAddress,
-        claim_date: claimDate,
-        expiry_date: expiryDate,
-        condition: "hello world",
+    if (!isXrpToken(token)) return;
+
+    setView("loading");
+
+    createXrpEscrow({
+      sender_addr: address,
+      amount: Number(amount),
+      receiver_addr: receiverAddress,
+      claim_date: claimDate,
+      expiry_date: expiryDate,
+      condition: "hello world",
+    })
+      .unwrap()
+      .then((res) => {
+        handleSubmitTxn(res);
       })
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          handleSubmitTxn(res);
-        })
-        .catch((err) => console.error(err));
-    }
+      .catch(() => setView("error-1"));
+  };
+
+  const handleReset = () => {
+    resetSubmitTxnResponse();
+    setView("default");
+    setReceiverAddress("");
+    setAmount("");
+    setClaimDate("");
+    setExpiryDate("");
   };
 
   return (
@@ -132,6 +154,13 @@ function TokenDetail({ token }: TokenDetailProps) {
           </Backdrop>,
           document.body,
         )}
+
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
+      </Backdrop>
     </>
   );
 }
