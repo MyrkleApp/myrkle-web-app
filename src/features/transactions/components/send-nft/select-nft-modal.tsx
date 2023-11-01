@@ -1,14 +1,23 @@
 import { MotionBox } from "@/components/motion-elements";
-import { Box, Text, useOutsideClick } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
-import ListSendNft from "./list-send-nft";
+import SendNftItem from "./send-nft-item";
+import { useSelector } from "react-redux";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useGetAccountNftsQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
 
 export interface SelectNftModalProps {
   handleClose: () => void;
-  handleNftItemClick: () => void;
+  handleNftItemClick: (value: any) => void;
 }
 
 function SelectNftModal({ handleClose, handleNftItemClick }: SelectNftModalProps) {
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { data, isLoading } = useGetAccountNftsQuery({ address, net });
+
   const ref = useRef(null);
 
   useOutsideClick({
@@ -38,16 +47,39 @@ function SelectNftModal({ handleClose, handleNftItemClick }: SelectNftModalProps
       </Text>
 
       <Box h="calc(100% - 50px)" overflow="hidden auto">
-        <ListSendNft handleNftItemClick={handleNftItemClick} />
+        <RenderNftList isLoading={isLoading}>
+          <SimpleGrid columns={4} spacing={4} pr={4}>
+            {data?.map((nft: any) => (
+              <SendNftItem
+                key={nft.id}
+                id={nft.id}
+                uri={nft.uri}
+                handleClick={handleNftItemClick}
+              />
+            ))}
+          </SimpleGrid>
+        </RenderNftList>
       </Box>
-
-      {/* <Flex justify="center" align="center" h="calc(100% - 50px)" bg="dark" borderRadius="20px">
-        <Box h="calc(100% - 100px)" w="calc(100% - 150px)" border="1px solid red" overflow="hidden auto">
-          <ListNftsGallery />
-        </Box>
-      </Flex> */}
     </MotionBox>
   );
 }
+
+const RenderNftList = ({ children, isLoading }: any) => {
+  if (isLoading) {
+    return (
+      <SimpleGrid columns={4} spacing={4} pr={4}>
+        {Array(6)
+          .fill(null)
+          .map((_, i) => (
+            <Box key={i} aspectRatio={1.1}>
+              <Skeleton1 w="100%" h="100%" />
+            </Box>
+          ))}
+      </SimpleGrid>
+    );
+  }
+
+  return <>{children}</>;
+};
 
 export default SelectNftModal;

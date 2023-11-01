@@ -1,6 +1,11 @@
-import { HStack, Input, Spinner, Square, Text, useDisclosure } from "@chakra-ui/react";
+import { HStack, Input, Square, Text, useDisclosure } from "@chakra-ui/react";
 import EditIcon from "@/icons/edit";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import { useEffect, useState } from "react";
+import { TTxnPipeline } from "@/features/shared/types";
+import Backdrop from "./backdrop";
+import MyrkleLoader from "./myrkle-loader";
+import ResponseModal from "./response-modal";
 
 export interface EditableElementProps {
   value?: string | number;
@@ -15,55 +20,73 @@ function EditableElement({
   value,
   inputValue,
   handleInputChange,
-  isLoading,
   payload,
   mutation,
 }: EditableElementProps) {
   const { isOpen, onToggle } = useDisclosure();
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+
+  const [view, setView] = useState<TTxnPipeline>("default");
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   const handleSubmit = () => {
     if (!mutation) return;
 
+    setView("loading");
+
     mutation(payload)
       .unwrap()
       .then((res: any) => {
-        console.log(res);
         handleSubmitTxn(res);
       })
-      .catch((err: any) => console.log(err));
+      .catch(() => setView("error-1"));
+  };
+
+  const handleReset = () => {
+    resetSubmitTxnResponse();
+    onToggle();
   };
 
   return (
-    <HStack>
-      <EditIcon onClick={onToggle} fontSize="12px" cursor="pointer" />
-      {isOpen ? (
-        <HStack>
-          <Input
-            value={inputValue}
-            onChange={handleInputChange}
-            h="20px"
-            w="50%"
-            borderRadius="0"
-            fontSize="xs"
-            p={1}
-            bg="#fff"
-            color="#000"
-          />
-          {isLoading ? (
-            <Spinner size="sm" />
-          ) : (
-            <>
-              <Square size="20px" bg="success" cursor="pointer" onClick={handleSubmit} />
-              <Square size="20px" bg="danger" cursor="pointer" />
-            </>
-          )}
-        </HStack>
-      ) : (
-        <Text fontSize="xs">{String(value) || ""}</Text>
-      )}
-    </HStack>
+    <>
+      <HStack>
+        <EditIcon onClick={onToggle} fontSize="12px" cursor="pointer" />
+        {isOpen ? (
+          <HStack>
+            <Input
+              value={inputValue}
+              onChange={handleInputChange}
+              h="20px"
+              w="50%"
+              borderRadius="0"
+              fontSize="xs"
+              p={1}
+              bg="#fff"
+              color="#000"
+            />
+            <Square size="20px" bg="success" cursor="pointer" onClick={handleSubmit} />
+            <Square size="20px" bg="danger" cursor="pointer" />
+          </HStack>
+        ) : (
+          <Text fontSize="xs">{String(value) || ""}</Text>
+        )}
+      </HStack>
+
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
+      </Backdrop>
+    </>
   );
 }
 

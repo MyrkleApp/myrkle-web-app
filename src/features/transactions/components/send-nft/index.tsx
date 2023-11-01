@@ -6,18 +6,16 @@ import SelectNftModal from "./select-nft-modal";
 import { useState } from "react";
 import SelectedNft from "./selected-nft";
 
-// TODO: REMOVE DIRTY PROP-DRILLING !!!
-
 function SendNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isNftSelected, setIsNftSelected] = useState(false);
+  const [selectedNft, setSelectedNft] = useState<any>(null);
 
-  const handleNftItemClick = () => {
-    setIsNftSelected(true);
+  const handleNftItemClick = (nftData: any) => {
+    setSelectedNft(nftData);
   };
 
-  if (isNftSelected) {
-    return <SelectedNft />;
+  if (selectedNft) {
+    return <SelectedNft nft={selectedNft} handleNftItemClick={handleNftItemClick} />;
   }
 
   return (

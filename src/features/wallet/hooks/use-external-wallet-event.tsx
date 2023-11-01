@@ -15,8 +15,14 @@ function useExternalWalletEvent() {
     (wallet) => wallet.address === address && wallet.walletProvider === provider,
   );
 
+  const resetState = () => {
+    setProvider("");
+    setAddress("");
+    setNetwork("");
+  };
+
   // ==============================================================================================
-  // gemwallet
+  // crossmark
   // ==============================================================================================
 
   useEffect(() => {
@@ -35,6 +41,7 @@ function useExternalWalletEvent() {
           };
           console.log("userchange");
           console.log(resp);
+          setAddress(String(resp.address));
           setProvider("crossmark");
         } catch (e) {
           console.log(e);
@@ -99,6 +106,7 @@ function useExternalWalletEvent() {
     newAddress: address,
     newNetwork: network,
     isWalletInStorage,
+    resetExternalProviderState: resetState,
   } as const;
 }
 

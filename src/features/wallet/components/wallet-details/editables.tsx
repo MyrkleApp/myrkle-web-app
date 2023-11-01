@@ -2,7 +2,10 @@ import EditableElement from "@/components/editable-element";
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import { useModifyDomainMutation, useModifyEmailMutation } from "@/features/shared/redux/xrp.api";
+import {
+  useModifyDomainMutation,
+  useModifyTokenTransferFeeMutation,
+} from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { useState } from "react";
@@ -23,15 +26,15 @@ function Editables({ data }: EditablesProps) {
   // state
   // ========================================================================================
 
-  const [email, setEmail] = useState("");
   const [domain, setDomain] = useState("");
+  const [transferFee, setTransferFee] = useState("");
 
   // ========================================================================================
   // api
   // ========================================================================================
 
-  const [modifyEmail, { isLoading: isModifyEmailLoading }] = useModifyEmailMutation();
-  const [modifyDomain, { isLoading: isModifyDomainLoading }] = useModifyDomainMutation();
+  const [modifyDomain] = useModifyDomainMutation();
+  const [modifyTokenTransferFee] = useModifyTokenTransferFeeMutation();
 
   // ========================================================================================
   // handlers
@@ -51,7 +54,13 @@ function Editables({ data }: EditablesProps) {
           <ItemLabel title="Transfer fee" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement value={data?.token_transfer_fee} />
+          <EditableElement
+            value={data?.token_transfer_fee}
+            inputValue={transferFee}
+            handleInputChange={(e: any) => setTransferFee(e.target.value)}
+            payload={{ sender_addr: address, transfer_fee: transferFee }}
+            mutation={modifyTokenTransferFee}
+          />
         </Box>
       </Flex>
 
@@ -93,14 +102,7 @@ function Editables({ data }: EditablesProps) {
           <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
         <Box w="60%">
-          <EditableElement
-            value={data?.email}
-            inputValue={email}
-            handleInputChange={(e: any) => setEmail(e.target.value)}
-            isLoading={isModifyEmailLoading}
-            payload={{ sender_addr: address, email }}
-            mutation={modifyEmail}
-          />
+          <Text fontSize="sm">{data?.email || "-- --"}</Text>
         </Box>
       </Flex>
 
@@ -113,7 +115,6 @@ function Editables({ data }: EditablesProps) {
             value={data?.domain}
             inputValue={domain}
             handleInputChange={(e: any) => setDomain(e.target.value)}
-            isLoading={isModifyDomainLoading}
             payload={{ sender_addr: address, domain }}
             mutation={modifyDomain}
           />

@@ -75,6 +75,19 @@ export interface ICreateXrpCheck {
   expiry_date: string;
 }
 
+export interface ICashXrpCheck {
+  sender_addr: string;
+  check_id: string;
+  amount: number | string;
+  fee?: string;
+}
+
+export interface ICancelCheck {
+  sender_addr: string;
+  check_id: string;
+  fee?: string;
+}
+
 export interface ICreateXrpEscrow {
   sender_addr: string;
   receiver_addr: string;
@@ -154,11 +167,30 @@ export interface ICreateToken {
   total_supply: string;
 }
 
+export interface ISortBestOffer {
+  buy_type: string;
+  sell_type: string;
+  best_buy: boolean;
+  best_sell: boolean;
+  mainnet: boolean;
+}
+
 export interface ICreateTrustline {
   manager_addr: string;
   issuer_addr: string;
   token_name: string;
   total_supply: string;
+}
+
+export interface ICreateSellOffer {
+  sender_addr: string;
+  get_amount: string | number;
+  nftoken_id: string;
+  expiry_date: string;
+  receiver: string;
+  get_type: string;
+  get_issuer: string;
+  fee?: string;
 }
 
 export interface IReceiveNft {
@@ -170,6 +202,7 @@ export interface ISendNft {
   sender_addr: string;
   nftoken_id: string;
   receiver_addr: string;
+  fee?: string;
 }
 
 export interface ISendToken {

@@ -11,7 +11,7 @@ export interface TokenItemProps {
 function TokenItem({ token, issuer, icon, handleClick }: TokenItemProps) {
   return (
     <HStack cursor="pointer" mb={5} onClick={handleClick}>
-      <Image src={icon || tokenPlaceholder} alt="" h="40px" />
+      <Image src={icon || tokenPlaceholder} alt="" h="40px" borderRadius="50%" />
       <VStack spacing={0} align="flex-start" ml={2}>
         <Text fontSize="sm" textTransform="uppercase">
           {token}

@@ -39,10 +39,12 @@ function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
     >
       <Image src={isXrpToken(token) ? xrpLogo : data?.icon || tokenPlaceholder} alt="" h="35px" />
       <VStack align="flex-start" spacing={0}>
-        <Text fontSize="xs" fontWeight="bold">
+        <Text fontSize={isXrpToken(token) ? "md" : "xs"} fontWeight="bold">
           {token?.token}
         </Text>
-        <Text fontSize="2xs">{token?.issuer}</Text>
+        <Text fontSize="2xs" display={isXrpToken(token) ? "none" : ""}>
+          {token?.issuer}
+        </Text>
       </VStack>
     </HStack>
   );

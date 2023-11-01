@@ -5,7 +5,7 @@ import Backdrop from "@/components/backdrop";
 import { AnimatePresence } from "framer-motion";
 import { MotionBox } from "@/components/motion-elements";
 import { IWalletAddress, TWalletProvider } from "../../types";
-import { selectMyWallets, selectWalletProvider } from "../../redux/wallet.selectors";
+import { selectAddress, selectMyWallets, selectWalletProvider } from "../../redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
 import SwitchAccountModal from "./switch-account-modal";
@@ -14,9 +14,15 @@ import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
 import ConnectXummModal from "./connect-xumm-modal";
 import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
+import { useLocalStorage } from "react-use";
+import ThickArrowDownIcon from "@/icons/thick-arrow-down";
+import { ellipsisAtCenter } from "@/helpers";
 
 function SwitchAccountDropdown() {
-  const { newExternalProvider, newAddress, isWalletInStorage } = useExternalWalletEvent();
+  const [, , clearSignInData] = useLocalStorage("sign-in-data");
+
+  const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
+    useExternalWalletEvent();
   const { qrCodeImage } = useXummSignIn();
 
   // ======================================================================================================
@@ -25,6 +31,7 @@ function SwitchAccountDropdown() {
 
   const myWallets = useSelector(selectMyWallets);
   const walletProvider = useSelector(selectWalletProvider);
+  const address = useSelector(selectAddress);
 
   // ======================================================================================================
   // dispatch
@@ -124,6 +131,13 @@ function SwitchAccountDropdown() {
     _setAddress(newAddress);
     _setWalletProvider(newExternalProvider);
     onCloseExternalChange();
+    resetExternalProviderState();
+  };
+
+  const handleDisconnect = (e: any) => {
+    e.stopPropagation();
+    clearSignInData();
+    document.location.reload();
   };
 
   return (
@@ -137,12 +151,26 @@ function SwitchAccountDropdown() {
           fontSize="2xs"
           borderRadius="30px"
           boxShadow="0 2px 2px #000"
-          textAlign="left"
+          textAlign="center"
           justifyContent="space-between"
           _hover={{ bg: "dark" }}
           onClick={onToggleDropdown}
+          rightIcon={
+            address ? (
+              <Box
+                h="10px"
+                w="10px"
+                borderRadius="50%"
+                bg="#ff0000"
+                _hover={{ w: "13px", h: "13px" }}
+                onClick={handleDisconnect}
+              />
+            ) : (
+              <ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />
+            )
+          }
         >
-          Switch Account
+          {address ? ellipsisAtCenter(address) : "Switch Account"}
         </Button>
 
         {isDropdownOpen && (
@@ -181,7 +209,7 @@ function SwitchAccountDropdown() {
             provider={selectedWallet.walletProvider}
             handleClose={onCloseDropdown}
             handleProceed={handleSwitchWallet}
-            isWalletInStorage={isWalletInStorage}
+            isWalletInStorage={true}
           />
         )}
       </Backdrop>

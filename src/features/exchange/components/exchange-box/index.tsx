@@ -39,6 +39,7 @@ function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxPr
             src={(isXrpToken(token) ? xrpLogo : token?.icon) || tokenPlaceholder}
             alt=""
             h="55%"
+            borderRadius="50%"
           />
           <VStack spacing={0} align="flex-start">
             <Text
@@ -48,7 +49,7 @@ function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxPr
             >
               {token?.token}
             </Text>
-            <Text fontSize="xs" mt="-2px">
+            <Text fontSize="xs" mt="-2px" display={isXrpToken(token) ? "none" : ""}>
               {token?.issuer}
             </Text>
           </VStack>

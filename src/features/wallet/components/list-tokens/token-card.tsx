@@ -101,7 +101,7 @@ function TokenCard({
         onClick={onOpen}
       >
         <Flex justify="space-between" align="center" w="67%" h="100%" pr="20px">
-          <HStack h="100%">
+          <HStack h="100%" w="100px">
             <Image
               src={
                 isXrpToken({ token })
@@ -122,7 +122,9 @@ function TokenCard({
             </Text>
           </HStack>
 
-          <Text fontSize="xs">{ellipsisAtCenter(issuer)}</Text>
+          <Text fontSize="xs" visibility={isXrpToken({ token }) ? "hidden" : "visible"}>
+            {ellipsisAtCenter(issuer)}
+          </Text>
 
           <RenderPercentChange isXrpToken={isXrpToken({ token })}>
             <Box
@@ -167,7 +169,7 @@ function TokenCard({
             </Box>
           </RenderPercentChange>
 
-          <VStack spacing={0} align="flex-end">
+          <VStack spacing={0} align="flex-end" w="100px">
             <Text
               className="font-face-proxima-nova-extrabld"
               fontSize="sm"

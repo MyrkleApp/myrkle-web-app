@@ -6,8 +6,11 @@ import {
   IAuthNftTokenMinter,
   IBurnNft,
   IBurnToken,
+  ICancelCheck,
+  ICashXrpCheck,
   ICreateNotification,
   ICreatePairingToken,
+  ICreateSellOffer,
   ICreateToken,
   ICreateTokenCheck,
   ICreateTrustline,
@@ -25,6 +28,7 @@ import {
   ISendNft,
   ISendToken,
   ISendXrp,
+  ISortBestOffer,
   IToggleTokenFreeze,
 } from "../types/xrp-mutations";
 import { IAddressNet, IIdNet } from "../types/xrp-queries";
@@ -121,6 +125,10 @@ export const xrpApi = createApi({
     getTxnStatus: builder.query({
       query: ({ id, net }: IIdNet) => `info/txn-status/?txid=${id}&${net}`,
     }),
+    getAllNftOffers: builder.query({
+      query: ({ id, net }: IIdNet) => `nft/all-nft-offers/?nft_token_id=${id}&${net}`,
+    }),
+
     // =================================================================================================
     // mutations
     // =================================================================================================
@@ -164,6 +172,15 @@ export const xrpApi = createApi({
       query(body: IRemoveToken) {
         return {
           url: "eng/remove-token/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    createSellOffer: builder.mutation({
+      query(body: ICreateSellOffer) {
+        return {
+          url: "nft/create-sell-offer/",
           method: "POST",
           body,
         };
@@ -232,6 +249,25 @@ export const xrpApi = createApi({
         };
       },
     }),
+    cashXrpCheck: builder.mutation({
+      query(body: ICashXrpCheck) {
+        return {
+          url: "object/cash-xrp-check/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    cancelCheck: builder.mutation({
+      query(body: ICancelCheck) {
+        return {
+          url: "object/cancel-check/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+
     createXrpEscrow: builder.mutation({
       query(body: ICreateXrpEscrow) {
         return {
@@ -290,6 +326,15 @@ export const xrpApi = createApi({
       query(body: ICreateToken) {
         return {
           url: "create-token/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    sortBestOffer: builder.mutation({
+      query(body: ISortBestOffer) {
+        return {
+          url: "exchange/sort-best-offer/",
           method: "POST",
           body,
         };
@@ -487,6 +532,7 @@ export const {
   useGetAccountEscrowsQuery,
   useGetEscrowInfoQuery,
   useGetPayTxnInfoQuery,
+  useGetAllNftOffersQuery,
 
   // mutations
   useBurnTokenMutation,
@@ -494,6 +540,7 @@ export const {
   useToggleTokenFreezeMutation,
   useAddTokenMutation,
   useRemoveTokenMutation,
+  useCreateSellOfferMutation,
   useSendNftMutation,
   useSendTokenMutation,
   useSendXrpMutation,
@@ -501,6 +548,8 @@ export const {
   useReceiveNftMutation,
   useCreateTokenCheckMutation,
   useCreateXrpCheckMutation,
+  useCashXrpCheckMutation,
+  useCancelCheckMutation,
   useCreateXrpEscrowMutation,
   useModifyDomainMutation,
   useModifyEmailMutation,

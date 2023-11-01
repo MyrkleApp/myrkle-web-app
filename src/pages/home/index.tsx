@@ -19,7 +19,7 @@ import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 
 function Home() {
-  const [view, setView] = useState(VIEW_ROUTES.CREATE_PASSWORD);
+  const [view, setView] = useState(VIEW_ROUTES.WALLET_PROVIDER);
 
   const handleView = (view: string) => setView(view);
 

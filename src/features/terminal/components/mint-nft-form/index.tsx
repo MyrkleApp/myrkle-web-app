@@ -195,12 +195,12 @@ function MintNftForm() {
           </Flex>
         )}
 
-        <ItemLabel
-          title="Description"
+        <ItemLabel title="Description" />
+        <TextArea
+          mb={5}
           value={description}
           onChange={(e: any) => setDescription(e.target.value)}
         />
-        <TextArea mb={5} />
 
         <MotionBox pos="relative" h="65px" mb={10}>
           <Box pos="absolute" bottom={0} w="100%">
