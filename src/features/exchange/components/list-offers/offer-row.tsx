@@ -37,7 +37,17 @@ function OfferRow() {
         <OfferBox />
       </Flex>
       <Backdrop isOpen={isOpen}>
-        <TxnDetailsModal handleClose={onClose} />
+        <TxnDetailsModal
+          handleClose={onClose}
+          fromTokenName={""}
+          fromTokenIssuer={""}
+          fromTokenIcon={""}
+          fromTokenAmount={""}
+          toTokenName={""}
+          toTokenIssuer={""}
+          toTokenIcon={""}
+          toTokenAmount={""}
+        />
       </Backdrop>
     </>
   );
