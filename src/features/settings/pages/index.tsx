@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Layout from "@/layout";
 import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import PasswordItem from "../components/password-item";
-import AddressBookItem from "../components/address-book-item";
+// import AddressBookItem from "../components/address-book-item";
 import ListWalletProviders from "../components/list-wallet-providers";
 
 function Settings() {
@@ -45,10 +45,13 @@ function Settings() {
                 add address
               </Button>
             </HStack>
+
+            <Text fontSize="sm">We could not find any addresses in your address book.</Text>
+
+            {/* <AddressBookItem />
             <AddressBookItem />
             <AddressBookItem />
-            <AddressBookItem />
-            <AddressBookItem />
+            <AddressBookItem /> */}
           </Box>
         </Flex>
       </Box>

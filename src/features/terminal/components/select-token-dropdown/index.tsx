@@ -1,5 +1,5 @@
 import { MotionBox, MotionText } from "@/components/motion-elements";
-import { HStack, useDisclosure } from "@chakra-ui/react";
+import { Box, HStack, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import TokenItem from "./token-item";
 import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
@@ -51,17 +51,19 @@ function SelectTokenDropdown({ handleTokenClick, isTokenDisabled }: SelectTokenD
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <RenderTokenList isLoading={isLoading}>
-              <TokenItem token={xrpToken} handleClick={() => handleTokenClick(xrpToken)} />
-              {data?.map((token: any, i: number) => (
-                <TokenItem
-                  key={i}
-                  token={token}
-                  handleClick={() => handleToken(token)}
-                  isDisabled={isTokenDisabled}
-                />
-              ))}
-            </RenderTokenList>
+            <Box maxH="270px" overflow="auto" pr={1}>
+              <RenderTokenList isLoading={isLoading}>
+                <TokenItem token={xrpToken} handleClick={() => handleTokenClick(xrpToken)} />
+                {data?.map((token: any, i: number) => (
+                  <TokenItem
+                    key={i}
+                    token={token}
+                    handleClick={() => handleToken(token)}
+                    isDisabled={isTokenDisabled}
+                  />
+                ))}
+              </RenderTokenList>
+            </Box>
           </MotionBox>
         )}
       </AnimatePresence>
