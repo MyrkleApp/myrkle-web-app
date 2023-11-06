@@ -22,6 +22,7 @@ function ListWalletProviders() {
         logo={<MyrkleLogoIcon fontSize="80px" />}
         wallets={getProviderWallets("myrkle")}
         isDisabled
+        walletProvider="myrkle"
       />
       <Text fontSize="sm" fontWeight="bold" my={4}>
         External connected wallets
@@ -30,6 +31,7 @@ function ListWalletProviders() {
         mb={5}
         logo={<XummLogoIcon fontSize="80px" />}
         wallets={getProviderWallets("xumm")}
+        walletProvider="xumm"
       />
       <WalletAccordion
         logo={
@@ -40,6 +42,7 @@ function ListWalletProviders() {
         }
         mb={5}
         wallets={getProviderWallets("crossmark")}
+        walletProvider="crossmark"
       />
       <WalletAccordion
         logo={
@@ -51,6 +54,7 @@ function ListWalletProviders() {
           </HStack>
         }
         wallets={getProviderWallets("gemwallet")}
+        walletProvider="gemwallet"
       />
     </Box>
   );

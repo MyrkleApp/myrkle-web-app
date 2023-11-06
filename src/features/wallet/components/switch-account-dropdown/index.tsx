@@ -19,7 +19,7 @@ import { providersList } from "./data";
 import SwitchAccountModal from "./switch-account-modal";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
 import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
-import ConnectXummModal from "./connect-xumm-modal";
+import ConnectXummModal from "@/components/connect-xumm-modal";
 import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import { useLocalStorage } from "react-use";

@@ -1,17 +1,31 @@
 import { MotionBox } from "@/components/motion-elements";
 import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import AddressItem from "./address-item";
-import { IWalletAddress } from "@/features/wallet/types";
+import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
+import { useSelector } from "react-redux";
+import { selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
 
 export interface WalletAccordionProps {
   logo: React.ReactNode;
   wallets: IWalletAddress[];
   isDisabled?: boolean;
+  // isActiveWalletProvider: boolean;
+  walletProvider: TWalletProvider;
   [anyProp: string]: any;
 }
 
-function WalletAccordion({ logo, wallets, isDisabled, ...props }: WalletAccordionProps) {
+function WalletAccordion({
+  logo,
+  wallets,
+  isDisabled,
+  walletProvider,
+  ...props
+}: WalletAccordionProps) {
   const { isOpen, onToggle } = useDisclosure();
+
+  const currentWalletProvider = useSelector(selectWalletProvider);
+
+  const isActiveWalletProvider = currentWalletProvider === walletProvider;
 
   const handleToggle = () => {
     if (isDisabled) return;
@@ -20,7 +34,7 @@ function WalletAccordion({ logo, wallets, isDisabled, ...props }: WalletAccordio
 
   return (
     <MotionBox
-      bg="darker"
+      bg={isActiveWalletProvider ? "secondary" : "darker"}
       opacity={wallets.length ? 1 : 0.3}
       borderRadius="30px"
       pos="relative"
@@ -44,7 +58,12 @@ function WalletAccordion({ logo, wallets, isDisabled, ...props }: WalletAccordio
 
       <RenderAddressItems hasWallet={wallets.length > 0}>
         {wallets.map((_, i) => (
-          <AddressItem key={i} name={wallets[i].name} address={wallets[i].address} />
+          <AddressItem
+            key={i}
+            name={wallets[i].name}
+            address={wallets[i].address}
+            selectedWalletProvider={walletProvider}
+          />
         ))}
       </RenderAddressItems>
     </MotionBox>
