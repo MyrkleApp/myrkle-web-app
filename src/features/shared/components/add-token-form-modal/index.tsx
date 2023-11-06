@@ -18,13 +18,14 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { TAddTokenModalType } from "@/features/wallet/types";
-import { IToken } from "../../types";
+import { IToken, TTxnPipeline } from "../../types";
 import { useAddTokenMutation } from "../../redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import useSubmitTxn from "../../hooks/use-submit-txn";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 export interface AddTokenFormModalProps {
   handleClose: () => void;
@@ -37,9 +38,7 @@ function AddTokenFormModal({
   handleTokenListIconClick,
   token,
 }: AddTokenFormModalProps) {
-  const [view, setView] = useState<"default" | "loading" | "error-1" | "error-2" | "success">(
-    "default",
-  );
+  const [view, setView] = useState<TTxnPipeline>("default");
   const [tokenName, setTokenName] = useState("");
   const [issuer, setIssuer] = useState("");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -49,7 +48,8 @@ function AddTokenFormModal({
 
   const address = useSelector(selectAddress);
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   const [addToken, { isLoading }] = useAddTokenMutation();
 
@@ -67,6 +67,20 @@ function AddTokenFormModal({
       setIssuer(token.issuer);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   const handleAdvancedOptionsClick = () => {
     if (showAdvancedOptions) setShowAdvancedOptions(false);
@@ -93,16 +107,23 @@ function AddTokenFormModal({
       .catch(() => setView("error-1"));
   };
 
+  const handleReset = () => {
+    handleClose();
+    resetSubmitTxnResponse();
+  };
+
   if (view !== "default") {
     return (
       <>
         {view === "loading" && <MyrkleLoader />}
 
-        {view === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
 
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
 
-        {view === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
+        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+
+        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </>
     );
   }

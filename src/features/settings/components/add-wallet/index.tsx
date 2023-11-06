@@ -22,9 +22,14 @@ function AddWallet() {
     onClose: onCloseAddWallet,
   } = useDisclosure();
 
+  const handleAddWalletClose = () => {
+    handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
+    onCloseAddWallet();
+  };
+
   useOutsideClick({
     ref,
-    handler: onCloseAddWallet,
+    handler: handleAddWalletClose,
   });
 
   return (

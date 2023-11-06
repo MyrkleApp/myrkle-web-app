@@ -9,6 +9,7 @@ function useSubmitTxn() {
   const userToken = useSelector(selectUserToken);
 
   const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
+  const [xummTxnQrCode, setXummTxnQrCode] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -122,10 +123,12 @@ function useSubmitTxn() {
     socket.on("signTxn", (res) => {
       if (res.qrCode) {
         console.log(res.qrCode);
+        setXummTxnQrCode(res.qrCode);
         return;
       }
 
       if (!res.txSign) {
+        setXummTxnQrCode("");
         setIsSuccess(false);
         setResponseMessage("Transaction not signed");
         setIsOpen(true);
@@ -135,6 +138,7 @@ function useSubmitTxn() {
       }
 
       if (res.txSign) {
+        setXummTxnQrCode("");
         setIsSuccess(true);
         setResponseMessage("Transaction signed");
         setIsOpen(true);
@@ -171,7 +175,11 @@ function useSubmitTxn() {
   };
 
   const handleCloseSubmitTxnRes = () => setIsOpen(false);
-  const resetSubmitTxnResponse = () => setIsSuccess(null);
+
+  const resetSubmitTxnResponse = () => {
+    setIsSuccess(null);
+    setXummTxnQrCode("");
+  };
 
   return [
     {
@@ -179,6 +187,7 @@ function useSubmitTxn() {
       submitTxnResponseMsg: responseMessage,
       isSubmitTxnResOpen: isOpen,
       isSubmitTxnLoading: isLoading,
+      xummTxnQrCode,
     },
     { handleSubmitTxn, handleCloseSubmitTxnRes, resetSubmitTxnResponse },
   ] as const;

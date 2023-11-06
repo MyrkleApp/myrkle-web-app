@@ -6,6 +6,7 @@ import { TTxnPipeline } from "@/features/shared/types";
 import Backdrop from "./backdrop";
 import MyrkleLoader from "./myrkle-loader";
 import ResponseModal from "./response-modal";
+import XummTxnModal from "./xumm-txn-modal";
 
 export interface EditableElementProps {
   value?: string | number;
@@ -25,9 +26,16 @@ function EditableElement({
 }: EditableElementProps) {
   const { isOpen, onToggle } = useDisclosure();
 
-  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   const [view, setView] = useState<TTxnPipeline>("default");
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
@@ -83,6 +91,7 @@ function EditableElement({
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

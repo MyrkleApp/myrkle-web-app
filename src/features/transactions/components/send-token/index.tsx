@@ -22,6 +22,7 @@ import AddressBook from "../address-book";
 import Backdrop from "@/components/backdrop";
 import ResponseModal from "@/components/response-modal";
 import MyrkleLoader from "@/components/myrkle-loader";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
@@ -38,7 +39,8 @@ function SendToken() {
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   // ===========================================================================================
   // selectors
@@ -58,6 +60,20 @@ function SendToken() {
   // ===========================================================================================
   // effects
   // ===========================================================================================
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   useEffect(() => {
     if (urlToken && urlIssuer) {
@@ -99,9 +115,7 @@ function SendToken() {
       })
         .unwrap()
         .then((res) => {
-          const successCallback = () => setView("success");
-          const errorCallback = () => setView("error-2");
-          handleSubmitTxn(res, successCallback, errorCallback);
+          handleSubmitTxn(res);
         })
         .catch(() => setView("error-1"));
     } else {
@@ -123,6 +137,7 @@ function SendToken() {
   };
 
   const handleReset = () => {
+    resetSubmitTxnResponse();
     setView("default");
   };
 
@@ -256,6 +271,7 @@ function SendToken() {
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

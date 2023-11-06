@@ -18,6 +18,7 @@ import { TTxnPipeline } from "@/features/shared/types";
 import Backdrop from "@/components/backdrop";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 export interface TokenDetailProps {
   token: any;
@@ -36,7 +37,14 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [createTokenCheck] = useCreateTokenCheckMutation();
   const [createXrpCheck] = useCreateXrpCheckMutation();
 
-  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
@@ -144,6 +152,7 @@ function TokenDetail({ token }: TokenDetailProps) {
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

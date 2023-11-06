@@ -18,13 +18,15 @@ import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { isXrpToken } from "@/helpers";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
 
-  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   // ============================================================================================
   // selectors
@@ -65,6 +67,12 @@ function MakeExchange() {
       });
     }
   }, [urlIssuer, urlToken]);
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
@@ -202,6 +210,7 @@ function MakeExchange() {
           />
         )}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

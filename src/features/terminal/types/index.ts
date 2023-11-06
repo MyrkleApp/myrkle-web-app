@@ -8,5 +8,6 @@ export type TSelectTokenAmountModalState =
   | "proceed"
   | "loading"
   | "error-1"
+  | "xumm-qr-code"
   | "error-2"
   | "success";

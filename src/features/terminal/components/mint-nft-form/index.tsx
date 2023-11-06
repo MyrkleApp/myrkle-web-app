@@ -9,7 +9,7 @@ import Button from "@/components/button";
 import PlusMinus from "@/features/terminal/components/plus-minus";
 import { NFTStorage, File } from "nft.storage";
 import TextArea from "@/components/text-area";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IAttribute } from "../../types";
 import { useMintNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
@@ -21,12 +21,14 @@ import Backdrop from "@/components/backdrop";
 import { TTxnPipeline } from "@/features/shared/types";
 import MyrkleLoader from "@/components/myrkle-loader";
 import { numbersOnlyRegex } from "@/constants";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGExMkQwYTNjODkxMmVGYTE0OTgyZjRkOUZlYzMwOEUzMjE3NEUzNTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NDg4OTM2NDU2MCwibmFtZSI6Ik15cmtsZSJ9.dSxW_AFZ9qxOQOwUptBox5ovzH4ACFqLuraaAhOekRU";
 
 function MintNftForm() {
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
     min: 0,
@@ -61,6 +63,24 @@ function MintNftForm() {
   // =============================================================================================
 
   const [mintNft] = useMintNftMutation();
+
+  // =============================================================================================
+  // effects
+  // =============================================================================================
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   // =============================================================================================
   // handle change & plusIcon click
@@ -129,9 +149,7 @@ function MintNftForm() {
       })
         .unwrap()
         .then((res) => {
-          const successCallback = () => setView("success");
-          const errorCallback = () => setView("error-2");
-          handleSubmitTxn(res, successCallback, errorCallback);
+          handleSubmitTxn(res);
         })
         .catch(() => setView("error-1"));
     });
@@ -139,6 +157,7 @@ function MintNftForm() {
 
   const handleReset = () => {
     setView("default");
+    resetSubmitTxnResponse();
   };
 
   return (
@@ -279,6 +298,7 @@ function MintNftForm() {
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

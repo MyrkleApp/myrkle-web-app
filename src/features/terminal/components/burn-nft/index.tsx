@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IconContainer from "../icon-container";
 import NftIcon from "@/icons/nft";
 import Backdrop from "@/components/backdrop";
@@ -13,6 +13,7 @@ import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 function BurnNft() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,17 +21,33 @@ function BurnNft() {
   const address = useSelector(selectAddress);
 
   const [modalType, setModalType] = useState<
-    "list" | "item" | "proceed" | "loading" | "error-1" | "error-2" | "success"
+    "list" | "item" | "proceed" | "loading" | "error-1" | "xumm-qr-code" | "error-2" | "success"
   >("list");
   const [selectedNft, setSelectedNft] = useState<any>(null);
 
   const [burnNft, { isLoading }] = useBurnNftMutation();
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setModalType("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setModalType("success");
+    } else setModalType("error-2");
+  }, [isSubmitTxnSuccess]);
 
   const handleClose = () => {
     onClose();
     setModalType("list");
+    resetSubmitTxnResponse();
   };
 
   const handleItemClick = (nft: any) => {
@@ -57,9 +74,7 @@ function BurnNft() {
     })
       .unwrap()
       .then((res) => {
-        const successCallback = () => setModalType("success");
-        const errorCallback = () => setModalType("error-2");
-        handleSubmitTxn(res, successCallback, errorCallback);
+        handleSubmitTxn(res);
       })
       .catch(() => setModalType("error-1"));
   };
@@ -96,6 +111,8 @@ function BurnNft() {
           {modalType === "loading" && <MyrkleLoader />}
 
           {modalType === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+          {modalType === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
 
           {modalType === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 

@@ -8,12 +8,13 @@ import useSelectTokenAmount from "@/features/shared/hooks/use-select-token-amoun
 import { useToggleTokenFreezeMutation } from "@/features/shared/redux/xrp.api";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TSelectTokenAmountModalState } from "../../types";
 import ProceedModal from "@/features/shared/components/proceed-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 function FreezeAsset() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +23,8 @@ function FreezeAsset() {
 
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   const [
     { selectedToken, showTokenList, amount },
@@ -31,10 +33,25 @@ function FreezeAsset() {
 
   const [freezeToken, { isLoading }] = useToggleTokenFreezeMutation();
 
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setModalState("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setModalState("success");
+    } else setModalState("error-2");
+  }, [isSubmitTxnSuccess]);
+
   const handleClose = () => {
     onClose();
     handleReset();
     setModalState("select-token");
+    resetSubmitTxnResponse();
   };
 
   const handleConfirmClick = () => {
@@ -52,9 +69,7 @@ function FreezeAsset() {
     })
       .unwrap()
       .then((res) => {
-        const successCallback = () => setModalState("success");
-        const errorCallback = () => setModalState("error-2");
-        handleSubmitTxn(res, successCallback, errorCallback);
+        handleSubmitTxn(res);
       })
       .catch(() => setModalState("error-1"));
   };
@@ -92,6 +107,8 @@ function FreezeAsset() {
         {modalState === "loading" && <MyrkleLoader />}
 
         {modalState === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {modalState === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
 
         {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 

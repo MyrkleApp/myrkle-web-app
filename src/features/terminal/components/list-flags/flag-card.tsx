@@ -1,6 +1,7 @@
 import Backdrop from "@/components/backdrop";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
@@ -21,7 +22,21 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
   const [switchValue, setSwitchValue] = useState(false);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn }] = useSubmitTxn();
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setView("success");
+    } else setView("error-2");
+  }, [isSubmitTxnSuccess]);
 
   useEffect(() => {
     setSwitchValue(!!currentValue);
@@ -70,6 +85,8 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
         {view === "loading" && <MyrkleLoader />}
 
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
 
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 

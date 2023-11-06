@@ -16,7 +16,6 @@ import { AnimatePresence } from "framer-motion";
 import ItemLabel from "@/components/item-label";
 import TokenItem from "./token-item";
 import ArrowFlatRightIcon from "@/icons/arrow-flat-right";
-import xrpLogo from "@/assets/xrp-logo.svg";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useGetAccountTokensQuery } from "../../redux/xrp.api";
@@ -123,7 +122,7 @@ function SelectTokenAmountModal({
                 <TokenItem
                   key={i}
                   token={tokenData}
-                  handleClick={() => handleTokenClick(tokenData)}
+                  handleClick={(icon: any) => handleTokenClick({ ...tokenData, icon })}
                 />
               ))}
             </MotionBox>
@@ -156,7 +155,7 @@ function SelectTokenAmountModal({
                   handleAmount("");
                 }}
               >
-                <Image src={xrpLogo} alt="" h="25px" />
+                <Image src={selectedToken?.icon} alt="" h="25px" />
                 <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
                   {selectedToken?.token}
                 </Text>
