@@ -1,4 +1,4 @@
-const VIEW_ROUTES = {
+const ADD_WALLET_PIPELINE = {
   CREATE_PASSWORD: "create-password",
   WALLET_PROVIDER: "wallet-provider",
   CREATE_IMPORT_WALLET: "create-import-wallet",
@@ -15,4 +15,4 @@ const VIEW_ROUTES = {
   LOGIN: "login",
 };
 
-export default VIEW_ROUTES;
+export default ADD_WALLET_PIPELINE;

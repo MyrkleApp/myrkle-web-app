@@ -1,10 +1,18 @@
-import { Accordion, Box, Button, useDisclosure, useOutsideClick } from "@chakra-ui/react";
+import {
+  Accordion,
+  Box,
+  Button,
+  Flex,
+  Text,
+  useDisclosure,
+  useOutsideClick,
+} from "@chakra-ui/react";
 import AccountItem from "./account-item";
 import { useEffect, useRef, useState } from "react";
 import Backdrop from "@/components/backdrop";
 import { AnimatePresence } from "framer-motion";
 import { MotionBox } from "@/components/motion-elements";
-import { IWalletAddress, TWalletProvider } from "../../types";
+import { ISignIn, IWalletAddress, TWalletProvider } from "../../types";
 import { selectAddress, selectMyWallets, selectWalletProvider } from "../../redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
@@ -17,9 +25,11 @@ import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import { useLocalStorage } from "react-use";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { ellipsisAtCenter } from "@/helpers";
+import DialogBox from "@/components/dialog-box";
+import DisconnectButton from "./disconnect-button";
 
 function SwitchAccountDropdown() {
-  const [, , clearSignInData] = useLocalStorage("sign-in-data");
+  const [signInData, storeSignInData, clearSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
     useExternalWalletEvent();
@@ -55,6 +65,12 @@ function SwitchAccountDropdown() {
     isOpen: isExternalProviderChangeOpen,
     onOpen: onOpenExternalChange,
     onClose: onCloseExternalChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isConfirmDisconnectOpen,
+    onOpen: onOpenConfirmDisconnect,
+    onClose: onCloseConfirmDisconnect,
   } = useDisclosure();
 
   const [selectedWallet, setSelectedWallet] = useState<null | IWalletAddress>(null);
@@ -116,6 +132,14 @@ function SwitchAccountDropdown() {
   const handleSwitchWallet = () => {
     if (!selectedWallet) return;
 
+    if (signInData !== undefined) {
+      storeSignInData({
+        ...signInData,
+        address: selectedWallet.address,
+        walletProvider: selectedWallet.walletProvider,
+      });
+    }
+
     _setAddress(selectedWallet.address);
     _setWalletProvider(selectedWallet.walletProvider);
   };
@@ -134,8 +158,13 @@ function SwitchAccountDropdown() {
     resetExternalProviderState();
   };
 
-  const handleDisconnect = (e: any) => {
+  const handleConfirmDisconnect = (e: any) => {
     e.stopPropagation();
+    onOpenConfirmDisconnect();
+  };
+
+  const handleDisconnect = () => {
+    // TODO: remove wallet from browser DB!
     clearSignInData();
     document.location.reload();
   };
@@ -157,14 +186,7 @@ function SwitchAccountDropdown() {
           onClick={onToggleDropdown}
           rightIcon={
             address ? (
-              <Box
-                h="10px"
-                w="10px"
-                borderRadius="50%"
-                bg="#ff0000"
-                _hover={{ w: "13px", h: "13px" }}
-                onClick={handleDisconnect}
-              />
+              <DisconnectButton handleClick={handleConfirmDisconnect} />
             ) : (
               <ThickArrowDownIcon color="gray" fill="none" fontSize="2xs" />
             )
@@ -226,6 +248,22 @@ function SwitchAccountDropdown() {
 
       <Backdrop isOpen={!!newWallet}>
         <ConnectXummModal qrCodeImage={qrCodeImage} handleClose={() => setNewWallet(null)} />
+      </Backdrop>
+
+      <Backdrop isOpen={isConfirmDisconnectOpen}>
+        <DialogBox handleClose={onCloseConfirmDisconnect}>
+          <Text fontSize="sm" fontWeight="bold">
+            Are you sure you want to disconnect your currently connected wallet?
+          </Text>
+          <Flex justify="flex-end" mt="60px">
+            <Button h="30px" mr={2} bg="danger" color="#fff" onClick={handleDisconnect}>
+              confirm
+            </Button>
+            <Button h="30px" onClick={onCloseConfirmDisconnect}>
+              cancel
+            </Button>
+          </Flex>
+        </DialogBox>
       </Backdrop>
     </>
   );

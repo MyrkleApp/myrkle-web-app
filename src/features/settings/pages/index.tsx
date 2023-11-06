@@ -4,6 +4,7 @@ import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import PasswordItem from "../components/password-item";
 // import AddressBookItem from "../components/address-book-item";
 import ListWalletProviders from "../components/list-wallet-providers";
+import AddWallet from "../components/add-wallet";
 
 function Settings() {
   return (
@@ -16,7 +17,7 @@ function Settings() {
                 My Wallet
               </Text>
               <Spacer />
-              <Button h="30px">Add Wallet</Button>
+              <AddWallet />
             </HStack>
             <ListWalletProviders />
           </Box>

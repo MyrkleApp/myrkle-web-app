@@ -17,16 +17,30 @@ import ArrowLeftIcon from "@/icons/arrow-left";
 import { AnimatePresence } from "framer-motion";
 import ArrowRightFlatIcon from "@/icons/arrow-right-flat";
 import ListTxnsEditables from "./editables";
+import { selectNetwork } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 export interface TxnModalProps {
   txn: any;
   handleClose: () => void;
 }
 
+// testnet: https://test.bithomp.com/explorer/
+// mainnet: https://bithomp.com/explorer/
+// devnet: https://dev.bithomp.com/explorer/
+
+const explorerBaseUrl = {
+  testnet: "https://test.bithomp.com/explorer",
+  mainnet: "https://bithomp.com/explorer",
+  devnet: "https://dev.bithomp.com/explorer",
+};
+
 function TxnModal({ txn, handleClose }: TxnModalProps) {
   const [isFlagView, setFlagView] = useState(false);
 
   const ref = useRef(null);
+
+  const network = useSelector(selectNetwork);
 
   useOutsideClick({
     ref,
@@ -208,7 +222,14 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
           )}
         </AnimatePresence>
 
-        <Button w="100%" pos="absolute" bottom="7px">
+        <Button
+          as="a"
+          href={`${explorerBaseUrl[network]}/${txn.txid}`}
+          target="_blank"
+          w="100%"
+          pos="absolute"
+          bottom="7px"
+        >
           View Block in Explorer
         </Button>
       </Box>

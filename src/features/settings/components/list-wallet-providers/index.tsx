@@ -21,6 +21,7 @@ function ListWalletProviders() {
       <WalletAccordion
         logo={<MyrkleLogoIcon fontSize="80px" />}
         wallets={getProviderWallets("myrkle")}
+        isDisabled
       />
       <Text fontSize="sm" fontWeight="bold" my={4}>
         External connected wallets

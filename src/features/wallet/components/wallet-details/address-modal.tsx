@@ -1,6 +1,7 @@
 import Button from "@/components/button";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, CloseButton, Flex, Image, Text, useOutsideClick } from "@chakra-ui/react";
+import ToastElement from "@/components/toast-element";
+import { Box, CloseButton, Flex, Image, Text, useOutsideClick, useToast } from "@chakra-ui/react";
 import { useRef } from "react";
 
 export interface AddressModalProps {
@@ -25,6 +26,22 @@ function AddressModal({
     handler: handleClose,
   });
 
+  const toast = useToast({
+    position: "top",
+    containerStyle: {
+      ml: "400px",
+      width: "200px",
+    },
+  });
+
+  const handleCopyAddress = () => {
+    navigator.clipboard?.writeText(address);
+
+    toast({
+      render: () => <ToastElement />,
+    });
+  };
+
   return (
     <MotionBox
       ref={ref}
@@ -48,7 +65,15 @@ function AddressModal({
         <Box bg="#fff" p={2} borderRadius="15px" h="180px" w="100%" mb={3}>
           <Image src={qrCodeImage} alt="" />
         </Box>
-        <Box bg="secondary" borderRadius="5px" py={1} px={2} mb={1} cursor="pointer">
+        <Box
+          bg="secondary"
+          borderRadius="5px"
+          py={1}
+          px={2}
+          mb={1}
+          cursor="pointer"
+          onClick={handleCopyAddress}
+        >
           <Text fontSize="2xs" color="textDark" fontWeight="bold">
             {address}
           </Text>

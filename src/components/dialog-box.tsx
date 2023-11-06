@@ -2,11 +2,13 @@ import { Box, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
 
 export interface DialogBoxProps {
+  children?: React.ReactNode;
   handleClose: () => void;
-  message: string;
+  message?: string;
+  [anyProp: string]: any;
 }
 
-function DialogBox({ handleClose, message }: DialogBoxProps) {
+function DialogBox({ children, handleClose, message, ...props }: DialogBoxProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -16,6 +18,7 @@ function DialogBox({ handleClose, message }: DialogBoxProps) {
 
   return (
     <Box
+      ref={ref}
       w="300px"
       h="200px"
       bg="darker"
@@ -25,10 +28,14 @@ function DialogBox({ handleClose, message }: DialogBoxProps) {
       left="50%"
       transform="translate(-50%, -50%)"
       p={8}
+      {...props}
     >
-      <Text fontWeight="bold" fontSize="sm">
-        {message}
-      </Text>
+      {message && (
+        <Text fontWeight="bold" fontSize="sm">
+          {message}
+        </Text>
+      )}
+      {children}
     </Box>
   );
 }

@@ -1,7 +1,7 @@
 import { HStack, Text } from "@chakra-ui/react";
 
 export interface LoginButtonTextProps {
-  handleLoginClick: () => void;
+  handleLoginClick?: () => void;
   [anyProp: string]: any;
 }
 

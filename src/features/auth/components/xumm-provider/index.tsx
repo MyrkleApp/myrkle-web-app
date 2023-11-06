@@ -8,11 +8,19 @@ export interface XummProviderProps {
   handleBackArrowClick?: () => void;
   handleLoginClick: () => void;
   qrCode: string;
+  hideLogin?: boolean;
+  [anyProp: string]: any;
 }
 
-function XummProvider({ handleBackArrowClick, handleLoginClick, qrCode }: XummProviderProps) {
+function XummProvider({
+  handleBackArrowClick,
+  handleLoginClick,
+  qrCode,
+  hideLogin,
+  ...props
+}: XummProviderProps) {
   return (
-    <Box pos="absolute" top="50%" transform="translateY(-50%)">
+    <Box pos="absolute" top="50%" transform="translateY(-50%)" {...props}>
       <HStack>
         <ArrowLeftIcon cursor="pointer" onClick={handleBackArrowClick} />
         <XummLogoIcon fontSize="80px" ml={3} />
@@ -29,7 +37,7 @@ function XummProvider({ handleBackArrowClick, handleLoginClick, qrCode }: XummPr
           Scan QR code to sign in with xumm
         </Text>
       </Box>
-      <LoginButtonText handleLoginClick={handleLoginClick} />
+      {!hideLogin && <LoginButtonText handleLoginClick={handleLoginClick} />}
     </Box>
   );
 }

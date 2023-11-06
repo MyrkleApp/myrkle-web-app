@@ -1,63 +1,33 @@
 import MyrkleLogoIcon from "@/icons/logo";
 import XummLogoIcon from "@/icons/xumm-logo";
-import { Box, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import crossmarkLogo from "@/assets/crossmark-logo.png";
 import crossmarkText from "@/assets/crossmark-text.png";
 import gemWalletLogo from "@/assets/gem-wallet-logo.png";
 import LoginButtonText from "../login-button-text";
-import { checkForCrossmark } from "@/features/shared/connections/crossmark";
-import Backdrop from "@/components/backdrop";
-import DialogBox from "@/components/dialog-box";
-import { useState } from "react";
-import useCrossmarkSignIn from "../../hooks/use-crossmark-signin";
-import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
-import useGemWalletSignIn from "../../hooks/use-gemwallet-signin";
 
 export interface SelectWalletProviderProps {
   handleMyrkleClick?: () => void;
   handleXummClick?: () => void;
-  handleLoginClick: () => void;
+  handleCrossmarkClick?: () => void;
+  handleGemWalletClick?: () => void;
+  handleLoginClick?: () => void;
+  hideLogin?: boolean;
+  [anyProp: string]: any;
 }
 
 function SelectWalletProvider({
   handleMyrkleClick,
   handleXummClick,
+  handleCrossmarkClick,
+  handleGemWalletClick,
   handleLoginClick,
+  hideLogin,
+  ...props
 }: SelectWalletProviderProps) {
-  const [crossmarkSignIn, { error: crossmarkSignInError }] = useCrossmarkSignIn();
-  const [gemWalletSignIn, { error: gemWalletSignInError }] = useGemWalletSignIn();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [dialogBoxMessage, setDialogBoxMessage] = useState("");
-
-  const handleCrossmarkClick = () => {
-    const isCrossmark = checkForCrossmark();
-
-    if (isCrossmark !== true) {
-      setDialogBoxMessage("Please install Crossmark");
-      onOpen();
-    } else {
-      crossmarkSignIn();
-      console.log(crossmarkSignInError);
-    }
-  };
-
-  const handleGemWalletClick = async () => {
-    const isGemWallet = await checkForGemWallet();
-
-    if (isGemWallet !== true) {
-      setDialogBoxMessage("Please install GemWallet");
-      onOpen();
-    } else {
-      gemWalletSignIn();
-      console.log(gemWalletSignInError);
-    }
-  };
-
   return (
     <>
-      <Box pos="absolute" top="50%" transform="translateY(-50%)">
+      <Box pos="absolute" top="50%" transform="translateY(-50%)" {...props}>
         <Text fontSize="sm" fontWeight="bold" mb={4} pl={2}>
           Select wallet provider
         </Text>
@@ -67,7 +37,8 @@ function SelectWalletProvider({
               fontSize="80px"
               mt="-31px"
               ml="15px"
-              cursor="pointer"
+              opacity={0.4}
+              cursor="not-allowed"
               onClick={handleMyrkleClick}
             />
           </Box>
@@ -101,12 +72,8 @@ function SelectWalletProvider({
           </Box>
         </Box>
 
-        <LoginButtonText handleLoginClick={handleLoginClick} />
+        {!hideLogin && <LoginButtonText handleLoginClick={handleLoginClick} />}
       </Box>
-
-      <Backdrop isOpen={isOpen} w="100vw" h="100vh" borderRadius="0" top={0}>
-        <DialogBox handleClose={onClose} message={dialogBoxMessage} />
-      </Backdrop>
     </>
   );
 }

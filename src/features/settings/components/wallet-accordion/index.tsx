@@ -6,11 +6,17 @@ import { IWalletAddress } from "@/features/wallet/types";
 export interface WalletAccordionProps {
   logo: React.ReactNode;
   wallets: IWalletAddress[];
+  isDisabled?: boolean;
   [anyProp: string]: any;
 }
 
-function WalletAccordion({ logo, wallets, ...props }: WalletAccordionProps) {
+function WalletAccordion({ logo, wallets, isDisabled, ...props }: WalletAccordionProps) {
   const { isOpen, onToggle } = useDisclosure();
+
+  const handleToggle = () => {
+    if (isDisabled) return;
+    onToggle();
+  };
 
   return (
     <MotionBox
@@ -24,7 +30,13 @@ function WalletAccordion({ logo, wallets, ...props }: WalletAccordionProps) {
       animate={{ height: isOpen ? "auto" : 80, paddingBottom: isOpen ? "20px" : "auto" }}
       {...props}
     >
-      <Flex align="center" h="80px" p="25px 35px" cursor="pointer" onClick={onToggle}>
+      <Flex
+        align="center"
+        h="80px"
+        p="25px 35px"
+        cursor={isDisabled ? "not-allowed" : "pointer"}
+        onClick={handleToggle}
+      >
         {logo}
       </Flex>
 

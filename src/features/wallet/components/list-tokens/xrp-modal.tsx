@@ -132,11 +132,13 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
         >
           <Box h="95%" mt="-5px" overflow="hidden auto">
             <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
-              Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
-              pretium viverra. Libero vulputate lobortis pulvinar mauris vel sodales. Sed diam non
-              dolor ut donec magna bibendum nascetur. Urna volutpat velit molestie placerat. Lorem
-              ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie pretium
-              viverr.
+              XRP is the native token of the XRP Ledger and is primarily used to facilitate global
+              financial transfers. The XRP Ledger enhances global financial transfers and the
+              exchange of several currencies by being fast, inexpensive, scalable, interoperable,
+              secure, transparent, and global. With the XRPL, XRP transactions are typically settled
+              within seconds, making it much faster than traditional cross-border payments, which
+              can take days or even weeks. XRP transactions are also very inexpensive, with fees
+              typically costing a fraction of a penny.
             </Text>
           </Box>
         </Box>
