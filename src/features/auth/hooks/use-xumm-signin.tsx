@@ -22,6 +22,8 @@ function useXummSignIn() {
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
 
+  const resetSignInQrCode = () => setQrCodeImage("");
+
   useEffect(() => {
     socket.on("connection", () => {
       console.log("connected successfully");
@@ -64,7 +66,7 @@ function useXummSignIn() {
     }
   }, [navigate, walletAddress]);
 
-  return { signInStatus, qrCodeImage };
+  return { signInStatus, qrCodeImage, resetSignInQrCode };
 }
 
 export default useXummSignIn;

@@ -1,6 +1,7 @@
 import { MotionBox } from "@/components/motion-elements";
 import { Box, CloseButton, Flex, Image, SimpleGrid, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
+import Skeleton1 from "./skeleton";
 
 export interface ConnectXummModalProps {
   handleClose: () => void;
@@ -39,18 +40,23 @@ function ConnectXummModal({ handleClose, qrCodeImage }: ConnectXummModalProps) {
         <Box>
           <Text fontSize="xs">Lorem ipsum dolor sit amet, consectetur adipis</Text>
         </Box>
-        <Flex
-          justify="center"
-          align="center "
-          bg="#fff"
-          border="2px solid"
-          borderColor="success"
-          borderRadius="10px"
-          h="100%"
-          p={2}
-        >
-          <Image src={qrCodeImage} alt="connect xumm" />
-        </Flex>
+
+        {qrCodeImage ? (
+          <Flex
+            justify="center"
+            align="center "
+            bg="#fff"
+            border="2px solid"
+            borderColor="success"
+            borderRadius="10px"
+            h="100%"
+            p={2}
+          >
+            <Image src={qrCodeImage} alt="connect xumm" />
+          </Flex>
+        ) : (
+          <Skeleton1 borderRadius="0" h="100%" />
+        )}
       </SimpleGrid>
     </MotionBox>
   );

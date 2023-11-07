@@ -27,13 +27,19 @@ import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { ellipsisAtCenter } from "@/helpers";
 import DialogBox from "@/components/dialog-box";
 import DisconnectButton from "./disconnect-button";
+import { checkForCrossmark } from "@/features/shared/connections/crossmark";
+import useCrossmarkSignIn from "@/features/auth/hooks/use-crossmark-signin";
+import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
+import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
 
 function SwitchAccountDropdown() {
+  const [crossmarkSignIn] = useCrossmarkSignIn();
+  const [gemWalletSignIn] = useGemWalletSignIn();
   const [signInData, storeSignInData, clearSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
     useExternalWalletEvent();
-  const { qrCodeImage } = useXummSignIn();
+  const { qrCodeImage, resetSignInQrCode } = useXummSignIn();
 
   // ======================================================================================================
   // selectors
@@ -115,10 +121,30 @@ function SwitchAccountDropdown() {
   // handlers & other functions
   // ======================================================================================================
 
-  const handleNewWallet = (wallet: null | TWalletProvider) => {
-    if (wallet !== "xumm") return;
-    socket.emit("signIn", xummSignInJson);
-    setNewWallet(wallet);
+  const handleNewWallet = async (wallet: null | TWalletProvider) => {
+    if (wallet === "myrkle") return;
+
+    if (wallet === "xumm") {
+      setNewWallet(wallet);
+      socket.emit("signIn", xummSignInJson);
+    }
+
+    if (wallet === "crossmark") {
+      if (checkForCrossmark() !== true) {
+        setNewWallet(wallet);
+      } else {
+        crossmarkSignIn();
+      }
+    }
+
+    if (wallet === "gemwallet") {
+      const isGemWallet = await checkForGemWallet();
+      if (isGemWallet !== true) {
+        setNewWallet(wallet);
+      } else {
+        gemWalletSignIn();
+      }
+    }
   };
 
   const getProviderWallets = (provider: TWalletProvider) => {
@@ -247,7 +273,21 @@ function SwitchAccountDropdown() {
       </Backdrop>
 
       <Backdrop isOpen={!!newWallet}>
-        <ConnectXummModal qrCodeImage={qrCodeImage} handleClose={() => setNewWallet(null)} />
+        {newWallet === "xumm" && (
+          <ConnectXummModal
+            qrCodeImage={qrCodeImage}
+            handleClose={() => {
+              setNewWallet(null);
+              resetSignInQrCode();
+            }}
+          />
+        )}
+
+        {/* crossmark and gemwallet dialog boxes only show up if their extensions are not installed */}
+
+        {newWallet === "crossmark" && (
+          <DialogBox message="Please install crossmark" handleClose={() => setNewWallet(null)} />
+        )}
       </Backdrop>
 
       <Backdrop isOpen={isConfirmDisconnectOpen}>
