@@ -7,6 +7,8 @@ import Backdrop from "./backdrop";
 import MyrkleLoader from "./myrkle-loader";
 import ResponseModal from "./response-modal";
 import XummTxnModal from "./xumm-txn-modal";
+import CorrectIcon from "@/icons/correct";
+import CancelIcon from "@/icons/cancel";
 
 export interface EditableElementProps {
   value?: string | number;
@@ -80,8 +82,12 @@ function EditableElement({
               bg="#fff"
               color="#000"
             />
-            <Square size="20px" bg="success" cursor="pointer" onClick={handleSubmit} />
-            <Square size="20px" bg="danger" cursor="pointer" />
+            <Square size="20px" bg="danger" cursor="pointer" onClick={onToggle}>
+              <CancelIcon fontSize="8px" />
+            </Square>
+            <Square size="20px" bg="success" cursor="pointer" onClick={handleSubmit}>
+              <CorrectIcon strokeWidth="2px" />
+            </Square>
           </HStack>
         ) : (
           <Text fontSize="xs">{String(value) || ""}</Text>

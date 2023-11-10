@@ -55,7 +55,7 @@ function Checks() {
 
             <Link to={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS}>
               <Button w="100%" justifySelf="flex-end">
-                Created Checks
+                Checks
               </Button>
             </Link>
           </Flex>

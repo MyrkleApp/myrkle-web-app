@@ -20,10 +20,12 @@ import ExchangeIcon from "@/icons/exchange";
 import HourGlassIcon from "@/icons/hour-glass";
 import CancelIcon from "@/icons/cancel";
 import TokenEditables from "./token-editables";
-import { selectNetwork } from "../../redux/wallet.selectors";
+import { selectNet, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { formatNumber } from "@/helpers";
+import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
+import RenderElement from "@/components/render-element";
 
 export interface TokenCardModalProps {
   data: any;
@@ -51,6 +53,10 @@ function TokenCardModal({
   const ref = useRef(null);
 
   const network = useSelector(selectNetwork);
+  const net = useSelector(selectNet);
+
+  const { data: accountTokenInfo, isLoading: isAccountTokenInfoLoading } =
+    useGetAccountTokenInfoQuery({ issuer, net });
 
   useOutsideClick({
     ref,
@@ -107,19 +113,21 @@ function TokenCardModal({
         </HStack> */}
 
         <ItemLabel title="Index" fontSize="sm" mb={0} />
-        <Box
-          w="100%"
-          bg="dark"
-          borderRadius="12px"
-          px={4}
-          py={3}
-          mb={2}
-          boxShadow="0 2px 8px #00000040"
-        >
-          <Text fontWeight="bold" fontSize="sm">
-            sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT
-          </Text>
-        </Box>
+        <RenderElement isLoading={isAccountTokenInfoLoading} w="100%" h="45px" mb={2}>
+          <Box
+            w="100%"
+            bg="dark"
+            borderRadius="12px"
+            px={4}
+            py={3}
+            mb={2}
+            boxShadow="0 2px 8px #00000040"
+          >
+            <Text fontWeight="bold" fontSize="sm">
+              {accountTokenInfo?.index}
+            </Text>
+          </Box>
+        </RenderElement>
 
         <ItemLabel title="Issuer" fontSize="sm" mb={0} />
         <Box
@@ -141,18 +149,15 @@ function TokenCardModal({
           pos="absolute"
           bottom={0}
           bg="dark"
-          h="calc(100% - 255px)"
+          h="calc(100% - 273px)"
           borderRadius="12px"
           p={4}
           boxShadow="0 2px 8px #00000040"
+          w="100%"
         >
           <Box h="95%" mt="-5px" overflow="hidden auto">
             <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
-              Lorem ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie
-              pretium viverra. Libero vulputate lobortis pulvinar mauris vel sodales. Sed diam non
-              dolor ut donec magna bibendum nascetur. Urna volutpat velit molestie placerat. Lorem
-              ipsum dolor sit amet consectetur. Risus neque pellentesque neque molestie pretium
-              viverr.
+              No description available.
             </Text>
           </Box>
         </Box>
@@ -198,10 +203,18 @@ function TokenCardModal({
         </Flex>
 
         <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="110px">
-          <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">63</Text>
-            <Text fontSize="2xs">Tick</Text>
-          </VStack>
+          <RenderElement isLoading={isAccountTokenInfoLoading} w="auto" h="auto">
+            <VStack
+              bg="dark"
+              borderRadius="12px"
+              pt={6}
+              spacing={5}
+              boxShadow="0 2px 8px #00000040"
+            >
+              <Text fontSize="md">{accountTokenInfo?.tick_size}</Text>
+              <Text fontSize="2xs">Tick</Text>
+            </VStack>
+          </RenderElement>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
             <Text fontSize="md">${network === "mainnet" ? data?.price : "-- --"}</Text>
             <Text fontSize="2xs">Price</Text>

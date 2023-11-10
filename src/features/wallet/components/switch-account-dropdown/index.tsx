@@ -251,7 +251,7 @@ function SwitchAccountDropdown() {
       </Box>
 
       <Backdrop isOpen={isDropdownOpen || !!selectedWallet}>
-        {selectedWallet && selectedWallet.walletProvider !== "xumm" && (
+        {selectedWallet && (
           <SwitchAccountModal
             address={selectedWallet.address}
             provider={selectedWallet.walletProvider}

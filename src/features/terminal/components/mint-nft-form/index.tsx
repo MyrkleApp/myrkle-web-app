@@ -107,7 +107,7 @@ function MintNftForm() {
   // other handlers
   // =============================================================================================
 
-  const uploadNft = async (name: string, description: string, image: any, attribute: any[]) => {
+  const uploadNft = async (name: string, description: string, image: any, attributes: any[]) => {
     try {
       const client = new NFTStorage({
         token: TOKEN,
@@ -124,7 +124,7 @@ function MintNftForm() {
         video: "",
         "3d_model": "",
         collection: {},
-        attribute,
+        attributes,
       });
       return meta.url;
     } catch (err) {

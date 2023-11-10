@@ -1,6 +1,8 @@
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
+import { selectAddress } from "../../redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 function NftEditables() {
   const [searchParams] = useSearchParams();
@@ -8,6 +10,8 @@ function NftEditables() {
   const taxon = searchParams.get("taxon") || "-- --";
   const issuer = searchParams.get("issuer") || "-- --";
   const fee = searchParams.get("fee") || "-- --";
+
+  const address = useSelector(selectAddress);
 
   return (
     <Box w="calc(100% - 40px)" h="calc(100% - 40px)" mt="20px" mx="auto" overflow="auto" pr={3}>
@@ -43,7 +47,7 @@ function NftEditables() {
           <ItemLabel title="Owner" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">-- --</Text>
+          <Text fontSize="xs">{address}</Text>
         </Box>
       </Flex>
 

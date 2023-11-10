@@ -31,7 +31,7 @@ import {
   ISortBestOffer,
   IToggleTokenFreeze,
 } from "../types/xrp-mutations";
-import { IAddressNet, IIdNet } from "../types/xrp-queries";
+import { IAddressNet, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
 
 const cloudServer = "https://myrkle-django.onrender.com/api/v1/";
@@ -79,6 +79,10 @@ export const xrpApi = createApi({
     }),
     getAccountTokens: builder.query({
       query: ({ address, net }: IAddressNet) => `get-account-tokens/${address}/?${net}`,
+    }),
+    getAccountTokenInfo: builder.query({
+      query: ({ issuer, net }: IGetAccountTokenInfo) =>
+        `info/get_token_info?${net}&issuer=${issuer}`,
     }),
     getAccountNfts: builder.query({
       query: ({ address, net }: IAddressNet) => `get-account-nfts/${address}/?${net}`,
@@ -518,6 +522,7 @@ export const {
   // queries
   useGetBalanceQuery,
   useGetAccountTokensQuery,
+  useGetAccountTokenInfoQuery,
   useGetAccountNftsQuery,
   useGetNftMetaDataQuery,
   useGetNftMetaData2Query,

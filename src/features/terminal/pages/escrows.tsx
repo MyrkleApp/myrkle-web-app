@@ -54,7 +54,7 @@ function Escrows() {
 
             <Link to={ROUTES.TERMINAL_ESCROWS_CREATED_ESCROWS}>
               <Button w="100%" justifySelf="flex-end">
-                Created Escrows
+                Escrows
               </Button>
             </Link>
           </Flex>

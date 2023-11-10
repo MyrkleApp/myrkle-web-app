@@ -7,3 +7,8 @@ export interface IIdNet {
   id: string | number;
   net: string;
 }
+
+export interface IGetAccountTokenInfo {
+  issuer: string;
+  net: string;
+}
