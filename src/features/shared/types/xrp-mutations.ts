@@ -169,10 +169,18 @@ export interface ICreateToken {
 
 export interface ISortBestOffer {
   buy_type: string;
+  buy_issuer: string;
   sell_type: string;
+  sell_issuer: string;
   best_buy: boolean;
   best_sell: boolean;
   mainnet: boolean;
+}
+
+export interface ICancelOffer {
+  sender_addr: string;
+  offer_seq: string | number;
+  fee?: string;
 }
 
 export interface ICreateTrustline {

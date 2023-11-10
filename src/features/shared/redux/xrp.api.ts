@@ -7,6 +7,7 @@ import {
   IBurnNft,
   IBurnToken,
   ICancelCheck,
+  ICancelOffer,
   ICashXrpCheck,
   ICreateNotification,
   ICreatePairingToken,
@@ -131,6 +132,9 @@ export const xrpApi = createApi({
     }),
     getAllNftOffers: builder.query({
       query: ({ id, net }: IIdNet) => `nft/all-nft-offers/?nft_token_id=${id}&${net}`,
+    }),
+    getPendingOffers: builder.query({
+      query: ({ address, net }: IAddressNet) => `xamm/pending-offers/${address}/?${net}`,
     }),
 
     // =================================================================================================
@@ -344,6 +348,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    cancelOffer: builder.mutation({
+      query(body: ICancelOffer) {
+        return {
+          url: "exchange/cancel-offer/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // flags
@@ -539,6 +552,7 @@ export const {
   useGetEscrowInfoQuery,
   useGetPayTxnInfoQuery,
   useGetAllNftOffersQuery,
+  useGetPendingOffersQuery,
 
   // mutations
   useBurnTokenMutation,
@@ -563,6 +577,8 @@ export const {
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
   useCreateTokenMutation,
+  useSortBestOfferMutation,
+  useCancelOfferMutation,
   //flags
   useAccountTxnIdMutation,
   useAuthNftTokenMinterMutation,

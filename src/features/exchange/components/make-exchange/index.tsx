@@ -2,16 +2,16 @@ import Button from "@/components/button";
 import ExchangeIcon from "@/icons/exchange";
 import { Box, Circle, Text } from "@chakra-ui/react";
 import ExchangeBox from "../exchange-box";
-import { numbersOnlyRegex, xrpToken } from "@/constants";
+import { numbersOnlyRegex } from "@/constants";
 import { IToken, TTxnPipeline } from "@/features/shared/types";
 import { useEffect, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useOrderBookSwapMutation } from "@/features/shared/redux/xrp.api";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import TxnDetailsModal from "../txn-details-modal";
 import Backdrop from "@/components/backdrop";
-import { selectExchangeType } from "../../redux/exchange.selectors";
+import { selectExchangeType, selectFromToken, selectToToken } from "../../redux/exchange.selectors";
 import { useSearchParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
@@ -19,6 +19,7 @@ import { isXrpToken } from "@/helpers";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import { setFromToken, setToToken } from "../../redux/exchange.slice";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
@@ -35,12 +36,21 @@ function MakeExchange() {
   const address = useSelector(selectAddress);
   const exchangeType = useSelector(selectExchangeType);
 
+  const fromToken = useSelector(selectFromToken);
+  const toToken = useSelector(selectToToken);
+
+  // ============================================================================================
+  // dispatch
+  // ============================================================================================
+
+  const dispatch = useDispatch();
+  const _setFromToken = (data: IToken) => dispatch(setFromToken(data));
+  const _setToToken = (data: IToken) => dispatch(setToToken(data));
+
   // ============================================================================================
   // state
   // ============================================================================================
 
-  const [fromToken, setFromToken] = useState<IToken>(xrpToken);
-  const [toToken, setToToken] = useState<IToken>(xrpToken);
   const [fromTokenAmount, setFromTokenAmount] = useState("");
   const [toTokenAmount, setToTokenAmount] = useState("");
   const [view, setView] = useState<TTxnPipeline | "success-1">("default");
@@ -60,12 +70,13 @@ function MakeExchange() {
 
   useEffect(() => {
     if (urlToken && urlIssuer) {
-      setFromToken({
+      _setFromToken({
         token: urlToken,
         issuer: urlIssuer,
         icon: isXrpToken({ token: urlToken, issuer: urlIssuer }) ? xrpLogo : tokenPlaceholder,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlIssuer, urlToken]);
 
   useEffect(() => {
@@ -87,18 +98,18 @@ function MakeExchange() {
   // ============================================================================================
 
   const handleFromToken = (token: IToken) => {
-    setFromToken(token);
+    _setFromToken(token);
   };
 
   const handleToToken = (token: IToken) => {
-    setToToken(token);
+    _setToToken(token);
   };
 
   const handleFlipTokens = () => {
     const newFromToken = { ...toToken };
     const newToToken = { ...fromToken };
-    setFromToken(newFromToken);
-    setToToken(newToToken);
+    _setFromToken(newFromToken);
+    _setToToken(newToToken);
     setFromTokenAmount("");
     setToTokenAmount("");
   };

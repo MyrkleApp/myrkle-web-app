@@ -14,6 +14,9 @@ export interface TxnDetailsModalProps {
   toTokenAmount: number | string;
   handleClose: () => void;
   handleProceed?: () => void;
+  proceedText?: string;
+  title?: string;
+  sequence?: string | number;
 }
 
 function TxnDetailsModal({
@@ -27,6 +30,9 @@ function TxnDetailsModal({
   toTokenAmount,
   handleClose,
   handleProceed,
+  proceedText,
+  title,
+  sequence,
 }: TxnDetailsModalProps) {
   const ref = useRef(null);
 
@@ -51,7 +57,9 @@ function TxnDetailsModal({
     >
       <Box w="calc(100% - 60px)" h="calc(100% - 80px)" pos="relative">
         <HStack>
-          <Text fontWeight="bold">Match offer</Text>
+          <Text fontWeight="bold" textTransform="capitalize">
+            {title || ""}
+          </Text>
           <Spacer />
           <CloseButton onClick={handleClose} />
         </HStack>
@@ -106,17 +114,17 @@ function TxnDetailsModal({
             <Text fontSize="13px">Sequence</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              390425
+              {sequence || "-- --"}
             </Text>
           </HStack>
         </Flex>
 
         <Flex direction="column" align="center" justify="center" pos="absolute" bottom="0" w="100%">
           <Text fontSize="sm" mb={3}>
-            Do you want to match offer?
+            {proceedText || "Do you want to proceed?"}
           </Text>
           <Button w="80%" letterSpacing={1} onClick={handleProceed}>
-            continue anyway
+            Proceed
           </Button>
         </Flex>
       </Box>
