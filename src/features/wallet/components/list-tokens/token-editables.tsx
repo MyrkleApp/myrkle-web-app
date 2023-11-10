@@ -89,7 +89,9 @@ function TokenEditables({ data, limit }: TokenEditablesProps) {
           <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <EditableElement value="-- --" />
+          <Text fontSize="xs" ml={5}>
+            -- --
+          </Text>
         </Box>
       </Flex>
 

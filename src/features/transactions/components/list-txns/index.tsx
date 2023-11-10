@@ -1,15 +1,22 @@
 import { Box } from "@chakra-ui/react";
 import TxnCard from "./txn-card";
-import { useGetPaymentTransactionsQuery } from "@/features/shared/redux/xrp.api";
+import { useLazyGetPaymentTransactionsQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import Skeleton1 from "@/components/skeleton";
+import { useEffect } from "react";
 
 function ListTxns() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
 
-  const { data, isLoading } = useGetPaymentTransactionsQuery({ address, net });
+  const [getPaymentTxns, { data, isLoading }] = useLazyGetPaymentTransactionsQuery();
+
+  useEffect(() => {
+    if (address && net) {
+      getPaymentTxns({ address, net });
+    }
+  }, [address, getPaymentTxns, net]);
 
   if (isLoading) {
     return (

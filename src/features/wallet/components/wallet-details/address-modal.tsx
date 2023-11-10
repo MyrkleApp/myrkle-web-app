@@ -1,12 +1,12 @@
 import Button from "@/components/button";
 import { MotionBox } from "@/components/motion-elements";
 import ToastElement from "@/components/toast-element";
-import { Box, CloseButton, Flex, Image, Text, useOutsideClick, useToast } from "@chakra-ui/react";
+import { Box, CloseButton, Flex, Text, useOutsideClick, useToast } from "@chakra-ui/react";
 import { useRef } from "react";
+import QRCode from "react-qr-code";
 
 export interface AddressModalProps {
   handleClose: () => void;
-  qrCodeImage: string;
   address: string;
   handleXAddress: () => void;
   hideXAddressButton?: boolean;
@@ -14,7 +14,6 @@ export interface AddressModalProps {
 
 function AddressModal({
   handleClose,
-  qrCodeImage,
   address,
   handleXAddress,
   hideXAddressButton,
@@ -62,8 +61,12 @@ function AddressModal({
         <CloseButton onClick={handleClose} />
       </Flex>
       <Box px={6} mt={1}>
-        <Box bg="#fff" p={2} borderRadius="15px" h="180px" w="100%" mb={3}>
-          <Image src={qrCodeImage} alt="" />
+        <Box bg="#fff" p={5} borderRadius="15px" h="180px" w="100%" mb={3}>
+          <QRCode
+            style={{ height: "auto", maxWidth: "100%", width: "100%", marginTop: "-5px" }}
+            value={address}
+            viewBox={`0 0 256 256`}
+          />
         </Box>
         <Box
           bg="secondary"

@@ -9,7 +9,6 @@ import ArrowDownIcon from "@/icons/arrow-down";
 import { MotionBox, MotionText } from "@/components/motion-elements";
 import Backdrop from "@/components/backdrop";
 import AddressModal from "./address-modal";
-import qrCodeImage from "@/assets/qr-code.png";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import XAddressFormModal from "./x-address-form-modal";
@@ -213,7 +212,6 @@ function WalletDetails() {
           {addressModal === "address" && (
             <AddressModal
               handleClose={handleAddressModalClose}
-              qrCodeImage={qrCodeImage}
               address={address}
               handleXAddress={handleXAddress}
             />

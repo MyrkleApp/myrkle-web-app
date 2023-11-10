@@ -524,6 +524,7 @@ export const {
   useLazyGetNftMetaDataQuery,
   useGetNetworkFeeQuery,
   useGetPaymentTransactionsQuery,
+  useLazyGetPaymentTransactionsQuery,
   useGetTokenTransactionsQuery,
   useGetXrpTransactionsQuery,
   useGetAccountInfoQuery,
