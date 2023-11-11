@@ -8,6 +8,7 @@ import {
   IBurnToken,
   ICancelCheck,
   ICancelOffer,
+  ICashTokenCheck,
   ICashXrpCheck,
   ICreateNotification,
   ICreatePairingToken,
@@ -272,6 +273,15 @@ export const xrpApi = createApi({
       query(body: ICashXrpCheck) {
         return {
           url: "object/cash-xrp-check/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    cashTokenCheck: builder.mutation({
+      query(body: ICashTokenCheck) {
+        return {
+          url: "object/cash-token-check/",
           method: "POST",
           body,
         };
@@ -601,6 +611,7 @@ export const {
   useCreateTokenCheckMutation,
   useCreateXrpCheckMutation,
   useCashXrpCheckMutation,
+  useCashTokenCheckMutation,
   useCancelCheckMutation,
   useCreateXrpEscrowMutation,
   useModifyDomainMutation,

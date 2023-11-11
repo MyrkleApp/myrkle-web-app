@@ -18,6 +18,8 @@ function ListSellOffersModal({ id, handleClose }: ListSellOffersModalProps) {
 
   const { data, isLoading } = useGetAllNftOffersQuery({ id, net });
 
+  console.log(data);
+
   const ref = useRef(null);
 
   useOutsideClick({

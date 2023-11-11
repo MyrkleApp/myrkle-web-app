@@ -82,6 +82,15 @@ export interface ICashXrpCheck {
   fee?: string;
 }
 
+export interface ICashTokenCheck {
+  sender_addr: string;
+  check_id: string;
+  token: string;
+  amount: number | string;
+  issuer: string;
+  fee?: string;
+}
+
 export interface ICancelCheck {
   sender_addr: string;
   check_id: string;

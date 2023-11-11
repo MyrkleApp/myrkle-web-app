@@ -3,8 +3,13 @@ import Button from "@/components/button";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import ShowDetailsOnHover from "@/components/show-details-on-hover";
+import XummTxnModal from "@/components/xumm-txn-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
-import { useCancelCheckMutation, useCashXrpCheckMutation } from "@/features/shared/redux/xrp.api";
+import {
+  useCancelCheckMutation,
+  useCashTokenCheckMutation,
+  useCashXrpCheckMutation,
+} from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
@@ -22,9 +27,17 @@ function CheckItem({ check }: ICheckItemProps) {
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const [cashXrpCheck] = useCashXrpCheckMutation();
+  const [cashTokenCheck] = useCashTokenCheckMutation();
   const [cancelCheck] = useCancelCheckMutation();
 
-  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
@@ -60,6 +73,14 @@ function CheckItem({ check }: ICheckItemProps) {
         .unwrap()
         .then((res) => handleSubmitTxn(res))
         .catch(() => setView("error-1"));
+    } else {
+      cashTokenCheck({
+        sender_addr: address,
+        check_id: check.check_id,
+        amount: check.amount,
+        token: check.token,
+        issuer: check.issuer,
+      });
     }
   };
 
@@ -108,8 +129,8 @@ function CheckItem({ check }: ICheckItemProps) {
               bg="primary"
               h="30px"
               px="30px"
-              isDisabled={!isXrpToken({ token: check.token })}
               onClick={handleCashCheck}
+              isDisabled={check.issuer === address}
             >
               Check
             </Button>
@@ -120,6 +141,7 @@ function CheckItem({ check }: ICheckItemProps) {
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>

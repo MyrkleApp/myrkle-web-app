@@ -15,6 +15,7 @@ import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import ListSellOffersModal from "./list-sell-offers-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 export interface SelectedNftProps {
   nft: any;
@@ -24,7 +25,8 @@ export interface SelectedNftProps {
 // r4W82KKuXBbFTKJrJDiTkfaAnzz3SdBms9
 
 function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
-  const [{ isSubmitTxnSuccess }, { handleSubmitTxn, resetSubmitTxnResponse }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn();
 
   const address = useSelector(selectAddress);
 
@@ -46,6 +48,12 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
   // ============================================================================================
   // effects
   // ============================================================================================
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
@@ -176,6 +184,7 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
         {view === "success" && <ListSellOffersModal id={nft?.id} handleClose={handleReset} />}
       </Backdrop>
