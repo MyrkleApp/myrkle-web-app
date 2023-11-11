@@ -377,6 +377,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    generateXAddress: builder.mutation({
+      query(body) {
+        return {
+          url: "misc/generate-x-address/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // flags
@@ -603,6 +612,7 @@ export const {
   useCreateTokenMutation,
   useSortBestOfferMutation,
   useCancelOfferMutation,
+  useGenerateXAddressMutation,
   //flags
   useAccountTxnIdMutation,
   useAuthNftTokenMinterMutation,
