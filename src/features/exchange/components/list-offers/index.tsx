@@ -52,8 +52,10 @@ function ListOffers() {
 
   if (!data?.length) {
     return (
-      <Flex justify="center" align="center" h="100%">
-        <Text>There are no offers for this pair</Text>
+      <Flex h="100%" justify="center" align="center">
+        <Text fontSize="lg" fontWeight="bold">
+          No data to display
+        </Text>
       </Flex>
     );
   }

@@ -18,7 +18,7 @@ function OfferBox({ token, issuer, icon, amount }: OfferBoxProps) {
         <Image src={icon || tokenPlaceholder} alt="" h="40px" />
         <VStack spacing={0} align="flex-start" mt="7px">
           <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
-            xrpl
+            {token}
           </Text>
           {!isXrpToken({ token }) && (
             <Text fontSize="xs" mt="-2px">

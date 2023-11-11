@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import PendingOfferRow from "./pending-offer-row";
 import { useGetPendingOffersQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
@@ -20,6 +20,16 @@ function ListPendingOffers() {
             <Skeleton1 key={i} h="65px" borderRadius="0" mb={2} />
           ))}
       </Box>
+    );
+  }
+
+  if (!data?.length) {
+    return (
+      <Flex h="100%" justify="center" align="center">
+        <Text fontSize="lg" fontWeight="bold">
+          No data to display
+        </Text>
+      </Flex>
     );
   }
 
