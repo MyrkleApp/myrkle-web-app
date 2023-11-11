@@ -139,6 +139,9 @@ export const xrpApi = createApi({
     parsePayTxnFlag: builder.query({
       query: (flag: string) => `misc/parse-pay-txn-flags/?pay_flag=${flag}`,
     }),
+    parseNftFlag: builder.query({
+      query: (flag: string) => `misc/parse-nft-flags/?nft_flag=${flag}`,
+    }),
 
     // =================================================================================================
     // mutations
@@ -557,6 +560,7 @@ export const {
   useGetAllNftOffersQuery,
   useGetPendingOffersQuery,
   useLazyParsePayTxnFlagQuery,
+  useParseNftFlagQuery,
 
   // mutations
   useBurnTokenMutation,

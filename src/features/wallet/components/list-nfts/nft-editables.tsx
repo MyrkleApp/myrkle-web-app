@@ -3,6 +3,8 @@ import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
+import { useParseNftFlagQuery } from "@/features/shared/redux/xrp.api";
+import Skeleton1 from "@/components/skeleton";
 
 function NftEditables() {
   const [searchParams] = useSearchParams();
@@ -10,6 +12,9 @@ function NftEditables() {
   const taxon = searchParams.get("taxon") || "-- --";
   const issuer = searchParams.get("issuer") || "-- --";
   const fee = searchParams.get("fee") || "-- --";
+  const flag = searchParams.get("flag") || "";
+
+  const { data: flagData, isLoading: isFlagDataLoading } = useParseNftFlagQuery(flag);
 
   const address = useSelector(selectAddress);
 
@@ -69,56 +74,45 @@ function NftEditables() {
         </Box>
       </Flex>
 
-      <Flex justify="space-between" mb={2}>
-        <Box w="30%">
-          <ItemLabel title="Flags" fontWeight="400" mb={0} />
-        </Box>
-        <Box w="57%">
-          <HStack>
-            <Text fontSize="xs" fontWeight="bold" color="textDark">
-              tfBurnable
-            </Text>
-            <Spacer />
-          </HStack>
-          <Text fontSize="2xs" color="textDark">
-            Allow the issuer (or the entity authorized by the issuer) to destroy the minted NFToken.
-            (The NFTokens owner can always do so.)
-          </Text>
-        </Box>
-      </Flex>
-
-      <Flex justify="flex-end" mb={2}>
-        <Box w="57%">
-          <HStack>
-            <Text fontSize="xs" fontWeight="bold" color="textDark">
-              tfOnlyXRP
-            </Text>
-            <Spacer />
-          </HStack>
-          <Text fontSize="2xs" color="textDark">
-            The minted NFToken can only be bought or sold for XRP. This can be desirable if the
-            token has a transfer fee and the issuer does not want to receive fees in non-XRP
-            currencies.
-          </Text>
-        </Box>
-      </Flex>
-
-      <Flex justify="flex-end" mb={2}>
-        <Box w="57%">
-          <HStack>
-            <Text fontSize="xs" fontWeight="bold" color="textDark">
-              tfTransferable
-            </Text>
-            <Spacer />
-          </HStack>
-          <Text fontSize="2xs" color="textDark">
-            The minted NFToken can be transferred to others. If this flag is not enabled, the token
-            can still be transferred from or to the issuer.
-          </Text>
-        </Box>
-      </Flex>
+      <RenderFlags isLoading={isFlagDataLoading}>
+        {flagData?.map((flag: any, index: number) => (
+          <Flex key={index} justify="space-between" mb={2}>
+            <Box w="30%">{index === 0 && <ItemLabel title="Flags" fontWeight="400" mb={0} />}</Box>
+            <Box w="57%">
+              <HStack>
+                <Text fontSize="xs" fontWeight="bold" color="textDark">
+                  {flag?.flagname}
+                </Text>
+                <Spacer />
+              </HStack>
+              <Text fontSize="2xs" color="textDark">
+                {flag?.description}
+              </Text>
+            </Box>
+          </Flex>
+        ))}
+      </RenderFlags>
     </Box>
   );
 }
+
+const RenderFlags = ({ children, isLoading }: any) => {
+  if (isLoading) {
+    return (
+      <Flex direction="column" align="flex-end">
+        {Array(2)
+          .fill(null)
+          .map((_, i) => (
+            <Box key={i} mb={4} w="57%">
+              <Skeleton1 h="15px" borderRadius="0" mb={3} />
+              <Skeleton1 h="45px" borderRadius="0" />
+            </Box>
+          ))}
+      </Flex>
+    );
+  }
+
+  return <>{children}</>;
+};
 
 export default NftEditables;

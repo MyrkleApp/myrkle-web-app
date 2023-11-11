@@ -74,7 +74,14 @@ function NftDetailContent() {
         <Text fontSize="xs" fontWeight="bold" mb={3}>
           Description
         </Text>
-        <Text fontSize="xs" mb={3}>
+        <Text
+          fontSize="xs"
+          mb={3}
+          h="calc(40% - 100px)"
+          w="calc(100% - 18px)"
+          overflow="auto"
+          pr={2}
+        >
           {data?.description || "no description available"}
         </Text>
 

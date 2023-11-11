@@ -48,6 +48,7 @@ function ListNftsGallery() {
             taxon={nft?.taxon}
             issuer={nft?.issuer}
             fee={nft?.transfer_fee}
+            flag={nft?.flags}
           />
         </Box>
       ))}

@@ -11,7 +11,9 @@ const ROUTES = {
     taxon: string,
     issuer: string,
     fee: string,
-  ) => `/wallet/nft-detail?uri=${uri}&serial=${serial}&taxon=${taxon}&issuer=${issuer}&fee=${fee}`,
+    flag: string,
+  ) =>
+    `/wallet/nft-detail?uri=${uri}&serial=${serial}&taxon=${taxon}&issuer=${issuer}&fee=${fee}&flag=${flag}`,
   TRANSACTIONS: "/transactions",
   TERMINAL: "/terminal",
   TERMINAL_ASSET_MANAGER: "/terminal/asset-manager",

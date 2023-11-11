@@ -13,9 +13,10 @@ export interface NftCardProps {
   taxon: string;
   issuer: string;
   fee: string;
+  flag: string;
 }
 
-function NftCard({ uri, serial, taxon, issuer, fee }: NftCardProps) {
+function NftCard({ uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
   const { data, isLoading, isError } = useGetNftMetaData2Query(uri);
 
   if (isLoading) {
@@ -40,7 +41,7 @@ function NftCard({ uri, serial, taxon, issuer, fee }: NftCardProps) {
   }
 
   return (
-    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri, serial, taxon, issuer, fee)}>
+    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri, serial, taxon, issuer, fee, flag)}>
       <Box
         w="100%"
         h="100%"
