@@ -17,8 +17,11 @@ import ArrowLeftIcon from "@/icons/arrow-left";
 import { AnimatePresence } from "framer-motion";
 import ArrowRightFlatIcon from "@/icons/arrow-right-flat";
 import ListTxnsEditables from "./editables";
-import { selectNetwork } from "@/features/wallet/redux/wallet.selectors";
+import { selectNet, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
+import { useGetPayTxnInfoQuery } from "@/features/shared/redux/xrp.api";
+import RenderElement from "@/components/render-element";
+import ListFlags from "./list-flags";
 
 export interface TxnModalProps {
   txn: any;
@@ -41,6 +44,12 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
   const ref = useRef(null);
 
   const network = useSelector(selectNetwork);
+  const net = useSelector(selectNet);
+
+  const { data: txnInfo, isLoading: isTxnInfoLoading } = useGetPayTxnInfoQuery({
+    net,
+    id: txn?.txid,
+  });
 
   useOutsideClick({
     ref,
@@ -87,7 +96,9 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
         </HStack>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
           <ItemLabel title="Index" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">sEdT1DxxEcgsR3FfcWrYGdHJHjKmBBT</Text>
+          <RenderElement isLoading={isTxnInfoLoading} w="100%" h="20px">
+            <Text fontSize="sm">{txnInfo?.index}</Text>
+          </RenderElement>
         </Box>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
           <ItemLabel title="Transaction ID" fontSize="2xs" mb={0} />
@@ -160,67 +171,12 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
                 borderRadius="15px"
                 zIndex={-1}
               />
-              <ListTxnsEditables txn={txn} />
+              <ListTxnsEditables txn={txn} txnInfo={txnInfo} isTxnInfoLoading={isTxnInfoLoading} />
             </MotionBox>
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
-          {isFlagView && (
-            <MotionBox
-              mt="58px"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <HStack mb={2}>
-                <Text color="textDark" fontWeight="bold" fontSize="xs">
-                  tfNoDirectRipple
-                </Text>
-              </HStack>
-              <Text
-                color="textDark"
-                fontSize="xs"
-                pb={2}
-                mb={3}
-                borderBottom="1px solid #525151"
-                lineHeight={1.4}
-              >
-                Do not use the default path; only use paths included in the Paths field. This is
-                intended to force the transaction to take arbitrage opportunities. Most clients do
-                not need this.
-              </Text>
-
-              <HStack mb={2}>
-                <Text color="textDark" fontWeight="bold" fontSize="xs">
-                  tfPartialPayment
-                </Text>
-              </HStack>
-              <Text
-                color="textDark"
-                fontSize="xs"
-                pb={2}
-                mb={3}
-                borderBottom="1px solid #525151"
-                lineHeight={1.4}
-              >
-                If the specified Amount cannot be sent without spending more than SendMax, reduce
-                the received amount instead of failing outright. See Partial Payments for more
-                details.
-              </Text>
-
-              <HStack mb={2}>
-                <Text color="textDark" fontWeight="bold" fontSize="xs">
-                  tfLimitQuality
-                </Text>
-              </HStack>
-              <Text color="textDark" fontSize="xs" pb={2} lineHeight={1.4}>
-                Only take paths where all the conversions have an input:output ratio that is equal
-                or better than the ratio of Amount:SendMax. See Limit Quality for details.
-              </Text>
-            </MotionBox>
-          )}
-        </AnimatePresence>
+        <AnimatePresence>{isFlagView && <ListFlags txnInfo={txnInfo} />}</AnimatePresence>
 
         <Button
           as="a"

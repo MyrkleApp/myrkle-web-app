@@ -136,6 +136,9 @@ export const xrpApi = createApi({
     getPendingOffers: builder.query({
       query: ({ address, net }: IAddressNet) => `xamm/pending-offers/${address}/?${net}`,
     }),
+    parsePayTxnFlag: builder.query({
+      query: (flag: string) => `misc/parse-pay-txn-flags/?pay_flag=${flag}`,
+    }),
 
     // =================================================================================================
     // mutations
@@ -553,6 +556,7 @@ export const {
   useGetPayTxnInfoQuery,
   useGetAllNftOffersQuery,
   useGetPendingOffersQuery,
+  useLazyParsePayTxnFlagQuery,
 
   // mutations
   useBurnTokenMutation,

@@ -1,12 +1,16 @@
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import RenderElement from "@/components/render-element";
+import { ellipsisAtCenter } from "@/helpers";
 
 export interface ListTxnsEditables {
   txn: any;
+  txnInfo: any;
+  isTxnInfoLoading: boolean;
 }
 
-function ListTxnsEditables({ txn }: ListTxnsEditables) {
+function ListTxnsEditables({ txn, txnInfo, isTxnInfoLoading }: ListTxnsEditables) {
   return (
     <Flex
       direction="column"
@@ -21,7 +25,9 @@ function ListTxnsEditables({ txn }: ListTxnsEditables) {
           <ItemLabel title="Sequence" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">-- --</Text>
+          <RenderElement isLoading={isTxnInfoLoading} w="100%">
+            <Text fontSize="xs">{txnInfo?.sequence}</Text>
+          </RenderElement>
         </Box>
       </Flex>
 
@@ -68,7 +74,9 @@ function ListTxnsEditables({ txn }: ListTxnsEditables) {
           <ItemLabel title="Signature" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">-- --</Text>
+          <RenderElement isLoading={isTxnInfoLoading} w="100%">
+            <Text fontSize="xs">{ellipsisAtCenter(txnInfo?.signature || "")}</Text>
+          </RenderElement>
         </Box>
       </Flex>
 
