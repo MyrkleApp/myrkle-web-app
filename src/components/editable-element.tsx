@@ -29,7 +29,7 @@ function EditableElement({
   const { isOpen, onToggle } = useDisclosure();
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("account-info");
 
   const [view, setView] = useState<TTxnPipeline>("default");
 

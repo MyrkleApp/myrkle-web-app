@@ -26,7 +26,7 @@ function PendingLiquidityRow({ offer }: OfferRowProps) {
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("exchange");
 
   // ============================================================================================
   // selectors

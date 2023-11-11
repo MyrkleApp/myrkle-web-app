@@ -28,7 +28,7 @@ function BurnNft() {
   const [burnNft, { isLoading }] = useBurnNftMutation();
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("nft");
 
   useEffect(() => {
     if (xummTxnQrCode) {

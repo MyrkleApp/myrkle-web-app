@@ -31,7 +31,7 @@ function CheckItem({ check }: ICheckItemProps) {
   const [cancelCheck] = useCancelCheckMutation();
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("check");
 
   useEffect(() => {
     if (xummTxnQrCode) {

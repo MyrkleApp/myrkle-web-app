@@ -31,7 +31,7 @@ function MakeExchange() {
   const urlIssuer = searchParams.get("issuer");
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("exchange");
 
   const { isOpen: isOptionsOpen, onToggle: onToggleOptions } = useDisclosure();
 

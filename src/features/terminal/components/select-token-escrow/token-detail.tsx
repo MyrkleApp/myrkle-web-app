@@ -36,7 +36,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("escrow");
 
   useEffect(() => {
     if (xummTxnQrCode) {

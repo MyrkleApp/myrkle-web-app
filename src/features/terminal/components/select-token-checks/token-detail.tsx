@@ -38,7 +38,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [createXrpCheck] = useCreateXrpCheckMutation();
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("check");
 
   useEffect(() => {
     if (xummTxnQrCode) {

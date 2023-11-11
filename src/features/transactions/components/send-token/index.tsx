@@ -40,7 +40,7 @@ function SendToken() {
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("token");
 
   // ===========================================================================================
   // selectors

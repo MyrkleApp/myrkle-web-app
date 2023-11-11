@@ -26,7 +26,7 @@ export interface SelectedNftProps {
 
 function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("nft");
 
   const address = useSelector(selectAddress);
 

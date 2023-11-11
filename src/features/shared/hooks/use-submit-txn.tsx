@@ -1,18 +1,77 @@
-import { selectUserToken, selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
+import {
+  selectAddress,
+  selectNet,
+  selectUserToken,
+  selectWalletProvider,
+} from "@/features/wallet/redux/wallet.selectors";
 import { submitTransaction } from "@gemwallet/api";
 import { useSelector } from "react-redux";
 import { socket } from "../socket-io";
 import { useEffect, useState } from "react";
+import {
+  useLazyGetAccountChecksQuery,
+  useLazyGetAccountEscrowsQuery,
+  useLazyGetAccountInfoQuery,
+  useLazyGetAccountNftsQuery,
+  useLazyGetAccountTokensQuery,
+  useLazyGetBalanceQuery,
+  useLazyGetOrderBookLiquidityQuery,
+  useLazyGetPaymentTransactionsQuery,
+  useLazyGetPendingOffersQuery,
+} from "../redux/xrp.api";
 
-function useSubmitTxn() {
+function useSubmitTxn(
+  txnType: "account-info" | "token" | "nft" | "check" | "escrow" | "flag" | "exchange",
+) {
+  // =============================================================================================
+  // selectors
+  // =============================================================================================
+
   const walletProvider = useSelector(selectWalletProvider);
   const userToken = useSelector(selectUserToken);
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  // =============================================================================================
+  // state
+  // =============================================================================================
 
   const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
   const [xummTxnQrCode, setXummTxnQrCode] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // =============================================================================================
+  // api & effect
+  // =============================================================================================
+
+  const [getAccountTokens] = useLazyGetAccountTokensQuery();
+  const [getBalance] = useLazyGetBalanceQuery();
+  const [getAccountInfo] = useLazyGetAccountInfoQuery();
+  const [getAccountNfts] = useLazyGetAccountNftsQuery();
+  const [getPaymentTxns] = useLazyGetPaymentTransactionsQuery();
+  const [getAccountChecks] = useLazyGetAccountChecksQuery();
+  const [getAccountEscrows] = useLazyGetAccountEscrowsQuery();
+  const [getPendingOffers] = useLazyGetPendingOffersQuery();
+  const [getPendingLiquidity] = useLazyGetOrderBookLiquidityQuery();
+
+  useEffect(() => {
+    if (isSuccess) {
+      getBalance({ address, net });
+      getPaymentTxns({ address, net });
+      if (txnType === "account-info") getAccountInfo({ address, net });
+      if (txnType === "token") getAccountTokens({ address, net });
+      if (txnType === "nft") getAccountNfts({ address, net });
+      if (txnType === "check") getAccountChecks({ address, net });
+      if (txnType === "escrow") getAccountEscrows({ address, net });
+      if (txnType === "exchange") {
+        getPendingOffers({ address, net });
+        getPendingLiquidity({ address, net });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   // =============================================================================================
   // CROSSMARK

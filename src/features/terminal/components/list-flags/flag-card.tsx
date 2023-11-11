@@ -22,7 +22,7 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
   const [switchValue, setSwitchValue] = useState(false);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn }] = useSubmitTxn();
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn }] = useSubmitTxn("flag");
 
   useEffect(() => {
     if (xummTxnQrCode) {

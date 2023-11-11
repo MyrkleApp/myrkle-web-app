@@ -31,7 +31,7 @@ function RemoveAsset() {
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("token");
 
   const [
     { selectedToken, showTokenList, amount },

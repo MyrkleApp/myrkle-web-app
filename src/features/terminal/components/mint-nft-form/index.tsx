@@ -28,7 +28,7 @@ const TOKEN =
 
 function MintNftForm() {
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("nft");
 
   const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
     min: 0,

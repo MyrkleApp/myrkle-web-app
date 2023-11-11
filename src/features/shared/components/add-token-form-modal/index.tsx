@@ -49,7 +49,7 @@ function AddTokenFormModal({
   const address = useSelector(selectAddress);
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn();
+    useSubmitTxn("token");
 
   const [addToken, { isLoading }] = useAddTokenMutation();
 
