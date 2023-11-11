@@ -4,7 +4,11 @@ import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TxnDetailsModal from "../txn-details-modal";
 
-function OfferRow() {
+export interface OfferRowProps {
+  offer: any;
+}
+
+function OfferRow({ offer }: OfferRowProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -21,7 +25,7 @@ function OfferRow() {
         cursor="pointer"
         onClick={onOpen}
       >
-        <OfferBox />
+        <OfferBox token={offer?.buy_token} issuer={offer?.buy_issuer} amount={offer?.buy_amount} />
         <Circle
           bg="red"
           size="20px"
@@ -34,7 +38,11 @@ function OfferRow() {
           <ExchangeIcon stroke="gray" fill="none" />
         </Circle>
 
-        <OfferBox />
+        <OfferBox
+          token={offer?.sell_token}
+          issuer={offer?.sell_issuer}
+          amount={offer?.sell_amount}
+        />
       </Flex>
       <Backdrop isOpen={isOpen}>
         <TxnDetailsModal

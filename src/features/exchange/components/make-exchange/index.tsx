@@ -1,6 +1,6 @@
 import Button from "@/components/button";
 import ExchangeIcon from "@/icons/exchange";
-import { Box, Circle, Text } from "@chakra-ui/react";
+import { Box, Circle, Flex, HStack, Spacer, Switch, Text, useDisclosure } from "@chakra-ui/react";
 import ExchangeBox from "../exchange-box";
 import { numbersOnlyRegex } from "@/constants";
 import { IToken, TTxnPipeline } from "@/features/shared/types";
@@ -15,11 +15,12 @@ import { selectExchangeType, selectFromToken, selectToToken } from "../../redux/
 import { useSearchParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { isXrpToken } from "@/helpers";
+import { cleanupRate, isXrpToken } from "@/helpers";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import { setFromToken, setToToken } from "../../redux/exchange.slice";
+import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,8 @@ function MakeExchange() {
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
     useSubmitTxn();
+
+  const { isOpen: isOptionsOpen, onToggle: onToggleOptions } = useDisclosure();
 
   // ============================================================================================
   // selectors
@@ -53,6 +56,10 @@ function MakeExchange() {
 
   const [fromTokenAmount, setFromTokenAmount] = useState("");
   const [toTokenAmount, setToTokenAmount] = useState("");
+  const [tfSell, setTfSell] = useState(false);
+  const [tfImmediateOrCancel, setTfImmediateOrCancel] = useState(false);
+  const [tfFillOrKill, setTfFillOrKill] = useState(false);
+  const [tfPassive, setTfPassive] = useState(false);
   const [view, setView] = useState<TTxnPipeline | "success-1">("default");
 
   const isSameToken = fromToken.token === toToken.token && fromToken.issuer === toToken.issuer;
@@ -125,9 +132,9 @@ function MakeExchange() {
       sell_amount: fromTokenAmount,
       buy_issuer: toToken.issuer,
       sell_issuer: fromToken.issuer,
-      tf_sell: false,
-      tf_fill_or_kill: false,
-      tf_immediate_or_cancel: false,
+      tf_sell: tfSell,
+      tf_fill_or_kill: tfFillOrKill,
+      tf_immediate_or_cancel: tfImmediateOrCancel,
     })
       .unwrap()
       .then(() => {
@@ -151,45 +158,113 @@ function MakeExchange() {
 
   return (
     <>
-      <Text color="textDark" fontSize="xs" fontWeight="bold" pos="absolute" top="13%">
-        From
-      </Text>
-      <Box pos="absolute" top="19%" w="100%" h="20%">
-        <ExchangeBox
-          token={fromToken}
-          handleToken={handleFromToken}
-          amount={fromTokenAmount}
-          handleAmount={(e: any) =>
-            e.target.value.match(numbersOnlyRegex) && setFromTokenAmount(e.target.value)
-          }
-        />
-      </Box>
+      <Box h="calc(100% - 130px)" overflow="hidden auto" mt={4} pr={1}>
+        <Box h="35%">
+          <Text color="textDark" fontSize="xs" fontWeight="bold">
+            From
+          </Text>
+          <Box h="calc(100% - 20px)">
+            <ExchangeBox
+              token={fromToken}
+              handleToken={handleFromToken}
+              amount={fromTokenAmount}
+              handleAmount={(e: any) =>
+                e.target.value.match(numbersOnlyRegex) && setFromTokenAmount(e.target.value)
+              }
+            />
+          </Box>
+        </Box>
 
-      <Circle
-        bg="secondary"
-        size="22px"
-        cursor="pointer"
-        pos="absolute"
-        top="47%"
-        left="50%"
-        transform="translate(-50%, -50%) rotate(90deg)"
-        onClick={handleFlipTokens}
-      >
-        <ExchangeIcon stroke="gray" fill="none" />
-      </Circle>
+        <Flex justify="center" align="center" h="20%">
+          <Circle
+            bg="secondary"
+            size="22px"
+            cursor="pointer"
+            transform="rotate(90deg)"
+            onClick={handleFlipTokens}
+          >
+            <ExchangeIcon stroke="gray" fill="none" />
+          </Circle>
+        </Flex>
 
-      <Text color="textDark" fontSize="xs" fontWeight="bold" pos="absolute" top="50%">
-        To
-      </Text>
-      <Box pos="absolute" top="56%" w="100%" h="20%">
-        <ExchangeBox
-          token={toToken}
-          handleToken={handleToToken}
-          amount={toTokenAmount}
-          handleAmount={(e: any) =>
-            e.target.value.match(numbersOnlyRegex) && setToTokenAmount(e.target.value)
-          }
-        />
+        <Box h="35%">
+          <Text color="textDark" fontSize="xs" fontWeight="bold">
+            To
+          </Text>
+          <Box h="calc(100% - 20px)">
+            <ExchangeBox
+              token={toToken}
+              handleToken={handleToToken}
+              amount={toTokenAmount}
+              handleAmount={(e: any) =>
+                e.target.value.match(numbersOnlyRegex) && setToTokenAmount(e.target.value)
+              }
+            />
+          </Box>
+        </Box>
+
+        {exchangeType === "swap" && (
+          <HStack>
+            <Text fontSize="xs">
+              {cleanupRate(Number(fromTokenAmount) / Number(toTokenAmount))}
+            </Text>
+            <Spacer />
+            <HStack cursor="pointer" onClick={onToggleOptions}>
+              <ThickArrowDownIcon color="#fff" fontSize="xs" />
+              <Text color="#fff" fontSize="sm">
+                Options
+              </Text>
+            </HStack>
+          </HStack>
+        )}
+
+        {isOptionsOpen && exchangeType === "swap" && (
+          <Box mt={3}>
+            <HStack mb={2}>
+              <Text fontSize="xs">tfSell</Text>
+              <Spacer />
+              <Switch
+                size="sm"
+                colorScheme="whatsapp"
+                isChecked={tfSell}
+                onChange={() => setTfSell(!tfSell)}
+              />
+            </HStack>
+            <HStack mb={2}>
+              <Text fontSize="xs">tfImmediate_or_cancel</Text>
+              <Spacer />
+              <Switch
+                size="sm"
+                colorScheme="whatsapp"
+                isChecked={tfImmediateOrCancel}
+                onChange={() => setTfImmediateOrCancel(!tfImmediateOrCancel)}
+              />
+            </HStack>
+            <HStack>
+              <Text fontSize="xs">tf Fill_or_kill</Text>
+              <Spacer />
+              <Switch
+                size="sm"
+                colorScheme="whatsapp"
+                isChecked={tfFillOrKill}
+                onChange={() => setTfFillOrKill(!tfFillOrKill)}
+              />
+            </HStack>
+          </Box>
+        )}
+
+        {exchangeType === "liquidity" && (
+          <HStack>
+            <Text fontSize="xs">tfPassive</Text>
+            <Spacer />
+            <Switch
+              size="sm"
+              colorScheme="whatsapp"
+              isChecked={tfPassive}
+              onChange={() => setTfPassive(!tfPassive)}
+            />
+          </HStack>
+        )}
       </Box>
 
       <Button

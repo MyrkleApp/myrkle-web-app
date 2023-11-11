@@ -25,9 +25,7 @@ function ListPendingOffers() {
 
   return (
     <Box h="calc(100% - 40px)" mt="10px" w="100%" pr={2} overflow="auto">
-      {data.map((offer: any, i: number) => (
-        <PendingOfferRow key={i} offer={offer} />
-      ))}
+      {data?.map((offer: any, i: number) => <PendingOfferRow key={i} offer={offer} />)}
     </Box>
   );
 }
