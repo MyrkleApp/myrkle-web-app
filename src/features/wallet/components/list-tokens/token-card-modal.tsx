@@ -26,6 +26,8 @@ import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { formatNumber } from "@/helpers";
 import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
+import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
 
 export interface TokenCardModalProps {
   data: any;
@@ -223,18 +225,28 @@ function TokenCardModal({
             <Text fontSize="md">{network === "mainnet" ? data?.holders : "-- --"}</Text>
             <Text fontSize="2xs">Holders</Text>
           </VStack>
-          <VStack
-            bg="dark"
-            borderRadius="12px"
-            pt={6}
-            spacing={3}
-            boxShadow="0 2px 8px #00000040"
-            cursor="pointer"
-            _hover={{ bg: "danger" }}
+          <Link
+            to={ROUTES.TERMINAL_ASSET_MANAGER_ACTION(
+              "remove",
+              token,
+              issuer,
+              data?.icon || tokenPlaceholder,
+            )}
           >
-            <CancelIcon fontSize="3xl" mb={1} />
-            <Text fontSize="2xs">Remove</Text>
-          </VStack>
+            <VStack
+              h="100%"
+              bg="dark"
+              borderRadius="12px"
+              pt={6}
+              spacing={3}
+              boxShadow="0 2px 8px #00000040"
+              cursor="pointer"
+              _hover={{ bg: "danger" }}
+            >
+              <CancelIcon fontSize="3xl" mb={1} />
+              <Text fontSize="2xs">Remove</Text>
+            </VStack>
+          </Link>
         </SimpleGrid>
 
         <Box

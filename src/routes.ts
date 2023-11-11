@@ -17,6 +17,8 @@ const ROUTES = {
   TRANSACTIONS: "/transactions",
   TERMINAL: "/terminal",
   TERMINAL_ASSET_MANAGER: "/terminal/asset-manager",
+  TERMINAL_ASSET_MANAGER_ACTION: (action: string, token: string, issuer: string, icon: string) =>
+    `/terminal/asset-manager?action=${action}&token=${token}&issuer=${issuer}&icon=${icon}`,
   TERMINAL_NEW_ASSET: "/terminal/asset-manager/new-asset",
   TERMINAL_ADD_ASSET: "/terminal/asset-manager/add-asset",
   TERMINAL_BURN_ASSET: "/terminal/asset-manager/burn-asset",

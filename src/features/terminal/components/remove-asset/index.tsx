@@ -15,8 +15,15 @@ import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import ResponseModal from "@/components/response-modal";
 import MyrkleLoader from "@/components/myrkle-loader";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import { useSearchParams } from "react-router-dom";
 
 function RemoveAsset() {
+  const [searchParams] = useSearchParams();
+  const urlAction = searchParams.get("action");
+  const urlToken = searchParams.get("token") || "";
+  const urlIssuer = searchParams.get("issuer") || "";
+  const urlIcon = searchParams.get("icon") || "";
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const address = useSelector(selectAddress);
@@ -33,6 +40,10 @@ function RemoveAsset() {
 
   const [removeToken, { isLoading }] = useRemoveTokenMutation();
 
+  // ====================================================================================
+  // effects
+  // ====================================================================================
+
   useEffect(() => {
     if (xummTxnQrCode) {
       setModalState("xumm-qr-code");
@@ -46,6 +57,18 @@ function RemoveAsset() {
       setModalState("success");
     } else setModalState("error-2");
   }, [isSubmitTxnSuccess]);
+
+  useEffect(() => {
+    if (urlAction === "remove" && urlToken && urlIssuer && urlIcon) {
+      onOpen();
+      handleTokenClick({ token: urlToken, issuer: urlIssuer, icon: urlIcon });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlAction, urlIcon, urlIssuer, urlToken]);
+
+  // ====================================================================================
+  // handlers
+  // ====================================================================================
 
   const handleClose = () => {
     onClose();
