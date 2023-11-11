@@ -23,6 +23,7 @@ import {
   IModifyEmail,
   IModifyTickSize,
   IModifyTokenTransferFee,
+  IOrderBookLiquidity,
   IOrderBookSwap,
   IReceiveNft,
   IRemoveToken,
@@ -336,6 +337,15 @@ export const xrpApi = createApi({
         };
       },
     }),
+    orderBookLiquidity: builder.mutation({
+      query(body: IOrderBookLiquidity) {
+        return {
+          url: "exchange/create-orderbook-liquidity/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
     createToken: builder.mutation({
       query(body: ICreateToken) {
         return {
@@ -584,6 +594,7 @@ export const {
   useModifyTokenTransferFeeMutation,
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
+  useOrderBookLiquidityMutation,
   useCreateTokenMutation,
   useSortBestOfferMutation,
   useCancelOfferMutation,

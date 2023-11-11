@@ -7,7 +7,10 @@ import { IToken, TTxnPipeline } from "@/features/shared/types";
 import { useEffect, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { useOrderBookSwapMutation } from "@/features/shared/redux/xrp.api";
+import {
+  useOrderBookLiquidityMutation,
+  useOrderBookSwapMutation,
+} from "@/features/shared/redux/xrp.api";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import TxnDetailsModal from "../txn-details-modal";
 import Backdrop from "@/components/backdrop";
@@ -68,8 +71,8 @@ function MakeExchange() {
   // api
   // ============================================================================================
 
-  const [orderBookSwap, { data: orderBookSwapData, isLoading: isOrderBookSwapLoading }] =
-    useOrderBookSwapMutation();
+  const [orderBookSwap, { data: orderBookSwapData }] = useOrderBookSwapMutation();
+  const [orderBookLiquidity, { data: orderBookLiquidityData }] = useOrderBookLiquidityMutation();
 
   // ============================================================================================
   // effects
@@ -124,23 +127,42 @@ function MakeExchange() {
   const handleConfirmClick = () => {
     setView("loading");
 
-    orderBookSwap({
-      sender_addr: address,
-      buy_type: toToken.token,
-      sell_type: fromToken.token,
-      buy_amount: toTokenAmount,
-      sell_amount: fromTokenAmount,
-      buy_issuer: toToken.issuer,
-      sell_issuer: fromToken.issuer,
-      tf_sell: tfSell,
-      tf_fill_or_kill: tfFillOrKill,
-      tf_immediate_or_cancel: tfImmediateOrCancel,
-    })
-      .unwrap()
-      .then(() => {
-        setView("success-1");
+    if (exchangeType === "swap") {
+      orderBookSwap({
+        sender_addr: address,
+        buy_type: toToken.token,
+        sell_type: fromToken.token,
+        buy_amount: toTokenAmount,
+        sell_amount: fromTokenAmount,
+        buy_issuer: toToken.issuer,
+        sell_issuer: fromToken.issuer,
+        tf_sell: tfSell,
+        tf_fill_or_kill: tfFillOrKill,
+        tf_immediate_or_cancel: tfImmediateOrCancel,
       })
-      .catch(() => setView("error-1"));
+        .unwrap()
+        .then(() => {
+          setView("success-1");
+        })
+        .catch(() => setView("error-1"));
+    }
+
+    if (exchangeType === "liquidity") {
+      orderBookLiquidity({
+        sender_addr: address,
+        buy_type: toToken.token,
+        sell_type: fromToken.token,
+        buy_amount: toTokenAmount,
+        sell_amount: fromTokenAmount,
+        buy_issuer: toToken.issuer,
+        sell_issuer: fromToken.issuer,
+      })
+        .unwrap()
+        .then(() => {
+          setView("success-1");
+        })
+        .catch(() => setView("error-1"));
+    }
   };
 
   const handleProceed = () => {
@@ -148,6 +170,8 @@ function MakeExchange() {
 
     if (exchangeType === "swap") {
       handleSubmitTxn(orderBookSwapData);
+    } else {
+      handleSubmitTxn(orderBookLiquidityData);
     }
   };
 
@@ -273,7 +297,6 @@ function MakeExchange() {
         pos="absolute"
         bottom="3%"
         isDisabled={!fromTokenAmount || !toTokenAmount || isSameToken}
-        isLoading={isOrderBookSwapLoading}
         onClick={handleConfirmClick}
       >
         confirm

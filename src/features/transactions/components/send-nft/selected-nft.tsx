@@ -72,7 +72,9 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
       nftoken_id: nft?.id,
       receiver_addr: receiverAddress,
     })
-      .then((res) => handleSubmitTxn(res))
+      .then((res: any) => {
+        handleSubmitTxn(res?.data);
+      })
       .catch(() => setView("error-1"));
   };
 

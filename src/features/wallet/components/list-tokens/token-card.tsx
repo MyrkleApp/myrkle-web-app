@@ -23,7 +23,6 @@ import XrpModal from "./xrp-modal";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
 import AddressModal from "../wallet-details/address-modal";
-import qrCodeImage from "@/assets/qr-code.png";
 import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -76,7 +75,7 @@ function TokenCard({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD]);
+  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address]);
 
   const handleClose = () => {
     onClose();
@@ -283,7 +282,6 @@ function TokenCard({
       <Backdrop isOpen={isReceiveOpen}>
         <AddressModal
           handleClose={onReceiveClose}
-          qrCodeImage={qrCodeImage}
           address={address}
           handleXAddress={() => {
             /** */

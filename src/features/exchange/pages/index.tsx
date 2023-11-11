@@ -3,8 +3,18 @@ import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import ExchangeAssets from "../components/exchange-assets";
 import ListOffers from "../components/list-offers";
 import ListPendingOffers from "../components/list-pending-offers";
+import { useSelector } from "react-redux";
+import { selectExchangeType } from "../redux/exchange.selectors";
+import ListPendingLiquidity from "../components/list-pending-liquidity";
+
+const title = {
+  swap: "Offers",
+  liquidity: "Pending Liquidity",
+};
 
 function Exchange() {
+  const exchangeType = useSelector(selectExchangeType);
+
   return (
     <Layout>
       <Flex h="100%" justify="space-between" gap={5}>
@@ -18,21 +28,31 @@ function Exchange() {
 
         <Box w="50%">
           <HStack h="45px">
-            <Text fontWeight="bold">Offers</Text>
+            <Text fontWeight="bold">{title[exchangeType]}</Text>
           </HStack>
 
-          <Flex h="calc(100% - 45px)" direction="column">
-            <Box h="60%" bg="dark" borderRadius="20px" px={4} py={6} mb="15px">
-              <ListOffers />
-            </Box>
+          {exchangeType === "swap" && (
+            <Flex h="calc(100% - 45px)" direction="column">
+              <Box h="60%" bg="dark" borderRadius="20px" px={4} py={6} mb="15px">
+                <ListOffers />
+              </Box>
 
-            <Box h="calc(40% - 15px)" bg="dark" borderRadius="20px" px={4} py={4}>
-              <Text fontSize="sm" fontWeight="bold">
-                Pending offers
-              </Text>
-              <ListPendingOffers />
-            </Box>
-          </Flex>
+              <Box h="calc(40% - 15px)" bg="dark" borderRadius="20px" px={4} py={4}>
+                <Text fontSize="sm" fontWeight="bold">
+                  Pending offers
+                </Text>
+                <ListPendingOffers />
+              </Box>
+            </Flex>
+          )}
+
+          {exchangeType === "liquidity" && (
+            <Flex h="calc(100% - 45px)" direction="column">
+              <Box h="100%" bg="dark" borderRadius="20px" px={4} py={6}>
+                <ListPendingLiquidity />
+              </Box>
+            </Flex>
+          )}
         </Box>
       </Flex>
     </Layout>

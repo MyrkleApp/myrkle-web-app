@@ -240,6 +240,16 @@ export interface IOrderBookSwap {
   tf_immediate_or_cancel: boolean;
 }
 
+export interface IOrderBookLiquidity {
+  sender_addr: string;
+  buy_type: string;
+  sell_type: string;
+  buy_amount: number | string;
+  sell_amount: number | string;
+  buy_issuer: string;
+  sell_issuer: string;
+}
+
 export interface IFlag {
   sender_addr: string;
   state: boolean;

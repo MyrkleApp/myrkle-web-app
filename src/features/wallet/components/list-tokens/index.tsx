@@ -29,6 +29,7 @@ function ListTokens() {
     const sum = balanceArray.reduce((acc, val) => acc + val, 0);
 
     dispatch(setTotalBalance(sum));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(tokenUsdAmountObj)]);
 
