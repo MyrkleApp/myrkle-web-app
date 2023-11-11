@@ -2,6 +2,7 @@ import Button from "@/components/button";
 import { Box, CloseButton, Flex, HStack, Spacer, Text, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
 import TokenItem from "./token-item";
+import { ellipsisAtCenter } from "@/helpers";
 
 export interface TxnDetailsModalProps {
   fromTokenName: string;
@@ -15,6 +16,8 @@ export interface TxnDetailsModalProps {
   handleClose: () => void;
   handleProceed?: () => void;
   proceedText?: string;
+  offerId?: string;
+  creator?: string;
   title?: string;
   sequence?: string | number;
 }
@@ -32,6 +35,8 @@ function TxnDetailsModal({
   handleProceed,
   proceedText,
   title,
+  offerId,
+  creator,
   sequence,
 }: TxnDetailsModalProps) {
   const ref = useRef(null);
@@ -100,14 +105,14 @@ function TxnDetailsModal({
             <Text fontSize="13px">Offer ID</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              AHFBUSKEBVDUSVBKFJAHFBUSK
+              {ellipsisAtCenter(offerId || "") || "-- --"}
             </Text>
           </HStack>
           <HStack>
             <Text fontSize="13px">Creator</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              svsd dddds
+              {ellipsisAtCenter(creator || "") || "-- --"}
             </Text>
           </HStack>
           <HStack>
