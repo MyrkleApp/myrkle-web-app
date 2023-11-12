@@ -139,6 +139,13 @@ function SendToken() {
   const handleReset = () => {
     resetSubmitTxnResponse();
     setView("default");
+    setReceiverAddress("");
+    setAmount("");
+    setSelectedToken({
+      token: "xrp",
+      issuer: xrpIssuer,
+      icon: xrpLogo,
+    });
   };
 
   const handleAddress = (address: string) => {

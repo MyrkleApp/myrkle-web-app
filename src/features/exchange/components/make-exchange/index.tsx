@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import ExchangeIcon from "@/icons/exchange";
 import { Box, Circle, Flex, HStack, Spacer, Switch, Text, useDisclosure } from "@chakra-ui/react";
 import ExchangeBox from "../exchange-box";
-import { numbersOnlyRegex } from "@/constants";
+import { numbersOnlyRegex, xrpToken } from "@/constants";
 import { IToken, TTxnPipeline } from "@/features/shared/types";
 import { useEffect, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
@@ -178,6 +178,10 @@ function MakeExchange() {
   const handleReset = () => {
     resetSubmitTxnResponse();
     setView("default");
+    _setFromToken(xrpToken);
+    _setToToken(xrpToken);
+    setFromTokenAmount("");
+    setToTokenAmount("");
   };
 
   return (
@@ -316,6 +320,7 @@ function MakeExchange() {
             toTokenIssuer={toToken.issuer}
             toTokenIcon={toToken.icon}
             toTokenAmount={toTokenAmount}
+            title="create offer"
           />
         )}
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
