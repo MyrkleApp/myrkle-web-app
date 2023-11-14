@@ -58,7 +58,7 @@ function GenerateProtedtedEscrowModal({
   };
 
   const handleCopyProtectedEscrowData = () => {
-    navigator.clipboard?.writeText(generatedEscrowData?.condition);
+    navigator.clipboard?.writeText(generatedEscrowData?.fulfillment);
 
     toast({
       render: () => <ToastElement />,
@@ -122,7 +122,7 @@ function GenerateProtedtedEscrowModal({
               onClick={handleCopyProtectedEscrowData}
             >
               <Text letterSpacing={2}>
-                {generatedEscrowData?.condition?.slice(0, 4)}****************
+                {generatedEscrowData?.fulfillment?.slice(0, 4)}****************
               </Text>
               <Spacer />
               <CopyIcon fill="none" />

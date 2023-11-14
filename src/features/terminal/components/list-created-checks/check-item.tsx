@@ -130,7 +130,7 @@ function CheckItem({ check }: ICheckItemProps) {
               h="30px"
               px="30px"
               onClick={handleCashCheck}
-              isDisabled={check.issuer === address}
+              isDisabled={check.sender === address}
             >
               Check
             </Button>

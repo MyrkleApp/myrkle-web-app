@@ -20,7 +20,12 @@ import SecretsModal from "./secrets-modal";
 import RenderElement from "@/components/render-element";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
-import { selectAddress, selectNet, selectTotalBalance } from "../../redux/wallet.selectors";
+import {
+  selectAddress,
+  selectNet,
+  selectNetwork,
+  selectTotalBalance,
+} from "../../redux/wallet.selectors";
 import { formatNumber } from "@/helpers";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
@@ -67,6 +72,7 @@ function WalletDetails() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
   const totalBalance = useSelector(selectTotalBalance);
+  const network = useSelector(selectNetwork);
 
   // =======================================================================================
   // api
@@ -104,26 +110,28 @@ function WalletDetails() {
     <>
       <Flex h="38%" bg="dark" borderRadius="25px" align="center">
         <Box width="250px" h="200px" pos="relative">
-          <MotionBox
-            pos="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            borderRadius="50%"
-            bg="darkest"
-            animate={{
-              height: animateSize,
-              width: animateSize,
-            }}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore no problem in operation, although type error appears.
-            transition={{
-              duration: 0.9,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "loop",
-            }}
-          />
+          {network === "mainnet" && (
+            <MotionBox
+              pos="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              borderRadius="50%"
+              bg="darkest"
+              animate={{
+                height: animateSize,
+                width: animateSize,
+              }}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore no problem in operation, although type error appears.
+              transition={{
+                duration: 0.9,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+            />
+          )}
 
           <Image
             src={xrpLogo}

@@ -1,7 +1,7 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import FlagCard from "./flag-card";
 import {
-  useAccountTxnIdMutation,
+  // useAccountTxnIdMutation,
   useDefaultRippleMutation,
   useDisableMasterMutation,
   useDisallowIncomingCheckMutation,
@@ -16,7 +16,7 @@ import {
 } from "@/features/shared/redux/xrp.api";
 
 function ListFlags() {
-  const [accountTxnId] = useAccountTxnIdMutation();
+  // const [accountTxnId] = useAccountTxnIdMutation();
   //
   const [defaultRipple] = useDefaultRippleMutation();
   const [disableMaster] = useDisableMasterMutation();
@@ -32,12 +32,12 @@ function ListFlags() {
 
   return (
     <SimpleGrid w="85%" h="100%" columns={[1, null, 2, 3]} spacing="50px">
-      <FlagCard
+      {/* <FlagCard
         title="Account transaction id"
         description="Flag description"
         mutation={accountTxnId}
       />
-      <FlagCard title="Auth nft token minter" description="Flag description" />
+      <FlagCard title="Auth nft token minter" description="Flag description" /> */}
       <FlagCard
         title="lsfDefaultRipple"
         description="enable rippling on this address's trust lines by default. Required for issuing addresses; discouraged for others"

@@ -16,6 +16,7 @@ import { TTxnPipeline } from "@/features/shared/types";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import { numbersOnlyRegex } from "@/constants";
 
 export interface TokenDetailProps {
   token: any;
@@ -32,6 +33,8 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [expiryDate, setExpiryDate] = useState("");
   const [generatedEscrowData, setGeneratedEscrowData] = useState<any>(null);
   const [view, setView] = useState<TTxnPipeline>("default");
+
+  const isDateSelected = !!claimDate && !!expiryDate;
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
@@ -61,14 +64,23 @@ function TokenDetail({ token }: TokenDetailProps) {
 
     setView("loading");
 
-    createXrpEscrow({
+    const xrpEscrowData: any = {
       sender_addr: address,
       amount: Number(amount),
       receiver_addr: receiverAddress,
       claim_date: claimDate,
       expiry_date: expiryDate,
-      condition: generatedEscrowData?.condition || "hello world",
-    })
+    };
+
+    // if (generatedEscrowData.condition) {
+    //   xrpEscrowData.condition = generatedEscrowData.condition
+    // }
+
+    createXrpEscrow(
+      !generatedEscrowData?.condition
+        ? xrpEscrowData
+        : { ...xrpEscrowData, condition: generatedEscrowData.condition },
+    )
       .unwrap()
       .then((res) => {
         handleSubmitTxn(res);
@@ -117,7 +129,12 @@ function TokenDetail({ token }: TokenDetailProps) {
         </Box>
         <Box mb={2}>
           <ItemLabel title="Amount" mb={1} />
-          <Input value={amount} onChange={(e: any) => setAmount(e.target.value)} />
+          <Input
+            value={amount}
+            onChange={(e: any) =>
+              e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)
+            }
+          />
         </Box>
         <Box mb={2}>
           <ItemLabel title="Claim Date" mb={1} />
@@ -160,7 +177,7 @@ function TokenDetail({ token }: TokenDetailProps) {
               cursor="pointer"
               onClick={onOpen}
             >
-              {generatedEscrowData?.condition?.slice(0, 4)}...
+              {generatedEscrowData?.fulfillment?.slice(0, 4)}...
             </Button>
             <Spacer />
             <Button
@@ -187,7 +204,11 @@ function TokenDetail({ token }: TokenDetailProps) {
             <Spacer />
             <Text fontSize="xs">1.00</Text>
           </HStack>
-          <Button w="100%" onClick={handleConfirm}>
+          <Button
+            w="100%"
+            onClick={handleConfirm}
+            isDisabled={!receiverAddress || !amount || !isDateSelected}
+          >
             confirm
           </Button>
         </Box>

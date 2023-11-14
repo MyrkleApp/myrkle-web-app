@@ -101,9 +101,9 @@ export interface ICreateXrpEscrow {
   sender_addr: string;
   receiver_addr: string;
   amount: number | string;
-  condition: string;
-  claim_date: string;
-  expiry_date: string;
+  condition?: string;
+  claim_date?: string;
+  expiry_date?: string;
 }
 
 export interface IModifyDomain {
