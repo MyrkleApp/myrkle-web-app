@@ -39,9 +39,6 @@ import { nftFormatter } from "@/helpers";
 
 const cloudServer = "https://myrkle-django.onrender.com/api/v1/";
 
-const CATEGORY_TYPE = "CATEGORY";
-const CATEGORY_ID = "CATEGORY_LIST";
-
 export const xrpApi = createApi({
   reducerPath: "xrpApi",
   baseQuery: fetchBaseQuery({
@@ -53,30 +50,6 @@ export const xrpApi = createApi({
     mode: "cors",
   }),
   endpoints: (builder) => ({
-    getCategories: builder.query({
-      query: () => "category",
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ _id }: any) => ({ type: CATEGORY_TYPE, id: _id }) as const),
-              { type: CATEGORY_TYPE, id: CATEGORY_ID },
-            ]
-          : [{ type: CATEGORY_TYPE, id: CATEGORY_ID }],
-    }),
-    createCategory: builder.mutation<any, any>({
-      query(body) {
-        return {
-          url: "category",
-          method: "POST",
-          body,
-        };
-      },
-      invalidatesTags: [{ type: CATEGORY_TYPE, id: CATEGORY_ID }] as any,
-    }),
-    /**
-     * above are dummy
-     */
-
     getBalance: builder.query({
       query: ({ address, net }: IAddressNet) => `get-balance/${address}/?${net}`,
     }),
@@ -147,6 +120,9 @@ export const xrpApi = createApi({
     }),
     parseNftFlag: builder.query({
       query: (flag: string) => `misc/parse-nft-flags/?nft_flag=${flag}`,
+    }),
+    generateConditionFulfillment: builder.query({
+      query: () => `misc/generate-condition-fulfillment/`,
     }),
 
     // =================================================================================================
@@ -603,6 +579,7 @@ export const {
   useParseNftFlagQuery,
   useGetOrderBookLiquidityQuery,
   useLazyGetOrderBookLiquidityQuery,
+  useLazyGenerateConditionFulfillmentQuery,
 
   // mutations
   useBurnTokenMutation,

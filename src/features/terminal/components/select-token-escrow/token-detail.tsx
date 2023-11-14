@@ -5,7 +5,6 @@ import { MotionBox } from "@/components/motion-elements";
 import { Box, Flex, HStack, Spacer, Text, useDisclosure } from "@chakra-ui/react";
 import Backdrop from "@/components/backdrop";
 import GenerateProtedtedEscrowModal from "./generate-protected-escrow-modal";
-import { createPortal } from "react-dom";
 import TokenItem from "../select-token-dropdown/token-item";
 import { useEffect, useState } from "react";
 import { useCreateXrpEscrowMutation } from "@/features/shared/redux/xrp.api";
@@ -31,6 +30,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [amount, setAmount] = useState("");
   const [claimDate, setClaimDate] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [generatedEscrowData, setGeneratedEscrowData] = useState<any>(null);
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
@@ -52,6 +52,10 @@ function TokenDetail({ token }: TokenDetailProps) {
     } else setView("error-2");
   }, [isSubmitTxnSuccess]);
 
+  const handleGeneratedEscrowData = (data: any) => {
+    setGeneratedEscrowData(data);
+  };
+
   const handleConfirm = () => {
     if (!isXrpToken(token)) return;
 
@@ -63,13 +67,18 @@ function TokenDetail({ token }: TokenDetailProps) {
       receiver_addr: receiverAddress,
       claim_date: claimDate,
       expiry_date: expiryDate,
-      condition: "hello world",
+      condition: generatedEscrowData?.condition || "hello world",
     })
       .unwrap()
       .then((res) => {
         handleSubmitTxn(res);
       })
       .catch(() => setView("error-1"));
+  };
+
+  const handleRegenerateEscrowData = () => {
+    onOpen();
+    setGeneratedEscrowData(null);
   };
 
   const handleReset = () => {
@@ -79,6 +88,7 @@ function TokenDetail({ token }: TokenDetailProps) {
     setAmount("");
     setClaimDate("");
     setExpiryDate("");
+    setGeneratedEscrowData(null);
   };
 
   return (
@@ -137,11 +147,39 @@ function TokenDetail({ token }: TokenDetailProps) {
             }}
           />
         </Box>
-        <Flex justify="center" mb={3}>
-          <Button h="35px" borderRadius="30px" px={10} onClick={onOpen}>
-            Generate Protected Escrow
-          </Button>
-        </Flex>
+        {generatedEscrowData ? (
+          <HStack mb={3}>
+            <Button
+              bg="dark"
+              h="35px"
+              w="80px"
+              letterSpacing={1}
+              py={2}
+              px={4}
+              borderRadius="10px"
+              cursor="pointer"
+              onClick={onOpen}
+            >
+              {generatedEscrowData?.condition?.slice(0, 4)}...
+            </Button>
+            <Spacer />
+            <Button
+              h="35px"
+              w="calc(100% - 90px)"
+              borderRadius="10px"
+              px={4}
+              onClick={handleRegenerateEscrowData}
+            >
+              Regenerate Protected Escrow
+            </Button>
+          </HStack>
+        ) : (
+          <Flex justify="center" mb={3}>
+            <Button h="35px" borderRadius="30px" px={10} onClick={onOpen}>
+              Generate Protected Escrow
+            </Button>
+          </Flex>
+        )}
 
         <Box p={3} bg="darkest" borderRadius="20px">
           <HStack mb={4}>
@@ -155,13 +193,15 @@ function TokenDetail({ token }: TokenDetailProps) {
         </Box>
       </MotionBox>
 
-      {isOpen &&
-        createPortal(
-          <Backdrop isOpen={isOpen}>
-            <GenerateProtedtedEscrowModal handleClose={onClose} />
-          </Backdrop>,
-          document.body,
-        )}
+      {isOpen && (
+        <Backdrop isOpen={isOpen}>
+          <GenerateProtedtedEscrowModal
+            handleClose={onClose}
+            generatedEscrowData={generatedEscrowData}
+            handleGeneratedEscrowData={handleGeneratedEscrowData}
+          />
+        </Backdrop>
+      )}
 
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
