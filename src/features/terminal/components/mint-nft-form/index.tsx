@@ -15,7 +15,6 @@ import { useMintNftMutation } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
-import usePlusMinus from "../../hooks/use-plus-minus";
 import ResponseModal from "@/components/response-modal";
 import Backdrop from "@/components/backdrop";
 import { TTxnPipeline } from "@/features/shared/types";
@@ -29,11 +28,6 @@ const TOKEN =
 function MintNftForm() {
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
     useSubmitTxn("nft");
-
-  const [percentage, { handlePlusClick, handleMinusClick, handleInputChange }] = usePlusMinus({
-    min: 0,
-    max: 100,
-  });
 
   // =============================================================================================
   // selectors
@@ -54,6 +48,7 @@ function MintNftForm() {
   const [issuerBurn, setIssuerBurn] = useState(false);
   const [onlyXrp, setOnlyXrp] = useState(false);
   const [attributes, setAttributes] = useState<IAttribute[]>([{ trait_type: "", value: "" }]);
+  const [royaltiesPercent, setRoyaltiesPercent] = useState<string | number>(0);
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const fileRef = useRef<any>();
@@ -103,6 +98,22 @@ function MintNftForm() {
     setAttributes(value);
   };
 
+  const handleRoyaltiesPlusIconClick = () => {
+    if (Number(royaltiesPercent) >= 50) return;
+    setRoyaltiesPercent(Number(Number(royaltiesPercent) + 0.01).toFixed(2));
+  };
+
+  const handleRoyaltiesMinusIconClick = () => {
+    if (Number(royaltiesPercent) <= 0) return;
+    setRoyaltiesPercent(Number(Number(royaltiesPercent) - 0.01).toFixed(2));
+  };
+
+  const handleRoyaltiesChange = (e: any) => {
+    if (!e.target.value.match(numbersOnlyRegex)) return;
+    if (Number(e.target.value) > 50) return;
+    setRoyaltiesPercent(e.target.value);
+  };
+
   // =============================================================================================
   // other handlers
   // =============================================================================================
@@ -144,7 +155,7 @@ function MintNftForm() {
         is_transferable: isTransferable,
         issuer_burn: issuerBurn,
         only_xrp: onlyXrp,
-        transfer_fee: String(percentage),
+        transfer_fee: String(royaltiesPercent),
         uri,
       })
         .unwrap()
@@ -278,12 +289,11 @@ function MintNftForm() {
             <ItemLabel title="Royalties" mb={0} />
             <Spacer />
             <PlusMinus
-              value={percentage}
-              maxValue={100}
+              value={royaltiesPercent}
               isDisabled={!isTransferable}
-              handlePlusClick={handlePlusClick}
-              handleMinusClick={handleMinusClick}
-              handleInputChange={handleInputChange}
+              handlePlusClick={handleRoyaltiesPlusIconClick}
+              handleMinusClick={handleRoyaltiesMinusIconClick}
+              handleInputChange={handleRoyaltiesChange}
             />
             <Text fontSize="sm" fontWeight="bold">
               %
