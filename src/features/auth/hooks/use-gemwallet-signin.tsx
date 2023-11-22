@@ -1,8 +1,8 @@
 import { getAddress, getNetwork } from "@gemwallet/api";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ISignIn } from "@/features/wallet/types";
-import { signIn } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn, IWalletAddress } from "@/features/wallet/types";
+import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
 import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
@@ -18,6 +18,7 @@ function useGemWalletSignIn() {
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
+  const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
   const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
     const db = EXTERNAL_WALLET_DB();
@@ -31,6 +32,7 @@ function useGemWalletSignIn() {
       if (address && network) {
         const myNetwork: any = network.toLowerCase();
         _signIn({ address, network: myNetwork, userToken: "", walletProvider: "gemwallet" });
+        _addWallet({ address, walletProvider: "gemwallet", name: "" });
         storeSignInData({
           address,
           network: myNetwork,

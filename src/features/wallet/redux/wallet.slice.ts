@@ -34,10 +34,16 @@ const walletSlice = createSlice({
       state.walletProvider = walletProvider;
     },
     setMyWallets(state, { payload }: PayloadAction<IWalletAddress[]>) {
-      state.myWallets = payload;
+      state.myWallets = [...new Set(payload)];
     },
     addWallet(state, { payload }: PayloadAction<IWalletAddress>) {
-      state.myWallets.push(payload);
+      const walletIndex = state.myWallets.findIndex(
+        (wallet) =>
+          wallet.address === payload.address && wallet.walletProvider === payload.walletProvider,
+      );
+      if (walletIndex === -1) {
+        state.myWallets.push(payload);
+      }
     },
     removeWallet(state, { payload }: PayloadAction<IWalletAddress>) {
       const myWallets = [...state.myWallets];

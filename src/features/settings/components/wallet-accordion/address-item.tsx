@@ -1,14 +1,13 @@
 import Backdrop from "@/components/backdrop";
 import Button from "@/components/button";
-import ConnectXummModal from "@/components/connect-xumm-modal";
 import DialogBox from "@/components/dialog-box";
 import ToastElement from "@/components/toast-element";
-import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import { selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
-import { setAddress, setWalletProvider } from "@/features/wallet/redux/wallet.slice";
-import { ISignIn, TWalletProvider } from "@/features/wallet/types";
+import { removeWallet, setAddress, setWalletProvider } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn, IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import CopyIcon from "@/icons/copy";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import {
   Box,
   HStack,
@@ -31,13 +30,24 @@ export interface AddressItemProps {
 function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps) {
   const [signInData, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
+  const toast = useToast({
+    position: "top",
+    containerStyle: {
+      ml: "400px",
+      width: "200px",
+    },
+  });
+
   const currentWalletProvider = useSelector(selectWalletProvider);
 
   const isActiveWalletProvider = currentWalletProvider === selectedWalletProvider;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { qrCodeImage } = useXummSignIn();
+  const {
+    isOpen: isRemoveWalletOpen,
+    onOpen: onOpenRemoveWallet,
+    onClose: onCloseRemoveWallet,
+  } = useDisclosure();
 
   // ======================================================================================================
   // dispatch
@@ -46,14 +56,11 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
   const dispatch = useDispatch();
   const _setAddress = (address: string) => dispatch(setAddress(address));
   const _setWalletProvider = (provider: TWalletProvider) => dispatch(setWalletProvider(provider));
+  const _removeWallet = (wallet: IWalletAddress) => dispatch(removeWallet(wallet));
 
-  const toast = useToast({
-    position: "top",
-    containerStyle: {
-      ml: "400px",
-      width: "200px",
-    },
-  });
+  // ======================================================================================================
+  // handlers
+  // ======================================================================================================
 
   const handleCopyAddress = () => {
     navigator.clipboard?.writeText(address);
@@ -85,6 +92,16 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
     onClose();
   };
 
+  const handleRemoveWallet = async () => {
+    _removeWallet({ name: "", address, walletProvider: selectedWalletProvider });
+
+    const db = EXTERNAL_WALLET_DB();
+
+    if (selectedWalletProvider && selectedWalletProvider !== "myrkle") {
+      await db.removeWallet({ address, walletProvider: selectedWalletProvider });
+    }
+  };
+
   return (
     <>
       <Box w="calc(100% - 70px)" mx="auto" mb={2}>
@@ -107,7 +124,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
           <Box bg="darkest" p="0 5px" borderRadius="4px" onClick={handleCopyAddress}>
             <CopyIcon fill="none" fontSize="sm" cursor="pointer" />
           </Box>
-          <CloseButton bg="darkest" size="sm" />
+          <CloseButton bg="darkest" size="sm" onClick={onOpenRemoveWallet} />
         </HStack>
 
         {name && (
@@ -118,23 +135,35 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
       </Box>
 
       <Backdrop isOpen={isOpen}>
-        {selectedWalletProvider === "xumm" ? (
-          <ConnectXummModal qrCodeImage={qrCodeImage} handleClose={onClose} />
-        ) : (
-          <DialogBox handleClose={onClose}>
-            <Text fontSize="sm" fontWeight="bold">
-              Switch active wallet?
-            </Text>
-            <Flex mt={16} justify="flex-end">
-              <Button h="35px" mr={3} onClick={handleSwitchWallet}>
-                Proceed
-              </Button>
-              <Button h="35px" bg="secondary" onClick={onClose}>
-                Cancel
-              </Button>
-            </Flex>
-          </DialogBox>
-        )}
+        <DialogBox handleClose={onClose}>
+          <Text fontSize="sm" fontWeight="bold">
+            Switch active wallet?
+          </Text>
+          <Flex mt={16} justify="flex-end">
+            <Button h="35px" mr={3} onClick={handleSwitchWallet}>
+              Proceed
+            </Button>
+            <Button h="35px" bg="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+          </Flex>
+        </DialogBox>
+      </Backdrop>
+
+      <Backdrop isOpen={isRemoveWalletOpen}>
+        <DialogBox handleClose={onCloseRemoveWallet}>
+          <Text fontSize="sm" fontWeight="bold">
+            Are you sure you want to remove this wallet?
+          </Text>
+          <Flex mt={16} justify="flex-end">
+            <Button h="35px" mr={3} onClick={handleRemoveWallet}>
+              Proceed
+            </Button>
+            <Button h="35px" bg="secondary" onClick={onCloseRemoveWallet}>
+              Cancel
+            </Button>
+          </Flex>
+        </DialogBox>
       </Backdrop>
     </>
   );

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { TConnectionStatus } from "@/features/shared/types";
 import { socket } from "@/features/shared/socket-io";
 import { useDispatch } from "react-redux";
-import { signIn } from "@/features/wallet/redux/wallet.slice";
-import { ISignIn } from "@/features/wallet/types";
+import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn, IWalletAddress } from "@/features/wallet/types";
 import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
@@ -21,6 +21,7 @@ function useXummSignIn() {
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
+  const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
   const resetSignInQrCode = () => setQrCodeImage("");
 
@@ -63,7 +64,9 @@ function useXummSignIn() {
     if (walletAddress) {
       handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm" });
       navigate(ROUTES.WALLET);
+      _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, walletAddress]);
 
   return { signInStatus, qrCodeImage, resetSignInQrCode };

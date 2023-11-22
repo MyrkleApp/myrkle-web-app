@@ -31,6 +31,7 @@ import { checkForCrossmark } from "@/features/shared/connections/crossmark";
 import useCrossmarkSignIn from "@/features/auth/hooks/use-crossmark-signin";
 import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
 import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 
 function SwitchAccountDropdown() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
@@ -189,8 +190,13 @@ function SwitchAccountDropdown() {
     onOpenConfirmDisconnect();
   };
 
-  const handleDisconnect = () => {
-    // TODO: remove wallet from browser DB!
+  const handleDisconnect = async () => {
+    const db = EXTERNAL_WALLET_DB();
+
+    if (walletProvider && walletProvider !== "myrkle") {
+      await db.removeWallet({ address, walletProvider });
+    }
+
     clearSignInData();
     document.location.reload();
   };

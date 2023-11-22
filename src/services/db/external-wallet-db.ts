@@ -29,6 +29,13 @@ function EXTERNAL_WALLET_DB() {
     return res;
   };
 
+  const removeWallet = async (wallet: IAddExternalWallet) => {
+    const walletToRemove = await findWallet(wallet);
+    if (walletToRemove?.doc) {
+      db.remove(walletToRemove.doc);
+    }
+  };
+
   const clearData = async () => {
     const res = await db.destroy();
     return res;
@@ -39,6 +46,7 @@ function EXTERNAL_WALLET_DB() {
     findWallet,
     addWallet,
     clearData,
+    removeWallet,
   };
 }
 

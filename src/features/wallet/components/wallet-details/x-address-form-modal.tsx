@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
 import ToastElement from "@/components/toast-element";
+import { numbersOnlyRegex } from "@/constants";
 
 export interface XAddressFormModalProps {
   handleClose: () => void;
@@ -98,7 +99,13 @@ function XAddressFormModal({ handleClose }: XAddressFormModalProps) {
               </Text>
             </HStack>
 
-            <Input mb={2} value={tag} onChange={(e: any) => setTag(e.target.value)} />
+            <Input
+              mb={2}
+              value={tag}
+              onChange={(e: any) =>
+                e.target.value.match(numbersOnlyRegex) && setTag(e.target.value)
+              }
+            />
 
             <Button
               w="100%"
