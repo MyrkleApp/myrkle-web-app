@@ -26,8 +26,6 @@ import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { formatNumber } from "@/helpers";
 import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
-import { Link } from "react-router-dom";
-import ROUTES from "@/routes";
 
 export interface TokenCardModalProps {
   data: any;
@@ -38,6 +36,7 @@ export interface TokenCardModalProps {
   limit?: string;
   isLoading: boolean;
   handleClose: () => void;
+  handleRemoveClick: () => void;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
@@ -51,6 +50,7 @@ function TokenCardModal({
   tokenBalanceToUSD,
   limit,
   handleClose,
+  handleRemoveClick,
 }: TokenCardModalProps) {
   const ref = useRef(null);
 
@@ -225,28 +225,20 @@ function TokenCardModal({
             <Text fontSize="md">{network === "mainnet" ? data?.holders : "-- --"}</Text>
             <Text fontSize="2xs">Holders</Text>
           </VStack>
-          <Link
-            to={ROUTES.TERMINAL_ASSET_MANAGER_ACTION(
-              "remove",
-              token,
-              issuer,
-              data?.icon || tokenPlaceholder,
-            )}
+          <VStack
+            h="100%"
+            bg="dark"
+            borderRadius="12px"
+            pt={6}
+            spacing={3}
+            boxShadow="0 2px 8px #00000040"
+            cursor="pointer"
+            _hover={{ bg: "danger" }}
+            onClick={handleRemoveClick}
           >
-            <VStack
-              h="100%"
-              bg="dark"
-              borderRadius="12px"
-              pt={6}
-              spacing={3}
-              boxShadow="0 2px 8px #00000040"
-              cursor="pointer"
-              _hover={{ bg: "danger" }}
-            >
-              <CancelIcon fontSize="3xl" mb={1} />
-              <Text fontSize="2xs">Remove</Text>
-            </VStack>
-          </Link>
+            <CancelIcon fontSize="3xl" mb={1} />
+            <Text fontSize="2xs">Remove</Text>
+          </VStack>
         </SimpleGrid>
 
         <Box

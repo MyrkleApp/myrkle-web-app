@@ -25,8 +25,14 @@ import { Link } from "react-router-dom";
 import AddressModal from "../wallet-details/address-modal";
 import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
+import ProceedModal from "@/features/shared/components/proceed-modal";
+import { useRemoveTokenMutation } from "@/features/shared/redux/xrp.api";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import XummTxnModal from "@/components/xumm-txn-modal";
 
 export interface TokenCardProps {
   token: string;
@@ -40,6 +46,15 @@ export interface TokenCardProps {
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
 // BTC
 
+type TTokenModalView =
+  | "default"
+  | "proceed"
+  | "loading"
+  | "error-1"
+  | "xumm-qr-code"
+  | "error-2"
+  | "success";
+
 function TokenCard({
   token,
   issuer,
@@ -48,17 +63,39 @@ function TokenCard({
   xrpData,
   handleTokenUsdAmountObj,
 }: TokenCardProps) {
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn("token");
+
+  // ==================================================================================================
+  // selectors
+  // ==================================================================================================
+
   const address = useSelector(selectAddress);
   const network = useSelector(selectNetwork);
 
+  // ==================================================================================================
+  // api
+  // ==================================================================================================
+
   const [getTokenInfo, { data: tokenData, isLoading: isTokenDataLoading }] =
     useLazyGetTokenInfoQuery();
+  const [removeToken] = useRemoveTokenMutation();
+
+  // ==================================================================================================
+  // state & disclosure
+  // ==================================================================================================
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
 
   const xrpBalanceToUSD = xrpData?.price.data * amount;
   const tokenBalanceToUSD = xrpData?.price.data * amount * (tokenData?.price || 0);
+
+  const [tokenModalView, setTokenModalView] = useState<TTokenModalView>("default");
+
+  // ==================================================================================================
+  // effects
+  // ==================================================================================================
 
   useEffect(() => {
     if (isXrpToken({ token })) {
@@ -77,12 +114,50 @@ function TokenCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address]);
 
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setTokenModalView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      setTokenModalView("success");
+    } else setTokenModalView("error-2");
+  }, [isSubmitTxnSuccess]);
+
+  // ==================================================================================================
+  // handlers
+  // ==================================================================================================
+
   const handleClose = () => {
     onClose();
   };
 
   const tokenIconLink = (url: string) => {
     return `${url}?token=${token}&issuer=${issuer}`;
+  };
+
+  const handleReset = () => {
+    onClose();
+    resetSubmitTxnResponse();
+  };
+
+  const handleRemoveToken = () => {
+    setTokenModalView("loading");
+
+    removeToken({
+      sender_addr: address,
+      token: token,
+      issuer: issuer,
+    })
+      .unwrap()
+      .then((res) => {
+        handleSubmitTxn(res);
+      })
+      .catch(() => setTokenModalView("error-1"));
   };
 
   return (
@@ -266,16 +341,46 @@ function TokenCard({
         {isXrpToken({ token }) ? (
           <XrpModal data={xrpData} handleClose={handleClose} />
         ) : (
-          <TokenCardModal
-            data={tokenData}
-            token={token}
-            issuer={issuer}
-            amount={amount}
-            tokenBalanceToUSD={tokenBalanceToUSD}
-            limit={limit}
-            isLoading={isTokenDataLoading}
-            handleClose={handleClose}
-          />
+          <>
+            {tokenModalView === "default" && (
+              <TokenCardModal
+                data={tokenData}
+                token={token}
+                issuer={issuer}
+                amount={amount}
+                tokenBalanceToUSD={tokenBalanceToUSD}
+                limit={limit}
+                isLoading={isTokenDataLoading}
+                handleClose={handleClose}
+                handleRemoveClick={() => setTokenModalView("proceed")}
+              />
+            )}
+
+            {tokenModalView === "loading" && <MyrkleLoader />}
+
+            {tokenModalView === "error-1" && (
+              <ResponseModal isError={true} handleClose={handleReset} />
+            )}
+
+            {tokenModalView === "proceed" && (
+              <ProceedModal
+                text="You are about to remove this token"
+                isLoading={false}
+                handleClose={handleClose}
+                handleProceed={handleRemoveToken}
+              />
+            )}
+
+            {tokenModalView === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+
+            {tokenModalView === "error-2" && (
+              <ResponseModal isError={true} handleClose={handleReset} />
+            )}
+
+            {tokenModalView === "success" && (
+              <ResponseModal isError={false} handleClose={handleReset} />
+            )}
+          </>
         )}
       </Backdrop>
 

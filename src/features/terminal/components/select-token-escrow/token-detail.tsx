@@ -17,6 +17,7 @@ import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import { numbersOnlyRegex } from "@/constants";
+import { ICreateXrpEscrow } from "@/features/shared/types/xrp-mutations";
 
 export interface TokenDetailProps {
   token: any;
@@ -34,7 +35,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [generatedEscrowData, setGeneratedEscrowData] = useState<any>(null);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const isDateSelected = !!claimDate && !!expiryDate;
+  const isDateSelected = !!claimDate || !!expiryDate;
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
@@ -64,23 +65,19 @@ function TokenDetail({ token }: TokenDetailProps) {
 
     setView("loading");
 
-    const xrpEscrowData: any = {
+    const xrpEscrowData: ICreateXrpEscrow = {
       sender_addr: address,
       amount: Number(amount),
       receiver_addr: receiverAddress,
-      claim_date: claimDate,
-      expiry_date: expiryDate,
     };
 
-    // if (generatedEscrowData.condition) {
-    //   xrpEscrowData.condition = generatedEscrowData.condition
-    // }
+    if (generatedEscrowData?.condition) {
+      xrpEscrowData.condition = generatedEscrowData?.condition;
+    }
+    if (claimDate) xrpEscrowData.claim_date = claimDate;
+    if (expiryDate) xrpEscrowData.expiry_date = expiryDate;
 
-    createXrpEscrow(
-      !generatedEscrowData?.condition
-        ? xrpEscrowData
-        : { ...xrpEscrowData, condition: generatedEscrowData.condition },
-    )
+    createXrpEscrow(xrpEscrowData)
       .unwrap()
       .then((res) => {
         handleSubmitTxn(res);
