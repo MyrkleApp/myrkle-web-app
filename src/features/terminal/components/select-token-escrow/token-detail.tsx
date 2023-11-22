@@ -36,6 +36,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const isDateSelected = !!claimDate || !!expiryDate;
+  const isSubmitDisabled = !receiverAddress || !amount || !isDateSelected;
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
@@ -203,8 +204,9 @@ function TokenDetail({ token }: TokenDetailProps) {
           </HStack>
           <Button
             w="100%"
+            bg={isSubmitDisabled ? "secondary" : "primary"}
             onClick={handleConfirm}
-            isDisabled={!receiverAddress || !amount || !isDateSelected}
+            isDisabled={isSubmitDisabled}
           >
             confirm
           </Button>

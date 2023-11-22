@@ -44,6 +44,8 @@ function AddTokenFormModal({
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [rippling, setRippling] = useState(false);
 
+  const isSubmitDisabled = !tokenName.trim().length || !issuer.trim().length;
+
   const ref = useRef(null);
 
   const address = useSelector(selectAddress);
@@ -240,9 +242,10 @@ function AddTokenFormModal({
           <Button
             w="100%"
             h="40px"
-            bg="secondary"
-            color="textDark"
+            bg={isSubmitDisabled ? "secondary" : "primary"}
+            color="#fff"
             isLoading={isLoading}
+            isDisabled={isSubmitDisabled}
             onClick={handleConfirm}
           >
             confirm

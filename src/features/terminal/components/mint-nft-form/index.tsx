@@ -53,6 +53,8 @@ function MintNftForm() {
 
   const fileRef = useRef<any>();
 
+  const isSubmitDisabled = !name.trim().length || !imageData;
+
   // =============================================================================================
   // api
   // =============================================================================================
@@ -299,7 +301,12 @@ function MintNftForm() {
               %
             </Text>
           </HStack>
-          <Button w="100%" onClick={handleConfirmClick}>
+          <Button
+            w="100%"
+            bg={isSubmitDisabled ? "secondary" : "primary"}
+            isDisabled={isSubmitDisabled}
+            onClick={handleConfirmClick}
+          >
             confirm
           </Button>
         </Box>

@@ -34,6 +34,8 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [expiryDate, setExpiryDate] = useState("");
   const [view, setView] = useState<TTxnPipeline>("default");
 
+  const isSubmitDisabled = !receiverAddress.trim().length || !amount.trim().length || !expiryDate;
+
   const [createTokenCheck] = useCreateTokenCheckMutation();
   const [createXrpCheck] = useCreateXrpCheckMutation();
 
@@ -143,7 +145,13 @@ function TokenDetail({ token }: TokenDetailProps) {
             <Spacer />
             <Text fontSize="xs">1.00</Text>
           </HStack>
-          <Button w="100%" onClick={handleConfirm}>
+          <Button
+            w="100%"
+            onClick={handleConfirm}
+            color="#fff"
+            bg={isSubmitDisabled ? "secondary" : "primary"}
+            isDisabled={isSubmitDisabled}
+          >
             confirm
           </Button>
         </Box>

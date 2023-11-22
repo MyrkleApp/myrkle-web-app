@@ -56,6 +56,13 @@ function SelectTokenAmountModal({
     handler: handleClose,
   });
 
+  const getIsButtonDisabled = () => {
+    if (!selectedToken || showTokenList) return true;
+    if (hideAmount) return false;
+    if (!amount) return true;
+    return false;
+  };
+
   return (
     <MotionBox
       ref={ref}
@@ -184,9 +191,9 @@ function SelectTokenAmountModal({
           <Button
             w="100%"
             h="40px"
-            bg="secondary"
-            color="textDark"
-            isDisabled={hideAmount ? false : showTokenList || !amount}
+            bg={getIsButtonDisabled() ? "secondary" : "primary"}
+            color="#fff"
+            isDisabled={getIsButtonDisabled()}
             onClick={handleConfirmClick}
           >
             confirm
