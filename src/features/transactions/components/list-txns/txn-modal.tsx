@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { useGetPayTxnInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
 import ListFlags from "./list-flags";
+import { formatNumber } from "@/helpers";
 
 export interface TxnModalProps {
   txn: any;
@@ -91,7 +92,7 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
           </Text>
           <Spacer />
           <Text className="font-face-proxima-nova-black" fontSize="3xl">
-            {Number(txn?.amount).toFixed(2)}
+            {formatNumber(txn?.amount)}
           </Text>
         </HStack>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>

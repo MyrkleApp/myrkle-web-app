@@ -30,7 +30,7 @@ function XummTxnModal({ qrCodeImage }: XummTxnModalProps) {
         <Skeleton1 borderRadius="0" w="83%" mx="auto" h="75%" />
       )}
       <Text fontSize="xs" textAlign="center" mt={8}>
-        Scan QR code
+        Scan QR code to sign transaction
       </Text>
     </MotionBox>
   );

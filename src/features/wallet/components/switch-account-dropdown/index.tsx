@@ -16,7 +16,6 @@ import { ISignIn, IWalletAddress, TWalletProvider } from "../../types";
 import { selectAddress, selectMyWallets, selectWalletProvider } from "../../redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
-import SwitchAccountModal from "./switch-account-modal";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
 import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
 import ConnectXummModal from "@/components/connect-xumm-modal";
@@ -258,24 +257,82 @@ function SwitchAccountDropdown() {
 
       <Backdrop isOpen={isDropdownOpen || !!selectedWallet}>
         {selectedWallet && (
-          <SwitchAccountModal
-            address={selectedWallet.address}
-            provider={selectedWallet.walletProvider}
-            handleClose={onCloseDropdown}
-            handleProceed={handleSwitchWallet}
-            isWalletInStorage={true}
-          />
+          <DialogBox handleClose={onCloseDropdown} borderRadius="25px" h="220px">
+            <Text
+              fontSize="lg"
+              fontWeight="bold"
+              color="primary"
+              className="font-face-proxima-nova-extrabld"
+            >
+              Confirm?
+            </Text>
+            <Text fontSize="xs" fontWeight="bold">
+              Do you want to switch your active wallet to {selectedWallet.address} that exists on
+              your {selectedWallet.walletProvider} wallet?
+            </Text>
+            <Flex justify="space-between" mt="30px">
+              <Button
+                h="30px"
+                bg="none"
+                fontSize="sm"
+                color="#fff"
+                _hover={{ bg: "none " }}
+                onClick={onCloseDropdown}
+              >
+                go back
+              </Button>
+              <Button
+                h="30px"
+                fontSize="sm"
+                mr={2}
+                bg="success"
+                color="#fff"
+                onClick={handleSwitchWallet}
+              >
+                confirm
+              </Button>
+            </Flex>
+          </DialogBox>
         )}
       </Backdrop>
 
       <Backdrop isOpen={isExternalProviderChangeOpen}>
-        <SwitchAccountModal
-          address={newAddress}
-          provider={newExternalProvider}
-          handleClose={onCloseExternalChange}
-          handleProceed={handleSwitchWallet2}
-          isWalletInStorage={isWalletInStorage}
-        />
+        <DialogBox handleClose={onCloseExternalChange} borderRadius="25px" h="220px">
+          <Text
+            fontSize="lg"
+            fontWeight="bold"
+            color="primary"
+            className="font-face-proxima-nova-extrabld"
+          >
+            Confirm?
+          </Text>
+          <Text fontSize="xs" fontWeight="bold">
+            Do you want to switch your active wallet to {newAddress} that exists on your{" "}
+            {newExternalProvider} wallet?
+          </Text>
+          <Flex justify="space-between" mt="30px">
+            <Button
+              h="30px"
+              bg="none"
+              fontSize="sm"
+              color="#fff"
+              _hover={{ bg: "none " }}
+              onClick={onCloseExternalChange}
+            >
+              go back
+            </Button>
+            <Button
+              h="30px"
+              fontSize="sm"
+              mr={2}
+              bg="success"
+              color="#fff"
+              onClick={handleSwitchWallet2}
+            >
+              confirm
+            </Button>
+          </Flex>
+        </DialogBox>
       </Backdrop>
 
       <Backdrop isOpen={!!newWallet}>

@@ -5,6 +5,7 @@ import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
 import TxnModal from "./txn-modal";
+import { formatNumber } from "@/helpers";
 
 export interface TxnCardProps {
   txn: any;
@@ -55,7 +56,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
           justifyContent="center"
         >
           <Text fontSize="xs" textTransform="uppercase" color={isCreditTxn ? "success" : "danger"}>
-            {`${isCreditTxn ? "+" : "-"}${Number(txn.amount).toFixed(2)}`}
+            {`${isCreditTxn ? "+" : "-"}${formatNumber(txn.amount)}`}
           </Text>
         </GridItem>
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">

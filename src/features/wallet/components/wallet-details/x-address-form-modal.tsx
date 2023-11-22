@@ -110,7 +110,7 @@ function XAddressFormModal({ handleClose }: XAddressFormModalProps) {
             <Button
               w="100%"
               h="40px"
-              bg="secondary"
+              bg={tag.trim().length ? "primary" : "secondary"}
               color="textDark"
               isLoading={isLoading}
               onClick={handleSubmit}

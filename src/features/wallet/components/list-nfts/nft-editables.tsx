@@ -13,6 +13,7 @@ function NftEditables() {
   const issuer = searchParams.get("issuer") || "-- --";
   const fee = searchParams.get("fee") || "-- --";
   const flag = searchParams.get("flag") || "";
+  const uri = searchParams.get("uri") || "-- --";
 
   const { data: flagData, isLoading: isFlagDataLoading } = useParseNftFlagQuery(flag);
 
@@ -58,10 +59,10 @@ function NftEditables() {
 
       <Flex justify="space-between" mb={2}>
         <Box w="30%">
-          <ItemLabel title="URL" fontWeight="400" mb={0} />
+          <ItemLabel title="URI" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs">-- --</Text>
+          <Text fontSize="xs">{uri}</Text>
         </Box>
       </Flex>
 

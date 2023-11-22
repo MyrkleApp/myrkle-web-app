@@ -186,7 +186,7 @@ function TokenCardModal({
           </Circle>
         </Flex>
 
-        <Flex
+        {/* <Flex
           justify="center"
           align="center"
           w="100%"
@@ -202,9 +202,9 @@ function TokenCardModal({
           <Text fontSize="xs" color="danger">
             NOTE: This token is frozen
           </Text>
-        </Flex>
+        </Flex> */}
 
-        <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="110px">
+        <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="90px">
           <RenderElement isLoading={isAccountTokenInfoLoading} w="auto" h="auto">
             <VStack
               bg="dark"
@@ -246,7 +246,7 @@ function TokenCardModal({
           bottom={0}
           bg="dark"
           w="100%"
-          h="calc(100% - 230px)"
+          h="calc(100% - 200px)"
           borderRadius="12px"
           boxShadow="0 2px 8px #00000040"
         >

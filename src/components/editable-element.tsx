@@ -14,6 +14,7 @@ export interface EditableElementProps {
   value?: string | number;
   inputValue?: string;
   handleInputChange?: (e: any) => void;
+  handleInputValue?: (value: string | number) => void;
   isLoading?: boolean;
   payload?: any;
   mutation?: (payload: any) => any;
@@ -46,6 +47,19 @@ function EditableElement({
       setView("success");
     } else setView("error-2");
   }, [isSubmitTxnSuccess]);
+
+  useEffect(() => {
+    // this is just to populate the input with the existing value
+    const e = {
+      target: {
+        value,
+      },
+    };
+    if (handleInputChange) {
+      handleInputChange(e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleSubmit = () => {
     if (!mutation) return;
