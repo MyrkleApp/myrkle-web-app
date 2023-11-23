@@ -20,6 +20,7 @@ import {
   useLazyGetPendingOffersQuery,
   useLazyGetTxnStatusQuery,
 } from "../redux/xrp.api";
+import { checkForGemWallet } from "../connections/gemwallet";
 
 const xummTimer = 15;
 
@@ -158,6 +159,12 @@ function useSubmitTxn(
     errorCallback?: () => void,
   ) => {
     try {
+      const isGemWallet = await checkForGemWallet();
+
+      if (isGemWallet !== true) return;
+      // todo: else throw an error that gets caught in the catchblock
+      // this tells the user to install gemWallet
+
       const resp = await submitTransaction({ transaction });
       if (resp.result?.hash) {
         console.log({ status: "SUCCESS", hash: resp.result.hash });

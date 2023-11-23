@@ -49,7 +49,9 @@ function ResponseModal({ isError, handleClose }: ResponseModalProps) {
         {isError ? "Error!" : "Success!"}
       </Text>
       <Text fontSize="sm" fontWeight="bold" mb={4}>
-        {isError ? "Oops, something went wrong" : "Your transaction was successful"}
+        {isError
+          ? "Get detailed information of the transaction from your wallet provider"
+          : "Your transaction was successful"}
       </Text>
       {isOpen ? (
         <Text fontSize="xs" onClick={onClose}>
@@ -72,6 +74,7 @@ function ResponseModal({ isError, handleClose }: ResponseModalProps) {
           w="fit-content"
           color={isError ? "danger" : "success"}
           onClick={onOpen}
+          display="none"
         >
           learn more
         </Text>
