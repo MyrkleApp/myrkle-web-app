@@ -116,7 +116,9 @@ function RemoveAsset() {
 
         {modalState === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
 
-        {modalState === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+        {modalState === "xumm-qr-code" && (
+          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
+        )}
 
         {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 

@@ -125,7 +125,9 @@ function AddTokenFormModal({
 
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
 
-        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+        {view === "xumm-qr-code" && (
+          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
+        )}
 
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
 

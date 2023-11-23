@@ -86,7 +86,9 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
 
         {view === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
 
-        {view === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+        {view === "xumm-qr-code" && (
+          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
+        )}
 
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 

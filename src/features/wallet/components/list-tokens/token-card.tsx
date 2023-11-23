@@ -374,7 +374,9 @@ function TokenCard({
               />
             )}
 
-            {tokenModalView === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+            {tokenModalView === "xumm-qr-code" && (
+              <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
+            )}
 
             {tokenModalView === "error-2" && (
               <ResponseModal isError={true} handleClose={handleReset} />

@@ -112,7 +112,9 @@ function BurnNft() {
 
           {modalType === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
 
-          {modalType === "xumm-qr-code" && <XummTxnModal qrCodeImage={xummTxnQrCode} />}
+          {modalType === "xumm-qr-code" && (
+            <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
+          )}
 
           {modalType === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
 
