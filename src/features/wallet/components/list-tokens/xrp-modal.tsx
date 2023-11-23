@@ -11,7 +11,7 @@ import {
   VStack,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import ItemLabel from "@/components/item-label";
 import ArrowDownIcon from "@/icons/arrow-down";
@@ -27,6 +27,10 @@ import { formatNumber, isPositiveChange } from "@/helpers";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "../../redux/wallet.selectors";
+import { xrpToken } from "@/constants";
+import AddressModal from "../wallet-details/address-modal";
+import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
 
 export interface TokenCardModalProps {
   data: ReturnType<typeof useGetXrpData>;
@@ -44,14 +48,37 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
 
   const { data: balanceData } = useGetBalanceQuery({ address, net });
 
+  const [isAddressModal, setIsAddressModal] = useState(false);
+
   const xrpBalanceToUSD = data?.price.data * balanceData?.balance;
 
   const ref = useRef(null);
 
   useOutsideClick({
     ref,
-    handler: handleClose,
+    handler: () => {
+      if (!isAddressModal) {
+        handleClose();
+      }
+    },
   });
+
+  const tokenIconLink = (url: string) => {
+    return `${url}?token=${xrpToken.token}&issuer=${xrpToken.issuer}`;
+  };
+
+  if (isAddressModal) {
+    return (
+      <AddressModal
+        handleClose={handleClose}
+        address={address}
+        handleXAddress={() => {
+          /** */
+        }}
+        hideXAddressButton
+      />
+    );
+  }
 
   return (
     <Flex
@@ -148,21 +175,34 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
         <CloseButton pos="absolute" top="-30px" right="-30px" onClick={handleClose} />
 
         <Flex justify="space-between">
-          <Circle bg="secondary" size="50px">
-            <ChecksIcon stroke="textDark" fontSize="lg" />
-          </Circle>
-          <Circle bg="secondary" size="50px">
-            <HourGlassIcon color="textDark" fill="textDark" fontSize="lg" />
-          </Circle>
-          <Circle bg="secondary" size="50px">
-            <ArrowUpIcon stroke="textDark" fontSize="lg" />
-          </Circle>
-          <Circle bg="secondary" size="50px">
+          <Link to={tokenIconLink(ROUTES.TERMINAL_CHECKS)}>
+            <Circle bg="secondary" size="50px">
+              <ChecksIcon stroke="textDark" fontSize="lg" />
+            </Circle>
+          </Link>
+          <Link to={tokenIconLink(ROUTES.TERMINAL_ESCROWS)}>
+            <Circle bg="secondary" size="50px">
+              <HourGlassIcon color="textDark" fill="textDark" fontSize="lg" />
+            </Circle>
+          </Link>
+          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
+            <Circle bg="secondary" size="50px">
+              <ArrowUpIcon stroke="textDark" fontSize="lg" />
+            </Circle>
+          </Link>
+          <Circle
+            bg="secondary"
+            size="50px"
+            cursor="pointer"
+            onClick={() => setIsAddressModal(true)}
+          >
             <ArrowDownIcon stroke="textDark" fontSize="lg" />
           </Circle>
-          <Circle bg="secondary" size="50px">
-            <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
-          </Circle>
+          <Link to={tokenIconLink(ROUTES.EXCHANGE)}>
+            <Circle bg="secondary" size="50px">
+              <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
+            </Circle>
+          </Link>
         </Flex>
 
         <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="110px">

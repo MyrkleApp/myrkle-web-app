@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
 import xrpLogo from "@/assets/xrp-logo.svg";
-import coinDollar from "@/assets/coin-dollar.svg";
+import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { useSendTokenMutation, useSendXrpMutation } from "@/features/shared/redux/xrp.api";
 import { isXrpToken } from "@/helpers";
 import { selectAddress, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
@@ -79,7 +79,11 @@ function SendToken() {
 
   useEffect(() => {
     if (urlToken && urlIssuer) {
-      setSelectedToken({ token: urlToken, issuer: urlIssuer, icon: coinDollar });
+      setSelectedToken({
+        token: urlToken,
+        issuer: urlIssuer,
+        icon: isXrpToken({ token: urlToken }) ? xrpLogo : tokenPlaceholder,
+      });
     }
   }, [urlIssuer, urlToken]);
 
@@ -93,7 +97,8 @@ function SendToken() {
         .unwrap()
         .then((res) => setSelectedToken({ ...selectedToken, icon: res.icon }));
     }
-  }, [getTokenInfo, network, selectedToken, selectedToken.token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getTokenInfo, network, selectedToken.issuer, selectedToken.token]);
 
   // ===========================================================================================
   // handlers

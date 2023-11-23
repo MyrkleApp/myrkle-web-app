@@ -114,7 +114,7 @@ function TokenCard({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address]);
+  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address, xrpBalanceToUSD]);
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -192,7 +192,7 @@ function TokenCard({
             <Text
               className="font-face-proxima-nova-extrabld"
               fontSize="2.5vh"
-              textTransform="uppercase"
+              // textTransform="uppercase"
             >
               {token}
             </Text>

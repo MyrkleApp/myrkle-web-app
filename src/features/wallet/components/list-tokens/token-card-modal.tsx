@@ -11,7 +11,7 @@ import {
   VStack,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ItemLabel from "@/components/item-label";
 import ArrowDownIcon from "@/icons/arrow-down";
 import ArrowUpIcon from "@/icons/arrow-up";
@@ -20,12 +20,15 @@ import ExchangeIcon from "@/icons/exchange";
 import HourGlassIcon from "@/icons/hour-glass";
 import CancelIcon from "@/icons/cancel";
 import TokenEditables from "./token-editables";
-import { selectNet, selectNetwork } from "../../redux/wallet.selectors";
+import { selectAddress, selectNet, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { formatNumber } from "@/helpers";
 import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
+import { Link } from "react-router-dom";
+import ROUTES from "@/routes";
+import AddressModal from "../wallet-details/address-modal";
 
 export interface TokenCardModalProps {
   data: any;
@@ -58,14 +61,38 @@ function TokenCardModal({
 
   const network = useSelector(selectNetwork);
   const net = useSelector(selectNet);
+  const address = useSelector(selectAddress);
+
+  const [isAddressModal, setIsAddressModal] = useState(false);
 
   const { data: accountTokenInfo, isLoading: isAccountTokenInfoLoading } =
     useGetAccountTokenInfoQuery({ issuer, net });
 
   useOutsideClick({
     ref,
-    handler: handleClose,
+    handler: () => {
+      if (!isAddressModal) {
+        handleClose();
+      }
+    },
   });
+
+  const tokenIconLink = (url: string) => {
+    return `${url}?token=${token}&issuer=${issuer}`;
+  };
+
+  if (isAddressModal) {
+    return (
+      <AddressModal
+        handleClose={handleClose}
+        address={address}
+        handleXAddress={() => {
+          /** */
+        }}
+        hideXAddressButton
+      />
+    );
+  }
 
   return (
     <Flex
@@ -171,21 +198,32 @@ function TokenCardModal({
         <CloseButton pos="absolute" top="-30px" right="-30px" onClick={handleClose} />
 
         <Flex justify="space-between">
-          <Circle bg="secondary" size="50px">
-            <ChecksIcon stroke="textDark" fontSize="lg" />
-          </Circle>
+          <Link to={tokenIconLink(ROUTES.TERMINAL_CHECKS)}>
+            <Circle bg="secondary" size="50px">
+              <ChecksIcon stroke="textDark" fontSize="lg" />
+            </Circle>
+          </Link>
           <Circle bg="secondary" size="50px">
             <HourGlassIcon color="textDark" fill="textDark" fontSize="lg" />
           </Circle>
-          <Circle bg="secondary" size="50px">
-            <ArrowUpIcon stroke="textDark" fontSize="lg" />
-          </Circle>
-          <Circle bg="secondary" size="50px">
+          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
+            <Circle bg="secondary" size="50px">
+              <ArrowUpIcon stroke="textDark" fontSize="lg" />
+            </Circle>
+          </Link>
+          <Circle
+            bg="secondary"
+            size="50px"
+            cursor="pointer"
+            onClick={() => setIsAddressModal(true)}
+          >
             <ArrowDownIcon stroke="textDark" fontSize="lg" />
           </Circle>
-          <Circle bg="secondary" size="50px">
-            <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
-          </Circle>
+          <Link to={tokenIconLink(ROUTES.EXCHANGE)}>
+            <Circle bg="secondary" size="50px">
+              <ExchangeIcon stroke="textDark" fill="none" fontSize="lg" />
+            </Circle>
+          </Link>
         </Flex>
 
         {isFrozen && (
