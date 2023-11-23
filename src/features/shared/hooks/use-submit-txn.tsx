@@ -21,6 +21,8 @@ import {
   useLazyGetTxnStatusQuery,
 } from "../redux/xrp.api";
 
+const xummTimer = 15;
+
 function useSubmitTxn(
   txnType: "account-info" | "token" | "nft" | "check" | "escrow" | "flag" | "exchange",
 ) {
@@ -42,6 +44,9 @@ function useSubmitTxn(
   const [responseMessage, setResponseMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [xummTxnTimerCount, setXummTxnTimerCount] = useState(xummTimer);
+  const [isXummCountDown, setIsXummCountDown] = useState(false);
 
   // =============================================================================================
   // api & effect
@@ -183,8 +188,9 @@ function useSubmitTxn(
 
     socket.on("signTxn", (res) => {
       if (res.qrCode) {
-        console.log(res.qrCode);
         setXummTxnQrCode(res.qrCode);
+        setXummTxnTimerCount(xummTimer);
+        setIsXummCountDown(false);
         return;
       }
 
@@ -217,6 +223,27 @@ function useSubmitTxn(
     });
   }, [getTxnStatus, net, walletProvider]);
 
+  useEffect(() => {
+    let interval: any;
+
+    if (isXummCountDown) {
+      interval = setInterval(() => setXummTxnTimerCount((prevValue) => prevValue - 1), 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [isXummCountDown]);
+
+  useEffect(() => {
+    if (xummTxnTimerCount === 0) {
+      setXummTxnTimerCount(xummTimer);
+      setIsXummCountDown(false);
+      setIsSuccess(false);
+      setResponseMessage("Transaction timeout");
+      setIsOpen(true);
+      setIsLoading(false);
+    }
+  }, [xummTxnTimerCount]);
+
   // =============================================================================================
   // handler
   // =============================================================================================
@@ -240,6 +267,8 @@ function useSubmitTxn(
         user_token: userToken,
       });
       setIsOpen(false);
+      setXummTxnTimerCount(xummTimer);
+      setIsXummCountDown(true);
     }
   };
 

@@ -158,7 +158,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
           boxShadow="0 2px 8px #00000040"
         >
           <Box h="95%" mt="-5px" overflow="hidden auto">
-            <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
+            <Text fontWeight="" fontSize="sm" maxW="calc(100% - 10px)">
               XRP is the native token of the XRP Ledger and is primarily used to facilitate global
               financial transfers. The XRP Ledger enhances global financial transfers and the
               exchange of several currencies by being fast, inexpensive, scalable, interoperable,
