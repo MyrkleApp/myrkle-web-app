@@ -5,7 +5,7 @@ import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
 import TxnModal from "./txn-modal";
-import { formatNumber } from "@/helpers";
+import { formatDate, formatNumber } from "@/helpers";
 
 export interface TxnCardProps {
   txn: any;
@@ -61,7 +61,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
         </GridItem>
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">
           <Text fontSize="xs" color="#fff">
-            {txn.timestamp.split(" ")[0]}
+            {formatDate(txn.timestamp)}
           </Text>
         </GridItem>
       </Grid>

@@ -4,12 +4,11 @@ import {
   Flex,
   HStack,
   IconButton,
-  Image,
   Spacer,
   Text,
+  VStack,
   useOutsideClick,
 } from "@chakra-ui/react";
-import xrpLogo from "@/assets/xrp-logo.svg";
 import { useRef, useState } from "react";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
@@ -23,6 +22,7 @@ import { useGetPayTxnInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
 import ListFlags from "./list-flags";
 import { formatNumber } from "@/helpers";
+import TokenIcon from "@/features/shared/components/token-icon";
 
 export interface TxnModalProps {
   txn: any;
@@ -46,6 +46,8 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
 
   const network = useSelector(selectNetwork);
   const net = useSelector(selectNet);
+
+  const isSuccessTxn = txn?.result?.toLowerCase()?.includes("success");
 
   const { data: txnInfo, isLoading: isTxnInfoLoading } = useGetPayTxnInfoQuery({
     net,
@@ -86,7 +88,7 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
           Transaction Detail
         </Button>
         <HStack px={4} bg="darkest" borderRadius="10px" mb={4}>
-          <Image src={xrpLogo} alt="" h="30px" />
+          <TokenIcon token={txn?.token} issuer={txn?.issuer} />
           <Text className="font-face-proxima-nova-black" fontSize="3xl">
             {txn?.token}
           </Text>
@@ -127,6 +129,15 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
       </Box>
 
       <Box w="50%" pos="relative">
+        <HStack pos="absolute" right={0}>
+          <VStack spacing={0} align="flex-end">
+            <Text fontSize="xs">Status</Text>
+            <Text fontSize="2xs" mt={-1} color={isSuccessTxn ? "success" : "danger"}>
+              {isSuccessTxn ? "Success" : "Failed"}
+            </Text>
+          </VStack>
+          <Box h="30px" w="30px" borderRadius="50%" bg={isSuccessTxn ? "success" : "danger"} />
+        </HStack>
         <AnimatePresence>
           {isFlagView && (
             <MotionBox
