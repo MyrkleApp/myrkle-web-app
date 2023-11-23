@@ -20,6 +20,7 @@ function AddToken() {
   const handleBackdropClose = () => {
     onBackdropClose();
     setModalType("add-token-form");
+    setToken(null);
   };
 
   const handleModalType = (modalType: TAddTokenModalType) => {

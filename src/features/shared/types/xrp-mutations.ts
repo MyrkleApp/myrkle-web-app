@@ -228,12 +228,14 @@ export interface ISendToken {
   token: string;
   issuer: string;
   amount: number | string;
+  destination_tag: number | string;
 }
 
 export interface ISendXrp {
   sender_addr: string;
   receiver_addr: string;
   amount: number | string;
+  destination_tag: number | string;
 }
 
 export interface IOrderBookSwap {

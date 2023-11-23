@@ -37,6 +37,8 @@ function SendToken() {
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [isAdvancedOptions, setAdvancedOptions] = useState(false);
+  const [note, setNote] = useState("");
+  const [destinationTag, setDestinationTag] = useState("");
   const [view, setView] = useState<TTxnPipeline>("default");
 
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
@@ -112,6 +114,7 @@ function SendToken() {
         sender_addr: address,
         receiver_addr: receiverAddress,
         amount,
+        destination_tag: destinationTag,
       })
         .unwrap()
         .then((res) => {
@@ -125,6 +128,7 @@ function SendToken() {
         token: selectedToken.token,
         issuer: selectedToken.issuer,
         amount,
+        destination_tag: destinationTag,
       })
         .unwrap()
         .then((res) => {
@@ -141,6 +145,8 @@ function SendToken() {
     setView("default");
     setReceiverAddress("");
     setAmount("");
+    setNote("");
+    setDestinationTag("");
     setSelectedToken({
       token: "xrp",
       issuer: xrpIssuer,
@@ -240,13 +246,29 @@ function SendToken() {
                 <Text color="textDark" fontSize="sm" fontWeight="bold">
                   Note
                 </Text>
-                <Input h="85%" bg="secondary" borderRadius="7px" w="100%" />
+                <Input
+                  h="85%"
+                  bg="secondary"
+                  borderRadius="7px"
+                  w="100%"
+                  value={note}
+                  onChange={(e: any) => setNote(e.target.value)}
+                />
               </Box>
               <Box>
                 <Text color="textDark" fontSize="sm" fontWeight="bold">
                   Destination Tag
                 </Text>
-                <Input h="85%" bg="secondary" borderRadius="7px" w="100%" />
+                <Input
+                  h="85%"
+                  bg="secondary"
+                  borderRadius="7px"
+                  w="100%"
+                  value={destinationTag}
+                  onChange={(e: any) =>
+                    e.target.value.match(numbersOnlyRegex) && setDestinationTag(e.target.value)
+                  }
+                />
               </Box>
             </SimpleGrid>
           </MotionBox>

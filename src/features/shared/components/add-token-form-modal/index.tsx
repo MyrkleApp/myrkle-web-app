@@ -112,6 +112,10 @@ function AddTokenFormModal({
   const handleReset = () => {
     handleClose();
     resetSubmitTxnResponse();
+    setTokenName("");
+    setIssuer("");
+    setShowAdvancedOptions(false);
+    setRippling(false);
   };
 
   if (view !== "default") {
