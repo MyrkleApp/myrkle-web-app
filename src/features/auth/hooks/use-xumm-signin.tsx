@@ -10,7 +10,7 @@ import ROUTES from "@/routes";
 import { IAddExternalWallet } from "@/services/types";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 
-function useXummSignIn() {
+function useXummSignIn(handleCloseModal: () => void) {
   const navigate = useNavigate();
 
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
@@ -65,6 +65,10 @@ function useXummSignIn() {
       handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm" });
       navigate(ROUTES.WALLET);
       _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
+
+      if (handleCloseModal) {
+        handleCloseModal();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, walletAddress]);

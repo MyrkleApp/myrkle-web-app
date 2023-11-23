@@ -60,6 +60,7 @@ function ListTokens() {
           token={tokenItem.token}
           issuer={tokenItem.issuer}
           limit={tokenItem?.limit}
+          isFrozen={!!tokenItem?.freeze_status}
           xrpData={xrpData}
           amount={Number(tokenItem.amount)}
           handleTokenUsdAmountObj={handleTokenUsdAmountObj}

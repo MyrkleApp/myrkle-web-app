@@ -143,7 +143,7 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
                       {formatNumber(xrpBalance?.balance)}
                     </Text>
                     <HStack mt="-5px">
-                      <Text fontSize="2xs">Balance</Text>
+                      <Text fontSize="2xs">Spendable Balance</Text>
                       {/* info popup here */}
                     </HStack>
                   </VStack>

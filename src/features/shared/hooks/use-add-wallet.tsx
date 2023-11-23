@@ -23,7 +23,7 @@ function useAddWallet() {
     onClose: onCloseDialogBox,
   } = useDisclosure();
 
-  const { qrCodeImage } = useXummSignIn();
+  const { qrCodeImage } = useXummSignIn(onCloseDialogBox);
 
   const handleXummClick = () => {
     handleView(ADD_WALLET_PIPELINE.XUMM);

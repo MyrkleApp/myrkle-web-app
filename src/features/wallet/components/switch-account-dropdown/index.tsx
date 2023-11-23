@@ -17,7 +17,7 @@ import { selectAddress, selectMyWallets, selectWalletProvider } from "../../redu
 import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
-import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
+// import useExternalWalletEvent from "../../hooks/use-external-wallet-event";
 import ConnectXummModal from "@/components/connect-xumm-modal";
 import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
@@ -37,9 +37,8 @@ function SwitchAccountDropdown() {
   const [gemWalletSignIn] = useGemWalletSignIn();
   const [signInData, storeSignInData, clearSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
-  const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
-    useExternalWalletEvent();
-  const { qrCodeImage, resetSignInQrCode } = useXummSignIn();
+  // const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
+  //   useExternalWalletEvent();
 
   // ======================================================================================================
   // selectors
@@ -58,7 +57,7 @@ function SwitchAccountDropdown() {
   const _setWalletProvider = (provider: TWalletProvider) => dispatch(setWalletProvider(provider));
 
   // ======================================================================================================
-  // state & disclosure & ref
+  // state & disclosure & ref & xumm signin
   // ======================================================================================================
 
   const {
@@ -67,11 +66,11 @@ function SwitchAccountDropdown() {
     onClose: onCloseDropdown,
   } = useDisclosure();
 
-  const {
-    isOpen: isExternalProviderChangeOpen,
-    onOpen: onOpenExternalChange,
-    onClose: onCloseExternalChange,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isExternalProviderChangeOpen,
+  //   onOpen: onOpenExternalChange,
+  //   onClose: onCloseExternalChange,
+  // } = useDisclosure();
 
   const {
     isOpen: isConfirmDisconnectOpen,
@@ -83,6 +82,8 @@ function SwitchAccountDropdown() {
   const [newWallet, setNewWallet] = useState<null | TWalletProvider>(null);
 
   const ref = useRef(null);
+
+  const { qrCodeImage, resetSignInQrCode } = useXummSignIn(() => setNewWallet(null));
 
   // ======================================================================================================
   // effects
@@ -99,16 +100,16 @@ function SwitchAccountDropdown() {
     }
   }, [isDropdownOpen]);
 
-  useEffect(() => {
-    // close other modal if open
-    setSelectedWallet(null);
-    onCloseDropdown();
+  // useEffect(() => {
+  //   // close other modal if open
+  //   setSelectedWallet(null);
+  //   onCloseDropdown();
 
-    if (!newExternalProvider || !newAddress) return;
-    onOpenExternalChange();
+  //   if (!newExternalProvider || !newAddress) return;
+  //   onOpenExternalChange();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newExternalProvider, newAddress]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [newExternalProvider, newAddress]);
 
   useEffect(() => {
     if (newWallet) {
@@ -170,19 +171,19 @@ function SwitchAccountDropdown() {
     _setWalletProvider(selectedWallet.walletProvider);
   };
 
-  const handleSwitchWallet2 = () => {
-    if (!newExternalProvider || !newAddress) return;
+  // const handleSwitchWallet2 = () => {
+  //   if (!newExternalProvider || !newAddress) return;
 
-    if (!isWalletInStorage) {
-      // TODO: prompt them to connect the new wallet
-      return;
-    }
+  //   if (!isWalletInStorage) {
+  //     // TODO: prompt them to connect the new wallet
+  //     return;
+  //   }
 
-    _setAddress(newAddress);
-    _setWalletProvider(newExternalProvider);
-    onCloseExternalChange();
-    resetExternalProviderState();
-  };
+  //   _setAddress(newAddress);
+  //   _setWalletProvider(newExternalProvider);
+  //   onCloseExternalChange();
+  //   resetExternalProviderState();
+  // };
 
   const handleConfirmDisconnect = (e: any) => {
     e.stopPropagation();
@@ -296,7 +297,7 @@ function SwitchAccountDropdown() {
         )}
       </Backdrop>
 
-      <Backdrop isOpen={isExternalProviderChangeOpen}>
+      {/* <Backdrop isOpen={isExternalProviderChangeOpen}>
         <DialogBox handleClose={onCloseExternalChange} borderRadius="25px" h="220px">
           <Text
             fontSize="lg"
@@ -333,7 +334,7 @@ function SwitchAccountDropdown() {
             </Button>
           </Flex>
         </DialogBox>
-      </Backdrop>
+      </Backdrop> */}
 
       <Backdrop isOpen={!!newWallet}>
         {newWallet === "xumm" && (

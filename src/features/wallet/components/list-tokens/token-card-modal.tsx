@@ -37,6 +37,7 @@ export interface TokenCardModalProps {
   isLoading: boolean;
   handleClose: () => void;
   handleRemoveClick: () => void;
+  isFrozen?: boolean;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
@@ -51,6 +52,7 @@ function TokenCardModal({
   limit,
   handleClose,
   handleRemoveClick,
+  isFrozen,
 }: TokenCardModalProps) {
   const ref = useRef(null);
 
@@ -186,25 +188,35 @@ function TokenCardModal({
           </Circle>
         </Flex>
 
-        {/* <Flex
-          justify="center"
-          align="center"
+        {isFrozen && (
+          <Flex
+            justify="center"
+            align="center"
+            w="100%"
+            pos="absolute"
+            top="70px"
+            bg="dark"
+            borderRadius="10px"
+            px={4}
+            py={1}
+            mb={2}
+            boxShadow="0 2px 8px #00000040"
+          >
+            <Text fontSize="xs" color="danger">
+              NOTE: This token is frozen
+            </Text>
+          </Flex>
+        )}
+
+        <SimpleGrid
+          columns={4}
+          h="100px"
+          spacing={3}
+          mb={2}
           w="100%"
           pos="absolute"
-          top="70px"
-          bg="dark"
-          borderRadius="10px"
-          px={4}
-          py={1}
-          mb={2}
-          boxShadow="0 2px 8px #00000040"
+          top={isFrozen ? "110px" : "90px"}
         >
-          <Text fontSize="xs" color="danger">
-            NOTE: This token is frozen
-          </Text>
-        </Flex> */}
-
-        <SimpleGrid columns={4} h="100px" spacing={3} mb={2} w="100%" pos="absolute" top="90px">
           <RenderElement isLoading={isAccountTokenInfoLoading} w="auto" h="auto">
             <VStack
               bg="dark"
@@ -246,7 +258,7 @@ function TokenCardModal({
           bottom={0}
           bg="dark"
           w="100%"
-          h="calc(100% - 200px)"
+          h={isFrozen ? "calc(100% - 220px)" : "calc(100% - 200px)"}
           borderRadius="12px"
           boxShadow="0 2px 8px #00000040"
         >
@@ -260,7 +272,7 @@ function TokenCardModal({
             right="7px"
             zIndex={-1}
           />
-          <TokenEditables data={data} limit={limit} />
+          <TokenEditables data={data} limit={limit} issuer={issuer} />
         </Box>
       </Box>
     </Flex>

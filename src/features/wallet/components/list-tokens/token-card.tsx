@@ -41,6 +41,7 @@ export interface TokenCardProps {
   limit?: string;
   xrpData: ReturnType<typeof useGetXrpData>;
   handleTokenUsdAmountObj: (val: any) => void;
+  isFrozen?: boolean;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
@@ -62,6 +63,7 @@ function TokenCard({
   limit,
   xrpData,
   handleTokenUsdAmountObj,
+  isFrozen,
 }: TokenCardProps) {
   const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
     useSubmitTxn("token");
@@ -353,6 +355,7 @@ function TokenCard({
                 isLoading={isTokenDataLoading}
                 handleClose={handleClose}
                 handleRemoveClick={() => setTokenModalView("proceed")}
+                isFrozen={isFrozen}
               />
             )}
 
