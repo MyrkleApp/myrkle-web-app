@@ -1,12 +1,13 @@
 import { MotionBox } from "@/components/motion-elements";
 import { HStack, InputGroup, Box, Text, useOutsideClick, InputLeftElement } from "@chakra-ui/react";
 import Input from "@/components/input";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ArrowLeftIcon from "@/icons/arrow-left";
 import SearchIcon from "@/icons/search";
 import TokenItem from "./token-item";
 import { useGetMainnetTokensQuery } from "../../redux/token.api";
 import Skeleton1 from "@/components/skeleton";
+import { filterTokenList } from "@/helpers";
 
 export interface SelectTokenModalProps {
   handleClose: () => void;
@@ -19,6 +20,9 @@ function SelectTokenModal({
   handleBackArrowClick,
   handleToken,
 }: SelectTokenModalProps) {
+  const [searchName, setSearchName] = useState("");
+  const [searchAddress, setSearchAddress] = useState("");
+
   const { data, isLoading } = useGetMainnetTokensQuery({});
 
   const ref = useRef(null);
@@ -27,6 +31,14 @@ function SelectTokenModal({
     ref,
     handler: handleClose,
   });
+
+  const getTokenList = () => {
+    if (!searchName.trim().length && !searchAddress.trim().length) {
+      return data;
+    }
+
+    return filterTokenList(data || [], searchName, searchAddress);
+  };
 
   return (
     <MotionBox
@@ -52,27 +64,50 @@ function SelectTokenModal({
         </Text>
       </HStack>
 
-      <InputGroup>
-        <Input
-          mb={3}
-          pl={10}
-          borderRadius="30px"
-          placeholder="Search name or paste address"
-          fontSize="sm"
-          border="2px solid"
-          borderColor="success"
-          bg="rgba(0, 223, 22, 0.27)"
-          color="#fff"
-          _hover={{ borderColor: "success" }}
-        />
-        <InputLeftElement>
-          <SearchIcon />
-        </InputLeftElement>
-      </InputGroup>
+      <HStack>
+        <InputGroup>
+          <Input
+            mb={3}
+            pl={10}
+            borderRadius="30px"
+            placeholder="Search name"
+            fontSize="sm"
+            border="2px solid"
+            borderColor="success"
+            bg="rgba(0, 223, 22, 0.27)"
+            color="#fff"
+            _hover={{ borderColor: "success" }}
+            value={searchName}
+            onChange={(e: any) => setSearchName(e.target.value)}
+          />
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+        </InputGroup>
+        <InputGroup>
+          <Input
+            mb={3}
+            pl={10}
+            borderRadius="30px"
+            placeholder="Search address"
+            fontSize="sm"
+            border="2px solid"
+            borderColor="success"
+            bg="rgba(0, 223, 22, 0.27)"
+            color="#fff"
+            _hover={{ borderColor: "success" }}
+            value={searchAddress}
+            onChange={(e: any) => setSearchAddress(e.target.value)}
+          />
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+        </InputGroup>
+      </HStack>
 
       <Box px={4} mt={1} h="calc(100% - 140px)" overflow="hidden auto">
         <RenderTokenList isLoading={isLoading}>
-          {data?.map((token, i) => (
+          {getTokenList()?.map((token, i) => (
             <TokenItem
               key={i}
               token={token.token}

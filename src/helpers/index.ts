@@ -1,3 +1,4 @@
+import { IToken } from "@/features/shared/types";
 import { Buffer } from "buffer";
 
 export const ellipsisAtCenter = (text: string) => {
@@ -71,3 +72,23 @@ export const formatNumber = (x: number | string) => {
 };
 
 export const cleanupRate = (rate: number) => (Number.isFinite(rate) ? rate : 0);
+
+export const filterTokenList = (tokenList: IToken[], name: string, address: string) => {
+  if (name && !address) {
+    return tokenList.filter((token) => token.token.toLowerCase().includes(name.toLowerCase()));
+  }
+
+  if (address && !name) {
+    return tokenList.filter((token) => token.issuer.toLowerCase().includes(address.toLowerCase()));
+  }
+
+  if (name && address) {
+    return tokenList.filter(
+      (token) =>
+        token.token.toLowerCase().includes(name.toLowerCase()) &&
+        token.issuer.toLowerCase().includes(address.toLowerCase()),
+    );
+  }
+
+  return tokenList;
+};
