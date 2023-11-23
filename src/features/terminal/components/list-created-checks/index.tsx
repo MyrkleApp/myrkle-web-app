@@ -1,5 +1,5 @@
 import TableHeader from "@/components/table-header";
-import { Box, Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react";
+import { Box, Flex, Table, TableContainer, Tbody, Text, Thead, Tr } from "@chakra-ui/react";
 import ListChecks from "./list-checks";
 import { useGetAccountChecksQuery } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
@@ -21,6 +21,14 @@ function ListCreatedChecks() {
             <Skeleton1 key={i} borderRadius="0" h="50px" mb={2} mr={2} />
           ))}
       </>
+    );
+  }
+
+  if (!data?.sent?.length && !data?.receive?.length) {
+    return (
+      <Flex justify="center" align="center" h="100%">
+        <Text fontSize="lg">You don't have any checks yet.</Text>
+      </Flex>
     );
   }
 

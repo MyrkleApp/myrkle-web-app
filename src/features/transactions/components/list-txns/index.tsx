@@ -1,14 +1,15 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import TxnCard from "./txn-card";
 import { useLazyGetPaymentTransactionsQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
-import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress, selectNet, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
 import Skeleton1 from "@/components/skeleton";
 import { useEffect } from "react";
 
 function ListTxns() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
+  const network = useSelector(selectNetwork);
 
   const [getPaymentTxns, { data, isLoading }] = useLazyGetPaymentTransactionsQuery();
 
@@ -16,7 +17,7 @@ function ListTxns() {
     if (address && net) {
       getPaymentTxns({ address, net });
     }
-  }, [address, getPaymentTxns, net]);
+  }, [address, getPaymentTxns, net, network]);
 
   if (isLoading) {
     return (
@@ -29,6 +30,15 @@ function ListTxns() {
       </Box>
     );
   }
+
+  if (!data?.sent?.length && !data?.received?.length) {
+    return (
+      <Text fontSize="sm" mt={3}>
+        You don't have any transactions yet.
+      </Text>
+    );
+  }
+
   return (
     <Box pr={2}>
       {data?.sent?.map((txn: any) => <TxnCard key={txn.txid} txn={txn} isCreditTxn={false} />)}

@@ -1,5 +1,5 @@
 import ShowDetailsOnHover from "@/components/show-details-on-hover";
-import { ellipsisAtCenter, formatNumber } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatNumber } from "@/helpers";
 import { Td, Tr } from "@chakra-ui/react";
 
 export interface EscrowItemProps {
@@ -39,10 +39,10 @@ function EscrowItem({ escrow, type }: EscrowItemProps) {
         {formatNumber(escrow?.amount)}
       </Td>
       <Td textAlign="center" fontSize="sm" fontWeight="bold">
-        {escrow?.redeem_date.split(" ")[0]}
+        {formatDate(escrow?.redeem_date)}
       </Td>
       <Td textAlign="center" fontSize="sm" fontWeight="bold">
-        {escrow?.expiry_date.split(" ")[0]}
+        {formatDate(escrow?.expiry_date)}
       </Td>
     </Tr>
   );

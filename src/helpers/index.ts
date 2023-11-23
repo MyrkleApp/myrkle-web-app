@@ -94,12 +94,16 @@ export const filterTokenList = (tokenList: IToken[], name: string, address: stri
 };
 
 export const formatDate = (dateStr: string): string => {
+  if (!dateStr) {
+    return "-- --";
+  }
+
   const date = new Date(dateStr);
   return (
     date.toLocaleDateString("en-US", { day: "numeric" }) +
-    "-" +
+    " " +
     date.toLocaleDateString("en-US", { month: "short" }) +
-    "-" +
+    " " +
     date.toLocaleDateString("en-US", { year: "numeric" })
   ); // 23-Nov-2023
 };

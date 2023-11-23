@@ -12,7 +12,7 @@ import {
 } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
-import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatNumber, isXrpToken } from "@/helpers";
 import { HStack, Td, Tr } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -118,7 +118,7 @@ function CheckItem({ check }: ICheckItemProps) {
           {formatNumber(check.amount)}
         </Td>
         <Td textAlign="center" fontSize="sm" fontWeight="bold" pt={3}>
-          {check.expiry_date.split(" ")[0]}
+          {formatDate(check.expiry_date)}
         </Td>
         <Td fontSize="sm" fontWeight="bold">
           <HStack justify="flex-end">
