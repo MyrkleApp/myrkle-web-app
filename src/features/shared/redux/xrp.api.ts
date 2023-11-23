@@ -576,6 +576,7 @@ export const {
   useGetPendingOffersQuery,
   useLazyGetPendingOffersQuery,
   useLazyParsePayTxnFlagQuery,
+  useLazyGetTxnStatusQuery,
   useParseNftFlagQuery,
   useGetOrderBookLiquidityQuery,
   useLazyGetOrderBookLiquidityQuery,

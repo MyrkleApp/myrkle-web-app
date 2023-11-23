@@ -18,6 +18,7 @@ import {
   useLazyGetOrderBookLiquidityQuery,
   useLazyGetPaymentTransactionsQuery,
   useLazyGetPendingOffersQuery,
+  useLazyGetTxnStatusQuery,
 } from "../redux/xrp.api";
 
 function useSubmitTxn(
@@ -55,6 +56,7 @@ function useSubmitTxn(
   const [getAccountEscrows] = useLazyGetAccountEscrowsQuery();
   const [getPendingOffers] = useLazyGetPendingOffersQuery();
   const [getPendingLiquidity] = useLazyGetOrderBookLiquidityQuery();
+  const [getTxnStatus] = useLazyGetTxnStatusQuery();
 
   useEffect(() => {
     if (isSuccess) {
@@ -198,14 +200,22 @@ function useSubmitTxn(
 
       if (res.txSign) {
         setXummTxnQrCode("");
-        setIsSuccess(true);
         setResponseMessage("Transaction signed");
         setIsOpen(true);
         setIsLoading(false);
-        console.log("txn signed");
+
+        getTxnStatus({ id: res.transactionId, net })
+          .unwrap()
+          .then((txnStatus: string) => {
+            if (txnStatus.toLowerCase().includes("success")) {
+              setIsSuccess(true);
+            } else {
+              setIsSuccess(false);
+            }
+          });
       }
     });
-  }, [walletProvider]);
+  }, [getTxnStatus, net, walletProvider]);
 
   // =============================================================================================
   // handler

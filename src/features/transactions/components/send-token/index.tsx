@@ -23,6 +23,7 @@ import Backdrop from "@/components/backdrop";
 import ResponseModal from "@/components/response-modal";
 import MyrkleLoader from "@/components/myrkle-loader";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import { ISendToken, ISendXrp } from "@/features/shared/types/xrp-mutations";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
@@ -115,26 +116,32 @@ function SendToken() {
     setView("loading");
 
     if (isXrpToken(selectedToken)) {
-      sendXrp({
+      const sendXrpBody: ISendXrp = {
         sender_addr: address,
         receiver_addr: receiverAddress,
         amount,
-        destination_tag: destinationTag,
-      })
+      };
+
+      if (destinationTag) sendXrpBody.destination_tag = destinationTag;
+
+      sendXrp(sendXrpBody)
         .unwrap()
         .then((res) => {
           handleSubmitTxn(res);
         })
         .catch(() => setView("error-1"));
     } else {
-      sendToken({
+      const sendTokenBody: ISendToken = {
         sender_addr: address,
         receiver_addr: receiverAddress,
         token: selectedToken.token,
         issuer: selectedToken.issuer,
         amount,
         destination_tag: destinationTag,
-      })
+      };
+      if (destinationTag) sendTokenBody.destination_tag = destinationTag;
+
+      sendToken(sendTokenBody)
         .unwrap()
         .then((res) => {
           const successCallback = () => setView("success");
