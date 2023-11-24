@@ -42,7 +42,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            -- --
+            {data?.marketCap || "-- --"}
           </Text>
         </Box>
       </Flex>
@@ -131,7 +131,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         <Box w="57%">
           {isTokenIssuer ? (
             <EditableElement
-              value={"-- --"}
+              value={data?.domain || "-- --"}
               inputValue={domain}
               handleInputChange={(e: any) => setDomain(e.target.value)}
               payload={{ sender_addr: address, domain }}
