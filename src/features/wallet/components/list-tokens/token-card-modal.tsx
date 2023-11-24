@@ -23,7 +23,7 @@ import TokenEditables from "./token-editables";
 import { selectAddress, selectNet, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { formatNumber } from "@/helpers";
+import { formatNumber, isPositiveChange } from "@/helpers";
 import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
 import { Link } from "react-router-dom";
@@ -58,8 +58,6 @@ function TokenCardModal({
   isFrozen,
 }: TokenCardModalProps) {
   const ref = useRef(null);
-
-  console.log("token info >>>", data);
 
   const network = useSelector(selectNetwork);
   const net = useSelector(selectNet);
@@ -119,8 +117,14 @@ function TokenCardModal({
                 {token}
               </Text>
               {network === "mainnet" && (
-                <Text fontSize="2xs" mt="-2px" color="danger">
-                  -0.02%
+                <Text
+                  fontSize="2xs"
+                  mt="-2px"
+                  color={isPositiveChange(data?.percentageChange) ? "success" : "danger"}
+                >
+                  {`${isPositiveChange(data?.percentageChange) ? "+" : "-"}${
+                    data?.percentageChange || "??"
+                  }%`}
                 </Text>
               )}
             </VStack>
@@ -312,7 +316,12 @@ function TokenCardModal({
             right="7px"
             zIndex={-1}
           />
-          <TokenEditables data={data} limit={limit} issuer={issuer} />
+          <TokenEditables
+            data={data}
+            accountTokenInfo={accountTokenInfo}
+            limit={limit}
+            issuer={issuer}
+          />
         </Box>
       </Box>
     </Flex>

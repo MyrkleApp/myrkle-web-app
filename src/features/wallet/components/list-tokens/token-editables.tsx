@@ -2,7 +2,7 @@ import EditableElement from "@/components/editable-element";
 import ItemLabel from "@/components/item-label";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { selectAddress, selectNetwork } from "../../redux/wallet.selectors";
+import { selectAddress } from "../../redux/wallet.selectors";
 import { useState } from "react";
 import {
   useModifyDomainMutation,
@@ -13,10 +13,10 @@ export interface TokenEditablesProps {
   data: any;
   limit?: string;
   issuer: string;
+  accountTokenInfo: any;
 }
 
-function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
-  const network = useSelector(selectNetwork);
+function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditablesProps) {
   const address = useSelector(selectAddress);
 
   const isTokenIssuer = issuer === address;
@@ -56,7 +56,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         <Box w="57%">
           {isTokenIssuer ? (
             <EditableElement
-              value={"-- --"}
+              value={accountTokenInfo?.transfer_fee || "-- --"}
               inputValue={transferFee}
               handleInputChange={(e: any) => setTransferFee(e.target.value)}
               payload={{ sender_addr: address, transfer_fee: transferFee }}
@@ -64,7 +64,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              -- --
+              {accountTokenInfo?.transfer_fee || "-- --"}
             </Text>
           )}
         </Box>
@@ -91,7 +91,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            {network === "mainnet" ? data?.supply : "-- --"}
+            {data?.supply || "-- --"}
           </Text>
         </Box>
       </Flex>
@@ -117,7 +117,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            -- --
+            {accountTokenInfo?.email || "-- --"}
           </Text>
         </Box>
       </Flex>
@@ -131,7 +131,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
         <Box w="57%">
           {isTokenIssuer ? (
             <EditableElement
-              value={data?.domain || "-- --"}
+              value={accountTokenInfo?.domain || "-- --"}
               inputValue={domain}
               handleInputChange={(e: any) => setDomain(e.target.value)}
               payload={{ sender_addr: address, domain }}
@@ -139,7 +139,7 @@ function TokenEditables({ data, limit, issuer }: TokenEditablesProps) {
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              -- --
+              {accountTokenInfo?.domain || "-- --"}
             </Text>
           )}
         </Box>
