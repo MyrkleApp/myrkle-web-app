@@ -21,14 +21,9 @@ function NetworkToggler() {
 
   const handleNetworkToggle = () => {
     if (network === "testnet") {
-      _setNetwork("devnet");
-      if (signInData) storeSignInData({ ...signInData, network: "devnet" });
-    }
-    if (network === "devnet") {
       _setNetwork("mainnet");
       if (signInData) storeSignInData({ ...signInData, network: "mainnet" });
-    }
-    if (network === "mainnet") {
+    } else {
       _setNetwork("testnet");
       if (signInData) storeSignInData({ ...signInData, network: "testnet" });
     }

@@ -1,5 +1,6 @@
 import { Box, Flex, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
+import xrpTestnetLogo from "@/assets/xrp-testnet-logo.png";
 import ChecksIcon from "@/icons/checks";
 import HourGlassIcon from "@/icons/hour-glass";
 import AccountDetailButton from "../account-detail-button";
@@ -134,7 +135,7 @@ function WalletDetails() {
           )}
 
           <Image
-            src={xrpLogo}
+            src={network === "mainnet" ? xrpLogo : xrpTestnetLogo}
             alt=""
             h="140px"
             w="140px"
