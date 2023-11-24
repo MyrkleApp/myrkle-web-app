@@ -13,7 +13,13 @@ import Backdrop from "@/components/backdrop";
 import { AnimatePresence } from "framer-motion";
 import { MotionBox } from "@/components/motion-elements";
 import { ISignIn, IWalletAddress, TWalletProvider } from "../../types";
-import { selectAddress, selectMyWallets, selectWalletProvider } from "../../redux/wallet.selectors";
+import {
+  selectAddress,
+  selectMyWallets,
+  selectNetwork,
+  selectUserToken,
+  selectWalletProvider,
+} from "../../redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { providersList } from "./data";
 import { setAddress, setWalletProvider } from "../../redux/wallet.slice";
@@ -47,6 +53,8 @@ function SwitchAccountDropdown() {
   const myWallets = useSelector(selectMyWallets);
   const walletProvider = useSelector(selectWalletProvider);
   const address = useSelector(selectAddress);
+  const userToken = useSelector(selectUserToken);
+  const network = useSelector(selectNetwork);
 
   // ======================================================================================================
   // dispatch
@@ -161,7 +169,8 @@ function SwitchAccountDropdown() {
 
     if (signInData !== undefined) {
       storeSignInData({
-        ...signInData,
+        userToken,
+        network,
         address: selectedWallet.address,
         walletProvider: selectedWallet.walletProvider,
       });

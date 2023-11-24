@@ -1,7 +1,12 @@
 import { MotionText } from "@/components/motion-elements";
 import { HStack, Image, Spacer } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNetwork } from "../../redux/wallet.selectors";
+import {
+  selectAddress,
+  selectNetwork,
+  selectUserToken,
+  selectWalletProvider,
+} from "../../redux/wallet.selectors";
 import { ISignIn, TNetwork } from "../../types";
 import { setNetwork } from "../../redux/wallet.slice";
 import { AnimatePresence } from "framer-motion";
@@ -11,6 +16,10 @@ import { useLocalStorage } from "react-use";
 
 function NetworkToggler() {
   const [signInData, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
+
+  const address = useSelector(selectAddress);
+  const walletProvider = useSelector(selectWalletProvider);
+  const userToken = useSelector(selectUserToken);
 
   const [twinArrowsAngle, setTwinArrowsAngle] = useState(0);
 
@@ -22,10 +31,12 @@ function NetworkToggler() {
   const handleNetworkToggle = () => {
     if (network === "testnet") {
       _setNetwork("mainnet");
-      if (signInData) storeSignInData({ ...signInData, network: "mainnet" });
+      if (signInData && walletProvider)
+        storeSignInData({ ...signInData, userToken, address, walletProvider, network: "mainnet" });
     } else {
       _setNetwork("testnet");
-      if (signInData) storeSignInData({ ...signInData, network: "testnet" });
+      if (signInData && walletProvider)
+        storeSignInData({ ...signInData, userToken, address, walletProvider, network: "testnet" });
     }
     setTwinArrowsAngle((prevState) => prevState + 180);
     document.location.reload();
