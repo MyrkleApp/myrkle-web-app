@@ -59,6 +59,8 @@ function TokenCardModal({
 }: TokenCardModalProps) {
   const ref = useRef(null);
 
+  console.log("token info >>>", data);
+
   const network = useSelector(selectNetwork);
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);
