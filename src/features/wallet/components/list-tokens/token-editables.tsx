@@ -100,11 +100,11 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
 
       <Flex justify="space-between">
         <Box w="30%">
-          <ItemLabel title="Sequence" fontWeight="400" mb={0} />
+          <ItemLabel title="Trustlines" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            -- --
+            {data?.trustlines || "-- --"}
           </Text>
         </Box>
       </Flex>
@@ -113,11 +113,11 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
 
       <Flex justify="space-between">
         <Box w="30%">
-          <ItemLabel title="Email" fontWeight="400" mb={0} />
+          <ItemLabel title="Holders" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            {accountTokenInfo?.email || "-- --"}
+            {data?.holders || "-- --"}
           </Text>
         </Box>
       </Flex>
@@ -131,7 +131,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
         <Box w="57%">
           {isTokenIssuer ? (
             <EditableElement
-              value={accountTokenInfo?.domain || "-- --"}
+              value={data?.domain || "-- --"}
               inputValue={domain}
               handleInputChange={(e: any) => setDomain(e.target.value)}
               payload={{ sender_addr: address, domain }}
@@ -139,7 +139,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              {accountTokenInfo?.domain || "-- --"}
+              {data?.domain || "-- --"}
             </Text>
           )}
         </Box>

@@ -31,7 +31,7 @@ function ListTxns() {
     );
   }
 
-  if (!data?.sent?.length && !data?.received?.length) {
+  if (!data?.length) {
     return (
       <Text fontSize="sm" mt={3}>
         You don't have any transactions yet.
@@ -41,8 +41,9 @@ function ListTxns() {
 
   return (
     <Box pr={2}>
-      {data?.sent?.map((txn: any) => <TxnCard key={txn.txid} txn={txn} isCreditTxn={false} />)}
-      {data?.received?.map((txn: any) => <TxnCard key={txn.txid} txn={txn} isCreditTxn={true} />)}
+      {data?.map((txn: any) => (
+        <TxnCard key={txn.txid} txn={txn} isCreditTxn={txn?.sender !== address} />
+      ))}
     </Box>
   );
 }

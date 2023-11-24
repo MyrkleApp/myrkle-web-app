@@ -229,11 +229,13 @@ function TokenCard({
                 fontSize="xs"
                 fontWeight="bold"
                 color={
-                  isXrpToken({ token })
-                    ? isPositiveChange(xrpData.percentageChange?.data)
-                      ? "success"
-                      : "danger"
-                    : "success"
+                  isPositiveChange(
+                    isXrpToken({ token })
+                      ? xrpData.percentageChange?.data
+                      : tokenData?.percentageChange,
+                  )
+                    ? "success"
+                    : "danger"
                 }
               >
                 {isXrpToken({ token })

@@ -2,6 +2,22 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGetTokenInfo } from "../types/token-queries";
 import { cleanupTokenList, tokenFormatter } from "@/helpers";
 import { xrpToken } from "@/constants";
+import { Buffer } from "buffer";
+
+const hex2string = (input: any) => {
+  const output = Buffer.from(input, "hex").toString("utf-8");
+  return output;
+};
+
+const isHex = (val: any) => {
+  const regex = /[0-9A-Fa-f]{6}/g;
+
+  if (val.match(regex)) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export const tokenApi = createApi({
   reducerPath: "tokenApi",
@@ -24,7 +40,9 @@ export const tokenApi = createApi({
           description: res.meta.token.description || "",
           marketCap: Number(res.metrics.marketcap).toFixed(3),
           price: Number(Number(res.metrics.price).toFixed(3)),
-          pair: `${res.currency}/XRP`,
+          pair: `${
+            isHex(res.currency) ? hex2string(res.currency).split("\x00")[0] : res.currency
+          }/XRP`,
           percentageChange: res.metrics.changes["24h"].price.percent?.toFixed(2),
           holders: res.metrics.holders,
           trustlines: res.metrics.trustlines,
