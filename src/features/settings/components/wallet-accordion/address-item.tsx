@@ -41,6 +41,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
   const currentWalletProvider = useSelector(selectWalletProvider);
 
   const isActiveWalletProvider = currentWalletProvider === selectedWalletProvider;
+  const isPreventSwitchWallet = isActiveWalletProvider && currentWalletProvider !== "xumm";
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -70,7 +71,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
   };
 
   const handleAddressClick = () => {
-    if (isActiveWalletProvider) return;
+    if (isPreventSwitchWallet) return;
     onOpen();
 
     if (selectedWalletProvider === "xumm") {
@@ -114,7 +115,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
             <Text
               fontSize="xs"
               color="textDark"
-              cursor={isActiveWalletProvider ? "not-allowed" : "pointer"}
+              cursor={isPreventSwitchWallet ? "not-allowed" : "pointer"}
               onClick={handleAddressClick}
             >
               {address}
