@@ -14,7 +14,7 @@ function ListTxns() {
   const [getPaymentTxns, { data, isLoading }] = useLazyGetPaymentTransactionsQuery();
 
   useEffect(() => {
-    if (address && net) {
+    if (address) {
       getPaymentTxns({ address, net });
     }
   }, [address, getPaymentTxns, net, network]);
