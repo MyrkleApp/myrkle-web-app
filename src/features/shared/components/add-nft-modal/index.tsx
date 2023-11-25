@@ -15,7 +15,7 @@ import { useRef, useState } from "react";
 import NftAddCard from "./nft-add-card";
 import { AnimatePresence } from "framer-motion";
 import { useDebounce } from "react-use";
-import { useLazyGetNftMetaDataQuery, useReceiveNftMutation } from "../../redux/xrp.api";
+import { useLazyGetNftInfoQuery, useReceiveNftMutation } from "../../redux/xrp.api";
 import ProceedModal from "../proceed-modal";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
@@ -50,7 +50,7 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
   const [
     getNftMetaData,
     { data: nftData, isLoading: isNftMetaDataLoading, isError: isNftMetaDataError },
-  ] = useLazyGetNftMetaDataQuery();
+  ] = useLazyGetNftInfoQuery();
   const [receiveNft, { isLoading: isReceiveNftLoading }] = useReceiveNftMutation();
 
   // ========================================================================================

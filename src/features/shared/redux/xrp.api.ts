@@ -63,8 +63,8 @@ export const xrpApi = createApi({
     getAccountNfts: builder.query({
       query: ({ address, net }: IAddressNet) => `get-account-nfts/${address}/?${net}`,
     }),
-    getNftMetaData: builder.query({
-      query: ({ id, net }: IIdNet) => `info/get-nft-metadata/?nft_id=${id}&${net}`,
+    getNftInfo: builder.query({
+      query: ({ id, net }: IIdNet) => `info/get-nft-info/?nft_id=${id}&${net}`,
     }),
     getNftMetaData2: builder.query({
       query: (url: string) => nftFormatter(url),
@@ -107,6 +107,9 @@ export const xrpApi = createApi({
     }),
     getAllNftOffers: builder.query({
       query: ({ id, net }: IIdNet) => `nft/all-nft-offers/?nft_token_id=${id}&${net}`,
+    }),
+    getAccountNftOffers: builder.query({
+      query: ({ address, net }: IAddressNet) => `nft/account-nft-offers/${address}/?${net}`,
     }),
     getPendingOffers: builder.query({
       query: ({ address, net }: IAddressNet) => `xamm/pending-offers/${address}/?${net}`,
@@ -555,9 +558,10 @@ export const {
   useGetAccountTokenInfoQuery,
   useGetAccountNftsQuery,
   useLazyGetAccountNftsQuery,
-  useGetNftMetaDataQuery,
+  useGetNftInfoQuery,
+  useLazyGetNftInfoQuery,
   useGetNftMetaData2Query,
-  useLazyGetNftMetaDataQuery,
+  useLazyGetNftMetaData2Query,
   useGetNetworkFeeQuery,
   useGetPaymentTransactionsQuery,
   useLazyGetPaymentTransactionsQuery,
@@ -573,6 +577,7 @@ export const {
   useGetEscrowInfoQuery,
   useGetPayTxnInfoQuery,
   useGetAllNftOffersQuery,
+  useGetAccountNftOffersQuery,
   useGetPendingOffersQuery,
   useLazyGetPendingOffersQuery,
   useLazyParsePayTxnFlagQuery,

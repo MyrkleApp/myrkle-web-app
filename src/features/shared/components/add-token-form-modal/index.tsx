@@ -116,6 +116,7 @@ function AddTokenFormModal({
     setIssuer("");
     setShowAdvancedOptions(false);
     setRippling(false);
+    setView("default");
   };
 
   if (view !== "default") {

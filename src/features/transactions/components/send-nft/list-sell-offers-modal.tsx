@@ -3,20 +3,22 @@ import { MotionBox } from "@/components/motion-elements";
 import { Box, CloseButton, HStack, Spacer, useOutsideClick } from "@chakra-ui/react";
 import { useRef } from "react";
 import NftSellOfferItem from "./nft-sell-offer-item";
-import { useGetAllNftOffersQuery } from "@/features/shared/redux/xrp.api";
+import { useGetAccountNftOffersQuery } from "@/features/shared/redux/xrp.api";
 import { useSelector } from "react-redux";
-import { selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import Skeleton1 from "@/components/skeleton";
 
 export interface ListSellOffersModalProps {
   id: string;
+  receiverAddress: string;
   handleClose: () => void;
 }
 
-function ListSellOffersModal({ id, handleClose }: ListSellOffersModalProps) {
+function ListSellOffersModal({ id, receiverAddress, handleClose }: ListSellOffersModalProps) {
   const net = useSelector(selectNet);
+  const address = useSelector(selectAddress);
 
-  const { data, isLoading } = useGetAllNftOffersQuery({ id, net });
+  const { data, isLoading } = useGetAccountNftOffersQuery({ address, net });
 
   console.log(data);
 
@@ -34,7 +36,7 @@ function ListSellOffersModal({ id, handleClose }: ListSellOffersModalProps) {
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="450px"
+      h="auto"
       w="350px"
       px={7}
       py={5}
@@ -50,9 +52,13 @@ function ListSellOffersModal({ id, handleClose }: ListSellOffersModalProps) {
         <CloseButton onClick={handleClose} />
       </HStack>
 
-      <Box pr={1} mb={4} mt={3} h="calc(100% - 70px)" overflow="hidden auto">
+      <Box pr={1} mb={4} mt={3} h="calc(100% - 70px)" maxH="450px" overflow="hidden auto">
         <RenderSellOffers isLoading={isLoading}>
-          {data?.sell?.map((_: any, i: number) => <NftSellOfferItem key={i} />)}
+          {data
+            ?.filter((nft: any) => nft.nftoken_id === id && nft.receiver === receiverAddress)
+            .map((nft: any, i: number) => (
+              <NftSellOfferItem key={i} id={nft.nftoken_id} offerId={nft.offer_id} />
+            ))}
         </RenderSellOffers>
       </Box>
     </MotionBox>
@@ -66,7 +72,7 @@ const RenderSellOffers = ({ children, isLoading }: any) => {
         {Array(10)
           .fill(null)
           .map((_, i) => (
-            <Skeleton1 key={i} />
+            <Skeleton1 key={i} h="50px" borderRadius="0" mb={2} />
           ))}
       </>
     );

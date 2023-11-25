@@ -89,6 +89,7 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
   const handleReset = () => {
     resetSubmitTxnResponse();
     setView("default");
+    // setReceiverAddress("")
   };
 
   return (
@@ -188,7 +189,13 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
         {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
-        {view === "success" && <ListSellOffersModal id={nft?.id} handleClose={handleReset} />}
+        {view === "success" && (
+          <ListSellOffersModal
+            id={nft?.id}
+            receiverAddress={receiverAddress}
+            handleClose={handleReset}
+          />
+        )}
       </Backdrop>
     </>
   );
