@@ -90,8 +90,11 @@ function TokenCard({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
 
-  const xrpBalanceToUSD = xrpData?.price.data * amount;
-  const tokenBalanceToUSD = xrpData?.price.data * amount * (tokenData?.price || 0);
+  const xrpPriceInUSD = xrpData?.price.data;
+  const xrpBalanceInUSD = xrpPriceInUSD * amount;
+  const tokenPrice = tokenData?.price || 0;
+  const tokenPriceToUSD = tokenPrice * xrpPriceInUSD;
+  const tokenBalanceToUSD = tokenPriceToUSD * amount;
 
   const [tokenModalView, setTokenModalView] = useState<TTokenModalView>("default");
 
@@ -101,7 +104,7 @@ function TokenCard({
 
   useEffect(() => {
     if (isXrpToken({ token })) {
-      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: xrpBalanceToUSD });
+      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: xrpBalanceInUSD });
     }
 
     if (network !== "mainnet") return;
@@ -114,7 +117,7 @@ function TokenCard({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address, xrpBalanceToUSD]);
+  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address, xrpBalanceInUSD]);
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -263,7 +266,7 @@ function TokenCard({
               $
               {formatNumber(
                 isXrpToken({ token })
-                  ? xrpBalanceToUSD
+                  ? xrpBalanceInUSD
                   : network === "mainnet"
                   ? tokenBalanceToUSD
                   : "-- --",
@@ -360,6 +363,7 @@ function TokenCard({
                 handleClose={handleClose}
                 handleRemoveClick={() => setTokenModalView("proceed")}
                 isFrozen={isFrozen}
+                tokenPriceToUSD={tokenPriceToUSD}
               />
             )}
 

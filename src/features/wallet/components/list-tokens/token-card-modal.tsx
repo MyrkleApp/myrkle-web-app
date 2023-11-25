@@ -41,6 +41,7 @@ export interface TokenCardModalProps {
   handleClose: () => void;
   handleRemoveClick: () => void;
   isFrozen?: boolean;
+  tokenPriceToUSD: number;
 }
 
 // rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL
@@ -56,6 +57,7 @@ function TokenCardModal({
   handleClose,
   handleRemoveClick,
   isFrozen,
+  tokenPriceToUSD,
 }: TokenCardModalProps) {
   const ref = useRef(null);
 
@@ -194,7 +196,7 @@ function TokenCardModal({
         >
           <Box h="95%" mt="-5px" overflow="hidden auto">
             <Text fontWeight="" fontSize="xs" maxW="calc(100% - 10px)">
-              No description available.
+              {data?.description || "No description available."}
             </Text>
           </Box>
         </Box>
@@ -274,7 +276,7 @@ function TokenCardModal({
             </VStack>
           </RenderElement>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">${network === "mainnet" ? data?.price : "-- --"}</Text>
+            <Text fontSize="md">${tokenPriceToUSD || "-- --"}</Text>
             <Text fontSize="2xs">Price</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">

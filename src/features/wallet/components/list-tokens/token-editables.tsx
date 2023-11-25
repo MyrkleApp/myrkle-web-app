@@ -1,6 +1,6 @@
 import EditableElement from "@/components/editable-element";
 import ItemLabel from "@/components/item-label";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/wallet.selectors";
 import { useState } from "react";
@@ -8,6 +8,8 @@ import {
   useModifyDomainMutation,
   useModifyTokenTransferFeeMutation,
 } from "@/features/shared/redux/xrp.api";
+import { formatNumber } from "@/helpers";
+import xrpLogo from "@/assets/xrp-logo.svg";
 
 export interface TokenEditablesProps {
   data: any;
@@ -42,7 +44,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            {data?.marketCap || "-- --"}
+            $ {formatNumber(data?.marketCap)}
           </Text>
         </Box>
       </Flex>
@@ -64,7 +66,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              {accountTokenInfo?.transfer_fee || "-- --"}
+              {accountTokenInfo?.transfer_fee || "-- --"}%
             </Text>
           )}
         </Box>
@@ -77,9 +79,12 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
           <ItemLabel title="Limit" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" letterSpacing={2} ml={5}>
-            {limit}
-          </Text>
+          <HStack ml={5}>
+            <Image src={xrpLogo} alt="xrp" h="22px" />
+            <Text fontSize="xs" letterSpacing={2}>
+              {limit}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -90,9 +95,12 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
           <ItemLabel title="Supply" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
-          <Text fontSize="xs" ml={5}>
-            {data?.supply || "-- --"}
-          </Text>
+          <HStack ml={5}>
+            <Image src={xrpLogo} alt="xrp" h="22px" />
+            <Text fontSize="xs" letterSpacing={2}>
+              {data?.supply || "-- --"}
+            </Text>
+          </HStack>
         </Box>
       </Flex>
 
@@ -113,11 +121,11 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
 
       <Flex justify="space-between">
         <Box w="30%">
-          <ItemLabel title="Holders" fontWeight="400" mb={0} />
+          <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            {data?.holders || "-- --"}
+            {accountTokenInfo?.email || "-- --"}
           </Text>
         </Box>
       </Flex>
