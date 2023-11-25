@@ -10,9 +10,9 @@ function ListCreatedEscrows() {
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);
 
-  const { data, isLoading } = useGetAccountEscrowsQuery({ address, net });
+  const { data, isLoading, isFetching } = useGetAccountEscrowsQuery({ address, net });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <>
         {Array(12)

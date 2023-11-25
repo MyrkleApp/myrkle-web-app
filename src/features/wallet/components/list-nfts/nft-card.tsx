@@ -17,9 +17,9 @@ export interface NftCardProps {
 }
 
 function NftCard({ uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
-  const { data, isLoading, isError } = useGetNftMetaData2Query(uri);
+  const { data, isLoading, isFetching, isError } = useGetNftMetaData2Query(uri);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <Skeleton1 w="100%" h="100%" />;
   }
 

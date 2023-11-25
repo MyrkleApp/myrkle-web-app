@@ -38,7 +38,7 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
   const address = useSelector(selectAddress);
   const walletProvider = useSelector(selectWalletProvider);
 
-  const { data, isLoading } = useGetAccountInfoQuery({ address, net });
+  const { data, isLoading, isFetching } = useGetAccountInfoQuery({ address, net });
   const { isLoading: isXrpBalanceLoading, data: xrpBalance } = useGetBalanceQuery({ address, net });
 
   const ref = useRef(null);
@@ -110,7 +110,7 @@ function AccountInfoModal({ handleClose, handleAccountInfoModal }: AccountInfoMo
         </Text>
       </HStack>
 
-      <RenderAccountInfo isLoading={isLoading}>
+      <RenderAccountInfo isLoading={isLoading || isFetching}>
         <SimpleGrid columns={2} h="300px" spacing="10px">
           <Flex direction="column" justify="space-between" border="1px solid transparent">
             <Box>

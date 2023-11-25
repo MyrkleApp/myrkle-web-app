@@ -79,7 +79,10 @@ function WalletDetails() {
   // api
   // =======================================================================================
 
-  const { isLoading: isBalanceLoading } = useGetBalanceQuery({ address, net });
+  const { isLoading: isBalanceLoading, isFetching: isBalanceFetching } = useGetBalanceQuery({
+    address,
+    net,
+  });
 
   // =======================================================================================
   // handlers
@@ -159,7 +162,13 @@ function WalletDetails() {
           </HStack>
 
           <Box mt="-15px">
-            <RenderElement isLoading={isBalanceLoading} h="40px" w="470px" mt={4} mb={2}>
+            <RenderElement
+              isLoading={isBalanceLoading || isBalanceFetching}
+              h="40px"
+              w="470px"
+              mt={4}
+              mb={2}
+            >
               <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"9vh"}>
                 ${formatNumber(totalBalance)}
               </Text>

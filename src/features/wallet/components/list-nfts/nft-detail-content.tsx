@@ -15,7 +15,7 @@ function NftDetailContent() {
   const [searchParams] = useSearchParams();
   const uri = searchParams.get("uri") || "";
 
-  const { data, isLoading } = useGetNftMetaData2Query(uri);
+  const { data, isLoading, isFetching } = useGetNftMetaData2Query(uri);
 
   const containerRef = useRef<any>(null);
 
@@ -29,7 +29,7 @@ function NftDetailContent() {
     containerRef.current.scrollLeft -= 300;
   };
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Flex justify="space-between" h="100%" gap={4}>
         <Flex direction="column" justify="space-between" w="50%">

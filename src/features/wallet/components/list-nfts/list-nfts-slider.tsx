@@ -12,7 +12,7 @@ function ListNftsSlider() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
 
-  const { data, isLoading } = useGetAccountNftsQuery({ address, net });
+  const { data, isLoading, isFetching } = useGetAccountNftsQuery({ address, net });
 
   const containerRef = useRef<any>(null);
 
@@ -26,7 +26,7 @@ function ListNftsSlider() {
     containerRef.current.scrollLeft -= 500;
   };
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Box pos="relative" h="100%">
         <Box

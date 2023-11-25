@@ -9,9 +9,9 @@ import Skeleton1 from "@/components/skeleton";
 function ListNftsGallery() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
-  const { data, isLoading } = useGetAccountNftsQuery({ address, net });
+  const { data, isLoading, isFetching } = useGetAccountNftsQuery({ address, net });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <SimpleGrid columns={4} spacing={4} pr={4}>
         <Flex justify="center" align="center" bg="secondary" borderRadius="35px" cursor="pointer">

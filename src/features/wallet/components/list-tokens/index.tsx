@@ -15,7 +15,7 @@ function ListTokens() {
   const dispatch = useDispatch();
 
   const xrpData = useGetXrpData();
-  const { isLoading, data } = useGetAccountTokensQuery({ address, net });
+  const { isLoading, isFetching, data } = useGetAccountTokensQuery({ address, net });
   const { data: xrpBalanceData } = useGetBalanceQuery({ address, net });
 
   const [tokenUsdAmountObj, setTokenUsdAmountObj] = useState({});
@@ -33,7 +33,7 @@ function ListTokens() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(tokenUsdAmountObj)]);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Flex direction="column" h="100%" gap={2} pr={4}>
         {Array(5)

@@ -10,9 +10,9 @@ function ListCreatedChecks() {
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);
 
-  const { data, isLoading } = useGetAccountChecksQuery({ address, net });
+  const { data, isLoading, isFetching } = useGetAccountChecksQuery({ address, net });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <>
         {Array(12)

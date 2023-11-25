@@ -11,7 +11,7 @@ function ListTxns() {
   const net = useSelector(selectNet);
   const network = useSelector(selectNetwork);
 
-  const [getPaymentTxns, { data, isLoading }] = useLazyGetPaymentTransactionsQuery();
+  const [getPaymentTxns, { data, isLoading, isFetching }] = useLazyGetPaymentTransactionsQuery();
 
   useEffect(() => {
     if (address) {
@@ -19,7 +19,7 @@ function ListTxns() {
     }
   }, [address, getPaymentTxns, net, network]);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Box pr={2}>
         {Array(15)
