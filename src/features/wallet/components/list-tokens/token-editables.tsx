@@ -9,16 +9,16 @@ import {
   useModifyTokenTransferFeeMutation,
 } from "@/features/shared/redux/xrp.api";
 import { formatNumber } from "@/helpers";
-import xrpLogo from "@/assets/xrp-logo.svg";
 
 export interface TokenEditablesProps {
   data: any;
   limit?: string;
   issuer: string;
   accountTokenInfo: any;
+  icon: string;
 }
 
-function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditablesProps) {
+function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEditablesProps) {
   const address = useSelector(selectAddress);
 
   const isTokenIssuer = issuer === address;
@@ -80,9 +80,9 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
         </Box>
         <Box w="57%">
           <HStack ml={5}>
-            <Image src={xrpLogo} alt="xrp" h="22px" />
+            <Image src={icon} alt="xrp" h="22px" />
             <Text fontSize="xs" letterSpacing={2}>
-              {limit}
+              {formatNumber(limit || "")}
             </Text>
           </HStack>
         </Box>
@@ -96,7 +96,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
         </Box>
         <Box w="57%">
           <HStack ml={5}>
-            <Image src={xrpLogo} alt="xrp" h="22px" />
+            <Image src={icon} alt="xrp" h="22px" />
             <Text fontSize="xs" letterSpacing={2}>
               {data?.supply || "-- --"}
             </Text>
@@ -119,7 +119,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
 
       <Box as="hr" borderTop="1px solid #4b4a4a" w="30%" />
 
-      <Flex justify="space-between">
+      {/* <Flex justify="space-between">
         <Box w="30%">
           <ItemLabel title="Email" fontWeight="400" mb={0} />
         </Box>
@@ -130,7 +130,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo }: TokenEditable
         </Box>
       </Flex>
 
-      <Box as="hr" borderTop="1px solid #4b4a4a" w="30%" />
+      <Box as="hr" borderTop="1px solid #4b4a4a" w="30%" /> */}
 
       <Flex justify="space-between">
         <Box w="30%">

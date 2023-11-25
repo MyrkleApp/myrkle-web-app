@@ -68,7 +68,7 @@ export const numberWithCommas = (x: string | number) => {
 
 export const formatNumber = (x: number | string) => {
   if (isNaN(Number(x))) return "-- --";
-  return numberWithCommas(Number(x).toFixed(2));
+  return numberWithCommas(Number(x).toFixed(3));
 };
 
 export const cleanupRate = (rate: number) => (Number.isFinite(rate) ? rate : 0);

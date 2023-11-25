@@ -218,7 +218,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
               spacing={5}
               boxShadow="0 2px 8px #00000040"
             >
-              <Text fontSize="md">${`${Number(price.data)}`}</Text>
+              <Text fontSize="md">${`${formatNumber(price.data)}`}</Text>
               <Text fontSize="2xs">Price</Text>
             </VStack>
           </RenderElement>

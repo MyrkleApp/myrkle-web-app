@@ -276,7 +276,7 @@ function TokenCardModal({
             </VStack>
           </RenderElement>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">${tokenPriceToUSD || "-- --"}</Text>
+            <Text fontSize="md">${formatNumber(tokenPriceToUSD)}</Text>
             <Text fontSize="2xs">Price</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
@@ -323,6 +323,7 @@ function TokenCardModal({
             accountTokenInfo={accountTokenInfo}
             limit={limit}
             issuer={issuer}
+            icon={data?.icon || tokenPlaceholder}
           />
         </Box>
       </Box>
