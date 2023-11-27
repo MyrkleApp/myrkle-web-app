@@ -107,3 +107,5 @@ export const formatDate = (dateStr: string): string => {
     date.toLocaleDateString("en-US", { year: "numeric" })
   ); // 23-Nov-2023
 };
+
+export const isObjectEmpty = (object: any) => Object.keys(object).length === 0;
