@@ -1,11 +1,10 @@
 import { Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
-import xrpLogo from "@/assets/xrp-logo.svg";
-import tokenPlaceholder from "@/assets/token-placeholder.png";
 import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
 import TxnModal from "./txn-modal";
 import { formatDate, formatNumber } from "@/helpers";
+import TokenIcon from "@/features/shared/components/token-icon";
 
 export interface TxnCardProps {
   txn: any;
@@ -38,11 +37,8 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
         </GridItem>
         <GridItem rowSpan={1} colSpan={3} display="flex" alignItems="center">
           <HStack>
-            <Image
-              src={txn.token.toLowerCase() === "xrp" ? xrpLogo : tokenPlaceholder}
-              alt="logo"
-              h="28px"
-            />
+            <TokenIcon token={txn.token} issuer={txn?.issuer} h="28px" />
+
             <Text fontSize="xs" textTransform="uppercase">
               {txn.token}
             </Text>

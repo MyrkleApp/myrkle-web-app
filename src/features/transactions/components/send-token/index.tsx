@@ -7,16 +7,13 @@ import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@ch
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
-import xrpLogo from "@/assets/xrp-logo.svg";
-import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { useSendTokenMutation, useSendXrpMutation } from "@/features/shared/redux/xrp.api";
 import { isXrpToken } from "@/helpers";
-import { selectAddress, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { numbersOnlyRegex, xrpIssuer } from "@/constants";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { IToken, TTxnPipeline } from "@/features/shared/types";
-import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import { useSearchParams } from "react-router-dom";
 import AddressBook from "../address-book";
 import Backdrop from "@/components/backdrop";
@@ -30,10 +27,9 @@ function SendToken() {
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
 
-  const [selectedToken, setSelectedToken] = useState<IToken>({
+  const [selectedToken, setSelectedToken] = useState<Omit<IToken, "icon">>({
     token: "xrp",
     issuer: xrpIssuer,
-    icon: xrpLogo,
   });
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState("");
@@ -50,7 +46,6 @@ function SendToken() {
   // ===========================================================================================
 
   const address = useSelector(selectAddress);
-  const network = useSelector(selectNetwork);
 
   // ===========================================================================================
   // api
@@ -58,7 +53,6 @@ function SendToken() {
 
   const [sendXrp] = useSendXrpMutation();
   const [sendToken] = useSendTokenMutation();
-  const [getTokenInfo] = useLazyGetTokenInfoQuery();
 
   // ===========================================================================================
   // effects
@@ -83,29 +77,15 @@ function SendToken() {
       setSelectedToken({
         token: urlToken,
         issuer: urlIssuer,
-        icon: isXrpToken({ token: urlToken }) ? xrpLogo : tokenPlaceholder,
       });
     }
   }, [urlIssuer, urlToken]);
-
-  useEffect(() => {
-    if (network !== "mainnet") return;
-
-    if (isXrpToken(selectedToken)) {
-      setSelectedToken({ ...selectedToken, icon: xrpLogo });
-    } else {
-      getTokenInfo({ token: selectedToken.token, issuer: selectedToken.issuer })
-        .unwrap()
-        .then((res) => setSelectedToken({ ...selectedToken, icon: res.icon }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTokenInfo, network, selectedToken.issuer, selectedToken.token]);
 
   // ===========================================================================================
   // handlers
   // ===========================================================================================
 
-  const handleSelectedToken = (token: IToken) => setSelectedToken(token);
+  const handleSelectedToken = (token: Omit<IToken, "icon">) => setSelectedToken(token);
 
   const toggleAdvancedOptions = () => {
     if (isAdvancedOptions) setAdvancedOptions(false);
@@ -123,6 +103,7 @@ function SendToken() {
       };
 
       if (destinationTag) sendXrpBody.destination_tag = destinationTag;
+      if (note.trim().length) sendXrpBody.memo = note;
 
       sendXrp(sendXrpBody)
         .unwrap()
@@ -137,9 +118,9 @@ function SendToken() {
         token: selectedToken.token,
         issuer: selectedToken.issuer,
         amount,
-        destination_tag: destinationTag,
       };
       if (destinationTag) sendTokenBody.destination_tag = destinationTag;
+      if (note.trim().length) sendTokenBody.memo = note;
 
       sendToken(sendTokenBody)
         .unwrap()
@@ -162,7 +143,6 @@ function SendToken() {
     setSelectedToken({
       token: "xrp",
       issuer: xrpIssuer,
-      icon: xrpLogo,
     });
   };
 

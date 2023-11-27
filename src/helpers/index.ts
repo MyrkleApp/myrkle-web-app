@@ -68,6 +68,14 @@ export const numberWithCommas = (x: string | number) => {
 
 export const formatNumber = (x: number | string) => {
   if (isNaN(Number(x))) return "-- --";
+
+  if (Number(x) < 1) {
+    const firstNonZeroNumberIndex = String(x)
+      .split("")
+      .findIndex((char) => Number(char) > 0);
+    return String(x).slice(0, firstNonZeroNumberIndex + 3);
+  }
+
   return numberWithCommas(Number(x).toFixed(3));
 };
 
@@ -106,6 +114,23 @@ export const formatDate = (dateStr: string): string => {
     " " +
     date.toLocaleDateString("en-US", { year: "numeric" })
   ); // 23-Nov-2023
+};
+
+export const formatTime = (dateStr: string): string => {
+  if (!dateStr) {
+    return "-- --";
+  }
+
+  const date = new Date(dateStr);
+
+  let hours = date.getHours();
+  let minutes: number | string = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour "0" should be "12"
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  const strTime = hours + ":" + minutes + " " + ampm;
+  return strTime;
 };
 
 export const isObjectEmpty = (object: any) => Object.keys(object).length === 0;

@@ -12,6 +12,7 @@ function SendNft() {
 
   const handleNftItemClick = (nftData: any) => {
     setSelectedNft(nftData);
+    onClose();
   };
 
   if (selectedNft) {

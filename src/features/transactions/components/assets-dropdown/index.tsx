@@ -1,14 +1,5 @@
 import { MotionBox } from "@/components/motion-elements";
-import {
-  HStack,
-  Image,
-  Spacer,
-  Spinner,
-  Text,
-  useDisclosure,
-  useOutsideClick,
-} from "@chakra-ui/react";
-import xrpLogo from "@/assets/xrp-logo.svg";
+import { HStack, Spacer, Spinner, Text, useDisclosure, useOutsideClick } from "@chakra-ui/react";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -18,11 +9,11 @@ import { useSelector } from "react-redux";
 import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
 import { IToken } from "@/features/shared/types";
 import { xrpIssuer } from "@/constants";
-import tokenPlaceholder from "@/assets/token-placeholder.png";
+import TokenIcon from "@/features/shared/components/token-icon";
 
 export interface AssetsDropdownProps {
-  selectedToken: any;
-  handleSelectedToken: (token: IToken) => void;
+  selectedToken: Omit<IToken, "icon">;
+  handleSelectedToken: (token: Omit<IToken, "icon">) => void;
 }
 
 function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownProps) {
@@ -55,7 +46,7 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
         borderRadius={isOpen ? "5px 5px 0 0" : "5px"}
         onClick={() => !isLoading && onToggle()}
       >
-        <Image src={selectedToken.icon} alt="logo" h="20px" />
+        <TokenIcon token={selectedToken.token} issuer={selectedToken.issuer} h="20px" />
         <Text fontWeight="bold" fontSize="xs" textTransform="uppercase">
           {selectedToken.token}
         </Text>
@@ -84,22 +75,19 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
             exit={{ height: 0 }}
           >
             <DropdownItem
-              name="xrp"
-              icon={xrpLogo}
-              handleClick={() =>
-                handleSelectedToken({ token: "xrp", issuer: xrpIssuer, icon: xrpLogo })
-              }
+              token="xrp"
+              issuer={xrpIssuer}
+              handleClick={() => handleSelectedToken({ token: "xrp", issuer: xrpIssuer })}
             />
             {data?.map(({ token, issuer }: any, i: number) => (
               <DropdownItem
                 key={i}
-                name={token}
-                icon={tokenPlaceholder}
+                token={token}
+                issuer={issuer}
                 handleClick={() =>
                   handleSelectedToken({
                     token,
                     issuer,
-                    icon: tokenPlaceholder,
                   })
                 }
               />

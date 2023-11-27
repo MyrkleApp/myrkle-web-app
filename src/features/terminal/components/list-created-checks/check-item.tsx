@@ -80,7 +80,10 @@ function CheckItem({ check }: ICheckItemProps) {
         amount: check.amount,
         token: check.token,
         issuer: check.issuer,
-      });
+      })
+        .unwrap()
+        .then((res) => handleSubmitTxn(res))
+        .catch(() => setView("error-1"));
     }
   };
 

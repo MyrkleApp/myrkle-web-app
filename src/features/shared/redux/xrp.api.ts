@@ -108,6 +108,9 @@ export const xrpApi = createApi({
     getAllNftOffers: builder.query({
       query: ({ id, net }: IIdNet) => `nft/all-nft-offers/?nft_token_id=${id}&${net}`,
     }),
+    getNftOfferInfo: builder.query({
+      query: ({ id, net }: IIdNet) => `info/get-nft-offer-info/?offer_id=${id}&${net}`,
+    }),
     getAccountNftOffers: builder.query({
       query: ({ address, net }: IAddressNet) => `nft/account-nft-offers/${address}/?${net}`,
     }),
@@ -562,6 +565,8 @@ export const {
   useLazyGetNftInfoQuery,
   useGetNftMetaData2Query,
   useLazyGetNftMetaData2Query,
+  useGetNftOfferInfoQuery,
+  useLazyGetNftOfferInfoQuery,
   useGetNetworkFeeQuery,
   useGetPaymentTransactionsQuery,
   useLazyGetPaymentTransactionsQuery,

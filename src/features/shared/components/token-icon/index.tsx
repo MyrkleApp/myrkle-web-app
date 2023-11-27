@@ -5,6 +5,7 @@ import { Image } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { selectNetwork } from "@/features/wallet/redux/wallet.selectors";
 import { useLazyGetTokenInfoQuery } from "../../redux/token.api";
+import { useEffect } from "react";
 
 export interface TokenIconProps {
   token: string;
@@ -17,6 +18,12 @@ function TokenIcon({ token, issuer, ...props }: TokenIconProps) {
 
   const [getTokenInfo, { data }] = useLazyGetTokenInfoQuery();
 
+  useEffect(() => {
+    if (network === "mainnet" && !isXrpToken({ token })) {
+      getTokenInfo({ token, issuer });
+    }
+  });
+
   if (isXrpToken({ token })) {
     return <Image src={xrpLogo} alt="" h="30px" {...props} />;
   }
@@ -24,8 +31,6 @@ function TokenIcon({ token, issuer, ...props }: TokenIconProps) {
   if (!isXrpToken({ token }) && network !== "mainnet") {
     return <Image src={tokenPlaceholder} alt="" h="30px" {...props} />;
   }
-
-  getTokenInfo({ token, issuer });
 
   return <Image src={data?.icon || tokenPlaceholder} alt="" h="30px" {...props} />;
 }

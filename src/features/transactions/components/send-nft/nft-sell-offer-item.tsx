@@ -1,5 +1,4 @@
 import { HStack, Image, Spacer, Text, VStack, useToast } from "@chakra-ui/react";
-// import nftImage from "@/assets/nft.png";
 import CopyIcon from "@/icons/copy";
 import { ellipsisAtCenter, isObjectEmpty } from "@/helpers";
 import ToastElement from "@/components/toast-element";
@@ -14,8 +13,6 @@ export interface NftSellOfferItemProps {
   offerId: string;
 }
 
-// const ipfsLink = "ipfs://bafkreiglp4eju6veiqt5rnj5ym3ei2t5yeo547dfddlysou4c6fuh7xliq"
-
 function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
   const net = useSelector(selectNet);
 
@@ -23,11 +20,7 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
   const [getNftMetaData, { isLoading: isNftMetaDataLoading, data: nftMetaData }] =
     useLazyGetNftMetaData2Query();
 
-  console.log("nft info", nftInfoData);
-  console.log("nftMetaData", nftMetaData);
-
   useEffect(() => {
-    // getNftMetaData(ipfsLink);
     if (nftInfoData?.uri) {
       getNftMetaData(nftInfoData?.uri);
     }
@@ -61,7 +54,6 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
         <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" fontSize="xs">
           {id}
         </Text>
-        {/* <Text fontSize="xs">{ellipsisAtCenter(id)}</Text> */}
         <Spacer />
         <CopyIcon fill="none" fontSize="lg" mr={3} cursor="pointer" onClick={handleCopyIconClick} />
       </HStack>
@@ -75,7 +67,7 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
         <Text fontSize="xs" mb={-4} fontWeight="bold">
           {nftMetaData?.name || "-- --"}
         </Text>
-        <Text fontSize="xs">{ellipsisAtCenter(nftInfoData?.issuer || "-- --")}</Text>
+        <Text fontSize="xs">{ellipsisAtCenter(offerId)}</Text>
       </VStack>
       <Spacer />
       <CopyIcon fill="none" fontSize="lg" mr={3} cursor="pointer" onClick={handleCopyIconClick} />

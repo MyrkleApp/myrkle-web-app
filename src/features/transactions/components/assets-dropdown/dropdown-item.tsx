@@ -1,17 +1,18 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
+import TokenIcon from "@/features/shared/components/token-icon";
+import { HStack, Text } from "@chakra-ui/react";
 
 export interface DropdownItemProps {
-  name: string;
-  icon: string;
+  token: string;
+  issuer: string;
   handleClick: () => void;
 }
 
-function DropdownItem({ name, icon, handleClick }: DropdownItemProps) {
+function DropdownItem({ token, issuer, handleClick }: DropdownItemProps) {
   return (
     <HStack py={4} borderTop="1px solid #7c7c7c" onClick={handleClick}>
-      <Image src={icon} alt="logo" h="25px" />
+      <TokenIcon token={token} issuer={issuer} h="25px" />
       <Text fontWeight="bold" fontSize="xs" textTransform="uppercase">
-        {name}
+        {token}
       </Text>
     </HStack>
   );

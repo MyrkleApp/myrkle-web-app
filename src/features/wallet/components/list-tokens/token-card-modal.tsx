@@ -275,8 +275,41 @@ function TokenCardModal({
               <Text fontSize="2xs">Tick</Text>
             </VStack>
           </RenderElement>
-          <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
-            <Text fontSize="md">${formatNumber(tokenPriceToUSD)}</Text>
+          <VStack
+            bg="dark"
+            borderRadius="12px"
+            pt={6}
+            spacing={5}
+            boxShadow="0 2px 8px #00000040"
+            cursor="pointer"
+            pos="relative"
+            _hover={{ "#complete-price": { display: "block" } }}
+          >
+            <Text
+              id="complete-price"
+              display="none"
+              fontSize="sm"
+              bg="#000"
+              px={3}
+              borderRadius={10}
+              pos="absolute"
+              top="0"
+              left="50%"
+              transform="translateX(-50%)"
+            >
+              ${formatNumber(tokenPriceToUSD)}
+            </Text>
+
+            <Text
+              fontSize="md"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              w="calc(100% - 10px)"
+              textAlign="center"
+            >
+              ${formatNumber(tokenPriceToUSD)}
+            </Text>
             <Text fontSize="2xs">Price</Text>
           </VStack>
           <VStack bg="dark" borderRadius="12px" pt={6} spacing={5} boxShadow="0 2px 8px #00000040">
@@ -324,6 +357,7 @@ function TokenCardModal({
             limit={limit}
             issuer={issuer}
             icon={data?.icon || tokenPlaceholder}
+            tokenPriceToUSD={tokenPriceToUSD}
           />
         </Box>
       </Box>

@@ -2,7 +2,7 @@ import ItemLabel from "@/components/item-label";
 import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import RenderElement from "@/components/render-element";
-import { ellipsisAtCenter, formatDate } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatTime } from "@/helpers";
 
 export interface ListTxnsEditables {
   txn: any;
@@ -49,7 +49,7 @@ function ListTxnsEditables({ txn, txnInfo, isTxnInfoLoading }: ListTxnsEditables
           <ItemLabel title="Time" fontWeight="400" mb={0} />
         </Box>
         <Box w="50%">
-          <Text fontSize="xs">{txn?.timestamp.split(" ")[1]}</Text>
+          <Text fontSize="xs">{formatTime(txn?.timestamp)}</Text>
         </Box>
       </Flex>
 

@@ -16,9 +16,17 @@ export interface TokenEditablesProps {
   issuer: string;
   accountTokenInfo: any;
   icon: string;
+  tokenPriceToUSD: number;
 }
 
-function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEditablesProps) {
+function TokenEditables({
+  data,
+  limit,
+  issuer,
+  accountTokenInfo,
+  icon,
+  tokenPriceToUSD,
+}: TokenEditablesProps) {
   const address = useSelector(selectAddress);
 
   const isTokenIssuer = issuer === address;
@@ -44,7 +52,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            $ {formatNumber(data?.marketCap)}
+            $ {formatNumber(Number(data?.marketCap) * tokenPriceToUSD)}
           </Text>
         </Box>
       </Flex>
@@ -66,7 +74,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              {accountTokenInfo?.transfer_fee || "-- --"}%
+              {!!String(accountTokenInfo?.transfer_fee) || "-- --"}%
             </Text>
           )}
         </Box>
@@ -98,7 +106,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
           <HStack ml={5}>
             <Image src={icon} alt="xrp" h="22px" />
             <Text fontSize="xs" letterSpacing={2}>
-              {data?.supply || "-- --"}
+              {formatNumber(data?.supply)}
             </Text>
           </HStack>
         </Box>
@@ -112,7 +120,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            {data?.trustlines || "-- --"}
+            {formatNumber(data?.trustlines)}
           </Text>
         </Box>
       </Flex>

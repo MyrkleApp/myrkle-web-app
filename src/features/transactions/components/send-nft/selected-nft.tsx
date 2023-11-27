@@ -89,7 +89,9 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
   const handleReset = () => {
     resetSubmitTxnResponse();
     setView("default");
-    // setReceiverAddress("")
+    handleNftItemClick(null);
+    setReceiverAddress("");
+    onClose();
   };
 
   return (

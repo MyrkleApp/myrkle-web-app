@@ -229,6 +229,7 @@ export interface ISendToken {
   issuer: string;
   amount: number | string;
   destination_tag?: number | string;
+  memo?: number | string;
 }
 
 export interface ISendXrp {
@@ -236,6 +237,7 @@ export interface ISendXrp {
   receiver_addr: string;
   amount: number | string;
   destination_tag?: number | string;
+  memo?: number | string;
 }
 
 export interface IOrderBookSwap {
