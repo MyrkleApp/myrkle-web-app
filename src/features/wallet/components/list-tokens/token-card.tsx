@@ -91,10 +91,19 @@ function TokenCard({
   const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
 
   const xrpPriceInUSD = xrpData?.price.data;
+  console.log("xrp price in usd", xrpPriceInUSD);
+
   const xrpBalanceInUSD = xrpPriceInUSD * amount;
-  const tokenPrice = tokenData?.price || 0;
-  const tokenPriceToUSD = tokenPrice * xrpPriceInUSD;
+  console.log("xrp balance in usd", xrpBalanceInUSD);
+
+  const tokenPrice = tokenData?.price;
+  console.log("token price return", tokenPrice);
+
+  const tokenPriceToUSD = tokenPrice ? tokenPrice * xrpPriceInUSD : 0;
+  console.log("token price to USD: ", tokenPriceToUSD);
+
   const tokenBalanceToUSD = tokenPriceToUSD * amount;
+  console.log("token balance to USD: ", tokenBalanceToUSD);
 
   const [tokenModalView, setTokenModalView] = useState<TTokenModalView>("default");
 

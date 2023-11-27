@@ -53,6 +53,10 @@ const walletSlice = createSlice({
       );
       myWallets.splice(walletIndex, 1);
       state.myWallets = myWallets;
+      if (payload.address === state.address && payload.walletProvider === state.walletProvider) {
+        state.address = "";
+        state.walletProvider = "";
+      }
     },
     setTotalBalance(state, { payload }: PayloadAction<number>) {
       state.totalBalance = payload;

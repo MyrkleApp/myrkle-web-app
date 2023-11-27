@@ -21,6 +21,9 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
   const [getNftMetaData, { isLoading: isNftMetaDataLoading, data: nftMetaData }] =
     useLazyGetNftMetaData2Query();
 
+  console.log("nft info", nftInfoData);
+  console.log("nftMetaData", nftMetaData);
+
   useEffect(() => {
     if (nftInfoData?.uri) {
       getNftMetaData(nftInfoData?.uri);
