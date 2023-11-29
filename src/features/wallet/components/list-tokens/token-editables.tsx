@@ -52,7 +52,7 @@ function TokenEditables({
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            $ {formatNumber(Number(data?.marketCap) * tokenPriceToUSD)}
+            $ {formatNumber(tokenPriceToUSD)}
           </Text>
         </Box>
       </Flex>

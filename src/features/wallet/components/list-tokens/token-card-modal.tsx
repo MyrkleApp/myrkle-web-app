@@ -37,7 +37,6 @@ export interface TokenCardModalProps {
   amount: number;
   tokenBalanceToUSD: number;
   limit?: string;
-  isLoading: boolean;
   handleClose: () => void;
   handleRemoveClick: () => void;
   isFrozen?: boolean;

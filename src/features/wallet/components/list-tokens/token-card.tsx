@@ -17,7 +17,6 @@ import ExchangeIcon from "@/icons/exchange";
 import Backdrop from "@/components/backdrop";
 import TokenCardModal from "./token-card-modal";
 import { ellipsisAtCenter, formatNumber, isPositiveChange, isXrpToken } from "@/helpers";
-import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import useGetXrpData from "../../hooks/use-get-xrp-data";
 import XrpModal from "./xrp-modal";
 import ROUTES from "@/routes";
@@ -33,6 +32,7 @@ import ProceedModal from "@/features/shared/components/proceed-modal";
 import { useRemoveTokenMutation } from "@/features/shared/redux/xrp.api";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import useGetTokenInfo from "../../hooks/use-get-token-info";
 
 export interface TokenCardProps {
   token: string;
@@ -79,8 +79,8 @@ function TokenCard({
   // api
   // ==================================================================================================
 
-  const [getTokenInfo, { data: tokenData, isLoading: isTokenDataLoading }] =
-    useLazyGetTokenInfoQuery();
+  const [tokenData, { getTokenInfo }] = useGetTokenInfo();
+  // const [getTokenInfo, { data: tokenData }] = useLazyGetTokenInfoQuery();
   const [removeToken] = useRemoveTokenMutation();
 
   // ==================================================================================================
@@ -91,19 +91,16 @@ function TokenCard({
   const { isOpen: isReceiveOpen, onOpen: onReceiveOpen, onClose: onReceiveClose } = useDisclosure();
 
   const xrpPriceInUSD = xrpData?.price.data;
-  console.log("xrp price in usd", xrpPriceInUSD);
 
   const xrpBalanceInUSD = xrpPriceInUSD * amount;
-  console.log("xrp balance in usd", xrpBalanceInUSD);
 
-  const tokenPrice = tokenData?.price;
-  console.log("token price return", tokenPrice);
+  // const tokenPrice = tokenData?.price;
 
-  const tokenPriceToUSD = tokenPrice ? tokenPrice * xrpPriceInUSD : 0;
-  console.log("token price to USD: ", tokenPriceToUSD);
+  // const tokenPriceToUSD = tokenPrice ? tokenPrice * xrpPriceInUSD : 0;
 
-  const tokenBalanceToUSD = tokenPriceToUSD * amount;
-  console.log("token balance to USD: ", tokenBalanceToUSD);
+  // const tokenBalanceToUSD = tokenPriceToUSD * amount;
+
+  const tokenBalanceToUSD = tokenData?.price * amount;
 
   const [tokenModalView, setTokenModalView] = useState<TTokenModalView>("default");
 
@@ -118,12 +115,18 @@ function TokenCard({
 
     if (network !== "mainnet") return;
 
+    const getTokenInformation = async () => {
+      const tokenInfo: any = await getTokenInfo(token, issuer);
+      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: Number(tokenInfo?.price) * amount });
+    };
+
     if (!isXrpToken({ token })) {
-      getTokenInfo({ token, issuer })
-        .unwrap()
-        .then(() => {
-          handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
-        });
+      getTokenInformation();
+      // getTokenInfo({ token, issuer })
+      //   .unwrap()
+      //   .then(() => {
+      //     handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
+      //   });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address, xrpBalanceInUSD]);
@@ -368,11 +371,10 @@ function TokenCard({
                 amount={amount}
                 tokenBalanceToUSD={tokenBalanceToUSD}
                 limit={limit}
-                isLoading={isTokenDataLoading}
                 handleClose={handleClose}
                 handleRemoveClick={() => setTokenModalView("proceed")}
                 isFrozen={isFrozen}
-                tokenPriceToUSD={tokenPriceToUSD}
+                tokenPriceToUSD={tokenData?.price}
               />
             )}
 

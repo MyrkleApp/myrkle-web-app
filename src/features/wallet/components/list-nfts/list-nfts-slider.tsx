@@ -1,6 +1,6 @@
 import ArrowLeftIcon from "@/icons/arrow-left";
 import ArrowRightIcon from "@/icons/arrow-right";
-import { Box, Circle } from "@chakra-ui/react";
+import { Box, Circle, Flex, Text } from "@chakra-ui/react";
 import { useRef } from "react";
 import NftCard from "./nft-card";
 import { useSelector } from "react-redux";
@@ -50,6 +50,14 @@ function ListNftsSlider() {
             ))}
         </Box>
       </Box>
+    );
+  }
+
+  if (!data?.length) {
+    return (
+      <Flex justify="center" align="center" h="100%">
+        <Text>You have no nfts to display</Text>
+      </Flex>
     );
   }
 

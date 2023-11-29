@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import NftCard from "./nft-card";
 import PlusIcon from "@/icons/plus";
 import { selectAddress, selectNet } from "../../redux/wallet.selectors";
@@ -25,6 +25,14 @@ function ListNftsGallery() {
             </Box>
           ))}
       </SimpleGrid>
+    );
+  }
+
+  if (!data?.length) {
+    return (
+      <Flex justify="center" align="center" h="100%">
+        <Text>You have no nfts to display</Text>
+      </Flex>
     );
   }
 
