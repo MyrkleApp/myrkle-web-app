@@ -9,15 +9,42 @@ import {
   useDisallowIncomingPayChanMutation,
   useDisallowIncomingTrustlineMutation,
   useDisallowXrpMutation,
+  useGetAccountInfoQuery,
   useGlobalFreezeMutation,
+  useLazyParseAccountFlagQuery,
   useNoFreezeMutation,
   useRequireAuthMutation,
   useRequireDestMutation,
 } from "@/features/shared/redux/xrp.api";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import Backdrop from "@/components/backdrop";
+import MyrkleLoader from "@/components/myrkle-loader";
+
+const isFlagEnabled = (list: any[], flagTitle: string) => {
+  const isEnabled = list?.findIndex((flag) => flag.flagname === flagTitle);
+  if (isEnabled === -1) return false;
+  else return true;
+};
 
 function ListFlags() {
   // const [accountTxnId] = useAccountTxnIdMutation();
   //
+
+  const net = useSelector(selectNet);
+  const address = useSelector(selectAddress);
+
+  const {
+    data: accountInfo,
+    isLoading: isAccountInfoLoading,
+    isFetching: isAccountInfoFetching,
+  } = useGetAccountInfoQuery({ address, net }, { refetchOnMountOrArgChange: true });
+  const [
+    parseAccountFlags,
+    { data: accountFlags, isLoading: isAccountFlagLoading, isFetching: isAccountFlagFetching },
+  ] = useLazyParseAccountFlagQuery();
+
   const [defaultRipple] = useDefaultRippleMutation();
   const [disableMaster] = useDisableMasterMutation();
   const [disallowIncomingCheck] = useDisallowIncomingCheckMutation();
@@ -30,70 +57,99 @@ function ListFlags() {
   const [requireAuth] = useRequireAuthMutation();
   const [requireDest] = useRequireDestMutation();
 
+  useEffect(() => {
+    if (accountInfo?.flags) {
+      parseAccountFlags(accountInfo?.flags);
+    }
+  }, [accountInfo?.flags, parseAccountFlags]);
+
   return (
-    <SimpleGrid w="85%" h="100%" columns={[1, null, 2, 3]} spacing="50px">
-      {/* <FlagCard
+    <>
+      <SimpleGrid w="85%" h="100%" columns={[1, null, 2, 3]} spacing="50px">
+        {/* <FlagCard
         title="Account transaction id"
         description="Flag description"
         mutation={accountTxnId}
       />
       <FlagCard title="Auth nft token minter" description="Flag description" /> */}
-      <FlagCard
-        title="lsfDefaultRipple"
-        description="enable rippling on this address's trust lines by default. Required for issuing addresses; discouraged for others"
-        mutation={defaultRipple}
-      />
-      <FlagCard
-        title="lsfDisableMaster"
-        description="Disallows use of the master key to sign transactions for this account"
-        mutation={disableMaster}
-      />
-      <FlagCard
-        title="lsfDisallowIncomingCheck"
-        description="To block incoming check"
-        mutation={disallowIncomingCheck}
-      />
-      <FlagCard
-        title="lsfDisallowIncomingNFTokenOffer"
-        description="To block incoming nftoken offers"
-        mutation={disallowIncomingNftTokenOffer}
-      />
-      <FlagCard
-        title="lsfDisallowIncomingPayChannel"
-        description="To block incoming pay channels"
-        mutation={disallowIncomingPayChan}
-      />
-      <FlagCard
-        title="lsfDisallowIncomingTrustline"
-        description="To block incoming trustline"
-        mutation={disallowIncomingTrustline}
-      />
-      <FlagCard
-        title="lsfDisallowXRP"
-        description="Client applications should not send xrp to this account. Not enforced by ripple."
-        mutation={disallowXrp}
-      />
-      <FlagCard
-        title="lsfGlobalFreeze"
-        description="All assets issued by this address are frozen"
-        mutation={globalFreeze}
-      />
-      <FlagCard
-        title="lsfNoFreeze"
-        description="This address cannot freeze trustlines connected to it. Once enabled, cannot be disabled."
-        mutation={noFreeze}
-      />
-      <FlagCard
-        title="lsfRequireAuth"
-        description="This account must individually aprove other users for those users to hold this account's tokens"
-        mutation={requireAuth}
-      />
-      <FlagCard
-        title="lsfRequireDestTag"
-        description="Requires incoming payments to specify a destination tag"
-        mutation={requireDest}
-      />
-    </SimpleGrid>
+        <FlagCard
+          title="lsfDefaultRipple"
+          description="enable rippling on this address's trust lines by default. Required for issuing addresses; discouraged for others"
+          mutation={defaultRipple}
+          currentValue={isFlagEnabled(accountFlags, "lsfDefaultRipple")}
+        />
+        <FlagCard
+          title="lsfDisableMaster"
+          description="Disallows use of the master key to sign transactions for this account"
+          mutation={disableMaster}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisableMaster")}
+        />
+        <FlagCard
+          title="lsfDisallowIncomingCheck"
+          description="To block incoming check"
+          mutation={disallowIncomingCheck}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisallowIncomingCheck")}
+        />
+        <FlagCard
+          title="lsfDisallowIncomingNFTokenOffer"
+          description="To block incoming nftoken offers"
+          mutation={disallowIncomingNftTokenOffer}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisallowIncomingNFTokenOffer")}
+        />
+        <FlagCard
+          title="lsfDisallowIncomingPayChannel"
+          description="To block incoming pay channels"
+          mutation={disallowIncomingPayChan}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisallowIncomingPayChannel")}
+        />
+        <FlagCard
+          title="lsfDisallowIncomingTrustline"
+          description="To block incoming trustline"
+          mutation={disallowIncomingTrustline}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisallowIncomingTrustline")}
+        />
+        <FlagCard
+          title="lsfDisallowXRP"
+          description="Client applications should not send xrp to this account. Not enforced by ripple."
+          mutation={disallowXrp}
+          currentValue={isFlagEnabled(accountFlags, "lsfDisallowXRP")}
+        />
+        <FlagCard
+          title="lsfGlobalFreeze"
+          description="All assets issued by this address are frozen"
+          mutation={globalFreeze}
+          currentValue={isFlagEnabled(accountFlags, "lsfGlobalFreeze")}
+        />
+        <FlagCard
+          title="lsfNoFreeze"
+          description="This address cannot freeze trustlines connected to it. Once enabled, cannot be disabled."
+          mutation={noFreeze}
+          currentValue={isFlagEnabled(accountFlags, "lsfNoFreeze")}
+        />
+        <FlagCard
+          title="lsfRequireAuth"
+          description="This account must individually aprove other users for those users to hold this account's tokens"
+          mutation={requireAuth}
+          currentValue={isFlagEnabled(accountFlags, "lsfRequireAuth")}
+        />
+        <FlagCard
+          title="lsfRequireDestTag"
+          description="Requires incoming payments to specify a destination tag"
+          mutation={requireDest}
+          currentValue={isFlagEnabled(accountFlags, "lsfRequireDestTag")}
+        />
+      </SimpleGrid>
+      <Backdrop
+        isOpen={
+          isAccountInfoLoading ||
+          isAccountInfoFetching ||
+          isAccountFlagLoading ||
+          isAccountFlagFetching
+        }
+      >
+        <MyrkleLoader />
+      </Backdrop>
+    </>
   );
 }
 

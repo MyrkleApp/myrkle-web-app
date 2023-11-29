@@ -50,7 +50,7 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
     setTimeout(() => {
       setView("loading");
 
-      mutation({ sender_addr: address, state: switchValue })
+      mutation({ sender_addr: address, state: !switchValue })
         .unwrap()
         .then((res: any) => {
           const successCallback = () => setView("success");

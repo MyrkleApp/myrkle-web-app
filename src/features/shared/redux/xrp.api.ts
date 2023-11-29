@@ -127,6 +127,9 @@ export const xrpApi = createApi({
     parseNftFlag: builder.query({
       query: (flag: string) => `misc/parse-nft-flags/?nft_flag=${flag}`,
     }),
+    parseAccountFlag: builder.query({
+      query: (flag: string) => `misc/parse-account-flags/?account_flag=${flag}`,
+    }),
     generateConditionFulfillment: builder.query({
       query: () => `misc/generate-condition-fulfillment/`,
     }),
@@ -606,6 +609,7 @@ export const {
   useLazyParsePayTxnFlagQuery,
   useLazyGetTxnStatusQuery,
   useParseNftFlagQuery,
+  useLazyParseAccountFlagQuery,
   useGetOrderBookLiquidityQuery,
   useLazyGetOrderBookLiquidityQuery,
   useLazyGenerateConditionFulfillmentQuery,
