@@ -47,7 +47,8 @@ function ListCreatedEscrows() {
             <TableHeader>Type</TableHeader>
             <TableHeader>Amount</TableHeader>
             <TableHeader>Redeem Date</TableHeader>
-            <TableHeader border="none">Expiry Date</TableHeader>
+            <TableHeader>Expiry Date</TableHeader>
+            <TableHeader border="none">Action</TableHeader>
           </Tr>
         </Thead>
         <Box h="1px"></Box>

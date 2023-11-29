@@ -378,6 +378,24 @@ export const xrpApi = createApi({
         };
       },
     }),
+    cancelXrpEscrow: builder.mutation({
+      query(body) {
+        return {
+          url: "object/cancel-xrp-escrow/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    finishXrpEscrow: builder.mutation({
+      query(body) {
+        return {
+          url: "object/finish-xrp-escrow/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     // =========================================
     // flags
@@ -620,6 +638,8 @@ export const {
   useSortBestOfferMutation,
   useCancelOfferMutation,
   useGenerateXAddressMutation,
+  useCancelXrpEscrowMutation,
+  useFinishXrpEscrowMutation,
   //flags
   useAccountTxnIdMutation,
   useAuthNftTokenMinterMutation,
