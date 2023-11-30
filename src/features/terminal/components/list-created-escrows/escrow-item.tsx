@@ -11,7 +11,7 @@ import {
 } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
-import { ellipsisAtCenter, formatDate, formatNumber } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatNumber, formatTime } from "@/helpers";
 import { HStack, Td, Tr, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -137,13 +137,25 @@ function EscrowItem({ escrow, type }: EscrowItemProps) {
           {type}
         </Td>
         <Td textAlign="center" fontSize="sm">
-          {formatNumber(escrow?.amount)}
+          <ShowDetailsOnHover
+            fullText={`${formatNumber(escrow?.amount)} XRP`}
+            shortText={formatNumber(escrow?.amount)}
+            color="#fff"
+          />
         </Td>
         <Td textAlign="center" fontSize="sm" fontWeight="bold">
-          {formatDate(escrow?.redeem_date)}
+          <ShowDetailsOnHover
+            fullText={`${formatDate(escrow?.redeem_date)} at ${formatTime(escrow?.redeem_date)}`}
+            shortText={formatDate(escrow?.redeem_date)}
+            color="#fff"
+          />
         </Td>
         <Td textAlign="center" fontSize="sm" fontWeight="bold">
-          {formatDate(escrow?.expiry_date)}
+          <ShowDetailsOnHover
+            fullText={`${formatDate(escrow?.expiry_date)} at ${formatTime(escrow?.expiry_date)}`}
+            shortText={formatDate(escrow?.expiry_date)}
+            color="#fff"
+          />
         </Td>
         <Td fontSize="sm" fontWeight="bold">
           <HStack justify="flex-end">
@@ -155,7 +167,7 @@ function EscrowItem({ escrow, type }: EscrowItemProps) {
               h="30px"
               px="30px"
               onClick={() => (escrow.condition ? onOpenFulfillmentModal() : handleClaimEscrow())}
-              // isDisabled={escrow?.sender === address}
+              isDisabled={escrow?.sender === address}
             >
               Claim
             </Button>

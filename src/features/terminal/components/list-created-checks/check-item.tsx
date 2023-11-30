@@ -12,7 +12,7 @@ import {
 } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
-import { ellipsisAtCenter, formatDate, formatNumber, isXrpToken } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatNumber, formatTime, isXrpToken } from "@/helpers";
 import { HStack, Td, Tr } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -118,10 +118,22 @@ function CheckItem({ check }: ICheckItemProps) {
           />
         </Td>
         <Td textAlign="center" fontSize="sm" pt={3}>
-          {formatNumber(check.amount)}
+          <ShowDetailsOnHover
+            fullText={
+              isXrpToken({ token: check.token })
+                ? `${formatNumber(check.amount)} XRP`
+                : `${formatNumber(check.amount)} ${check.token} / ${check.issuer}`
+            }
+            shortText={formatNumber(check.amount)}
+            color="#fff"
+          />
         </Td>
         <Td textAlign="center" fontSize="sm" fontWeight="bold" pt={3}>
-          {formatDate(check.expiry_date)}
+          <ShowDetailsOnHover
+            fullText={`${formatDate(check.expiry_date)} at ${formatTime(check.expiry_date)}`}
+            shortText={formatDate(check.expiry_date)}
+            color="#fff"
+          />
         </Td>
         <Td fontSize="sm" fontWeight="bold">
           <HStack justify="flex-end">
