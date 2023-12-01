@@ -78,7 +78,7 @@ function TokenDetail({ token }: TokenDetailProps) {
 
     const timeNow = new Date().toISOString().split("T")[1].split(".")[0];
 
-    if (claimDate) xrpEscrowData.claim_date = claimDate;
+    if (claimDate) xrpEscrowData.claim_date = `${claimDate}T${timeNow}`;
     if (expiryDate) xrpEscrowData.expiry_date = `${expiryDate}T${timeNow}`;
 
     // time format >>> "2023-12-09T02:27:09"

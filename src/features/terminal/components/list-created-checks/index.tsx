@@ -1,10 +1,10 @@
 import TableHeader from "@/components/table-header";
 import { Box, Flex, Table, TableContainer, Tbody, Text, Thead, Tr } from "@chakra-ui/react";
-import ListChecks from "./list-checks";
 import { useGetAccountChecksQuery } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
+import CheckItem from "./check-item";
 
 function ListCreatedChecks() {
   const net = useSelector(selectNet);
@@ -24,7 +24,7 @@ function ListCreatedChecks() {
     );
   }
 
-  if (!data?.sent?.length && !data?.receive?.length) {
+  if (!data?.length) {
     return (
       <Flex justify="center" align="center" h="100%">
         <Text fontSize="lg">You don't have any checks yet.</Text>
@@ -51,7 +51,7 @@ function ListCreatedChecks() {
         </Thead>
         <Box h="1px"></Box>
         <Tbody pt={3} border="none">
-          <ListChecks sent={data?.sent} received={data?.receive} />
+          {data?.map((check: any) => <CheckItem key={check.check_id} check={check} />)}
         </Tbody>
       </Table>
     </TableContainer>
