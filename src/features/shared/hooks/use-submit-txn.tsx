@@ -153,6 +153,23 @@ function useSubmitTxn(
   // GEMWALLET
   // =============================================================================================
 
+  // export const submitTxn = async (transaction) => {
+  //   try {
+  //     let resp = await submitTransaction({ transaction });
+  //     if (resp.type === "reject") {
+  //       console.log("Transaction Rejected");
+  //       return "Transaction Rejected";
+  //     }
+  //     if (resp.result.hash) {
+  //       console.log({ status: "SUCCESS", hash: resp.result.hash });
+  //       return { status: "SUCCESS", hash: resp.result.hash };
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     return e;
+  //   }
+  // };
+
   const submitGemWalletTxn = async (
     transaction: any,
     successCallback?: () => void,
@@ -174,6 +191,14 @@ function useSubmitTxn(
         setIsLoading(false);
         if (successCallback) successCallback();
         return { status: "SUCCESS", hash: resp.result.hash };
+      }
+      if (resp.type === "reject") {
+        console.log("Transaction Rejected");
+        setIsSuccess(false);
+        setResponseMessage("Transaction Rejected");
+        setIsOpen(true);
+        setIsLoading(false);
+        return "Transaction Rejected";
       }
     } catch (e) {
       setIsSuccess(false);

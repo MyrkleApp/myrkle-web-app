@@ -16,7 +16,7 @@ import { TTxnPipeline } from "@/features/shared/types";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
-import { numbersOnlyRegex } from "@/constants";
+import { numbersOnlyRegex, today } from "@/constants";
 import { ICreateXrpEscrow } from "@/features/shared/types/xrp-mutations";
 
 export interface TokenDetailProps {
@@ -35,7 +35,7 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [generatedEscrowData, setGeneratedEscrowData] = useState<any>(null);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const isDateSelected = !!claimDate || !!expiryDate;
+  const isDateSelected = !!claimDate && !!expiryDate;
   const isSubmitDisabled = !receiverAddress || !amount || !isDateSelected;
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
@@ -75,8 +75,13 @@ function TokenDetail({ token }: TokenDetailProps) {
     if (generatedEscrowData?.condition) {
       xrpEscrowData.condition = generatedEscrowData?.condition;
     }
+
+    const timeNow = new Date().toISOString().split("T")[1].split(".")[0];
+
     if (claimDate) xrpEscrowData.claim_date = claimDate;
-    if (expiryDate) xrpEscrowData.expiry_date = expiryDate;
+    if (expiryDate) xrpEscrowData.expiry_date = `${expiryDate}T${timeNow}`;
+
+    // time format >>> "2023-12-09T02:27:09"
 
     createXrpEscrow(xrpEscrowData)
       .unwrap()
@@ -138,6 +143,7 @@ function TokenDetail({ token }: TokenDetailProps) {
           <ItemLabel title="Claim Date" mb={1} />
           <Input
             type="date"
+            min={today}
             value={claimDate}
             onChange={(e: any) => setClaimDate(e.target.value)}
             sx={{
@@ -152,6 +158,7 @@ function TokenDetail({ token }: TokenDetailProps) {
           <ItemLabel title="Expiry Date" mb={1} />
           <Input
             type="date"
+            min={today}
             value={expiryDate}
             onChange={(e: any) => setExpiryDate(e.target.value)}
             sx={{

@@ -129,7 +129,7 @@ function TokenCard({
       //   });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTokenInfo, issuer, network, token, tokenBalanceToUSD, address, xrpBalanceInUSD]);
+  }, [issuer, network, token, tokenBalanceToUSD, address, xrpBalanceInUSD]);
 
   useEffect(() => {
     if (xummTxnQrCode) {

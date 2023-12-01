@@ -1,10 +1,10 @@
 import TableHeader from "@/components/table-header";
 import { Box, Flex, Table, TableContainer, Tbody, Text, Thead, Tr } from "@chakra-ui/react";
-import ListEscrows from "./list-escrows";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useGetAccountEscrowsQuery } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
+import EscrowItem from "./escrow-item";
 
 function ListCreatedEscrows() {
   const net = useSelector(selectNet);
@@ -24,7 +24,7 @@ function ListCreatedEscrows() {
     );
   }
 
-  if (!data?.sent?.length && !data?.received?.length) {
+  if (!data?.length) {
     return (
       <Flex justify="center" align="center" h="100%">
         <Text fontSize="lg">You don't have any escrows yet.</Text>
@@ -44,7 +44,6 @@ function ListCreatedEscrows() {
             <TableHeader>Prev Transaction ID</TableHeader>
             <TableHeader>Sender</TableHeader>
             <TableHeader>Receiver</TableHeader>
-            <TableHeader>Type</TableHeader>
             <TableHeader>Amount</TableHeader>
             <TableHeader>Redeem Date</TableHeader>
             <TableHeader>Expiry Date</TableHeader>
@@ -53,7 +52,7 @@ function ListCreatedEscrows() {
         </Thead>
         <Box h="1px"></Box>
         <Tbody pt={3} border="none">
-          <ListEscrows sent={data?.sent} received={data?.received} />
+          {data?.map((escrow: any) => <EscrowItem key={escrow.escrow_id} escrow={escrow} />)}
         </Tbody>
       </Table>
     </TableContainer>

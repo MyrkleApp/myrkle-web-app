@@ -5,7 +5,7 @@ import { MotionBox } from "@/components/motion-elements";
 import { Box, HStack, Spacer, Text } from "@chakra-ui/react";
 import TokenItem from "../select-token-dropdown/token-item";
 import { useEffect, useState } from "react";
-import { numbersOnlyRegex } from "@/constants";
+import { numbersOnlyRegex, today } from "@/constants";
 import {
   useCreateTokenCheckMutation,
   useCreateXrpCheckMutation,
@@ -59,12 +59,14 @@ function TokenDetail({ token }: TokenDetailProps) {
   const handleConfirm = () => {
     setView("loading");
 
+    const timeNow = new Date().toISOString().split("T")[1].split(".")[0];
+
     if (isXrpToken(token)) {
       createXrpCheck({
         sender_addr: address,
         receiver_addr: receiverAddress,
         amount,
-        expiry_date: expiryDate,
+        expiry_date: `${expiryDate}T${timeNow}`,
       })
         .unwrap()
         .then((res) => handleSubmitTxn(res))
@@ -77,7 +79,7 @@ function TokenDetail({ token }: TokenDetailProps) {
       token: token?.token,
       issuer: token?.issuer,
       amount,
-      expiry_date: expiryDate,
+      expiry_date: `${expiryDate}T${timeNow}`,
     })
       .unwrap()
       .then((res) => handleSubmitTxn(res))
@@ -129,6 +131,7 @@ function TokenDetail({ token }: TokenDetailProps) {
           <ItemLabel title="Expiry Date" mb={1} />
           <Input
             type="date"
+            min={today}
             value={expiryDate}
             onChange={(e: any) => setExpiryDate(e.target.value)}
             sx={{

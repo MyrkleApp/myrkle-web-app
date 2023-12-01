@@ -19,10 +19,9 @@ import FulfillmentModal from "./fulfillment-modal";
 
 export interface EscrowItemProps {
   escrow: any;
-  type: "Outgoing" | "Incoming";
 }
 
-function EscrowItem({ escrow, type }: EscrowItemProps) {
+function EscrowItem({ escrow }: EscrowItemProps) {
   const address = useSelector(selectAddress);
   const network = useSelector(selectNetwork);
 
@@ -132,9 +131,6 @@ function EscrowItem({ escrow, type }: EscrowItemProps) {
             shortText={ellipsisAtCenter(escrow?.receiver)}
             color="primary"
           />
-        </Td>
-        <Td textAlign="center" fontSize="sm">
-          {type}
         </Td>
         <Td textAlign="center" fontSize="sm">
           <ShowDetailsOnHover
