@@ -4,39 +4,54 @@ import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { TTxnPipeline } from "@/features/shared/types";
-import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress, selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
 import { Box, HStack, Spacer, Switch, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export interface FlagCardProps {
-  title?: string;
+  title: string;
   description?: string;
   currentValue?: boolean;
   mutation?: (value: any) => any;
+  lastAlteredFlag: string;
+  handleLastAlteredFlag: (title: string) => void;
 }
 
-function FlagCard({ title, description, currentValue, mutation }: FlagCardProps) {
+function FlagCard({
+  title,
+  description,
+  currentValue,
+  mutation,
+  lastAlteredFlag,
+  handleLastAlteredFlag,
+}: FlagCardProps) {
   const address = useSelector(selectAddress);
+  const walletProvider = useSelector(selectWalletProvider);
+
+  const isActiveFlag = title === lastAlteredFlag;
 
   const [switchValue, setSwitchValue] = useState(false);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn }] = useSubmitTxn("flag");
+  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
+    useSubmitTxn("flag");
 
   useEffect(() => {
-    if (xummTxnQrCode) {
+    if (xummTxnQrCode && isActiveFlag && walletProvider === "xumm") {
       setView("xumm-qr-code");
     }
-  }, [xummTxnQrCode]);
+  }, [isActiveFlag, walletProvider, xummTxnQrCode]);
 
   useEffect(() => {
     if (isSubmitTxnSuccess === null) return;
 
-    if (isSubmitTxnSuccess) {
+    if (isSubmitTxnSuccess && isActiveFlag) {
       setView("success");
-    } else setView("error-2");
-  }, [isSubmitTxnSuccess]);
+    } else if (!isSubmitTxnSuccess && isActiveFlag) {
+      setView("error-2");
+    }
+  }, [isActiveFlag, isSubmitTxnSuccess]);
 
   useEffect(() => {
     setSwitchValue(!!currentValue);
@@ -47,22 +62,23 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
 
     if (!mutation) return;
 
-    setTimeout(() => {
-      setView("loading");
+    setView("loading");
+    handleLastAlteredFlag(title);
 
-      mutation({ sender_addr: address, state: !switchValue })
-        .unwrap()
-        .then((res: any) => {
-          const successCallback = () => setView("success");
-          const errorCallback = () => setView("error-2");
-          handleSubmitTxn(res, successCallback, errorCallback);
-        })
-        .catch(() => setView("error-1"));
-    }, 200);
+    mutation({ sender_addr: address, state: !switchValue })
+      .unwrap()
+      .then((res: any) => {
+        const successCallback = () => setView("success");
+        const errorCallback = () => setView("error-2");
+        handleSubmitTxn(res, successCallback, errorCallback);
+      })
+      .catch(() => setView("error-1"));
   };
 
   const handleClose = () => {
+    resetSubmitTxnResponse();
     setView("default");
+    handleLastAlteredFlag("");
   };
 
   return (
@@ -76,9 +92,7 @@ function FlagCard({ title, description, currentValue, mutation }: FlagCardProps)
           <Switch colorScheme="whatsapp" isChecked={switchValue} onChange={handleToggleSwitch} />
         </HStack>
 
-        <Text fontSize="sm">
-          {description || "This account is an automated market maker instance."}
-        </Text>
+        <Text fontSize="sm">{description}</Text>
       </Box>
 
       <Backdrop isOpen={view !== "default"}>
