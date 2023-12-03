@@ -34,7 +34,7 @@ import {
   ISortBestOffer,
   IToggleTokenFreeze,
 } from "../types/xrp-mutations";
-import { IAddressNet, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
+import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
 
 const cloudServer = "https://myrkle-django.onrender.com/api/v1/";
@@ -132,6 +132,10 @@ export const xrpApi = createApi({
     }),
     generateConditionFulfillment: builder.query({
       query: () => `misc/generate-condition-fulfillment/`,
+    }),
+    checkTokenExists: builder.query({
+      query: ({ net, name, issuer }: ICheckTokenExists) =>
+        `xamm/token-exists/?name=${name}&issuer=${issuer}&net=${net}`,
     }),
 
     // =================================================================================================
@@ -613,6 +617,7 @@ export const {
   useGetOrderBookLiquidityQuery,
   useLazyGetOrderBookLiquidityQuery,
   useLazyGenerateConditionFulfillmentQuery,
+  useLazyCheckTokenExistsQuery,
 
   // mutations
   useBurnTokenMutation,

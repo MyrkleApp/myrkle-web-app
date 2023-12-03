@@ -8,6 +8,9 @@ import TokenItem from "./token-item";
 import { useGetMainnetTokensQuery } from "../../redux/token.api";
 import Skeleton1 from "@/components/skeleton";
 import { filterTokenList } from "@/helpers";
+import { IToken } from "../../types";
+import { useDebounce } from "react-use";
+// import { useLazyCheckTokenExistsQuery } from "../../redux/xrp.api";
 
 export interface SelectTokenModalProps {
   handleClose: () => void;
@@ -22,8 +25,10 @@ function SelectTokenModal({
 }: SelectTokenModalProps) {
   const [searchName, setSearchName] = useState("");
   const [searchAddress, setSearchAddress] = useState("");
+  const [tokenList, setTokenList] = useState<IToken[]>([]);
 
   const { data, isLoading } = useGetMainnetTokensQuery({});
+  // const [checkTokenExists] = useLazyCheckTokenExistsQuery();
 
   const ref = useRef(null);
 
@@ -32,13 +37,28 @@ function SelectTokenModal({
     handler: handleClose,
   });
 
-  const getTokenList = () => {
-    if (!searchName.trim().length && !searchAddress.trim().length) {
-      return data;
-    }
+  useDebounce(
+    () => {
+      if (!searchName.trim().length && !searchAddress.trim().length && data) {
+        setTokenList(data);
+        return;
+      }
 
-    return filterTokenList(data || [], searchName, searchAddress);
-  };
+      const filteredList = filterTokenList(data || [], searchName, searchAddress);
+
+      if (filteredList.length) {
+        setTokenList(filteredList);
+        return;
+      } else {
+        setTokenList([]);
+      }
+
+      // continue from here
+      setTokenList(filteredList);
+    },
+    300,
+    [searchName, searchAddress, isLoading],
+  );
 
   return (
     <MotionBox
@@ -107,7 +127,7 @@ function SelectTokenModal({
 
       <Box px={4} mt={1} h="calc(100% - 140px)" overflow="hidden auto">
         <RenderTokenList isLoading={isLoading}>
-          {getTokenList()?.map((token, i) => (
+          {tokenList.map((token, i) => (
             <TokenItem
               key={i}
               token={token.token}

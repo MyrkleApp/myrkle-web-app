@@ -12,3 +12,9 @@ export interface IGetAccountTokenInfo {
   issuer: string;
   net: string;
 }
+
+export interface ICheckTokenExists {
+  net: string;
+  name: string;
+  issuer: string;
+}
