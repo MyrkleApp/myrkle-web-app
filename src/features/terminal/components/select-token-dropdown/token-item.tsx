@@ -1,11 +1,13 @@
-import { HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { HStack, Image, Spacer, Text, VStack } from "@chakra-ui/react";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import { useLazyGetTokenInfoQuery } from "@/features/shared/redux/token.api";
 import { useSelector } from "react-redux";
-import { selectNetwork } from "@/features/wallet/redux/wallet.selectors";
+import { selectAddress, selectNet, selectNetwork } from "@/features/wallet/redux/wallet.selectors";
 import { useEffect } from "react";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { isXrpToken } from "@/helpers";
+import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
+import IssuerData from "@/features/shared/components/issuer-data.tsx";
+import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 
 export interface TokenItemProps {
   token?: any;
@@ -15,10 +17,18 @@ export interface TokenItemProps {
 
 function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
   const network = useSelector(selectNetwork);
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
 
   const [getTokenInfo, { data }] = useLazyGetTokenInfoQuery();
 
+  const { data: xrpBalance } = useGetBalanceQuery({ address, net });
+
+  const isIssuerData: boolean = data?.issuerName && data?.issuerIcon;
+  const tokenBalance = isXrpToken(token) ? xrpBalance?.balance : token?.balance;
+
   useEffect(() => {
+    if (isXrpToken(token)) return;
     if (network !== "mainnet") return;
 
     getTokenInfo({ token: token?.token, issuer: token?.issuer });
@@ -42,10 +52,22 @@ function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
         <Text fontSize={isXrpToken(token) ? "md" : "xs"} fontWeight="bold">
           {token?.token}
         </Text>
-        <Text fontSize="2xs" display={isXrpToken(token) ? "none" : ""}>
-          {token?.issuer}
-        </Text>
+        {isIssuerData ? (
+          <IssuerData
+            issuerName={data?.issuerName}
+            issuerIcon={data?.issuerIcon}
+            imageProps={{ h: "15px" }}
+          />
+        ) : (
+          <Text fontSize="2xs" display={isXrpToken(token) ? "none" : ""}>
+            {ellipsisAtCenter(token?.issuer)}
+          </Text>
+        )}
       </VStack>
+      <Spacer />
+      <Text fontSize="2xs" mt={7}>
+        Balance: {formatNumber(tokenBalance, 2)}
+      </Text>
     </HStack>
   );
 }

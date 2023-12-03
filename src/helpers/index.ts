@@ -66,7 +66,7 @@ export const numberWithCommas = (x: string | number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-export const formatNumber = (x: number | string) => {
+export const formatNumber = (x: number | string, decimals?: number) => {
   if (isNaN(Number(x))) return "-- --";
 
   if (Number(x) < 1) {
@@ -76,7 +76,7 @@ export const formatNumber = (x: number | string) => {
     return String(x).slice(0, firstNonZeroNumberIndex + 3);
   }
 
-  return numberWithCommas(Number(x).toFixed(3));
+  return numberWithCommas(Number(x).toFixed(decimals || 3));
 };
 
 export const cleanupRate = (rate: number) => (Number.isFinite(rate) ? rate : 0);

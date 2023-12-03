@@ -4,6 +4,7 @@ export interface IToken {
   token: string;
   issuer: string;
   icon: string;
+  balance?: string | number;
 }
 
 // *error-1 is used for any error prior to sending the json to the wallet provider

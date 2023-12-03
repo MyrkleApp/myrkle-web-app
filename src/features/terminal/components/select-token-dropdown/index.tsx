@@ -57,8 +57,8 @@ function SelectTokenDropdown({ handleTokenClick, isTokenDisabled }: SelectTokenD
                 {data?.map((token: any, i: number) => (
                   <TokenItem
                     key={i}
-                    token={token}
-                    handleClick={() => handleToken(token)}
+                    token={{ ...token, balance: token.amount }}
+                    handleClick={() => handleToken({ ...token, balance: token.amount })}
                     isDisabled={isTokenDisabled}
                   />
                 ))}
