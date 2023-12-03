@@ -16,17 +16,9 @@ export interface TokenEditablesProps {
   issuer: string;
   accountTokenInfo: any;
   icon: string;
-  tokenPriceToUSD: number;
 }
 
-function TokenEditables({
-  data,
-  limit,
-  issuer,
-  accountTokenInfo,
-  icon,
-  tokenPriceToUSD,
-}: TokenEditablesProps) {
+function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEditablesProps) {
   const address = useSelector(selectAddress);
 
   const isTokenIssuer = issuer === address;
@@ -52,7 +44,7 @@ function TokenEditables({
         </Box>
         <Box w="57%">
           <Text fontSize="xs" ml={5}>
-            $ {formatNumber(tokenPriceToUSD)}
+            $ {formatNumber(data?.marketCap)}
           </Text>
         </Box>
       </Flex>

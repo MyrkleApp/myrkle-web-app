@@ -356,7 +356,6 @@ function TokenCardModal({
             limit={limit}
             issuer={issuer}
             icon={data?.icon || tokenPlaceholder}
-            tokenPriceToUSD={tokenPriceToUSD}
           />
         </Box>
       </Box>

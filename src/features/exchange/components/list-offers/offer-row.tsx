@@ -15,6 +15,11 @@ import { useSelector } from "react-redux";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import {
+  selectTfFillOrKill,
+  selectTfImmediateOrCancel,
+  selectTfSell,
+} from "../../redux/exchange.selectors";
 
 export interface OfferRowProps {
   offer: any;
@@ -45,6 +50,9 @@ function OfferRow({ offer }: OfferRowProps) {
   // ============================================================================================
 
   const address = useSelector(selectAddress);
+  const tfSell = useSelector(selectTfSell);
+  const tfImmediateOrCancel = useSelector(selectTfImmediateOrCancel);
+  const tfFillOrKill = useSelector(selectTfFillOrKill);
 
   // ============================================================================================
   // api
@@ -92,9 +100,9 @@ function OfferRow({ offer }: OfferRowProps) {
       sell_amount: offer?.buy_amount,
       buy_issuer: offer?.sell_issuer || "000",
       sell_issuer: offer?.buy_issuer || "000",
-      tf_sell: false,
-      tf_fill_or_kill: false,
-      tf_immediate_or_cancel: false,
+      tf_sell: tfSell,
+      tf_fill_or_kill: tfFillOrKill,
+      tf_immediate_or_cancel: tfImmediateOrCancel,
     })
       .unwrap()
       .then((res) => {

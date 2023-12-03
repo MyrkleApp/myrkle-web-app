@@ -7,6 +7,9 @@ const initialState: IExchangeInitialState = {
   exchangeType: "swap",
   fromToken: xrpToken,
   toToken: xrpToken,
+  tfSell: false,
+  tfImmediateOrCancel: false,
+  tfFillOrKill: false,
 };
 
 const exchangeSlice = createSlice({
@@ -23,9 +26,25 @@ const exchangeSlice = createSlice({
     setToToken(state, { payload }: PayloadAction<IToken>) {
       state.toToken = payload;
     },
+    setTfSell(state, { payload }: PayloadAction<boolean>) {
+      state.tfSell = payload;
+    },
+    setTfImmediateOrCancel(state, { payload }: PayloadAction<boolean>) {
+      state.tfImmediateOrCancel = payload;
+    },
+    setTfFillOrKill(state, { payload }: PayloadAction<boolean>) {
+      state.tfFillOrKill = payload;
+    },
   },
 });
 
-export const { toggleExchangeType, setFromToken, setToToken } = exchangeSlice.actions;
+export const {
+  toggleExchangeType,
+  setFromToken,
+  setToToken,
+  setTfSell,
+  setTfImmediateOrCancel,
+  setTfFillOrKill,
+} = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;

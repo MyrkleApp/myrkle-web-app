@@ -14,16 +14,30 @@ import {
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import TxnDetailsModal from "../txn-details-modal";
 import Backdrop from "@/components/backdrop";
-import { selectExchangeType, selectFromToken, selectToToken } from "../../redux/exchange.selectors";
+import {
+  selectExchangeType,
+  selectFromToken,
+  selectTfFillOrKill,
+  selectTfImmediateOrCancel,
+  selectTfSell,
+  selectToToken,
+} from "../../redux/exchange.selectors";
 import { useSearchParams } from "react-router-dom";
 import xrpLogo from "@/assets/xrp-logo.svg";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { cleanupRate, isXrpToken } from "@/helpers";
+import { isXrpToken } from "@/helpers";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
-import { setFromToken, setToToken } from "../../redux/exchange.slice";
+import {
+  setFromToken,
+  setTfFillOrKill,
+  setTfImmediateOrCancel,
+  setTfSell,
+  setToToken,
+} from "../../redux/exchange.slice";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
+import { useLocalStorage } from "react-use";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
@@ -45,6 +59,10 @@ function MakeExchange() {
   const fromToken = useSelector(selectFromToken);
   const toToken = useSelector(selectToToken);
 
+  const tfSell = useSelector(selectTfSell);
+  const tfImmediateOrCancel = useSelector(selectTfImmediateOrCancel);
+  const tfFillOrKill = useSelector(selectTfFillOrKill);
+
   // ============================================================================================
   // dispatch
   // ============================================================================================
@@ -52,20 +70,25 @@ function MakeExchange() {
   const dispatch = useDispatch();
   const _setFromToken = (data: IToken) => dispatch(setFromToken(data));
   const _setToToken = (data: IToken) => dispatch(setToToken(data));
+  const _setTfSell = (value: boolean) => dispatch(setTfSell(value));
+  const _setTfImmediateOrCancel = (value: boolean) => dispatch(setTfImmediateOrCancel(value));
+  const _setTfFillOrKill = (value: boolean) => dispatch(setTfFillOrKill(value));
 
   // ============================================================================================
-  // state
+  // state & local storage
   // ============================================================================================
 
   const [fromTokenAmount, setFromTokenAmount] = useState("");
   const [toTokenAmount, setToTokenAmount] = useState("");
-  const [tfSell, setTfSell] = useState(false);
-  const [tfImmediateOrCancel, setTfImmediateOrCancel] = useState(false);
-  const [tfFillOrKill, setTfFillOrKill] = useState(false);
-  const [tfPassive, setTfPassive] = useState(false);
+  const [tfPassive, setTfPassive] = useState(true);
   const [view, setView] = useState<TTxnPipeline | "success-1">("default");
 
   const isSameToken = fromToken.token === toToken.token && fromToken.issuer === toToken.issuer;
+
+  const [localTfSell, storeTfSell] = useLocalStorage<boolean>("tfSell");
+  const [localTfImmediateOrCancel, storeTfImmediateOrCancel] =
+    useLocalStorage<boolean>("tfImmediateOrCancel");
+  const [localTfFillOrKill, storeTfFillOrKill] = useLocalStorage<boolean>("tfFillOrKill");
 
   // ============================================================================================
   // api
@@ -102,6 +125,13 @@ function MakeExchange() {
       setView("success");
     } else setView("error-2");
   }, [isSubmitTxnSuccess]);
+
+  useEffect(() => {
+    _setTfSell(!!localTfSell);
+    _setTfImmediateOrCancel(!!localTfImmediateOrCancel);
+    _setTfFillOrKill(!!localTfFillOrKill);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ============================================================================================
   // handlers
@@ -233,9 +263,9 @@ function MakeExchange() {
 
         {exchangeType === "swap" && (
           <HStack>
-            <Text fontSize="xs">
+            {/* <Text fontSize="xs">
               {cleanupRate(Number(fromTokenAmount) / Number(toTokenAmount))}
-            </Text>
+            </Text> */}
             <Spacer />
             <HStack cursor="pointer" onClick={onToggleOptions}>
               <ThickArrowDownIcon color="#fff" fontSize="xs" />
@@ -255,7 +285,10 @@ function MakeExchange() {
                 size="sm"
                 colorScheme="whatsapp"
                 isChecked={tfSell}
-                onChange={() => setTfSell(!tfSell)}
+                onChange={() => {
+                  _setTfSell(!tfSell);
+                  storeTfSell(!tfSell);
+                }}
               />
             </HStack>
             <HStack mb={2}>
@@ -265,7 +298,10 @@ function MakeExchange() {
                 size="sm"
                 colorScheme="whatsapp"
                 isChecked={tfImmediateOrCancel}
-                onChange={() => setTfImmediateOrCancel(!tfImmediateOrCancel)}
+                onChange={() => {
+                  _setTfImmediateOrCancel(!tfImmediateOrCancel);
+                  storeTfImmediateOrCancel(!tfImmediateOrCancel);
+                }}
               />
             </HStack>
             <HStack>
@@ -275,7 +311,10 @@ function MakeExchange() {
                 size="sm"
                 colorScheme="whatsapp"
                 isChecked={tfFillOrKill}
-                onChange={() => setTfFillOrKill(!tfFillOrKill)}
+                onChange={() => {
+                  _setTfFillOrKill(!tfFillOrKill);
+                  storeTfFillOrKill(!tfFillOrKill);
+                }}
               />
             </HStack>
           </Box>
@@ -286,6 +325,7 @@ function MakeExchange() {
             <Text fontSize="xs">tfPassive</Text>
             <Spacer />
             <Switch
+              isDisabled
               size="sm"
               colorScheme="whatsapp"
               isChecked={tfPassive}
