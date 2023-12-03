@@ -584,6 +584,7 @@ export const {
   useGetAccountTokensQuery,
   useLazyGetAccountTokensQuery,
   useGetAccountTokenInfoQuery,
+  useLazyGetAccountTokenInfoQuery,
   useGetAccountNftsQuery,
   useLazyGetAccountNftsQuery,
   useGetNftInfoQuery,

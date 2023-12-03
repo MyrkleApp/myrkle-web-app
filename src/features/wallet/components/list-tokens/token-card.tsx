@@ -33,6 +33,7 @@ import { useRemoveTokenMutation } from "@/features/shared/redux/xrp.api";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import useGetTokenInfo from "../../hooks/use-get-token-info";
+import IssuerData from "@/features/shared/components/issuer-data.tsx";
 
 export interface TokenCardProps {
   token: string;
@@ -82,6 +83,8 @@ function TokenCard({
   const [tokenData, { getTokenInfo }] = useGetTokenInfo();
   // const [getTokenInfo, { data: tokenData }] = useLazyGetTokenInfoQuery();
   const [removeToken] = useRemoveTokenMutation();
+
+  const isIssuerData: boolean = tokenData?.issuerName && tokenData?.issuerIcon;
 
   // ==================================================================================================
   // state & disclosure
@@ -213,9 +216,17 @@ function TokenCard({
             </Text>
           </HStack>
 
-          <Text fontSize="xs" visibility={isXrpToken({ token }) ? "hidden" : "visible"}>
-            {ellipsisAtCenter(issuer)}
-          </Text>
+          {isIssuerData ? (
+            <IssuerData
+              issuerName={tokenData?.issuerName}
+              issuerIcon={tokenData?.issuerIcon}
+              imageProps={{ h: "20px" }}
+            />
+          ) : (
+            <Text fontSize="xs" visibility={isXrpToken({ token }) ? "hidden" : "visible"}>
+              {ellipsisAtCenter(issuer)}
+            </Text>
+          )}
 
           <RenderPercentChange isXrpToken={isXrpToken({ token })}>
             <Box

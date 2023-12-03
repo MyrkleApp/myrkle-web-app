@@ -22,7 +22,7 @@ function TokenIcon({ token, issuer, ...props }: TokenIconProps) {
     if (network === "mainnet" && !isXrpToken({ token })) {
       getTokenInfo({ token, issuer });
     }
-  });
+  }, [getTokenInfo, issuer, network, token]);
 
   if (isXrpToken({ token })) {
     return <Image src={xrpLogo} alt="" h="30px" {...props} />;

@@ -7,9 +7,13 @@ import { Flex, Grid, GridItem, HStack, Square, SimpleGrid, Text, Box } from "@ch
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import AssetsDropdown from "../assets-dropdown";
-import { useSendTokenMutation, useSendXrpMutation } from "@/features/shared/redux/xrp.api";
-import { isXrpToken } from "@/helpers";
-import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import {
+  useLazyGetBalanceQuery,
+  useSendTokenMutation,
+  useSendXrpMutation,
+} from "@/features/shared/redux/xrp.api";
+import { formatNumber, isXrpToken } from "@/helpers";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { numbersOnlyRegex, xrpIssuer } from "@/constants";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
@@ -21,6 +25,7 @@ import ResponseModal from "@/components/response-modal";
 import MyrkleLoader from "@/components/myrkle-loader";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import { ISendToken, ISendXrp } from "@/features/shared/types/xrp-mutations";
+import TransferFee from "../transfer-fee";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
@@ -46,6 +51,7 @@ function SendToken() {
   // ===========================================================================================
 
   const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
 
   // ===========================================================================================
   // api
@@ -53,10 +59,18 @@ function SendToken() {
 
   const [sendXrp] = useSendXrpMutation();
   const [sendToken] = useSendTokenMutation();
+  const [getXrpBalance] = useLazyGetBalanceQuery();
 
   // ===========================================================================================
   // effects
   // ===========================================================================================
+
+  useEffect(() => {
+    getXrpBalance({ address, net }, true)
+      .unwrap()
+      .then((res) => setSelectedToken((prevData) => ({ ...prevData, balance: res.balance })));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -155,6 +169,7 @@ function SendToken() {
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="13%">
         Name
       </Text>
+      <TransferFee token={selectedToken.token} issuer={selectedToken.issuer} amount={amount} />
       <Flex
         h="9%"
         justify="space-between"
@@ -179,6 +194,20 @@ function SendToken() {
           onChange={(e: any) => e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)}
         />
       </Flex>
+      <HStack pos="absolute" right={0} top="30%">
+        <Text fontSize="xs">Balance:</Text>
+        <Flex
+          alignItems="center"
+          justify="flex-end"
+          border="1px solid"
+          borderColor="secondary"
+          borderRadius="20px"
+          minW="150px"
+          px={2}
+        >
+          <Text fontSize="xs">{formatNumber(selectedToken?.balance || "-- --")}</Text>
+        </Flex>
+      </HStack>
 
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="34%">
         Recipient Address

@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import DropdownItem from "./dropdown-item";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { useSelector } from "react-redux";
-import { useGetAccountTokensQuery } from "@/features/shared/redux/xrp.api";
+import { useGetAccountTokensQuery, useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { IToken } from "@/features/shared/types";
 import { xrpIssuer } from "@/constants";
 import TokenIcon from "@/features/shared/components/token-icon";
@@ -21,6 +21,7 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
   const net = useSelector(selectNet);
 
   const { isLoading, data } = useGetAccountTokensQuery({ address, net });
+  const { data: xrpBalance } = useGetBalanceQuery({ address, net });
 
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -77,9 +78,15 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
             <DropdownItem
               token="xrp"
               issuer={xrpIssuer}
-              handleClick={() => handleSelectedToken({ token: "xrp", issuer: xrpIssuer })}
+              handleClick={() =>
+                handleSelectedToken({
+                  token: "xrp",
+                  issuer: xrpIssuer,
+                  balance: xrpBalance?.balance,
+                })
+              }
             />
-            {data?.map(({ token, issuer }: any, i: number) => (
+            {data?.map(({ token, issuer, amount }: any, i: number) => (
               <DropdownItem
                 key={i}
                 token={token}
@@ -88,6 +95,7 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
                   handleSelectedToken({
                     token,
                     issuer,
+                    balance: amount,
                   })
                 }
               />
