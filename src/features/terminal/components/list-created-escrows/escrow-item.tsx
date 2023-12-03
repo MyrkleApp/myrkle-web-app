@@ -34,6 +34,10 @@ function EscrowItem({ escrow }: EscrowItemProps) {
   const [view, setView] = useState<TTxnPipeline>("default");
   const [fulfillment, setFulfillment] = useState("");
 
+  const claimDate = new Date(`${escrow?.redeem_date}`);
+  const claimDateToNumber = claimDate.getTime();
+  const isClaimable = Date.now() >= claimDateToNumber;
+
   const [cancelXrpEscrow] = useCancelXrpEscrowMutation();
   const [finishXrpEscrow] = useFinishXrpEscrowMutation();
 
@@ -163,7 +167,7 @@ function EscrowItem({ escrow }: EscrowItemProps) {
               h="30px"
               px="30px"
               onClick={() => (escrow.condition ? onOpenFulfillmentModal() : handleClaimEscrow())}
-              isDisabled={escrow?.sender === address}
+              isDisabled={!isClaimable || escrow?.sender === address}
             >
               Claim
             </Button>
