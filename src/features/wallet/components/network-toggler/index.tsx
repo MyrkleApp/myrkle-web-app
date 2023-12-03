@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import twinArrowsImage from "@/assets/Refresh.png";
 import { useLocalStorage } from "react-use";
+import ItemDescription from "@/components/item-description";
 
 function NetworkToggler() {
   const [signInData, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
@@ -43,36 +44,44 @@ function NetworkToggler() {
   };
 
   return (
-    <HStack
-      overflow="hidden"
-      h="30px"
-      w="80px"
-      ml={3}
-      mr={7}
-      cursor="pointer"
-      onClick={handleNetworkToggle}
-    >
-      <AnimatePresence>
-        <MotionText
-          key={network}
-          color="textDark"
-          fontSize="xs"
-          fontWeight="bold"
-          pos="absolute"
-          initial={{ y: 10 }}
-          animate={{ y: 0, transition: { duration: 0.4 } }}
-          exit={{ y: -10, opacity: 0, transition: { duration: 0.4 } }}
-        >
-          {network}
-        </MotionText>
-      </AnimatePresence>
-      <Spacer />
-      <Image
-        src={twinArrowsImage}
-        alt=""
-        h="25px"
-        transition="0.4s linear all"
-        transform={`rotate(${twinArrowsAngle}deg)`}
+    <HStack>
+      <HStack
+        overflow="hidden"
+        h="30px"
+        w="80px"
+        ml={3}
+        mr={3}
+        cursor="pointer"
+        onClick={handleNetworkToggle}
+      >
+        <AnimatePresence>
+          <MotionText
+            key={network}
+            color="textDark"
+            fontSize="xs"
+            fontWeight="bold"
+            pos="absolute"
+            initial={{ y: 10 }}
+            animate={{ y: 0, transition: { duration: 0.4 } }}
+            exit={{ y: -10, opacity: 0, transition: { duration: 0.4 } }}
+          >
+            {network}
+          </MotionText>
+        </AnimatePresence>
+        <Spacer />
+        <Image
+          src={twinArrowsImage}
+          alt=""
+          h="25px"
+          transition="0.4s linear all"
+          transform={`rotate(${twinArrowsAngle}deg)`}
+        />
+      </HStack>
+      <ItemDescription
+        description="Changing the network here has no effect on your wallet provider"
+        top={7}
+        left={-150}
+        h="70px"
       />
     </HStack>
   );

@@ -38,6 +38,8 @@ import {
 } from "../../redux/exchange.slice";
 import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { useLocalStorage } from "react-use";
+import ItemDescription from "@/components/item-description";
+import { optionsData } from "./data";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
@@ -280,6 +282,7 @@ function MakeExchange() {
           <Box mt={3}>
             <HStack mb={2}>
               <Text fontSize="xs">tfSell</Text>
+              <ItemDescription description={optionsData.tfSell} top={-70} h="100px" />
               <Spacer />
               <Switch
                 size="sm"
@@ -293,6 +296,7 @@ function MakeExchange() {
             </HStack>
             <HStack mb={2}>
               <Text fontSize="xs">tfImmediate_or_cancel</Text>
+              <ItemDescription description={optionsData.tfImmediateOrCancel} top={-120} h="150px" />
               <Spacer />
               <Switch
                 size="sm"
@@ -306,6 +310,7 @@ function MakeExchange() {
             </HStack>
             <HStack>
               <Text fontSize="xs">tf Fill_or_kill</Text>
+              <ItemDescription description={optionsData.tfFillOrKill} top={-120} />
               <Spacer />
               <Switch
                 size="sm"
