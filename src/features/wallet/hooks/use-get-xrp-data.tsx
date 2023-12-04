@@ -6,10 +6,22 @@ import {
 } from "@/features/shared/redux/token.api";
 
 function useGetXrpData() {
-  const { data: xrpInfo, isLoading: isXrpInfoLoading } = useGetXrpInfoQuery({});
-  const { data: activeAccount, isLoading: isActiveAccountLoading } = useGetActiveAccountQuery({});
-  const { data: fee, isLoading: isFeeLoading } = useGetFeeQuery({});
-  const { data: price, isLoading: isPriceLoading } = useGetPriceQuery({});
+  const { data: xrpInfo, isLoading: isXrpInfoLoading } = useGetXrpInfoQuery(
+    {},
+    { refetchOnMountOrArgChange: true },
+  );
+  const { data: activeAccount, isLoading: isActiveAccountLoading } = useGetActiveAccountQuery(
+    {},
+    { refetchOnMountOrArgChange: true },
+  );
+  const { data: fee, isLoading: isFeeLoading } = useGetFeeQuery(
+    {},
+    { refetchOnMountOrArgChange: true },
+  );
+  const { data: price, isLoading: isPriceLoading } = useGetPriceQuery(
+    {},
+    { refetchOnMountOrArgChange: true },
+  );
 
   const divider = 1000000;
 
