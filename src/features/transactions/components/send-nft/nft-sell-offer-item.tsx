@@ -36,8 +36,7 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
   });
 
   const handleCopyIconClick = () => {
-    const textToCopy = nftMetaData?.name ? offerId : id;
-    navigator.clipboard?.writeText(textToCopy);
+    navigator.clipboard?.writeText(offerId);
 
     toast({
       render: () => <ToastElement />,

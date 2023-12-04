@@ -1,6 +1,5 @@
 import Button from "@/components/button";
 import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import nftImage from "@/assets/nft.png";
 import { MotionImage } from "@/components/motion-elements";
 import { nftFormatter } from "@/helpers";
 import Backdrop from "@/components/backdrop";
@@ -108,7 +107,7 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
       >
         <Box bg="secondary" w="50%" borderRadius="20px" p={2} onClick={onOpen}>
           <MotionImage
-            src={nftFormatter(nft?.image) || nftImage}
+            src={nftFormatter(nft?.image)}
             alt=""
             w="100%"
             maxH="70%"

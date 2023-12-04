@@ -51,6 +51,7 @@ function ListNftsGallery() {
       {data?.map((nft: any) => (
         <Box key={nft.id} aspectRatio={1}>
           <NftCard
+            id={nft?.id}
             uri={nft.uri}
             serial={nft?.serial}
             taxon={nft?.taxon}

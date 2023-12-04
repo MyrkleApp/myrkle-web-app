@@ -1,5 +1,4 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import nftImage from "@/assets/nft.png";
 import Button from "@/components/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
@@ -8,6 +7,7 @@ import Skeleton1 from "@/components/skeleton";
 import { nftFormatter } from "@/helpers";
 
 export interface NftCardProps {
+  id: string;
   uri: string;
   serial: string;
   taxon: string;
@@ -16,7 +16,7 @@ export interface NftCardProps {
   flag: string;
 }
 
-function NftCard({ uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
+function NftCard({ id, uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
   const { data, isLoading, isFetching, isError } = useGetNftMetaData2Query(uri);
 
   if (isLoading || isFetching) {
@@ -57,13 +57,7 @@ function NftCard({ uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
           },
         }}
       >
-        <Image
-          src={nftFormatter(data?.image) || nftImage}
-          alt=""
-          w="100%"
-          h="100%"
-          objectFit="cover"
-        />
+        <Image src={nftFormatter(data?.image)} alt="" w="100%" h="100%" objectFit="cover" />
 
         <Flex
           align="center"
@@ -81,7 +75,9 @@ function NftCard({ uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
           <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" fontSize="sm">
             {data?.name}
           </Text>
-          <Button w="120px">Send</Button>
+          <Link to={ROUTES.TRANSACTIONS_SEND_NFT(id, data?.name, data?.image)}>
+            <Button w="80px">Send</Button>
+          </Link>
         </Flex>
       </Box>
     </Link>

@@ -79,6 +79,7 @@ function ListNftsSlider() {
         {data?.map((nft: any) => (
           <Box key={nft.id} display="inline-block" h="100%" aspectRatio={1} mr={3}>
             <NftCard
+              id={nft?.id}
               uri={nft?.uri}
               serial={nft?.serial}
               taxon={nft?.taxon}
