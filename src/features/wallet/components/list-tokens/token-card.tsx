@@ -103,7 +103,7 @@ function TokenCard({
 
   // const tokenBalanceToUSD = tokenPriceToUSD * amount;
 
-  const tokenBalanceToUSD = tokenData?.price * amount;
+  const tokenBalanceToUSD = Number(tokenData?.price) * amount;
 
   const [tokenModalView, setTokenModalView] = useState<TTokenModalView>("default");
 

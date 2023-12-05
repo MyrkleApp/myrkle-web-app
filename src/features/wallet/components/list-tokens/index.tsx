@@ -20,6 +20,8 @@ function ListTokens() {
 
   const [tokenUsdAmountObj, setTokenUsdAmountObj] = useState({});
 
+  console.log("balance object", tokenUsdAmountObj);
+
   const handleTokenUsdAmountObj = (data: any) => {
     setTokenUsdAmountObj({ ...tokenUsdAmountObj, ...data });
   };

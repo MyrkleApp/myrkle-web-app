@@ -4,8 +4,11 @@ import Input from "@/components/input";
 import Backdrop from "@/components/backdrop";
 import SelectTokenModal from "@/features/shared/components/select-token-modal";
 import { IToken } from "@/features/shared/types";
-import { isXrpToken } from "@/helpers";
+import { formatNumber, isXrpToken } from "@/helpers";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
+import { useGetAccountTokensQuery, useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
+import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 export interface ExchangeBoxProps {
   token: IToken;
@@ -16,6 +19,20 @@ export interface ExchangeBoxProps {
 
 function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const address = useSelector(selectAddress);
+  const net = useSelector(selectNet);
+
+  const { data: xrpBalance } = useGetBalanceQuery({ address, net });
+
+  const { data: myTokensData } = useGetAccountTokensQuery({ address, net });
+
+  const tokenBalance = isXrpToken(token)
+    ? xrpBalance?.balance
+    : myTokensData?.find(
+        (myTokenItem: any) =>
+          myTokenItem?.token === token.token && myTokenItem.issuer === token.issuer,
+      )?.amount;
 
   const handleTokenClick = (token: IToken) => {
     handleToken(token);
@@ -66,12 +83,12 @@ function ExchangeBox({ token, handleToken, amount, handleAmount }: ExchangeBoxPr
           />
         </HStack>
         <Text fontSize="xs" px={3}>
-          Balance: 0
+          Balance: {formatNumber(tokenBalance || "-- --")}
         </Text>
       </Box>
 
       <Backdrop isOpen={isOpen}>
-        <SelectTokenModal handleClose={onClose} handleToken={handleTokenClick} />
+        <SelectTokenModal handleClose={onClose} handleToken={handleTokenClick} showMyTokensOption />
       </Backdrop>
     </>
   );

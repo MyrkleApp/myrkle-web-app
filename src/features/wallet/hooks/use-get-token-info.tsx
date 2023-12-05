@@ -50,7 +50,7 @@ function useGetTokenInfo() {
         icon: info.meta.token.icon,
         description: info.meta.token.description,
         marketCap: formatNumber(Number(info.metrics.marketcap) * multiplier),
-        price: formatNumber(info.metrics.price * multiplier),
+        price: Number(info.metrics.price * multiplier),
         pair: `${
           isHex(info.currency) ? hex2string(info.currency).split("\x00")[0] : info.currency
         }/XRP`,
