@@ -299,7 +299,7 @@ function TokenCard({
         </Flex>
 
         <HStack justify="space-between" borderLeft="1px solid #353535" pl="20px" w="33%" h="55%">
-          <Link to={tokenIconLink(ROUTES.TERMINAL_CHECKS)}>
+          <Link to={tokenIconLink(ROUTES.TERMINAL_CHECKS)} style={{ height: "100%" }}>
             <IconButton
               bg="secondary"
               h="100%"
@@ -312,7 +312,10 @@ function TokenCard({
               <ChecksIcon stroke="textDark" fontSize="2.8vh" />
             </IconButton>
           </Link>
-          <Link to={isXrpToken({ token }) ? tokenIconLink(ROUTES.TERMINAL_ESCROWS) : "#"}>
+          <Link
+            to={isXrpToken({ token }) ? tokenIconLink(ROUTES.TERMINAL_ESCROWS) : "#"}
+            style={{ height: "100%" }}
+          >
             <IconButton
               bg="secondary"
               h="100%"
@@ -325,7 +328,7 @@ function TokenCard({
               <HourGlassIcon stroke="textDark" fill="textDark" fontSize="2.8vh" />
             </IconButton>
           </Link>
-          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)}>
+          <Link to={tokenIconLink(ROUTES.TRANSACTIONS)} style={{ height: "100%" }}>
             <IconButton
               bg="secondary"
               h="100%"
@@ -353,7 +356,7 @@ function TokenCard({
           >
             <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
           </IconButton>
-          <Link to={tokenIconLink(ROUTES.EXCHANGE)}>
+          <Link to={tokenIconLink(ROUTES.EXCHANGE)} style={{ height: "100%" }}>
             <IconButton
               bg="secondary"
               h="100%"
