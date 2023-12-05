@@ -43,6 +43,7 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         fontSize="sm"
         fontWeight="bold"
         textAlign="center"
+        letterSpacing={1}
         visibility={props.visibility || "visible"}
       >
         {title}

@@ -151,11 +151,11 @@ function WalletDetails() {
 
         <Flex direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
           <HStack spacing={5} cursor="pointer" onClick={handleAddressClick}>
-            <Text color="textDark" fontSize="xs" fontWeight="bold">
+            <Text color="textDark" fontSize="13px" fontWeight="bold">
               Welcome
             </Text>
             <RenderElement isLoading={false} h="20px">
-              <Text color="textDark" fontSize="xs" fontWeight="bold">
+              <Text color="textDark" fontSize="13px" fontWeight="bold">
                 {address}
               </Text>
             </RenderElement>

@@ -37,10 +37,12 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
       <HStack
         ref={ref}
         h="100%"
-        w="130px"
+        maxH="37px"
+        w="150px"
         px={2}
         pos="absolute"
-        top="0"
+        top="50%"
+        transform="translateY(-50%)"
         bg="#4F4F4F"
         cursor={isLoading ? "not-allowed" : "pointer"}
         zIndex={2}
@@ -62,7 +64,7 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
           <MotionBox
             px={2}
             pt={1}
-            w="130px"
+            w="150px"
             maxH="250px"
             bg="#4F4F4F"
             borderRadius={isOpen ? "0 0 5px 5px" : "5px"}

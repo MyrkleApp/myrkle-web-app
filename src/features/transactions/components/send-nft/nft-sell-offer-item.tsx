@@ -51,7 +51,7 @@ function NftSellOfferItem({ id, offerId }: NftSellOfferItemProps) {
     return (
       <HStack h="50px" bg="secondary" p={1.5} pl={5} mb={2} borderRadius="5px">
         <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" fontSize="xs">
-          {id}
+          {offerId}
         </Text>
         <Spacer />
         <CopyIcon fill="none" fontSize="lg" mr={3} cursor="pointer" onClick={handleCopyIconClick} />

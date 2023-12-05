@@ -58,7 +58,7 @@ function ListFlags() {
   const [requireDest] = useRequireDestMutation();
 
   useEffect(() => {
-    if (accountInfo?.flags) {
+    if (String(accountInfo?.flags)) {
       parseAccountFlags(accountInfo?.flags);
     }
   }, [accountInfo?.flags, parseAccountFlags]);

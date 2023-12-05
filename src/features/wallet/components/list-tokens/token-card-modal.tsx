@@ -29,6 +29,7 @@ import RenderElement from "@/components/render-element";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
 import AddressModal from "../wallet-details/address-modal";
+import IssuerData from "@/features/shared/components/issuer-data.tsx";
 
 export interface TokenCardModalProps {
   data: any;
@@ -65,6 +66,8 @@ function TokenCardModal({
   const address = useSelector(selectAddress);
 
   const [isAddressModal, setIsAddressModal] = useState(false);
+
+  const isIssuerData: boolean = data?.issuerName && data?.issuerIcon;
 
   const { data: accountTokenInfo, isLoading: isAccountTokenInfoLoading } =
     useGetAccountTokenInfoQuery({ issuer, net });
@@ -177,9 +180,17 @@ function TokenCardModal({
           mb={2}
           boxShadow="0 2px 8px #00000040"
         >
-          <Text fontWeight="bold" fontSize="sm">
-            {issuer}
-          </Text>
+          {isIssuerData ? (
+            <IssuerData
+              issuerName={data?.issuerName}
+              issuerIcon={data?.issuerIcon}
+              imageProps={{ h: "20px" }}
+            />
+          ) : (
+            <Text fontWeight="bold" fontSize="sm">
+              {issuer}
+            </Text>
+          )}
         </Box>
 
         <ItemLabel title="Description" fontSize="sm" />

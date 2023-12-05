@@ -181,7 +181,7 @@ function SendToken() {
         top="20%"
         w="100%"
       >
-        <Box h="100%" pos="relative">
+        <Box h="100%" w="150px" pos="relative">
           <AssetsDropdown selectedToken={selectedToken} handleSelectedToken={handleSelectedToken} />
         </Box>
         <Input
