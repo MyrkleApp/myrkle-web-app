@@ -1,6 +1,6 @@
 import ArrowLeftIcon from "@/icons/arrow-left";
 import { Box, Circle, Flex, HStack, Image, Spacer, Text } from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Button from "@/components/button";
 import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
@@ -9,11 +9,13 @@ import NftEditables from "./nft-editables";
 import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
 import { nftFormatter } from "@/helpers";
 import Skeleton1 from "@/components/skeleton";
+import ROUTES from "@/routes";
 
 function NftDetailContent() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const uri = searchParams.get("uri") || "";
+  const id = searchParams.get("id") || "";
 
   const { data, isLoading, isFetching } = useGetNftMetaData2Query(uri);
 
@@ -66,9 +68,11 @@ function NftDetailContent() {
             {data?.name}
           </Text>
           <Spacer />
-          <Button h="27px" p="15px 20px" bg="primary" fontSize="xs" _hover={{ bg: "primary" }}>
-            Send
-          </Button>
+          <Link to={ROUTES.TRANSACTIONS_SEND_NFT(id, data?.name, data?.image)}>
+            <Button h="27px" p="15px 20px" bg="primary" fontSize="xs" _hover={{ bg: "primary" }}>
+              Send
+            </Button>
+          </Link>
         </HStack>
 
         <Text fontSize="xs" fontWeight="bold" mb={3}>

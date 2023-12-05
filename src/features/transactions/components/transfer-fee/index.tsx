@@ -40,8 +40,8 @@ function TransferFee({ token, issuer, amount }: TransferFeeProps) {
       <Text fontSize="xs">Transfer fee:</Text>
       <Text fontSize="xs" color="success">
         {isXrpToken({ token })
-          ? formatNumber(Number(accountInfo?.token_transfer_fee) * 100, 1)
-          : formatNumber(Number(tokenInfo?.transfer_fee) * 100, 1)}
+          ? formatNumber(accountInfo?.token_transfer_fee, 1)
+          : formatNumber(tokenInfo?.transfer_fee, 1)}
         %
       </Text>
       <Text

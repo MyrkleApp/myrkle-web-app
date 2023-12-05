@@ -41,7 +41,7 @@ function NftCard({ id, uri, serial, taxon, issuer, fee, flag }: NftCardProps) {
   }
 
   return (
-    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri, serial, taxon, issuer, fee, flag)}>
+    <Link to={ROUTES.WALLET_NFT_DETAIL_FUNC(uri, serial, taxon, issuer, fee, flag, id)}>
       <Box
         w="100%"
         h="100%"

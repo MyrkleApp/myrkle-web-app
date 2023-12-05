@@ -12,8 +12,9 @@ const ROUTES = {
     issuer: string,
     fee: string,
     flag: string,
+    id: string,
   ) =>
-    `/wallet/nft-detail?uri=${uri}&serial=${serial}&taxon=${taxon}&issuer=${issuer}&fee=${fee}&flag=${flag}`,
+    `/wallet/nft-detail?uri=${uri}&serial=${serial}&taxon=${taxon}&issuer=${issuer}&fee=${fee}&flag=${flag}&id=${id}`,
   TRANSACTIONS: "/transactions",
   TRANSACTIONS_SEND_NFT: (id: string, name: string, image: string) =>
     `/transactions?id=${id}&name=${name}&image=${image}`,

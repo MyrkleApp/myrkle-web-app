@@ -126,7 +126,7 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
         </Box>
 
         <Flex direction="column" w="50%" justify="space-between" gap={2}>
-          <Flex p={3} direction="column" bg="secondary" h="50%" borderRadius="10px">
+          <Flex p={3} direction="column" bg="secondary" h="35%" borderRadius="10px">
             <Text fontSize="xs" fontWeight="bold" mb={4}>
               Address
             </Text>
@@ -149,7 +149,7 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
             direction="column"
             // justify="space-between"
             bg="secondary"
-            h="50%"
+            h="65%"
             borderRadius="10px"
           >
             <Text fontSize="xs" fontWeight="bold">

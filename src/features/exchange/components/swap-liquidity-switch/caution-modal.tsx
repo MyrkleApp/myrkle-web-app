@@ -24,8 +24,8 @@ function CautionModal({ handleClose, handleProceed }: CautionModalProps) {
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="250px"
-      w="250px"
+      h="320px"
+      w="320px"
       p={4}
       bg="darker"
       borderRadius="30px"
@@ -36,7 +36,9 @@ function CautionModal({ handleClose, handleProceed }: CautionModalProps) {
       <VStack px={6} py={2} mt={1}>
         <Image src={errorImage} />
         <Text textAlign="center" fontSize="sm">
-          This is not the conventional method of liquidity. Caution advised.
+          This is not the conventional method of liquidity. In this case, the liquidity provider
+          doesn't earn fees. Rather, they generate an offer on the ledger using the passive flag,
+          which functions as liquidity for other offers.
         </Text>
         <Button w="100%" mt={4} onClick={handleProceed}>
           confirm
