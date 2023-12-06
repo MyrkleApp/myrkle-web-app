@@ -13,7 +13,7 @@ function Settings() {
         <Flex gap="30px">
           <Box w="35%">
             <HStack mb={5}>
-              <Text className="font-face-proxima-nova-extrabld" fontSize="sm">
+              <Text className="font-face-proxima-nova-extrabld" fontSize="md">
                 My Wallet
               </Text>
               <Spacer />
@@ -24,7 +24,7 @@ function Settings() {
 
           <Box w="65%">
             <HStack mb={5}>
-              <Text className="font-face-proxima-nova-extrabld" fontSize="sm">
+              <Text className="font-face-proxima-nova-extrabld" fontSize="md">
                 Change Password
               </Text>
               <Spacer />

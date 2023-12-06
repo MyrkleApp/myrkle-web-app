@@ -9,7 +9,7 @@ function ListAssets() {
 
   if (assetType === "token") {
     return (
-      <Box h="calc(100% - 60px)" pos="absolute" bottom="0" w="100%" overflowY="auto">
+      <Box h="calc(100% - 65px)" pos="absolute" bottom="0" w="100%" overflowY="auto">
         <ListTokens />
       </Box>
     );
@@ -18,7 +18,7 @@ function ListAssets() {
   if (assetType === "nft") {
     return (
       <Box
-        h="calc(100% - 60px)"
+        h="calc(100% - 65px)"
         pos="absolute"
         bottom="0"
         w="100%"

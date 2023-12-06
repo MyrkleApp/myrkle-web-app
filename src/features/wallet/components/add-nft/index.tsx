@@ -13,9 +13,9 @@ function AddNft() {
   return (
     <>
       <HStack cursor="pointer" onClick={onOpen}>
-        <Text fontSize="2xs">Receive NFT</Text>
+        <Text fontSize="xs">Receive NFT</Text>
         <Circle bg="textDark" size="17px" cursor="pointer">
-          <PlusIcon fontSize="2xs" />
+          <PlusIcon fontSize="xs" />
         </Circle>
       </HStack>
 

@@ -16,17 +16,17 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
 
   return (
     <HStack
-      w="225px"
+      w="270px"
       pos="relative"
-      h="50px"
+      h="55px"
       bg="dark"
       borderRadius="30px"
       boxShadow="0 2px 5px #0f0f0f"
     >
       <MotionBox
         mt="2px"
-        h="46px"
-        w="130px"
+        h="51px"
+        // w="130px"
         bg="darkest"
         borderRadius="30px"
         border="3px solid"
@@ -35,8 +35,8 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
         top="0"
         initial={{ left: 0, width: 125 }}
         animate={{
-          left: assetType === "token" ? 2 : 118,
-          width: assetType === "token" ? 120 : 105,
+          left: assetType === "token" ? 2 : 148,
+          width: assetType === "token" ? 140 : 120,
           transition: { duration: 0.4 },
         }}
         {...sliderProps}
@@ -45,7 +45,7 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
         fontSize={assetType === "token" ? "sm" : "xs"}
         fontWeight={assetType === "token" ? "bold" : "400"}
         pos="absolute"
-        left="43px"
+        left="51px"
         color={assetType === "token" ? "#fff" : "textDark"}
         cursor="pointer"
         onClick={_toggleAssetType}
@@ -57,7 +57,7 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
         fontSize={assetType === "nft" ? "sm" : "xs"}
         fontWeight={assetType === "nft" ? "bold" : "400"}
         pos="absolute"
-        right="40px"
+        right="43px"
         color={assetType === "nft" ? "#fff" : "textDark"}
         cursor="pointer"
         onClick={_toggleAssetType}

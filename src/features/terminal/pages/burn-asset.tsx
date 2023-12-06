@@ -14,7 +14,7 @@ function BurnAsset() {
           <Link to={ROUTES.TERMINAL_ASSET_MANAGER}>
             <HStack mt={3}>
               <ArrowLeftIcon />
-              <Text fontSize="sm" fontWeight="bold">
+              <Text fontSize="lg" fontWeight="bold">
                 Burn Asset
               </Text>
             </HStack>

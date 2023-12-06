@@ -23,14 +23,14 @@ function AssetManager() {
           <Link to={ROUTES.TERMINAL}>
             <HStack mt={3}>
               <ArrowLeftIcon />
-              <Text fontSize="sm" fontWeight="bold">
+              <Text fontSize="lg" fontWeight="bold">
                 Asset Manager
               </Text>
             </HStack>
           </Link>
           <Spacer />
           <HStack mt={3}>
-            <Text fontSize="sm" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold">
               Created Assets
             </Text>
             <ArrowRightIcon />

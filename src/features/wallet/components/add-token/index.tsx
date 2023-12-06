@@ -35,9 +35,9 @@ function AddToken() {
   return (
     <>
       <HStack cursor="pointer" onClick={onBackdropOpen}>
-        <Text fontSize="2xs">Add Token</Text>
+        <Text fontSize="xs">Add Token</Text>
         <Circle bg="textDark" size="17px" cursor="pointer">
-          <PlusIcon fontSize="2xs" />
+          <PlusIcon fontSize="xs" />
         </Circle>
       </HStack>
 

@@ -212,7 +212,7 @@ function WalletDetails() {
                   display="none"
                   pos="absolute"
                   ml={9}
-                  w="70px"
+                  w="90px"
                   color="textDark"
                   fontSize="xs"
                   fontWeight={600}

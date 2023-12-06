@@ -59,7 +59,6 @@ function useGetTokenInfo() {
         trustlines: info.metrics.trustlines,
         supply: Number(info.metrics.supply).toFixed(3),
       };
-      console.log("new fxn token info response", resp);
       setTokenInfo(resp);
     } catch (e) {
       console.log(e);

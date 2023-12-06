@@ -10,7 +10,9 @@ function Transaction() {
       <Flex h="100%" justify="space-between" gap={5}>
         <Box w="50%">
           <HStack h="45px">
-            <Text fontWeight="bold">Send Assets</Text>
+            <Text fontWeight="bold" fontSize="lg">
+              Send Assets
+            </Text>
           </HStack>
 
           <SendAssets />
@@ -18,7 +20,9 @@ function Transaction() {
 
         <Box w="50%">
           <HStack h="45px">
-            <Text fontWeight="bold">History</Text>
+            <Text fontWeight="bold" fontSize="lg">
+              History
+            </Text>
             <HistoryIcon />
           </HStack>
 

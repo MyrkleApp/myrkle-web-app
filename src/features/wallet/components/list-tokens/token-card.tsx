@@ -209,7 +209,7 @@ function TokenCard({
             />
             <Text
               className="font-face-proxima-nova-extrabld"
-              fontSize="2.5vh"
+              fontSize="3vh"
               // textTransform="uppercase"
             >
               {token}
@@ -252,7 +252,7 @@ function TokenCard({
                 {isXrpToken({ token }) ? xrpData.pair : tokenData?.pair}
               </Box>
               <Text
-                fontSize="xs"
+                fontSize="sm"
                 fontWeight="bold"
                 color={
                   isPositiveChange(
@@ -278,14 +278,14 @@ function TokenCard({
           <VStack spacing={0} align="flex-end" w="100px">
             <Text
               className="font-face-proxima-nova-extrabld"
-              fontSize="sm"
+              fontSize="md"
               fontWeight="bold"
               textTransform="uppercase"
               mr={1}
             >
               {formatNumber(amount)}
             </Text>
-            <Text color="textDark" fontSize="2xs" fontWeight="bold">
+            <Text color="textDark" fontSize="xs" fontWeight="bold">
               $
               {formatNumber(
                 isXrpToken({ token })
@@ -338,7 +338,7 @@ function TokenCard({
               aria-label={""}
               _hover={{ bg: "secondary " }}
             >
-              <ArrowUpIcon stroke="textDark" fontSize="2.8vh" />
+              <ArrowUpIcon stroke="none" fontSize="2.8vh" />
             </IconButton>
           </Link>
           <IconButton
@@ -354,7 +354,7 @@ function TokenCard({
             }}
             _hover={{ bg: "secondary " }}
           >
-            <ArrowDownIcon stroke="textDark" fontSize="2.8vh" />
+            <ArrowDownIcon stroke="none" fontSize="2.8vh" />
           </IconButton>
           <Link to={tokenIconLink(ROUTES.EXCHANGE)} style={{ height: "100%" }}>
             <IconButton

@@ -18,9 +18,11 @@ function Exchange() {
   return (
     <Layout>
       <Flex h="100%" justify="space-between" gap={5}>
-        <Box w="50%">
+        <Box w="calc(50% - 10px)" ml="10px">
           <HStack h="45px">
-            <Text fontWeight="bold">Exchange</Text>
+            <Text fontWeight="bold" fontSize="lg">
+              Exchange
+            </Text>
           </HStack>
 
           <ExchangeAssets />
@@ -28,7 +30,9 @@ function Exchange() {
 
         <Box w="50%">
           <HStack h="45px">
-            <Text fontWeight="bold">{title[exchangeType]}</Text>
+            <Text fontWeight="bold" fontSize="lg">
+              {title[exchangeType]}
+            </Text>
           </HStack>
 
           {exchangeType === "swap" && (
@@ -38,7 +42,7 @@ function Exchange() {
               </Box>
 
               <Box h="calc(40% - 15px)" bg="dark" borderRadius="20px" px={4} py={4}>
-                <Text fontSize="sm" fontWeight="bold">
+                <Text fontSize="lg" fontWeight="bold">
                   Pending offers
                 </Text>
                 <ListPendingOffers />
