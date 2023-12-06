@@ -26,16 +26,16 @@ function SwapLiquiditySwitch({ sliderProps }: TokenNftSwitchProps) {
   return (
     <>
       <HStack
-        w="225px"
+        w="270px"
         pos="relative"
-        h="44px"
+        h="55px"
         bg="dark"
         borderRadius="30px"
         boxShadow="0 2px 5px #0f0f0f"
       >
         <MotionBox
           mt="2px"
-          h="40px"
+          h="51px"
           w="130px"
           bg="darkest"
           borderRadius="30px"
@@ -45,8 +45,8 @@ function SwapLiquiditySwitch({ sliderProps }: TokenNftSwitchProps) {
           top="0"
           initial={{ left: 0, width: 125 }}
           animate={{
-            left: exchangeType === "swap" ? 2 : 118,
-            width: exchangeType === "swap" ? 120 : 105,
+            left: exchangeType === "swap" ? 2 : 132,
+            width: exchangeType === "swap" ? 150 : 135,
             transition: { duration: 0.4 },
           }}
           {...sliderProps}
@@ -55,7 +55,7 @@ function SwapLiquiditySwitch({ sliderProps }: TokenNftSwitchProps) {
           fontSize={exchangeType === "swap" ? "sm" : "xs"}
           fontWeight={exchangeType === "swap" ? "bold" : "400"}
           pos="absolute"
-          left="45px"
+          left="60px"
           color={exchangeType === "swap" ? "#fff" : "textDark"}
           cursor="pointer"
           onClick={_toggleExchangeType}
@@ -67,7 +67,7 @@ function SwapLiquiditySwitch({ sliderProps }: TokenNftSwitchProps) {
           fontSize={exchangeType === "liquidity" ? "sm" : "xs"}
           fontWeight={exchangeType === "liquidity" ? "bold" : "400"}
           pos="absolute"
-          right="23px"
+          right="37px"
           color={exchangeType === "liquidity" ? "#fff" : "textDark"}
           cursor="pointer"
           onClick={onOpen}

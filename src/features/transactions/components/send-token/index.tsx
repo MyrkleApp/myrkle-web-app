@@ -174,15 +174,31 @@ function SendToken() {
       <TransferFee token={selectedToken.token} issuer={selectedToken.issuer} amount={amount} />
       <Flex
         h="9%"
+        maxH="47px"
+        minH="43px"
         justify="space-between"
         align="center"
-        p="5px"
+        p="7px"
         bg="secondary"
-        borderRadius="7px"
+        borderRadius="10px"
         pos="absolute"
         top="20%"
         w="100%"
       >
+        <HStack pos="absolute" right={0} top="calc(100% + 7px)">
+          <Text fontSize="xs">Balance:</Text>
+          <Flex
+            alignItems="center"
+            justify="flex-end"
+            border="1px solid"
+            borderColor="secondary"
+            borderRadius="20px"
+            minW="150px"
+            px={2}
+          >
+            <Text fontSize="xs">{formatNumber(selectedToken?.balance || "-- --")}</Text>
+          </Flex>
+        </HStack>
         <Box h="100%" w="150px" pos="relative">
           <AssetsDropdown selectedToken={selectedToken} handleSelectedToken={handleSelectedToken} />
         </Box>
@@ -196,28 +212,19 @@ function SendToken() {
           onChange={(e: any) => e.target.value.match(numbersOnlyRegex) && setAmount(e.target.value)}
         />
       </Flex>
-      <HStack pos="absolute" right={0} top="30%">
-        <Text fontSize="xs">Balance:</Text>
-        <Flex
-          alignItems="center"
-          justify="flex-end"
-          border="1px solid"
-          borderColor="secondary"
-          borderRadius="20px"
-          minW="150px"
-          px={2}
-        >
-          <Text fontSize="xs">{formatNumber(selectedToken?.balance || "-- --")}</Text>
-        </Flex>
-      </HStack>
 
       <Text color="textDark" fontSize="sm" fontWeight="bold" pos="absolute" top="34%">
         Recipient Address
       </Text>
       <Input
         h="9%"
+        minH="43px"
+        maxH="47px"
+        justify="space-between"
+        align="center"
+        p="7px"
         bg="secondary"
-        borderRadius="7px"
+        borderRadius="10px"
         pos="absolute"
         top="41%"
         w="100%"
@@ -264,7 +271,7 @@ function SendToken() {
       <AnimatePresence>
         {isAdvancedOptions && (
           <MotionBox initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <SimpleGrid columns={2} h="9%" pos="absolute" top="72%" spacing={3}>
+            <SimpleGrid columns={2} h="9%" pos="absolute" top="72%" spacing={3} w="100%">
               <Box>
                 <Text color="textDark" fontSize="sm" fontWeight="bold">
                   Note

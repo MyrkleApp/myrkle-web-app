@@ -157,16 +157,15 @@ function NftDetailContent() {
                 aspectRatio={1.1 / 1}
                 mr={3}
               >
-                <Flex direction="column" mt={5}>
-                  <Text textAlign="center" fontSize="xs">
-                    {attribute.trait_type}
-                  </Text>
-                  <Text textAlign="center" fontSize="xs" fontWeight="bold">
-                    {attribute.value}
-                  </Text>
-                  {/* <Text textAlign="center" fontSize="xs">
-                      5.56%
-                    </Text> */}
+                <Flex direction="column" mt={5} px={2}>
+                  <Box maxW="80px" overflow="auto hidden">
+                    <Text textAlign="center" fontSize="xs">
+                      {attribute.trait_type}
+                    </Text>
+                    <Text textAlign="center" fontSize="xs" fontWeight="bold">
+                      {attribute.value}
+                    </Text>
+                  </Box>
                 </Flex>
               </Box>
             ))}

@@ -8,7 +8,7 @@ function Transaction() {
   return (
     <Layout>
       <Flex h="100%" justify="space-between" gap={5}>
-        <Box w="50%">
+        <Box w="calc(50% - 10px)" ml="10px">
           <HStack h="45px">
             <Text fontWeight="bold" fontSize="lg">
               Send Assets

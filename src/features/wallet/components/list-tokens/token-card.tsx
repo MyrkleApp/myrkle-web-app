@@ -122,7 +122,10 @@ function TokenCard({
 
     const getTokenInformation = async () => {
       const tokenInfo: any = await getTokenInfo(token, issuer);
-      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: Number(tokenInfo?.price) * amount });
+      const tokenInfoItemBalance = Number(tokenInfo?.price) * amount;
+      if (tokenInfoItemBalance) {
+        handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenInfoItemBalance });
+      }
     };
 
     if (!isXrpToken({ token })) {

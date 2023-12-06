@@ -109,16 +109,16 @@ function TxnDetailsModal({
           h="20%"
         >
           <HStack>
-            <Text fontSize="13px">Transaction type</Text>
+            <Text fontSize="2.2vh">Transaction type</Text>
             <Spacer />
-            <Text fontSize="xs" fontWeight="bold">
+            <Text fontSize="2vh" fontWeight="bold">
               {isCreateOffer ? "Offer Create" : isMatchOffer ? "Offer Match" : "Offer Cancel"}
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize="13px">Creator</Text>
+            <Text fontSize="2.2vh">Creator</Text>
             <Spacer />
-            <Text fontSize="xs" fontWeight="bold">
+            <Text fontSize="2vh" fontWeight="bold">
               {isCreateOffer
                 ? ellipsisAtCenter(address)
                 : isCancelOffer
@@ -127,19 +127,19 @@ function TxnDetailsModal({
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize="13px">Rate</Text>
+            <Text fontSize="2.2vh">Rate</Text>
             <Spacer />
-            <Text fontSize="xs" fontWeight="bold">
+            <Text fontSize="2vh" fontWeight="bold">
               {Number(fromTokenAmount) / Number(toTokenAmount) || "-- --"}
             </Text>
           </HStack>
         </Flex>
 
         <Flex direction="column" align="center" justify="center" pos="absolute" bottom="0" w="100%">
-          <Text fontSize="sm" mb={3}>
+          <Text fontSize="2.2vh" mb={3}>
             {proceedText || "Do you want to proceed?"}
           </Text>
-          <Button w="80%" letterSpacing={1} onClick={handleProceed}>
+          <Button w="80%" h="7vh" letterSpacing={1} onClick={handleProceed}>
             Proceed
           </Button>
         </Flex>

@@ -10,9 +10,9 @@ export interface TokenItemProps {
 function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
   return (
     <HStack bg="dark" borderRadius="10px" h="100%" pl={3} pr={1}>
-      <Image src={icon} alt="" h="55%" />
+      <Image src={icon} alt="" h="65%" />
       <VStack spacing={0} align="flex-start">
-        <Text className="font-face-proxima-nova-extrabld" fontSize="md" textTransform="uppercase">
+        <Text className="font-face-proxima-nova-extrabld" fontSize="3vh" textTransform="uppercase">
           {token}
         </Text>
         <Text fontSize="xs" mt="-2px">
@@ -20,7 +20,7 @@ function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
         </Text>
       </VStack>
       <Spacer />
-      <Text fontSize="2xl" mt={-4} pr={2} pos="absolute" right={0}>
+      <Text fontSize="4vh" mt={-4} pr={2} pos="absolute" right={0}>
         {Number(amount).toFixed(2)}
       </Text>
     </HStack>

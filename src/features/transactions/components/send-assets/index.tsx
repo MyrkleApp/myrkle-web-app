@@ -9,7 +9,7 @@ function SendAssets() {
   const assetType = useSelector(selectAssetType);
 
   return (
-    <Flex justify="center" align="center" h="calc(100% - 45px)" bg="dark" borderRadius="20px" p={8}>
+    <Flex justify="center" align="center" h="calc(100% - 45px)" bg="dark" borderRadius="30px" p={8}>
       <Box h="100%" w="100%" pos="relative">
         <Flex justify="center">
           <TokenNftSwitch />
