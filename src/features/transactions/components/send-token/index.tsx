@@ -43,8 +43,10 @@ function SendToken() {
   const [destinationTag, setDestinationTag] = useState("");
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("token");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("token");
 
   // ===========================================================================================
   // selectors
@@ -324,7 +326,9 @@ function SendToken() {
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>

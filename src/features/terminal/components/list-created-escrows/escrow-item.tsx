@@ -41,8 +41,10 @@ function EscrowItem({ escrow }: EscrowItemProps) {
   const [cancelXrpEscrow] = useCancelXrpEscrowMutation();
   const [finishXrpEscrow] = useFinishXrpEscrowMutation();
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("escrow");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("escrow");
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -190,7 +192,9 @@ function EscrowItem({ escrow }: EscrowItemProps) {
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>

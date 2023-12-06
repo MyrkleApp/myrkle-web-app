@@ -40,8 +40,10 @@ function TokenDetail({ token }: TokenDetailProps) {
 
   const [createXrpEscrow] = useCreateXrpEscrowMutation();
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("escrow");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("escrow");
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -236,7 +238,9 @@ function TokenDetail({ token }: TokenDetailProps) {
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>

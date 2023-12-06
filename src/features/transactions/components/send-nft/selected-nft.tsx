@@ -24,8 +24,10 @@ export interface SelectedNftProps {
 // r4W82KKuXBbFTKJrJDiTkfaAnzz3SdBms9
 
 function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("nft");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("nft");
 
   const address = useSelector(selectAddress);
 
@@ -189,7 +191,9 @@ function SelectedNft({ nft, handleNftItemClick }: SelectedNftProps) {
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && (
           <ListSellOffersModal
             id={nft?.id}

@@ -3,6 +3,8 @@ import { Box, CloseButton, Flex, HStack, Spacer, Text, useOutsideClick } from "@
 import { useRef } from "react";
 import TokenItem from "./token-item";
 import { ellipsisAtCenter } from "@/helpers";
+import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
+import { useSelector } from "react-redux";
 
 export interface TxnDetailsModalProps {
   fromTokenName: string;
@@ -35,11 +37,16 @@ function TxnDetailsModal({
   handleProceed,
   proceedText,
   title,
-  offerId,
-  creator,
-  sequence,
+  // offerId,
+  creator, // sequence,
 }: TxnDetailsModalProps) {
   const ref = useRef(null);
+
+  const address = useSelector(selectAddress);
+
+  const isCreateOffer = title?.toLowerCase().includes("create");
+  const isMatchOffer = title?.toLowerCase().includes("match");
+  const isCancelOffer = title?.toLowerCase().includes("cancel");
 
   useOutsideClick({
     ref,
@@ -102,24 +109,28 @@ function TxnDetailsModal({
           h="20%"
         >
           <HStack>
-            <Text fontSize="13px">Offer ID</Text>
+            <Text fontSize="13px">Transaction type</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              {ellipsisAtCenter(offerId || "") || "-- --"}
+              {isCreateOffer ? "Offer Create" : isMatchOffer ? "Offer Match" : "Offer Cancel"}
             </Text>
           </HStack>
           <HStack>
             <Text fontSize="13px">Creator</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              {ellipsisAtCenter(creator || "") || "-- --"}
+              {isCreateOffer
+                ? ellipsisAtCenter(address)
+                : isCancelOffer
+                ? ellipsisAtCenter(address)
+                : ellipsisAtCenter(creator || "") || "-- --"}
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize="13px">Sequence</Text>
+            <Text fontSize="13px">Rate</Text>
             <Spacer />
             <Text fontSize="xs" fontWeight="bold">
-              {sequence || "-- --"}
+              {Number(fromTokenAmount) / Number(toTokenAmount) || "-- --"}
             </Text>
           </HStack>
         </Flex>

@@ -66,8 +66,10 @@ function TokenCard({
   handleTokenUsdAmountObj,
   isFrozen,
 }: TokenCardProps) {
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("token");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("token");
 
   // ==================================================================================================
   // selectors
@@ -412,7 +414,11 @@ function TokenCard({
             )}
 
             {tokenModalView === "error-2" && (
-              <ResponseModal isError={true} handleClose={handleReset} />
+              <ResponseModal
+                isError={true}
+                message={submitTxnResponseMsg}
+                handleClose={handleReset}
+              />
             )}
 
             {tokenModalView === "success" && (

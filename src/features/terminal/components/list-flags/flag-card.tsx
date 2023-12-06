@@ -34,8 +34,10 @@ function FlagCard({
   const [switchValue, setSwitchValue] = useState(false);
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("flag");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("flag");
 
   useEffect(() => {
     if (xummTxnQrCode && isActiveFlag && walletProvider === "xumm") {
@@ -104,7 +106,9 @@ function FlagCard({
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
         )}
 
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleClose} />
+        )}
 
         {view === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
       </Backdrop>

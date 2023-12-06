@@ -29,8 +29,10 @@ function EditableElement({
 }: EditableElementProps) {
   const { isOpen, onToggle } = useDisclosure();
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("account-info");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("account-info");
 
   const [view, setView] = useState<TTxnPipeline>("default");
 
@@ -114,7 +116,9 @@ function EditableElement({
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>

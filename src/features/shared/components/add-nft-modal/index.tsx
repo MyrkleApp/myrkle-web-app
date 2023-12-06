@@ -37,8 +37,10 @@ export interface AddNftModalProps {
 // 00080000ADFDB77A8B3A255EB4DEC33759232E724309D0702DCBAB9C00000002
 
 function AddNftModal({ handleClose }: AddNftModalProps) {
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("nft");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("nft");
 
   // ========================================================================================
   // state & ref
@@ -176,7 +178,9 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
 
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
 
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </>

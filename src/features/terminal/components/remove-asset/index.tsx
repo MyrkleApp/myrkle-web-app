@@ -23,8 +23,10 @@ function RemoveAsset() {
 
   const [modalState, setModalState] = useState<TSelectTokenAmountModalState>("select-token");
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("token");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("token");
 
   const [
     { selectedToken, showTokenList, amount },
@@ -120,7 +122,9 @@ function RemoveAsset() {
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
 
-        {modalState === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+        {modalState === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleClose} />
+        )}
 
         {modalState === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
       </Backdrop>

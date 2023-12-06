@@ -4,10 +4,11 @@ import { useRef } from "react";
 
 export interface ResponseModalProps {
   isError: boolean;
+  message?: string;
   handleClose: () => void;
 }
 
-function ResponseModal({ isError, handleClose }: ResponseModalProps) {
+function ResponseModal({ isError, message, handleClose }: ResponseModalProps) {
   const ref = useRef(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,7 +51,7 @@ function ResponseModal({ isError, handleClose }: ResponseModalProps) {
       </Text>
       <Text fontSize="sm" fontWeight="bold" mb={4}>
         {isError
-          ? "Get detailed information of the transaction from your wallet provider"
+          ? message || "Get detailed information of the transaction from your wallet provider"
           : "Your transaction was successful"}
       </Text>
       {isOpen ? (

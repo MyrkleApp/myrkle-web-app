@@ -27,8 +27,10 @@ function BurnNft() {
 
   const [burnNft, { isLoading }] = useBurnNftMutation();
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("nft");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("nft");
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -116,7 +118,13 @@ function BurnNft() {
             <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
           )}
 
-          {modalType === "error-2" && <ResponseModal isError={true} handleClose={handleClose} />}
+          {modalType === "error-2" && (
+            <ResponseModal
+              isError={true}
+              message={submitTxnResponseMsg}
+              handleClose={handleClose}
+            />
+          )}
 
           {modalType === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
         </AnimatePresence>

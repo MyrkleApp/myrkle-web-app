@@ -39,8 +39,10 @@ function TokenDetail({ token }: TokenDetailProps) {
   const [createTokenCheck] = useCreateTokenCheckMutation();
   const [createXrpCheck] = useCreateXrpCheckMutation();
 
-  const [{ isSubmitTxnSuccess, xummTxnQrCode }, { handleSubmitTxn, resetSubmitTxnResponse }] =
-    useSubmitTxn("check");
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("check");
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -166,7 +168,9 @@ function TokenDetail({ token }: TokenDetailProps) {
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}
-        {view === "error-2" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
         {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
       </Backdrop>
     </>
