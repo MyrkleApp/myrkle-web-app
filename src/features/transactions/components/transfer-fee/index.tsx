@@ -26,7 +26,7 @@ function TransferFee({ token, issuer, amount }: TransferFeeProps) {
     if (isXrpToken({ token })) {
       return 0;
     } else {
-      return Number(tokenInfo?.transfer_fee) * Number(amount);
+      return (Number(tokenInfo?.transfer_fee) * Number(amount)) / 100;
     }
   };
 

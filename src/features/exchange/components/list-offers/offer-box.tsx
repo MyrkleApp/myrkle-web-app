@@ -8,12 +8,13 @@ export interface OfferBoxProps {
   issuer: string;
   amount: string | number;
   icon?: string;
+  isGive?: boolean;
 }
 
-function OfferBox({ token, issuer, icon, amount }: OfferBoxProps) {
+function OfferBox({ token, issuer, icon, amount, isGive }: OfferBoxProps) {
   return (
     <Box w="50%" h="100%" bg="darkest" borderRadius="5px" p="3px 8px 25px 7px">
-      <ItemLabel title="Give" mb={2} />
+      <ItemLabel title={isGive ? "Give" : "Get"} mb={2} />
       <HStack>
         <Image src={icon || tokenPlaceholder} alt="" h="40px" />
         <VStack spacing={0} align="flex-start" mt="7px">

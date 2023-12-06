@@ -171,6 +171,16 @@ function MintNftForm() {
   const handleReset = () => {
     setView("default");
     resetSubmitTxnResponse();
+    setName("");
+    setDescription("");
+    setImagePreview("");
+    setImageData("");
+    setTaxon("");
+    setIsTransferable(false);
+    setIssuerBurn(false);
+    setOnlyXrp(false);
+    setAttributes([{ trait_type: "", value: "" }]);
+    setRoyaltiesPercent(0);
   };
 
   return (

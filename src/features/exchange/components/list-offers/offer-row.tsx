@@ -141,7 +141,12 @@ function OfferRow({ offer }: OfferRowProps) {
         cursor="pointer"
         onClick={handleOpen}
       >
-        <OfferBox token={offer?.buy_token} issuer={offer?.buy_issuer} amount={offer?.buy_amount} />
+        <OfferBox
+          token={offer?.buy_token}
+          issuer={offer?.buy_issuer}
+          amount={offer?.buy_amount}
+          isGive
+        />
         <Circle
           bg="red"
           size="20px"

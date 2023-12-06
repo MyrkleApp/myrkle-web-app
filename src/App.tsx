@@ -19,10 +19,16 @@ import Home from "./pages/home";
 import Settings from "./features/settings/pages";
 import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
+import { isDesktop } from "react-device-detect";
+import UnderConstruction from "./components/under-construction";
 
 function App() {
   useRehydrateSignInData();
   useRetrieveWallets();
+
+  if (!isDesktop) {
+    return <UnderConstruction />;
+  }
 
   return (
     <BrowserRouter>
