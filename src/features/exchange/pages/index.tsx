@@ -17,8 +17,15 @@ function Exchange() {
 
   return (
     <Layout>
-      <Flex h="100%" justify="space-between" gap={5}>
-        <Box w="calc(50% - 10px)" ml="10px">
+      <Flex
+        h="100%"
+        overflow="hidden auto"
+        justify="space-between"
+        gap={5}
+        direction={["column", null, null, "row"]}
+        pr={2}
+      >
+        <Box ml="10px" w={["100%", null, null, "calc(50% - 10px)"]}>
           <HStack h="45px">
             <Text fontWeight="bold" fontSize="lg">
               Exchange
@@ -28,7 +35,7 @@ function Exchange() {
           <ExchangeAssets />
         </Box>
 
-        <Box w="50%">
+        <Box w={["100%", null, null, "calc(50% - 10px)"]}>
           <HStack h="45px">
             <Text fontWeight="bold" fontSize="lg">
               {title[exchangeType]}

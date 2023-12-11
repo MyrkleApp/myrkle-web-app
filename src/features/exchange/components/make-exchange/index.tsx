@@ -227,7 +227,7 @@ function MakeExchange() {
   return (
     <>
       <Box
-        h="calc(100% - 130px)"
+        h={["600px", null, null, "calc(100% - 130px)"]}
         overflow="hidden auto"
         // mt={4}
         mt={[4, null, null, null, null, "calc(50% - 250px)"]}

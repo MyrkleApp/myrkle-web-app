@@ -75,6 +75,8 @@ function WalletDetails() {
   const totalBalance = useSelector(selectTotalBalance);
   const network = useSelector(selectNetwork);
 
+  console.log("redux state balance", totalBalance);
+
   // =======================================================================================
   // api
   // =======================================================================================

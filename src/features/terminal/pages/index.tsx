@@ -15,68 +15,70 @@ function Terminal() {
 
   return (
     <Layout>
-      <SimpleGrid columns={4} px={10} spacing={8}>
-        <Link to={ROUTES.TERMINAL_ASSET_MANAGER}>
-          <IconContainer title="Asset Manager" visibility={isOpen ? "hidden" : "visible"}>
-            <Box
-              pos="relative"
-              cursor="pointer"
-              _hover={{
-                ".cog-icon": {
-                  transform: "rotate(-270deg)",
-                  transition: "0.5s linear all",
-                },
-              }}
-            >
-              <FolderIcon fontSize="80px" />
-              <CogIcon
-                className="cog-icon"
-                position="absolute"
-                top="5px"
-                right="-5px"
-                fontSize="45px"
-                transition="0.5s linear all"
-              />
-            </Box>
-          </IconContainer>
-        </Link>
-        <Link to={ROUTES.TERMINAL_CHECKS}>
-          <IconContainer title="Checks" visibility={isOpen ? "hidden" : "visible"}>
-            <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
-          </IconContainer>
-        </Link>
-        <Link to={ROUTES.TERMINAL_ESCROWS}>
-          <IconContainer title="Escrows" visibility={isOpen ? "hidden" : "visible"}>
-            <HourGlassIcon
-              color="#686868"
-              fill="#686868"
-              fontSize="80px"
-              cursor="pointer"
-              transition="0.3s linear all"
-              _hover={{
-                transform: "rotate(-180deg)",
-                transition: "0.3s linear all",
-              }}
-            />
-          </IconContainer>
-        </Link>
-        {/* <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} /> */}
-        <Link to={ROUTES.TERMINAL_FLAGS}>
-          <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
-            <Box>
-              <FlagIcon
+      <Box h="100%" overflow="hidden auto">
+        <SimpleGrid columns={[1, 2, 3, 4]} px={10} spacing={8}>
+          <Link to={ROUTES.TERMINAL_ASSET_MANAGER}>
+            <IconContainer title="Asset Manager" visibility={isOpen ? "hidden" : "visible"}>
+              <Box
+                pos="relative"
+                cursor="pointer"
+                _hover={{
+                  ".cog-icon": {
+                    transform: "rotate(-270deg)",
+                    transition: "0.5s linear all",
+                  },
+                }}
+              >
+                <FolderIcon fontSize="80px" />
+                <CogIcon
+                  className="cog-icon"
+                  position="absolute"
+                  top="5px"
+                  right="-5px"
+                  fontSize="45px"
+                  transition="0.5s linear all"
+                />
+              </Box>
+            </IconContainer>
+          </Link>
+          <Link to={ROUTES.TERMINAL_CHECKS}>
+            <IconContainer title="Checks" visibility={isOpen ? "hidden" : "visible"}>
+              <ChecksIcon color="#686868" fill="#686868" fontSize="80px" cursor="pointer" />
+            </IconContainer>
+          </Link>
+          <Link to={ROUTES.TERMINAL_ESCROWS}>
+            <IconContainer title="Escrows" visibility={isOpen ? "hidden" : "visible"}>
+              <HourGlassIcon
+                color="#686868"
+                fill="#686868"
                 fontSize="80px"
                 cursor="pointer"
                 transition="0.3s linear all"
                 _hover={{
-                  transform: "rotateY(-180deg)",
+                  transform: "rotate(-180deg)",
                   transition: "0.3s linear all",
                 }}
               />
-            </Box>
-          </IconContainer>
-        </Link>
-      </SimpleGrid>
+            </IconContainer>
+          </Link>
+          {/* <EscrowModal isOpen={isOpen} handleOpen={onOpen} handleClose={onClose} /> */}
+          <Link to={ROUTES.TERMINAL_FLAGS}>
+            <IconContainer title="Flags" visibility={isOpen ? "hidden" : "visible"}>
+              <Box>
+                <FlagIcon
+                  fontSize="80px"
+                  cursor="pointer"
+                  transition="0.3s linear all"
+                  _hover={{
+                    transform: "rotateY(-180deg)",
+                    transition: "0.3s linear all",
+                  }}
+                />
+              </Box>
+            </IconContainer>
+          </Link>
+        </SimpleGrid>
+      </Box>
     </Layout>
   );
 }

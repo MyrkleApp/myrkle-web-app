@@ -15,10 +15,17 @@ function Layout({ children }: LayoutProps) {
   return (
     <Box h="100vh" w="100vw" overflow="hidden">
       <Box h="100vh" bg="darkest" pos="relative">
-        <Box h="100%" w="250px" pos="absolute" top="0" left="0" pl="20px">
+        <Box
+          h="100%"
+          w={["100px", null, null, null, "250px"]}
+          pos="absolute"
+          top="0"
+          left="0"
+          pl="20px"
+        >
           <Flex h="70px" justify="center" align="center">
             <Link to={ROUTES.HOME}>
-              <LogoIcon fontSize="100px" />
+              <LogoIcon fontSize="100px" display={["none", null, null, null, "none"]} />
             </Link>
           </Flex>
           <Box h="calc(100% - 50px - 50px)">
@@ -27,7 +34,14 @@ function Layout({ children }: LayoutProps) {
           <Box h="50px">{/* bottom */}</Box>
         </Box>
 
-        <Box h="100%" w="calc(100% - 250px - 10px)" pos="absolute" top="0" right="0" pr={10}>
+        <Box
+          h="100%"
+          w={["calc(100% - 100px - 10px)", null, null, null, "calc(100% - 250px - 10px)"]}
+          pos="absolute"
+          top="0"
+          right="0"
+          pr={10}
+        >
           <Box h="70px">
             <Navbar />
           </Box>

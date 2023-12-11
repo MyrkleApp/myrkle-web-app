@@ -125,7 +125,7 @@ function TokenCard({
     const getTokenInformation = async () => {
       const tokenInfo: any = await getTokenInfo(token, issuer);
       const tokenInfoItemBalance = Number(tokenInfo?.price) * amount;
-      if (tokenInfoItemBalance) {
+      if (tokenInfoItemBalance && !isNaN(tokenInfoItemBalance)) {
         handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenInfoItemBalance });
       }
     };
@@ -192,7 +192,7 @@ function TokenCard({
       <Flex
         justify="space-between"
         align="center"
-        // minH="75px"
+        minH="75px"
         h="calc(100% / 3.25)"
         flexShrink={0}
         bg="dark"

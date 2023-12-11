@@ -14,8 +14,9 @@ function NavItem({ title, icon: NavItemIcon, link, isActive }: NavItemProps) {
     <Link to={link} style={{ width: "100%" }}>
       <HStack
         w="100%"
+        aspectRatio={[1, null, null, null, "auto"]}
         spacing="10px"
-        pl={5}
+        pl={[3, null, null, null, 5]}
         py="7px"
         mb={3}
         bg={isActive ? "rgba(0, 223, 22, 0.27)" : "none"}
@@ -25,7 +26,9 @@ function NavItem({ title, icon: NavItemIcon, link, isActive }: NavItemProps) {
         borderRadius="20px"
       >
         <NavItemIcon stroke="#fff" fill="none" />
-        <Text fontSize="xs">{title}</Text>
+        <Text fontSize="xs" display={["none", null, null, null, "block"]}>
+          {title}
+        </Text>
       </HStack>
     </Link>
   );
