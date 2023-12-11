@@ -34,7 +34,8 @@ function SelectTokenDropdown({ handleTokenClick, isTokenDisabled }: SelectTokenD
       borderRadius="15px"
       cursor="pointer"
       onClick={onToggle}
-      animate={{ height: isOpen ? "auto" : 60 }}
+      initial={{ opacity: 0 }}
+      animate={{ height: isOpen ? "auto" : 60, opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <HStack h="60px">

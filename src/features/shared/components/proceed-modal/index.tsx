@@ -8,9 +8,16 @@ export interface ProceedModalProps {
   isLoading: boolean;
   handleProceed: () => void;
   handleClose: () => void;
+  [anyProp: string]: any;
 }
 
-function ProceedModal({ text, isLoading, handleProceed, handleClose }: ProceedModalProps) {
+function ProceedModal({
+  text,
+  isLoading,
+  handleProceed,
+  handleClose,
+  ...props
+}: ProceedModalProps) {
   const ref = useRef(null);
 
   useOutsideClick({
@@ -33,6 +40,7 @@ function ProceedModal({ text, isLoading, handleProceed, handleClose }: ProceedMo
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      {...props}
     >
       <Flex justify="flex-end" pl={3}>
         <CloseButton onClick={handleClose} />

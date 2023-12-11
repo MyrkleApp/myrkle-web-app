@@ -8,6 +8,7 @@ import gemWalletLogo from "@/assets/gem-wallet-logo.png";
 import { useSelector } from "react-redux";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { TWalletProvider } from "@/features/wallet/types";
+import ItemDescription from "@/components/item-description";
 
 function ListWalletProviders() {
   const myWallets = useSelector(selectMyWallets);
@@ -24,9 +25,18 @@ function ListWalletProviders() {
         isDisabled
         walletProvider="myrkle"
       />
-      <Text fontSize="sm" fontWeight="bold" my={4}>
-        External connected wallets
-      </Text>
+      <HStack>
+        <Text fontSize="sm" fontWeight="bold" my={4}>
+          External connected wallets
+        </Text>
+        <ItemDescription
+          description="Switching wallets within the app doesn't impact your wallet state on Crossmark and GemWallet. To ensure smooth transactions, use your active wallet (as displayed on Crossmark and GemWallet) when making payments."
+          top={7}
+          left={-150}
+          w="210px"
+          h="130px"
+        />
+      </HStack>
       <WalletAccordion
         mb={5}
         logo={<XummLogoIcon fontSize="80px" />}

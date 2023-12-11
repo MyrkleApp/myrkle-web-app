@@ -99,7 +99,7 @@ function GenerateProtedtedEscrowModal({
             </Text>
             <Skeleton1 borderRadius={0} h="50px" mb={5} />
 
-            <HStack mb={4}>
+            <HStack mb={4} visibility="hidden">
               <Text fontSize="xs">Transaction fee</Text>
               <Spacer />
               <Image src={xrpLogo} alt="logo" h="13px" />

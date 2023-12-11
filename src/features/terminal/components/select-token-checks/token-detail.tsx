@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, HStack, Spacer, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import TokenItem from "../select-token-dropdown/token-item";
 import { useEffect, useState } from "react";
 import { numbersOnlyRegex, today } from "@/constants";
@@ -22,11 +22,12 @@ import XummTxnModal from "@/components/xumm-txn-modal";
 
 export interface TokenDetailProps {
   token: any;
+  handleTokenClick: () => void;
 }
 
 // wallet address 2 ====>>>  r4W82KKuXBbFTKJrJDiTkfaAnzz3SdBms9
 
-function TokenDetail({ token }: TokenDetailProps) {
+function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
   const address = useSelector(selectAddress);
 
   const [receiverAddress, setReceiverAddress] = useState("");
@@ -111,7 +112,7 @@ function TokenDetail({ token }: TokenDetailProps) {
       >
         <Box>
           <ItemLabel title="Token" mb={1} />
-          <TokenItem token={token} />
+          <TokenItem token={token} handleClick={handleTokenClick} />
         </Box>
         <Box mb={2}>
           <ItemLabel title="Receiver address" mb={1} />
@@ -144,7 +145,17 @@ function TokenDetail({ token }: TokenDetailProps) {
           />
         </Box>
 
-        <Box p={3} bg="darkest" borderRadius="20px">
+        <Button
+          w="100%"
+          onClick={handleConfirm}
+          color="#fff"
+          bg={isSubmitDisabled ? "secondary" : "primary"}
+          isDisabled={isSubmitDisabled}
+        >
+          confirm
+        </Button>
+
+        {/* <Box p={3} bg="darkest" borderRadius="20px">
           <HStack mb={4}>
             <Text fontSize="xs">Transaction fee</Text>
             <Spacer />
@@ -159,7 +170,7 @@ function TokenDetail({ token }: TokenDetailProps) {
           >
             confirm
           </Button>
-        </Box>
+        </Box> */}
       </MotionBox>
 
       <Backdrop isOpen={view !== "default"}>

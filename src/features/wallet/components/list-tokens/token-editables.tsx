@@ -66,7 +66,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
             />
           ) : (
             <Text fontSize="xs" ml={5}>
-              {formatNumber(accountTokenInfo?.transfer_fee || "-- --", 1)}%
+              {formatNumber(accountTokenInfo?.transfer_fee, 1)}%
             </Text>
           )}
         </Box>

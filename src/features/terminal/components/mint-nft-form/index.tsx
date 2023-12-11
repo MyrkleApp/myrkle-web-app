@@ -97,8 +97,18 @@ function MintNftForm() {
   };
 
   const handlePlusIconClick = (i: number) => {
+    if (!attributes[i].trait_type || !attributes[i].value) return;
+
     const value = [...attributes];
     value.splice(i + 1, 0, { trait_type: "", value: "" });
+    setAttributes(value);
+  };
+
+  const handleRemoveIconClick = (i: number) => {
+    if (attributes.length === 1) return;
+
+    const value = [...attributes];
+    value.splice(i, 1);
     setAttributes(value);
   };
 
@@ -294,6 +304,9 @@ function MintNftForm() {
               handleTraitTypeChange={(e) => handleAttributeChange(e, i, "trait_type")}
               handleTraitValueChange={(e) => handleAttributeChange(e, i, "value")}
               handlePlusIconClick={() => handlePlusIconClick(i)}
+              handleRemoveIconClick={() => handleRemoveIconClick(i)}
+              isAddItemDisabled={!attributes[i].trait_type || !attributes[i].value}
+              isRemoveItemDisabled={attributes.length === 1}
             />
           ))}
         </Grid>

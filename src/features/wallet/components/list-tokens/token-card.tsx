@@ -404,10 +404,11 @@ function TokenCard({
 
             {tokenModalView === "proceed" && (
               <ProceedModal
-                text="You are about to remove this token"
+                text={`Proceed with removing ${token}? (${token} balance must be zero)`}
                 isLoading={false}
                 handleClose={handleClose}
                 handleProceed={handleRemoveToken}
+                h="270px"
               />
             )}
 

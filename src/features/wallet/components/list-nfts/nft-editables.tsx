@@ -68,7 +68,7 @@ function NftEditables() {
 
       <Flex justify="space-between" mb={2}>
         <Box w="30%">
-          <ItemLabel title="Transfer fee" fontWeight="400" mb={0} />
+          <ItemLabel title="Royalties" fontWeight="400" mb={0} />
         </Box>
         <Box w="57%">
           <Text fontSize="xs">{fee}%</Text>

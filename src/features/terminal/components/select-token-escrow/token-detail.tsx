@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, Flex, HStack, Spacer, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, HStack, Spacer, useDisclosure } from "@chakra-ui/react";
 import Backdrop from "@/components/backdrop";
 import GenerateProtedtedEscrowModal from "./generate-protected-escrow-modal";
 import TokenItem from "../select-token-dropdown/token-item";
@@ -21,9 +21,10 @@ import { ICreateXrpEscrow } from "@/features/shared/types/xrp-mutations";
 
 export interface TokenDetailProps {
   token: any;
+  handleTokenClick: () => void;
 }
 
-function TokenDetail({ token }: TokenDetailProps) {
+function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const address = useSelector(selectAddress);
@@ -123,7 +124,7 @@ function TokenDetail({ token }: TokenDetailProps) {
       >
         <Box>
           <ItemLabel title="Token" mb={1} />
-          <TokenItem token={token} />
+          <TokenItem token={token} handleClick={handleTokenClick} />
         </Box>
         <Box mb={2}>
           <ItemLabel title="Receiver address" mb={1} />
@@ -205,7 +206,17 @@ function TokenDetail({ token }: TokenDetailProps) {
           </Flex>
         )}
 
-        <Box p={3} bg="darkest" borderRadius="20px">
+        <Button
+          py={5}
+          w="100%"
+          bg={isSubmitDisabled ? "secondary" : "primary"}
+          onClick={handleConfirm}
+          isDisabled={isSubmitDisabled}
+        >
+          confirm
+        </Button>
+
+        {/* <Box p={3} bg="darkest" borderRadius="20px">
           <HStack mb={4}>
             <Text fontSize="xs">Transaction fee</Text>
             <Spacer />
@@ -219,7 +230,7 @@ function TokenDetail({ token }: TokenDetailProps) {
           >
             confirm
           </Button>
-        </Box>
+        </Box> */}
       </MotionBox>
 
       {isOpen && (

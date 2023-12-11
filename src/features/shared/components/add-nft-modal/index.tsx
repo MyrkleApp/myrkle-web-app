@@ -126,7 +126,7 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
           return;
         }
 
-        const nftInfo = await getNftInfo({ id: nftOfferInfo?.id, net }).unwrap();
+        const nftInfo = await getNftInfo({ id: nftOfferInfo?.nftoken_id, net }).unwrap();
         if (!nftInfo || isObjectEmpty(nftInfo)) {
           // handleReceiveNft();
           return;

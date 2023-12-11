@@ -139,16 +139,39 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
       </Box>
 
       <Backdrop isOpen={isOpen}>
-        <DialogBox handleClose={onClose}>
-          <Text fontSize="sm" fontWeight="bold">
-            Switch active wallet?
+        <DialogBox handleClose={onClose} h="250px">
+          <Text
+            fontSize="lg"
+            fontWeight="bold"
+            color="primary"
+            className="font-face-proxima-nova-extrabld"
+          >
+            Confirm?
           </Text>
-          <Flex mt={16} justify="flex-end">
-            <Button h="35px" mr={3} onClick={handleSwitchWallet}>
-              Proceed
+          <Text fontSize="xs" fontWeight="bold">
+            Would you like to switch your active wallet to {address} which is currently available in
+            your {selectedWalletProvider} wallet?
+          </Text>
+          <Flex justify="space-between" mt="30px">
+            <Button
+              h="30px"
+              bg="none"
+              fontSize="sm"
+              color="#fff"
+              _hover={{ bg: "none " }}
+              onClick={onClose}
+            >
+              go back
             </Button>
-            <Button h="35px" bg="secondary" onClick={onClose}>
-              Cancel
+            <Button
+              h="30px"
+              fontSize="sm"
+              mr={2}
+              bg="success"
+              color="#fff"
+              onClick={handleSwitchWallet}
+            >
+              confirm
             </Button>
           </Flex>
         </DialogBox>

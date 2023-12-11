@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import MintToken from "../components/mint-token";
 
+const mintTokenText: string = `Unleash the power of the XRP Ledger beyond its native asset. Myrkle allows you to represent all kinds of assets as tokens, opening a world of possibilities. Whether it's a "stablecoin" pegged to real-world assets, a purely digital token designed for specific use cases, or even a community credit system, the XRP Ledger can handle it all. Thanks to the fungibility of standard tokens, each unit holds equal value and is indistinguishable from others within its class, ensuring fairness and transparency in their distribution and exchange.`;
+const mintNftText = `Non-fungible tokens (NFTs, or 'nifties' in the vernacular) serve to encode ownership of unique physical, non-physical, or purely digital goods, such as works of art or in-game items. Non Fungible tokens can be traded between users for XRP or other issued assets on the XRP Ledger's decentralized exchange. This makes them ideal for payments.`;
+
 function NewAsset() {
   const [searchParams] = useSearchParams();
   const urlAssetType = searchParams.get("asset");
@@ -74,12 +77,7 @@ function NewAsset() {
           <Text className="font-face-proxima-nova-extrabld" fontSize="sm" mb={3}>
             {assetType === "token" ? "Mint Token" : "Mint NFT"}
           </Text>
-          <Text fontSize="xs">
-            Lorem ipsum dolor sit amet, consectetur adip allows users to create deferred payments
-            that can be canceled or cashed by the intended recipients. Like personal paper checks,
-            XRP Ledger Checks start with the sender of the funds creating a Check that specifies an
-            amount and a recipient.
-          </Text>
+          <Text fontSize="xs">{assetType === "token" ? mintTokenText : mintNftText}</Text>
         </Box>
         <Box w="40%" overflow="hidden auto">
           {assetType === "token" ? <MintToken /> : <MintNftForm />}

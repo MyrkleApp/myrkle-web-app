@@ -37,6 +37,7 @@ import useCrossmarkSignIn from "@/features/auth/hooks/use-crossmark-signin";
 import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
 import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import ItemDescription from "@/components/item-description";
 
 function SwitchAccountDropdown() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
@@ -212,6 +213,13 @@ function SwitchAccountDropdown() {
 
   return (
     <>
+      <ItemDescription
+        description="Switching wallets within the app doesn't impact your wallet state on Crossmark and GemWallet. To ensure smooth transactions, use your active wallet (as displayed on Crossmark and GemWallet) when making payments."
+        top={7}
+        left={-150}
+        w="210px"
+        h="130px"
+      />
       <Box ref={ref}>
         <Button
           w="190px"
@@ -267,7 +275,7 @@ function SwitchAccountDropdown() {
 
       <Backdrop isOpen={isDropdownOpen || !!selectedWallet}>
         {selectedWallet && (
-          <DialogBox handleClose={onCloseDropdown} borderRadius="25px" h="220px">
+          <DialogBox handleClose={onCloseDropdown} borderRadius="25px" h="250px">
             <Text
               fontSize="lg"
               fontWeight="bold"
@@ -277,8 +285,8 @@ function SwitchAccountDropdown() {
               Confirm?
             </Text>
             <Text fontSize="xs" fontWeight="bold">
-              Do you want to switch your active wallet to {selectedWallet.address} that exists on
-              your {selectedWallet.walletProvider} wallet?
+              Would you like to switch your active wallet to {selectedWallet.address} which is
+              currently available in your {selectedWallet.walletProvider} wallet?
             </Text>
             <Flex justify="space-between" mt="30px">
               <Button
@@ -366,7 +374,7 @@ function SwitchAccountDropdown() {
       <Backdrop isOpen={isConfirmDisconnectOpen}>
         <DialogBox h="220px" handleClose={onCloseConfirmDisconnect}>
           <Text fontSize="sm" fontWeight="bold">
-            Are you sure you want to disconnect your currently connected wallet?
+            This will disconnect your current wallet. Are you sure you want to proceed?
           </Text>
           <Flex justify="flex-end" mt="60px">
             <Button h="30px" mr={2} bg="danger" color="#fff" onClick={handleDisconnect}>

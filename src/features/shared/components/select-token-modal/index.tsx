@@ -191,6 +191,7 @@ function SelectTokenModal({
                 token={token.token}
                 issuer={token.issuer}
                 icon={token.icon}
+                isMyToken={true}
                 handleClick={() =>
                   handleToken({
                     token: token.token,

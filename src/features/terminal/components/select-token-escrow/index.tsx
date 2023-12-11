@@ -25,13 +25,20 @@ function SelectTokenEscrow() {
     setToken(token);
   };
 
+  const handleClearSelectedToken = () => {
+    setView("list");
+    setToken(null);
+  };
+
   return (
     <AnimatePresence>
       {view === "list" && (
         <SelectTokenDropdown handleTokenClick={handleTokenClick} isTokenDisabled />
       )}
 
-      {view === "detail" && <TokenDetail token={token} />}
+      {view === "detail" && (
+        <TokenDetail token={token} handleTokenClick={handleClearSelectedToken} />
+      )}
     </AnimatePresence>
   );
 }
