@@ -11,7 +11,7 @@ function ShowDetailsOnHover({ fullText, shortText, color, alignLeft }: ShowDetai
   return (
     <Box
       pos="relative"
-      w="fit-content"
+      // w="fit-content"
       _hover={{
         ".fullText": {
           display: "block",
@@ -38,7 +38,7 @@ function ShowDetailsOnHover({ fullText, shortText, color, alignLeft }: ShowDetai
         {fullText}
       </Text>
 
-      <Text fontSize="sm" fontWeight="bold" textAlign="center" color={color || "#fff"}>
+      <Text fontSize="sm" fontWeight="bold" textAlign="center" color={color || "#fff"} w="100%">
         {shortText}
       </Text>
     </Box>

@@ -5,8 +5,12 @@ import { selectAddress, selectNet } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import { useGetAccountNftsQuery } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
+import ROUTES from "@/routes";
+import { useNavigate } from "react-router-dom";
 
 function ListNftsGallery() {
+  const navigate = useNavigate();
+
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
   const { data, isLoading, isFetching } = useGetAccountNftsQuery({ address, net });
@@ -45,6 +49,7 @@ function ListNftsGallery() {
         borderRadius="35px"
         cursor="pointer"
         aspectRatio={1}
+        onClick={() => navigate(ROUTES.TRANSACTIONS)}
       >
         <PlusIcon color="#858585" fontSize="5xl" />
       </Flex>

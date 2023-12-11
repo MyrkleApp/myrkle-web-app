@@ -4,7 +4,7 @@ import { Box, Circle, Flex, HStack, Spacer, Switch, Text, useDisclosure } from "
 import ExchangeBox from "../exchange-box";
 import { numbersOnlyRegex, xrpToken } from "@/constants";
 import { IToken, TTxnPipeline } from "@/features/shared/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -79,7 +79,7 @@ function MakeExchange() {
   const _setTfFillOrKill = (value: boolean) => dispatch(setTfFillOrKill(value));
 
   // ============================================================================================
-  // state & local storage
+  // state & local storage & ref
   // ============================================================================================
 
   const [fromTokenAmount, setFromTokenAmount] = useState("");
@@ -93,6 +93,8 @@ function MakeExchange() {
   const [localTfImmediateOrCancel, storeTfImmediateOrCancel] =
     useLocalStorage<boolean>("tfImmediateOrCancel");
   const [localTfFillOrKill, storeTfFillOrKill] = useLocalStorage<boolean>("tfFillOrKill");
+
+  const containerRef = useRef(null);
 
   // ============================================================================================
   // api
@@ -218,9 +220,22 @@ function MakeExchange() {
     setToTokenAmount("");
   };
 
+  const handleOptionsClick = () => {
+    onToggleOptions();
+  };
+
   return (
     <>
-      <Box h="calc(100% - 130px)" overflow="hidden auto" mt={4} pr={1}>
+      <Box
+        h="calc(100% - 130px)"
+        overflow="hidden auto"
+        // mt={4}
+        mt={[4, null, null, null, null, "calc(50% - 250px)"]}
+        pr={1}
+        // border="1px solid red"
+        minH="280px"
+        maxH={["400px"]}
+      >
         <Box h="35%">
           <Text color="textDark" fontSize="xs" fontWeight="bold">
             From
@@ -271,7 +286,7 @@ function MakeExchange() {
               {cleanupRate(Number(fromTokenAmount) / Number(toTokenAmount))}
             </Text> */}
             <Spacer />
-            <HStack cursor="pointer" onClick={onToggleOptions}>
+            <HStack cursor="pointer" onClick={handleOptionsClick}>
               <ThickArrowDownIcon color="#fff" fontSize="xs" />
               <Text color="#fff" fontSize="sm">
                 Options
@@ -281,7 +296,7 @@ function MakeExchange() {
         )}
 
         {isOptionsOpen && exchangeType === "swap" && (
-          <Box mt={3}>
+          <Box mt={3} pb={3}>
             <HStack mb={2}>
               <Text fontSize="xs">tfSell</Text>
               <ItemDescription description={optionsData.tfSell} top={-70} h="100px" />
@@ -340,6 +355,7 @@ function MakeExchange() {
             />
           </HStack>
         )}
+        <Box ref={containerRef} />
       </Box>
 
       <Button

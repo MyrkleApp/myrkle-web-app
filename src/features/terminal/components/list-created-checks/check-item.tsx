@@ -138,7 +138,7 @@ function CheckItem({ check }: ICheckItemProps) {
           />
         </Td>
         <Td fontSize="sm" fontWeight="bold">
-          <HStack justify="flex-end">
+          <HStack justify="center">
             <Button bg="danger" h="30px" px="30px" onClick={handleCancelCheck}>
               Cancel
             </Button>

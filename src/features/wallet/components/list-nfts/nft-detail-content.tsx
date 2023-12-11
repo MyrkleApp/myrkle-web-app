@@ -180,7 +180,7 @@ function NftDetailContent() {
             cursor="pointer"
             onClick={scrollRight}
           >
-            <ArrowRight2Icon fontSize="xs" fill="none" mr={-0.5} />
+            <ArrowLeft2Icon fontSize="xs" fill="none" ml={-0.5} />
           </Circle>
           <Circle
             pos="absolute"
@@ -192,7 +192,7 @@ function NftDetailContent() {
             cursor="pointer"
             onClick={scrollLeft}
           >
-            <ArrowLeft2Icon fontSize="xs" fill="none" ml={-0.5} />
+            <ArrowRight2Icon fontSize="xs" fill="none" mr={-0.5} />
           </Circle>
         </Box>
       </Flex>

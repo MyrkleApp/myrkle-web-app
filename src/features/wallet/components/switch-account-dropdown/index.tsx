@@ -364,7 +364,7 @@ function SwitchAccountDropdown() {
       </Backdrop>
 
       <Backdrop isOpen={isConfirmDisconnectOpen}>
-        <DialogBox handleClose={onCloseConfirmDisconnect}>
+        <DialogBox h="220px" handleClose={onCloseConfirmDisconnect}>
           <Text fontSize="sm" fontWeight="bold">
             Are you sure you want to disconnect your currently connected wallet?
           </Text>

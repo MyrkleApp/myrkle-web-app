@@ -14,7 +14,7 @@ export interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <Box h="100vh" w="100vw" overflow="hidden">
-      <Box h="100vh" bg="darkest" pos="relative" w={`${window.screen.width}px`}>
+      <Box h="100vh" bg="darkest" pos="relative">
         <Box h="100%" w="250px" pos="absolute" top="0" left="0" pl="20px">
           <Flex h="70px" justify="center" align="center">
             <Link to={ROUTES.HOME}>

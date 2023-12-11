@@ -222,6 +222,7 @@ function AddTokenFormModal({
         <AnimatePresence>
           {showAdvancedOptions && (
             <MotionBox
+              pt={2}
               mb={5}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { duration: 0.5 } }}
@@ -234,7 +235,7 @@ function AddTokenFormModal({
               </HStack>
               <Input mb={3} /> */}
 
-              <HStack mb={3}>
+              <HStack>
                 <Text fontSize="2xs" color="textDark" fontWeight="bold">
                   Rippling
                 </Text>

@@ -20,7 +20,7 @@ function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
         </Text>
       </VStack>
       <Spacer />
-      <Text fontSize="4vh" mt={-4} pr={2} pos="absolute" right={0}>
+      <Text fontSize="4vh" mt={-4} pr={[3, null, null, null, null, 7]} pos="absolute" right={0}>
         {Number(amount).toFixed(2)}
       </Text>
     </HStack>

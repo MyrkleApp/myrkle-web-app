@@ -38,7 +38,7 @@ function AssetManager() {
         </HStack>
 
         <Box h="calc(100% - 70px)" overflow="hidden auto">
-          <SimpleGrid pr={3} pl={5} columns={5} spacingX={8} spacingY={10}>
+          <SimpleGrid pr={3} pl={5} columns={[1, 2, 3, 5]} spacingX={8} spacingY={10}>
             <Link to={ROUTES.TERMINAL_NEW_ASSET}>
               <IconContainer title="New Asset">
                 <Image src={newAssetGray} alt="New Asset" h="60px" className="gray" />

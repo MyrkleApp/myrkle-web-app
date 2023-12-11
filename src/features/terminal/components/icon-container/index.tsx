@@ -21,6 +21,7 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         // h="250px"
         aspectRatio={1 / 1.15}
         mb={7}
+        position="relative"
         cursor="pointer"
         {...props}
         sx={{
@@ -38,16 +39,19 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
         }}
       >
         {children}
+
+        <Text
+          fontSize="sm"
+          fontWeight="bold"
+          textAlign="center"
+          letterSpacing={1}
+          visibility={props.visibility || "visible"}
+          position="absolute"
+          bottom="-40px"
+        >
+          {title}
+        </Text>
       </MotionBox>
-      <Text
-        fontSize="sm"
-        fontWeight="bold"
-        textAlign="center"
-        letterSpacing={1}
-        visibility={props.visibility || "visible"}
-      >
-        {title}
-      </Text>
     </Box>
   );
 }

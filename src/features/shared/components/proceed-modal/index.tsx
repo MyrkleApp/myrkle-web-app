@@ -38,7 +38,13 @@ function ProceedModal({ text, isLoading, handleProceed, handleClose }: ProceedMo
         <CloseButton onClick={handleClose} />
       </Flex>
 
-      <Text fontWeight="bold" mt={3} mb={10}>
+      <Text
+        fontSize="lg"
+        fontWeight="bold"
+        className="font-face-proxima-nova-extrabld"
+        mt={3}
+        mb={10}
+      >
         {text}
       </Text>
 

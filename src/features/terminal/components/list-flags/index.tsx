@@ -30,7 +30,6 @@ const isFlagEnabled = (list: any[], flagTitle: string) => {
 
 function ListFlags() {
   const [lastAlteredFlag, setLastAlteredFlag] = useState("");
-  console.log(lastAlteredFlag);
 
   const net = useSelector(selectNet);
   const address = useSelector(selectAddress);

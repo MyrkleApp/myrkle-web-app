@@ -36,7 +36,7 @@ function ListCreatedEscrows() {
     <TableContainer pr={2} mt={-2}>
       <Table
         variant="simple"
-        size="md"
+        size="sm"
         style={{ borderCollapse: "separate", borderSpacing: "0 10px" }}
       >
         <Thead>
