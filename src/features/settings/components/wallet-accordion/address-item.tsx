@@ -101,12 +101,14 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
     if (selectedWalletProvider && selectedWalletProvider !== "myrkle") {
       await db.removeWallet({ address, walletProvider: selectedWalletProvider });
     }
+
+    onCloseRemoveWallet();
   };
 
   return (
     <>
       <Box w="calc(100% - 70px)" mx="auto" mb={2}>
-        <HStack mb={2}>
+        <HStack mb={2} align="flex-start">
           {name ? (
             <Text fontSize="xs" fontWeight="bold">
               {name}
@@ -117,6 +119,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
               color="textDark"
               cursor={isPreventSwitchWallet ? "not-allowed" : "pointer"}
               onClick={handleAddressClick}
+              maxW="calc(100% - 80px)"
             >
               {address}
             </Text>

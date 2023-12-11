@@ -238,7 +238,6 @@ function useSubmitTxn(
 
       if (res.txSign) {
         setXummTxnQrCode("");
-        setResponseMessage("Transaction signed");
         setIsOpen(true);
         setIsLoading(false);
 
@@ -249,6 +248,9 @@ function useSubmitTxn(
               setIsSuccess(true);
             } else {
               setIsSuccess(false);
+              setResponseMessage(
+                "Get detailed information of the transaction from your wallet provider",
+              );
             }
           });
       }

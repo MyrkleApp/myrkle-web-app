@@ -329,7 +329,9 @@ function SendToken() {
 
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
-        {view === "error-1" && <ResponseModal isError={true} handleClose={handleReset} />}
+        {view === "error-1" && (
+          <ResponseModal isError={true} message="Something went wrong" handleClose={handleReset} />
+        )}
         {view === "xumm-qr-code" && (
           <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
         )}

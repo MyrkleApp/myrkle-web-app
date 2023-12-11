@@ -112,7 +112,13 @@ function BurnNft() {
 
           {modalType === "loading" && <MyrkleLoader />}
 
-          {modalType === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
+          {modalType === "error-1" && (
+            <ResponseModal
+              isError={true}
+              message="Something went wrong"
+              handleClose={handleClose}
+            />
+          )}
 
           {modalType === "xumm-qr-code" && (
             <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
