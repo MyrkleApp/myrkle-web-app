@@ -10,7 +10,7 @@ import ArrowDownIcon from "@/icons/arrow-down";
 import { MotionBox, MotionText } from "@/components/motion-elements";
 import Backdrop from "@/components/backdrop";
 import AddressModal from "./address-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import XAddressFormModal from "./x-address-form-modal";
 import InfoIcon from "@/icons/info";
@@ -20,16 +20,17 @@ import EnterPasswordModal from "./enter-password-modal";
 import SecretsModal from "./secrets-modal";
 import RenderElement from "@/components/render-element";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectAddress,
   selectNet,
   selectNetwork,
   selectTotalBalance,
 } from "../../redux/wallet.selectors";
-import { formatNumber } from "@/helpers";
+import { cleanupTokenBalance, formatNumber } from "@/helpers";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
+import { setTotalBalance } from "../../redux/wallet.slice";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon, link: ROUTES.TERMINAL_CHECKS },
@@ -67,6 +68,8 @@ function WalletDetails() {
 
   const [accountInfoModal, setAccountInfoModal] = useState<TAccountInfoModal>("account-info");
 
+  const dispatch = useDispatch();
+
   // =======================================================================================
   // selectors
   // =======================================================================================
@@ -74,8 +77,6 @@ function WalletDetails() {
   const net = useSelector(selectNet);
   const totalBalance = useSelector(selectTotalBalance);
   const network = useSelector(selectNetwork);
-
-  console.log("redux state balance", totalBalance);
 
   // =======================================================================================
   // api
@@ -111,6 +112,37 @@ function WalletDetails() {
   const handleAccountInfoModal = (modal: TAccountInfoModal) => {
     setAccountInfoModal(modal);
   };
+
+  // =======================================================================================
+  // effects
+  // =======================================================================================
+
+  const tokenCardBalanceElems = document.querySelectorAll(".token-card-balance");
+
+  /**
+   * this is not exactly the best practise,
+   * but it was what I had to do because I
+   * could not get the token price on testnet.
+   * this made it difficult to be able to calculate
+   * the sum of the tokens on testnet
+   */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const elems = Array.from(document.querySelectorAll(".token-card-balance"));
+      if (elems.length) {
+        const balanceArr: number[] = [];
+        elems.forEach((elem) => {
+          if (!isNaN(cleanupTokenBalance(elem.innerHTML))) {
+            balanceArr.push(cleanupTokenBalance(elem.innerHTML));
+          }
+        });
+        const sum = balanceArr.reduce((acc, val) => acc + val, 0);
+        dispatch(setTotalBalance(formatNumber(sum)));
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [dispatch, tokenCardBalanceElems]);
 
   return (
     <>
@@ -172,7 +204,7 @@ function WalletDetails() {
               mb={2}
             >
               <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"9vh"}>
-                ${formatNumber(totalBalance)}
+                ${totalBalance}
               </Text>
             </RenderElement>
           </Box>

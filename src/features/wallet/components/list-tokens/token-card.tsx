@@ -41,7 +41,6 @@ export interface TokenCardProps {
   amount: number;
   limit?: string;
   xrpData: ReturnType<typeof useGetXrpData>;
-  handleTokenUsdAmountObj: (val: any) => void;
   isFrozen?: boolean;
 }
 
@@ -57,15 +56,7 @@ type TTokenModalView =
   | "error-2"
   | "success";
 
-function TokenCard({
-  token,
-  issuer,
-  amount,
-  limit,
-  xrpData,
-  handleTokenUsdAmountObj,
-  isFrozen,
-}: TokenCardProps) {
+function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCardProps) {
   const navigate = useNavigate();
 
   const [
@@ -116,27 +107,14 @@ function TokenCard({
   // ==================================================================================================
 
   useEffect(() => {
-    if (isXrpToken({ token })) {
-      handleTokenUsdAmountObj({ [`${token}+${issuer}`]: xrpBalanceInUSD });
-    }
-
     if (network !== "mainnet") return;
 
     const getTokenInformation = async () => {
-      const tokenInfo: any = await getTokenInfo(token, issuer);
-      const tokenInfoItemBalance = Number(tokenInfo?.price) * amount;
-      if (tokenInfoItemBalance && !isNaN(tokenInfoItemBalance)) {
-        handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenInfoItemBalance });
-      }
+      await getTokenInfo(token, issuer);
     };
 
     if (!isXrpToken({ token })) {
       getTokenInformation();
-      // getTokenInfo({ token, issuer })
-      //   .unwrap()
-      //   .then(() => {
-      //     handleTokenUsdAmountObj({ [`${token}+${issuer}`]: tokenBalanceToUSD });
-      //   });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuer, network, token, address, xrpPriceInUSD, amount, tokenData?.price]);
@@ -292,7 +270,7 @@ function TokenCard({
             >
               {formatNumber(amount)}
             </Text>
-            <Text color="textDark" fontSize="xs" fontWeight="bold">
+            <Text color="textDark" fontSize="xs" fontWeight="bold" className="token-card-balance">
               $
               {formatNumber(
                 isXrpToken({ token })

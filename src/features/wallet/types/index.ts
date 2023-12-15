@@ -8,7 +8,7 @@ export interface IWalletInitialState {
   userToken: string;
   walletProvider: TWalletProvider | "";
   myWallets: IWalletAddress[];
-  totalBalance: number;
+  totalBalance: string;
 }
 
 export type TAddTokenModalType = "add-token-form" | "select-token";

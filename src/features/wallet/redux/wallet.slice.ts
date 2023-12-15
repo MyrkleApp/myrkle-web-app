@@ -9,7 +9,7 @@ const initialState: IWalletInitialState = {
   userToken: "",
   walletProvider: "",
   myWallets: [],
-  totalBalance: 0,
+  totalBalance: "-- --",
 };
 
 // rGiyqjWjhsRZ8FUjBL2k5ciUa2tcptTX9W
@@ -58,7 +58,7 @@ const walletSlice = createSlice({
         state.walletProvider = "";
       }
     },
-    setTotalBalance(state, { payload }: PayloadAction<number>) {
+    setTotalBalance(state, { payload }: PayloadAction<string>) {
       state.totalBalance = payload;
     },
     setAddress(state, { payload }: PayloadAction<string>) {

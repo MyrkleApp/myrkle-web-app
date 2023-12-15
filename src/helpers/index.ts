@@ -134,3 +134,9 @@ export const formatTime = (dateStr: string): string => {
 };
 
 export const isObjectEmpty = (object: any) => Object.keys(object).length === 0;
+
+export const cleanupTokenBalance = (balance: string) => {
+  let cleanupVal = balance.split("$")[1];
+  cleanupVal = cleanupVal.split(",").join("");
+  return parseFloat(cleanupVal);
+};
