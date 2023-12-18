@@ -2,19 +2,19 @@ import LogoIcon from "@/icons/logo";
 import ROUTES from "@/routes";
 import { Flex, HStack, Text } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import WalletButton from "./wallet-button";
 
 const links = [
   { name: "home", path: ROUTES.HOME },
   { name: "about us", path: ROUTES.ABOUT_US },
+  { name: "faq", path: ROUTES.FAQ },
   { name: "contact", path: ROUTES.CONTACT },
 ];
 
-function HomeNavbar() {
+function Footer() {
   const { pathname } = useLocation();
 
   const getNavItemColor = (route: string) => {
-    return pathname === route ? "primary" : "#fff";
+    return pathname === route ? "#000" : "#fff";
   };
 
   return (
@@ -22,12 +22,13 @@ function HomeNavbar() {
       align="center"
       justify="space-between"
       h="60px"
-      w="100%"
+      w="90%"
+      ml="5%"
       pos="absolute"
-      bg="#FFFFFF03"
+      bottom="20px"
       zIndex={1000}
     >
-      <LogoIcon fontSize="80px" ml="50px" />
+      <LogoIcon fontSize="100px" ml="50px" />
       <HStack spacing={10} mr="50px">
         {links.map((link, i) => (
           <Link key={i} to={link.path}>
@@ -36,16 +37,15 @@ function HomeNavbar() {
               fontWeight="bold"
               textTransform="uppercase"
               color={getNavItemColor(link.path)}
-              _hover={{ color: "primary" }}
+              _hover={{ color: "#000" }}
             >
               {link.name}
             </Text>
           </Link>
         ))}
-        <WalletButton />
       </HStack>
     </Flex>
   );
 }
 
-export default HomeNavbar;
+export default Footer;

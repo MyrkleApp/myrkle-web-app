@@ -24,8 +24,8 @@ function Layout({ children }: LayoutProps) {
           pl="20px"
         >
           <Flex h="70px" justify="center" align="center">
-            <Link to={ROUTES.HOME}>
-              <LogoIcon fontSize="100px" display={["none", null, null, null, "none"]} />
+            <Link to={ROUTES.LANDING}>
+              <LogoIcon fontSize="100px" display={["none", null, null, null, "block"]} />
             </Link>
           </Flex>
           <Box h="calc(100% - 50px - 50px)">

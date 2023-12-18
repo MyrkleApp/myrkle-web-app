@@ -21,6 +21,7 @@ import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-d
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
 import { isDesktop } from "react-device-detect";
 import UnderConstruction from "./components/under-construction";
+import LandingPage from "./pages/landing";
 
 function App() {
   useRehydrateSignInData();
@@ -33,6 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={ROUTES.LANDING} element={<LandingPage />} />
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.WALLET} element={<Wallet />} />
         <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />

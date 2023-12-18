@@ -1,7 +1,9 @@
 const ROUTES = {
-  HOME: "/",
+  LANDING: "/",
+  HOME: "/home",
   ABOUT_US: "#",
   CONTACT: "#",
+  FAQ: "#",
   WALLET: "/wallet",
   WALLET_NFT_GALLERY: "/wallet/nft-gallery",
   WALLET_NFT_DETAIL: "/wallet/nft-detail",
