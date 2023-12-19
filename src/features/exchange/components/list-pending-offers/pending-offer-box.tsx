@@ -1,7 +1,6 @@
-import { HStack, Image, Spacer, Text, VStack } from "@chakra-ui/react";
-import xrpLogo from "@/assets/xrp-logo.svg";
-import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
+import { HStack, Spacer, Text, VStack } from "@chakra-ui/react";
+import { ellipsisAtCenter, formatNumber } from "@/helpers";
+import TokenIcon from "@/features/shared/components/token-icon";
 
 export interface OfferBoxProps {
   token: string;
@@ -10,10 +9,10 @@ export interface OfferBoxProps {
   icon?: string;
 }
 
-function PendingOfferBox({ token, issuer, amount, icon }: OfferBoxProps) {
+function PendingOfferBox({ token, issuer, amount }: OfferBoxProps) {
   return (
     <HStack w="50%" h="100%" bg="darkest" borderRadius="5px" pl={2} pr={3}>
-      <Image src={isXrpToken({ token }) ? xrpLogo : icon || tokenPlaceholder} alt="" h="30px" />
+      <TokenIcon token={token} issuer={issuer} h="30px" />
       <VStack spacing={0} align="flex-start">
         <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
           {token}

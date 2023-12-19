@@ -17,10 +17,10 @@ function ListOffers() {
 
   useEffect(() => {
     sortBestOffer({
-      buy_type: fromToken.token,
-      buy_issuer: fromToken.issuer,
-      sell_type: toToken.token,
-      sell_issuer: toToken.issuer,
+      buy_type: toToken.token,
+      buy_issuer: toToken.issuer,
+      sell_type: fromToken.token,
+      sell_issuer: fromToken.issuer,
       best_buy: true,
       best_sell: false,
       mainnet: network === "mainnet",

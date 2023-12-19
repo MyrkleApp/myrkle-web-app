@@ -96,8 +96,8 @@ function OfferRow({ offer }: OfferRowProps) {
 
     matchOffer({
       sender_addr: address,
-      buy_type: offer?.sell_token,
-      sell_type: offer?.buy_token,
+      buy_type: offer?.buy_token,
+      sell_type: offer?.sell_token,
       buy_amount: offer?.sell_amount,
       sell_amount: offer?.buy_amount,
       buy_issuer: offer?.sell_issuer || "000",

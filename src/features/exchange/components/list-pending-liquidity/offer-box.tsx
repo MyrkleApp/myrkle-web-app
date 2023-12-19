@@ -1,7 +1,7 @@
 import ItemLabel from "@/components/item-label";
-import { Box, HStack, Image, Spacer, Text, VStack } from "@chakra-ui/react";
-import tokenPlaceholder from "@/assets/token-placeholder.png";
+import { Box, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
+import TokenIcon from "@/features/shared/components/token-icon";
 
 export interface OfferBoxProps {
   token: string;
@@ -10,12 +10,12 @@ export interface OfferBoxProps {
   icon?: string;
 }
 
-function OfferBox({ token, issuer, icon, amount }: OfferBoxProps) {
+function OfferBox({ token, issuer, amount }: OfferBoxProps) {
   return (
     <Box w="50%" h="100%" bg="darkest" borderRadius="5px" p="3px 8px 25px 7px">
       <ItemLabel title="Give" mb={2} />
       <HStack>
-        <Image src={icon || tokenPlaceholder} alt="" h="40px" />
+        <TokenIcon token={token} issuer={issuer} h="40px" />
         <VStack spacing={0} align="flex-start" mt="7px">
           <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
             {token}
