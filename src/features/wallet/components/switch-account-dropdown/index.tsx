@@ -87,12 +87,20 @@ function SwitchAccountDropdown() {
     onClose: onCloseConfirmDisconnect,
   } = useDisclosure();
 
+  const {
+    isOpen: isWalletExistsOpen,
+    onOpen: onOpenWalletExistsModal,
+    onClose: onCloseWalletExistsModal,
+  } = useDisclosure();
+
   const [selectedWallet, setSelectedWallet] = useState<null | IWalletAddress>(null);
   const [newWallet, setNewWallet] = useState<null | TWalletProvider>(null);
 
   const ref = useRef(null);
 
-  const { qrCodeImage, resetSignInQrCode } = useXummSignIn(() => setNewWallet(null));
+  const { qrCodeImage, resetSignInQrCode, isXummWalletExists } = useXummSignIn(() =>
+    setNewWallet(null),
+  );
 
   // ======================================================================================================
   // effects
@@ -127,6 +135,13 @@ function SwitchAccountDropdown() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newWallet]);
 
+  useEffect(() => {
+    if (isXummWalletExists) {
+      onOpenWalletExistsModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isXummWalletExists]);
+
   // ======================================================================================================
   // handlers & other functions
   // ======================================================================================================
@@ -143,7 +158,10 @@ function SwitchAccountDropdown() {
       if (checkForCrossmark() !== true) {
         setNewWallet(wallet);
       } else {
-        crossmarkSignIn();
+        const res = await crossmarkSignIn();
+        if (res?.isWalletExists) {
+          onOpenWalletExistsModal();
+        }
       }
     }
 
@@ -152,7 +170,10 @@ function SwitchAccountDropdown() {
       if (isGemWallet !== true) {
         setNewWallet(wallet);
       } else {
-        gemWalletSignIn();
+        const res = await gemWalletSignIn();
+        if (res?.isWalletExists) {
+          onOpenWalletExistsModal();
+        }
       }
     }
   };
@@ -385,6 +406,14 @@ function SwitchAccountDropdown() {
             </Button>
           </Flex>
         </DialogBox>
+      </Backdrop>
+
+      <Backdrop isOpen={isWalletExistsOpen}>
+        <DialogBox
+          h="220px"
+          message="This wallet is already connected to myrkle."
+          handleClose={onCloseWalletExistsModal}
+        />
       </Backdrop>
     </>
   );
