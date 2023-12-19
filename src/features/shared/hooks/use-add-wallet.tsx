@@ -3,7 +3,7 @@ import useCrossmarkSignIn from "@/features/auth/hooks/use-crossmark-signin";
 import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
 import useXummSignIn from "@/features/auth/hooks/use-xumm-signin";
 import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { socket, xummSignInJson } from "../socket-io";
 import { checkForCrossmark } from "../connections/crossmark";
 import { checkForGemWallet } from "../connections/gemwallet";
@@ -23,7 +23,15 @@ function useAddWallet() {
     onClose: onCloseDialogBox,
   } = useDisclosure();
 
-  const { qrCodeImage } = useXummSignIn(onCloseDialogBox);
+  const { qrCodeImage, isXummWalletExists } = useXummSignIn(onCloseDialogBox);
+
+  useEffect(() => {
+    if (isXummWalletExists) {
+      setDialogBoxMessage("This wallet is already connected to myrkle.");
+      onOpenDialogBox();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isXummWalletExists]);
 
   const handleXummClick = () => {
     handleView(ADD_WALLET_PIPELINE.XUMM);

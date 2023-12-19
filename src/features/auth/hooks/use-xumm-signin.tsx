@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TConnectionStatus } from "@/features/shared/types";
 import { socket } from "@/features/shared/socket-io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
 import { ISignIn, IWalletAddress } from "@/features/wallet/types";
 import { useLocalStorage } from "react-use";
@@ -9,15 +9,20 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { IAddExternalWallet } from "@/services/types";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
+import { checkWalletExists } from "@/helpers";
 
 function useXummSignIn(handleCloseModal: () => void) {
   const navigate = useNavigate();
 
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
+  const myWallets = useSelector(selectMyWallets);
+
   const [signInStatus, setSignInStatus] = useState<TConnectionStatus>("loading");
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
+  const [isXummWalletExists, setXummWalletExists] = useState<null | boolean>(null);
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
@@ -62,6 +67,14 @@ function useXummSignIn(handleCloseModal: () => void) {
     };
 
     if (walletAddress) {
+      const isWalletExists = checkWalletExists(myWallets, walletAddress, "xumm");
+      if (isWalletExists) {
+        setXummWalletExists(true);
+        return;
+      } else {
+        setXummWalletExists(false);
+      }
+
       handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm" });
       navigate(ROUTES.WALLET);
       _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
@@ -73,7 +86,7 @@ function useXummSignIn(handleCloseModal: () => void) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, walletAddress]);
 
-  return { signInStatus, qrCodeImage, resetSignInQrCode };
+  return { signInStatus, qrCodeImage, resetSignInQrCode, isXummWalletExists };
 }
 
 export default useXummSignIn;
