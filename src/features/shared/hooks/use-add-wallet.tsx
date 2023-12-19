@@ -9,8 +9,8 @@ import { checkForCrossmark } from "../connections/crossmark";
 import { checkForGemWallet } from "../connections/gemwallet";
 
 function useAddWallet() {
-  const [crossmarkSignIn, { error: crossmarkSignInError }] = useCrossmarkSignIn();
-  const [gemWalletSignIn, { error: gemWalletSignInError }] = useGemWalletSignIn();
+  const [crossmarkSignIn] = useCrossmarkSignIn();
+  const [gemWalletSignIn] = useGemWalletSignIn();
 
   const [view, setView] = useState(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
 
@@ -30,15 +30,18 @@ function useAddWallet() {
     socket.emit("signIn", xummSignInJson);
   };
 
-  const handleCrossmarkClick = () => {
+  const handleCrossmarkClick = async () => {
     const isCrossmark = checkForCrossmark();
 
     if (isCrossmark !== true) {
       setDialogBoxMessage("Please install Crossmark");
       onOpenDialogBox();
     } else {
-      crossmarkSignIn();
-      console.log(crossmarkSignInError);
+      const res = await crossmarkSignIn();
+      if (res?.isWalletExists) {
+        setDialogBoxMessage("This wallet is already connected to myrkle.");
+        onOpenDialogBox();
+      }
     }
   };
 
@@ -49,8 +52,11 @@ function useAddWallet() {
       setDialogBoxMessage("Please install GemWallet");
       onOpenDialogBox();
     } else {
-      gemWalletSignIn();
-      console.log(gemWalletSignInError);
+      const res = await gemWalletSignIn();
+      if (res?.isWalletExists) {
+        setDialogBoxMessage("This wallet is already connected to myrkle.");
+        onOpenDialogBox();
+      }
     }
   };
 

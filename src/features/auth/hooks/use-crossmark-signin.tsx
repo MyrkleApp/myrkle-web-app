@@ -1,11 +1,13 @@
 import { checkForCrossmark } from "@/features/shared/connections/crossmark";
+import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
 import { ISignIn, IWalletAddress } from "@/features/wallet/types";
+import { checkWalletExists } from "@/helpers";
 import ROUTES from "@/routes";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { IAddExternalWallet } from "@/services/types";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 
@@ -13,6 +15,8 @@ function useCrossmarkSignIn() {
   const navigate = useNavigate();
 
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
+
+  const myWallets = useSelector(selectMyWallets);
 
   const [error, setError] = useState("");
 
@@ -48,6 +52,12 @@ function useCrossmarkSignIn() {
       }
       const network = response.data.network.type === "test" ? "testnet" : "mainnet";
       const address = response.data.address;
+
+      const isWalletExists = checkWalletExists(myWallets, address, "crossmark");
+      if (isWalletExists) {
+        return { isWalletExists };
+      }
+
       if (response.data.meta.isSuccess) {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
         _addWallet({ address, walletProvider: "crossmark", name: "" });

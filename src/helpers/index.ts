@@ -1,4 +1,5 @@
 import { IToken } from "@/features/shared/types";
+import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import { Buffer } from "buffer";
 
 export const ellipsisAtCenter = (text: string) => {
@@ -148,4 +149,16 @@ export const generateAnimateObject = (leftOffset: number = 0, topOffset: number 
     transform: `translate(calc(-50% - ${leftOffset}px), calc(-50% - ${topOffset}px))`,
     transition: { duration: 0.8 },
   };
+};
+
+export const checkWalletExists = (
+  wallets: IWalletAddress[],
+  address: string,
+  walletProvider: TWalletProvider,
+) => {
+  return (
+    wallets.findIndex(
+      (wallet) => wallet.walletProvider === walletProvider && wallet.address === address,
+    ) !== -1
+  );
 };
