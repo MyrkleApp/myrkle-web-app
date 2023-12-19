@@ -142,7 +142,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
   };
 
   const tokenIconLink = (url: string) => {
-    return `${url}?token=${token}&issuer=${issuer}`;
+    return `${url}?token=${token}&issuer=${issuer}&balance=${amount}`;
   };
 
   const handleReset = () => {

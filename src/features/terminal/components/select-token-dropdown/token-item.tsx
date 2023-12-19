@@ -8,14 +8,19 @@ import tokenPlaceholder from "@/assets/token-placeholder.png";
 import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
 import IssuerData from "@/features/shared/components/issuer-data.tsx";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
+import { useSearchParams } from "react-router-dom";
 
 export interface TokenItemProps {
   token?: any;
   handleClick?: (value: any) => void;
   isDisabled?: boolean;
+  useUrlTokenBalance?: boolean;
 }
 
-function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
+function TokenItem({ token, handleClick, isDisabled, useUrlTokenBalance }: TokenItemProps) {
+  const [searchParams] = useSearchParams();
+  const urlTokenBalance = searchParams.get("balance");
+
   const network = useSelector(selectNetwork);
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
@@ -26,6 +31,8 @@ function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
 
   const isIssuerData: boolean = data?.issuerName && data?.issuerIcon;
   const tokenBalance = isXrpToken(token) ? xrpBalance?.balance : token?.balance;
+
+  const balanceToDisplay = !useUrlTokenBalance ? tokenBalance : urlTokenBalance || tokenBalance;
 
   useEffect(() => {
     if (isXrpToken(token)) return;
@@ -66,7 +73,7 @@ function TokenItem({ token, handleClick, isDisabled }: TokenItemProps) {
       </VStack>
       <Spacer />
       <Text fontSize="2xs" mt={7}>
-        Balance: {formatNumber(tokenBalance, 2)}
+        Balance: {formatNumber(balanceToDisplay, 2)}
       </Text>
     </HStack>
   );

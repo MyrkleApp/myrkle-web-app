@@ -59,7 +59,7 @@ function XAddressFormModal({ handleClose }: XAddressFormModalProps) {
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="200px"
+      h={data ? "150px" : "200px"}
       w="270px"
       p={4}
       bg="darker"

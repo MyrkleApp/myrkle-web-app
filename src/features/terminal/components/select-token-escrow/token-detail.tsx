@@ -124,7 +124,7 @@ function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
       >
         <Box>
           <ItemLabel title="Token" mb={1} />
-          <TokenItem token={token} handleClick={handleTokenClick} />
+          <TokenItem token={token} handleClick={handleTokenClick} useUrlTokenBalance />
         </Box>
         <Box mb={2}>
           <ItemLabel title="Receiver address" mb={1} />

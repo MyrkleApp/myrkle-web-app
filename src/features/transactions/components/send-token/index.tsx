@@ -31,6 +31,7 @@ function SendToken() {
   const [searchParams] = useSearchParams();
   const urlToken = searchParams.get("token");
   const urlIssuer = searchParams.get("issuer");
+  const urlBalance = searchParams.get("balance") || "";
 
   const [selectedToken, setSelectedToken] = useState<Omit<IToken, "icon">>({
     token: "xrp",
@@ -68,11 +69,17 @@ function SendToken() {
   // ===========================================================================================
 
   useEffect(() => {
+    if (urlBalance) return;
+
     getXrpBalance({ address, net }, true)
       .unwrap()
-      .then((res) => setSelectedToken((prevData) => ({ ...prevData, balance: res.balance })));
+      .then((res) => {
+        if (isXrpToken(selectedToken)) {
+          setSelectedToken((prevData) => ({ ...prevData, balance: res.balance }));
+        }
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [urlBalance]);
 
   useEffect(() => {
     if (xummTxnQrCode) {
@@ -93,9 +100,10 @@ function SendToken() {
       setSelectedToken({
         token: urlToken,
         issuer: urlIssuer,
+        balance: urlBalance,
       });
     }
-  }, [urlIssuer, urlToken]);
+  }, [urlIssuer, urlToken, urlBalance]);
 
   // ===========================================================================================
   // handlers
