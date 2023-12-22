@@ -11,3 +11,5 @@ export type TSelectTokenAmountModalState =
   | "xumm-qr-code"
   | "error-2"
   | "success";
+
+export type TMintTokenStep = "form" | "manager" | "trustline" | "create-token";

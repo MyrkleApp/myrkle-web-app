@@ -349,15 +349,6 @@ export const xrpApi = createApi({
         };
       },
     }),
-    createToken: builder.mutation({
-      query(body: ICreateToken) {
-        return {
-          url: "create-token/",
-          method: "POST",
-          body,
-        };
-      },
-    }),
     sortBestOffer: builder.mutation({
       query(body: ISortBestOffer) {
         return {
@@ -526,7 +517,7 @@ export const xrpApi = createApi({
     }),
 
     // =========================================
-    // new
+    // create token
     // =========================================
     accountSetIssuer: builder.mutation({
       query(body: IAccountSetIssuer) {
@@ -546,6 +537,25 @@ export const xrpApi = createApi({
         };
       },
     }),
+    createTrustline: builder.mutation({
+      query(body: ICreateTrustline) {
+        return {
+          url: "create-trustline/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    createToken: builder.mutation({
+      query(body: ICreateToken) {
+        return {
+          url: "create-token/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    // create notification was stripped out
     createNotification: builder.mutation({
       query(body: ICreateNotification) {
         return {
@@ -555,20 +565,11 @@ export const xrpApi = createApi({
         };
       },
     }),
+    // create pairing was stripped out
     createPairingToken: builder.mutation({
       query(body: ICreatePairingToken) {
         return {
           url: "create-pairing-token/",
-          method: "POST",
-          body,
-        };
-      },
-    }),
-
-    createTrustline: builder.mutation({
-      query(body: ICreateTrustline) {
-        return {
-          url: "create-trustline/",
           method: "POST",
           body,
         };
@@ -644,7 +645,6 @@ export const {
   useModifyTickSizeMutation,
   useOrderBookSwapMutation,
   useOrderBookLiquidityMutation,
-  useCreateTokenMutation,
   useSortBestOfferMutation,
   useCancelOfferMutation,
   useGenerateXAddressMutation,
@@ -664,10 +664,11 @@ export const {
   useNoFreezeMutation,
   useRequireAuthMutation,
   useRequireDestMutation,
-
+  // create token
   useAccountSetIssuerMutation,
   useAccountSetManagerMutation,
+  useCreateTrustlineMutation,
+  useCreateTokenMutation,
   useCreateNotificationMutation,
   useCreatePairingTokenMutation,
-  useCreateTrustlineMutation,
 } = xrpApi;

@@ -1,14 +1,160 @@
 import ItemLabel from "@/components/item-label";
-import { Box } from "@chakra-ui/react";
-import ManagerCard from "./manager-card";
+import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
+import { TWalletProvider } from "@/features/wallet/types";
+import { Box, HStack, Image, Text } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import WalletAccordion from "../wallet-accordion";
+// import ManagerCard from "./manager-card";
+import MyrkleLogoIcon from "@/icons/logo";
+import XummLogoIcon from "@/icons/xumm-logo";
+import crossmarkLogo from "@/assets/crossmark-logo.png";
+import crossmarkText from "@/assets/crossmark-text.png";
+import gemWalletLogo from "@/assets/gem-wallet-logo.png";
+import { useAccountSetManagerMutation } from "@/features/shared/redux/xrp.api";
+import { TTxnPipeline } from "@/features/shared/types";
+import { useEffect, useState } from "react";
+import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
+import { TMintTokenStep } from "../../types";
+import Backdrop from "@/components/backdrop";
+import MyrkleLoader from "@/components/myrkle-loader";
+import ResponseModal from "@/components/response-modal";
+import XummTxnModal from "@/components/xumm-txn-modal";
+import MintTokenProgress from "./mint-token-progress";
 
-function Manager() {
+export interface ManagerProps {
+  managerAddress: string;
+  domain: string;
+  handleManagerAddress: (value: string) => void;
+  handleMintTokenStep: (val: TMintTokenStep) => void;
+}
+
+function Manager({
+  managerAddress,
+  domain,
+  handleManagerAddress,
+  handleMintTokenStep,
+}: ManagerProps) {
+  const [
+    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
+    { handleSubmitTxn, resetSubmitTxnResponse },
+  ] = useSubmitTxn("token");
+
+  const myWallets = useSelector(selectMyWallets);
+
+  const [view, setView] = useState<TTxnPipeline>("default");
+
+  const [accountSetManager] = useAccountSetManagerMutation();
+
+  // ===========================================================================================
+  // effects
+  // ===========================================================================================
+
+  useEffect(() => {
+    if (xummTxnQrCode) {
+      setView("xumm-qr-code");
+    }
+  }, [xummTxnQrCode]);
+
+  useEffect(() => {
+    if (isSubmitTxnSuccess === null) return;
+
+    if (isSubmitTxnSuccess) {
+      handleMintTokenStep("trustline");
+    } else setView("error-2");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitTxnSuccess]);
+
+  const getProviderWallets = (provider: TWalletProvider) => {
+    return myWallets.filter((wallet) => wallet.walletProvider === provider);
+  };
+
+  const handleAccountSetManager = () => {
+    setView("loading");
+
+    accountSetManager({
+      manager_addr: managerAddress,
+      domain,
+    })
+      .unwrap()
+      .then((res) => {
+        handleSubmitTxn(res);
+      })
+      .catch(() => setView("error-1"));
+  };
+
+  const handleReset = () => {
+    resetSubmitTxnResponse();
+    setView("default");
+  };
+
   return (
-    <Box>
-      <ItemLabel title="Manager" />
-      <ManagerCard title="Use Account" subtitle="select account" />
-      <ManagerCard title="connect external wallet" subtitle="choose wallet" />
-    </Box>
+    <>
+      <MintTokenProgress currentStep={2} />
+      <Box px={3}>
+        <ItemLabel title="Set Manager" fontSize="md" />
+        {/* <ManagerCard title="Use Account" subtitle="select account" />
+      <ManagerCard title="connect external wallet" subtitle="choose wallet" /> */}
+
+        <WalletAccordion
+          mb={5}
+          logo={<MyrkleLogoIcon fontSize="80px" />}
+          wallets={getProviderWallets("myrkle")}
+          isDisabled
+          walletProvider="myrkle"
+          handleManagerAddress={handleManagerAddress}
+          handleProceed={handleAccountSetManager}
+        />
+        <WalletAccordion
+          mb={5}
+          logo={<XummLogoIcon fontSize="80px" />}
+          wallets={getProviderWallets("xumm")}
+          walletProvider="xumm"
+          handleManagerAddress={handleManagerAddress}
+          handleProceed={handleAccountSetManager}
+        />
+        <WalletAccordion
+          logo={
+            <HStack cursor="pointer" w="fit-content">
+              <Image src={crossmarkLogo} alt="logo" h="20px" />
+              <Image src={crossmarkText} alt="logo" h="20px" />
+            </HStack>
+          }
+          mb={5}
+          wallets={getProviderWallets("crossmark")}
+          walletProvider="crossmark"
+          handleManagerAddress={handleManagerAddress}
+          handleProceed={handleAccountSetManager}
+        />
+        <WalletAccordion
+          logo={
+            <HStack cursor="pointer" w="fit-content">
+              <Image src={gemWalletLogo} alt="logo" h="20px" />
+              <Text fontWeight="bold" fontFamily="Inter">
+                GemWallet
+              </Text>
+            </HStack>
+          }
+          wallets={getProviderWallets("gemwallet")}
+          walletProvider="gemwallet"
+          handleManagerAddress={handleManagerAddress}
+          handleProceed={handleAccountSetManager}
+        />
+      </Box>
+
+      <Backdrop isOpen={view !== "default"}>
+        {view === "loading" && <MyrkleLoader />}
+        {view === "error-1" && (
+          <ResponseModal isError={true} message="Something went wrong" handleClose={handleReset} />
+        )}
+        {view === "xumm-qr-code" && (
+          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
+        )}
+        {view === "error-2" && (
+          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+        )}
+        {/* {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />} */}
+      </Backdrop>
+    </>
   );
 }
 
