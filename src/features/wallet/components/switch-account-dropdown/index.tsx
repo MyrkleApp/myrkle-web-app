@@ -390,6 +390,10 @@ function SwitchAccountDropdown() {
         {newWallet === "crossmark" && (
           <DialogBox message="Please install crossmark" handleClose={() => setNewWallet(null)} />
         )}
+
+        {newWallet === "gemwallet" && (
+          <DialogBox message="Please install gemwallet" handleClose={() => setNewWallet(null)} />
+        )}
       </Backdrop>
 
       <Backdrop isOpen={isConfirmDisconnectOpen}>

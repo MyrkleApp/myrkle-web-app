@@ -61,7 +61,7 @@ function SectionI() {
         borderRadius="30px"
         overflow="hidden"
         zIndex={3}
-        onClick={() => navigate(ROUTES.HOME)}
+        onClick={() => navigate(ROUTES.AUTH)}
         initial={{ width: 45, right: 0, color: "#fff" }}
         animate={{
           width: [45, 45, 45, 45, 180],

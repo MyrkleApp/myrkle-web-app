@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SectionA from "./section-a";
 import HomeNavbar from "@/layout/home-layout/navbar";
 import SectionB from "./section-b";
@@ -13,12 +13,35 @@ import SectionH from "./section-h";
 import SectionI from "./section-i";
 import SectionJ from "./section-j";
 import { useDebounce } from "react-use";
-
-export type TLandingActiveSection = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J";
+import { useSearchParams } from "react-router-dom";
 
 function LandingPage() {
+  const [searchParams] = useSearchParams();
+  const section = searchParams.get("section");
+
   const [activeSection, setActiveSection] = useState(1);
   const [deltaY, setDeltaY] = useState(0);
+
+  const scrollDown = useCallback(() => {
+    if (activeSection === 10) return;
+    setActiveSection((prevState) => prevState + 1);
+    setDeltaY(0);
+  }, [activeSection]);
+
+  const scrollUp = useCallback(() => {
+    if (activeSection > 1) {
+      setActiveSection((prevState) => prevState - 1);
+      setDeltaY(0);
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    if (section === "home") {
+      setActiveSection(1);
+    } else if (section === "about") {
+      setActiveSection(6);
+    }
+  }, [section]);
 
   useEffect(() => {
     window.addEventListener("wheel", (event) => {
@@ -38,18 +61,35 @@ function LandingPage() {
   useDebounce(
     () => {
       if (deltaY > 0) {
-        // scroll down event
-        if (activeSection === 10) return;
-        setActiveSection((prevState) => prevState + 1);
-      } else {
-        // scroll up event
-        if (activeSection === 1) return;
-        setActiveSection((prevState) => prevState - 1);
+        scrollDown();
+      } else if (deltaY < 0) {
+        scrollUp();
       }
+      setDeltaY(0);
     },
     50,
     [deltaY],
   );
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "ArrowUp") {
+        scrollUp();
+      } else if (event.key === "ArrowDown") {
+        scrollDown();
+      }
+    };
+
+    const handleWindowKeyDown = (event: any) => {
+      handleKeyDown(event);
+    };
+
+    window.addEventListener("keydown", handleWindowKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleWindowKeyDown);
+    };
+  }, [scrollDown, scrollUp]);
 
   return (
     <Box w="100vw" h="100vh" pos="relative" overflow="hidden" bg="darker">

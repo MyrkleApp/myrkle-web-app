@@ -15,7 +15,7 @@ import Flags from "./features/terminal/pages/flags";
 import Exchange from "./features/exchange/pages";
 import Escrows from "./features/terminal/pages/escrows";
 import BurnAsset from "./features/terminal/pages/burn-asset";
-import Home from "./pages/home";
+import Auth from "./pages/auth";
 import Settings from "./features/settings/pages";
 import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
@@ -35,7 +35,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={ROUTES.LANDING} element={<LandingPage />} />
-        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.AUTH} element={<Auth />} />
         <Route path={ROUTES.WALLET} element={<Wallet />} />
         <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />
         <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />

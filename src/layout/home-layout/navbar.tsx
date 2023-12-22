@@ -5,8 +5,8 @@ import { Link, useLocation } from "react-router-dom";
 import WalletButton from "./wallet-button";
 
 const links = [
-  { name: "home", path: ROUTES.HOME },
-  { name: "about us", path: ROUTES.ABOUT_US },
+  { name: "home", path: `${ROUTES.LANDING}?section=home` },
+  { name: "about", path: `${ROUTES.LANDING}?section=about` },
   { name: "contact", path: ROUTES.CONTACT },
 ];
 
@@ -29,7 +29,7 @@ function HomeNavbar() {
     >
       <LogoIcon fontSize="80px" ml="50px" />
       <HStack spacing={10} mr="50px">
-        {links.map((link, i) => (
+        {links.slice(0, 2).map((link, i) => (
           <Link key={i} to={link.path}>
             <Text
               fontSize="xs"
@@ -42,6 +42,17 @@ function HomeNavbar() {
             </Text>
           </Link>
         ))}
+        <a href="https://twitter.com/MyrkleApp" target="_blank">
+          <Text
+            fontSize="xs"
+            fontWeight="bold"
+            textTransform="uppercase"
+            color={getNavItemColor(links[2].path)}
+            _hover={{ color: "primary" }}
+          >
+            {links[2].name}
+          </Text>
+        </a>
         <WalletButton />
       </HStack>
     </Flex>

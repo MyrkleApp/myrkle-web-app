@@ -18,7 +18,7 @@ import Backdrop from "@/components/backdrop";
 import DialogBox from "@/components/dialog-box";
 import useAddWallet from "@/features/shared/hooks/use-add-wallet";
 
-function Home() {
+function Auth() {
   const [
     { view, isDialogBoxOpen, dialogBoxMessage, qrCodeImage },
     { handleView, onCloseDialogBox, handleXummClick, handleCrossmarkClick, handleGemWalletClick },
@@ -136,4 +136,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Auth;

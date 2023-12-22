@@ -1,6 +1,6 @@
 const ROUTES = {
   LANDING: "/",
-  HOME: "/home",
+  AUTH: "/auth",
   ABOUT_US: "#",
   CONTACT: "#",
   FAQ: "#",
