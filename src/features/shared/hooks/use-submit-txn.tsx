@@ -21,6 +21,7 @@ import {
   useLazyGetTxnStatusQuery,
 } from "../redux/xrp.api";
 import { checkForGemWallet } from "../connections/gemwallet";
+import { TWalletProvider } from "@/features/wallet/types";
 
 const xummTimer = 15;
 
@@ -282,28 +283,35 @@ function useSubmitTxn(
   // handler
   // =============================================================================================
 
-  const handleSubmitTxn = (data: any, successCallback?: () => void, errorCallback?: () => void) => {
+  const handleSubmitTxn = (data: any, higherPriorityWalletProvider?: TWalletProvider) => {
     setIsLoading(true);
 
-    if (walletProvider === "crossmark") {
-      submitCrossmarkTxn(data, successCallback, errorCallback);
-      setIsOpen(false);
+    let walletProviderToUse: TWalletProvider | "" = "";
+
+    if (higherPriorityWalletProvider) {
+      walletProviderToUse = higherPriorityWalletProvider;
+    } else {
+      walletProviderToUse = walletProvider;
     }
 
-    if (walletProvider === "gemwallet") {
-      submitGemWalletTxn(data, successCallback, errorCallback);
-      setIsOpen(false);
+    if (walletProviderToUse === "crossmark") {
+      submitCrossmarkTxn(data);
     }
 
-    if (walletProvider === "xumm") {
+    if (walletProviderToUse === "gemwallet") {
+      submitGemWalletTxn(data);
+    }
+
+    if (walletProviderToUse === "xumm") {
       socket.emit("signTxn", {
         txjson: data,
         user_token: userToken,
       });
-      setIsOpen(false);
       setXummTxnTimerCount(xummTimer);
       setIsXummCountDown(true);
     }
+
+    setIsOpen(false);
   };
 
   const handleCloseSubmitTxnRes = () => setIsOpen(false);

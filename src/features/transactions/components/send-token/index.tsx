@@ -149,9 +149,7 @@ function SendToken() {
       sendToken(sendTokenBody)
         .unwrap()
         .then((res) => {
-          const successCallback = () => setView("success");
-          const errorCallback = () => setView("error-2");
-          handleSubmitTxn(res, successCallback, errorCallback);
+          handleSubmitTxn(res);
         })
         .catch(() => setView("error-1"));
     }

@@ -240,10 +240,25 @@ function MintTokenForm({
       </Flex>
 
       <Backdrop isOpen={isWarningOpen}>
-        <DialogBox
-          message="lorem ipsum dolor sit amet, consectetur adipiscing elit"
-          handleClose={onCloseWarning}
-        />
+        <DialogBox handleClose={onCloseWarning} w="350px" h="300px">
+          <Text fontWeight="bold" fontSize="sm" mb={3}>
+            NOTE:
+          </Text>
+          <Box as="ul">
+            <Box as="li" fontSize="xs" mb={2}>
+              For optimal transparency and security, avoid using your main account for both issuing
+              and managing tokens. Separate accounts for each role are recommended.
+            </Box>
+            <Box as="li" fontSize="xs" mb={2}>
+              The accounts must be activated in the ledger and have reservations for creating new
+              objects
+            </Box>
+            <Box as="li" fontSize="xs">
+              Make sure the "active" wallet shown on Myrkle is the one you're currently using in
+              your wallet provider's app.
+            </Box>
+          </Box>
+        </DialogBox>
       </Backdrop>
 
       <Backdrop isOpen={isProceedOpen}>
