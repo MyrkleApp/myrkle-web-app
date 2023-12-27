@@ -22,8 +22,10 @@ import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
 import { isDesktop } from "react-device-detect";
 import UnderConstruction from "./components/under-construction";
 import LandingPage from "./pages/landing";
+import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
 
 function App() {
+  useGenerateDeviceId();
   useRehydrateSignInData();
   useRetrieveWallets();
 

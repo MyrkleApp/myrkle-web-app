@@ -36,13 +36,12 @@ import {
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
-
-const cloudServer = "https://myrkle-django.onrender.com/api/v1/";
+import { baseUrl } from "@/constants";
 
 export const xrpApi = createApi({
   reducerPath: "xrpApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: cloudServer,
+    baseUrl: `${baseUrl}/api/v1/`,
     // prepareHeaders: (headers, { getState }: any) => {
     //   const token = getState().auth.token;
     //   headers.set("Authorization", `Bearer ${token}`);

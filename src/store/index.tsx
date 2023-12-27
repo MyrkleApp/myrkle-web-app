@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "@/features/auth/redux/auth.slice";
 import walletReducer from "@/features/wallet/redux/wallet.slice";
 import exchangeReducer from "@/features/exchange/redux/exchange.slice";
 import { xrpApi } from "@/features/shared/redux/xrp.api";
@@ -8,6 +9,7 @@ const middleware = [xrpApi.middleware, tokenApi.middleware];
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     wallet: walletReducer,
     exchange: exchangeReducer,
     [xrpApi.reducerPath]: xrpApi.reducer,

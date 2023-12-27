@@ -17,20 +17,102 @@ import CreatePassword from "@/features/auth/components/create-password";
 import Backdrop from "@/components/backdrop";
 import DialogBox from "@/components/dialog-box";
 import useAddWallet from "@/features/shared/hooks/use-add-wallet";
+import { useState } from "react";
+import axios from "axios";
+import { baseUrl } from "@/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDeviceId } from "@/features/auth/redux/auth.selectors";
+import { useDisclosure } from "@chakra-ui/react";
+import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "@/routes";
+import { setAuthUser, setUserToken } from "@/features/auth/redux/auth.slice";
 
 function Auth() {
+  const navigate = useNavigate();
+
   const [
     { view, isDialogBoxOpen, dialogBoxMessage, qrCodeImage },
     { handleView, onCloseDialogBox, handleXummClick, handleCrossmarkClick, handleGemWalletClick },
   ] = useAddWallet();
+
+  const deviceId = useSelector(selectDeviceId);
+  const myWallets = useSelector(selectMyWallets);
+
+  const dispatch = useDispatch();
+  const _setUserToken = (token: string) => dispatch(setUserToken(token));
+  const _setAuthUser = (value: boolean) => dispatch(setAuthUser(value));
+
+  // registration
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+
+  // login
+  const [password, setPassword] = useState("");
+
+  const { isOpen: isLoadingOpen, onOpen: onOpenLoading, onClose: onCloseLoading } = useDisclosure();
+
+  const handlePassword1Change = (e: any) => setPassword1(e.target.value);
+  const handlePassword2Change = (e: any) => setPassword2(e.target.value);
+  const handlePasswordChange = (e: any) => setPassword(e.target.value);
+
+  const handleRegister = () => {
+    onOpenLoading();
+
+    axios
+      .post(`${baseUrl}/auth/registration/`, {
+        password1,
+        password2,
+        deviceID: deviceId,
+      })
+      .then(() => {
+        handleView(ADD_WALLET_PIPELINE.LOGIN);
+        onCloseLoading();
+      })
+      .catch((err) => {
+        console.log(err);
+        onCloseLoading();
+      });
+  };
+
+  const handleLogin = () => {
+    onOpenLoading();
+
+    axios
+      .post(`${baseUrl}/auth/login/`, {
+        deviceID: deviceId,
+        password,
+      })
+      .then((res: any) => {
+        onCloseLoading();
+
+        _setUserToken(res.data.key);
+        _setAuthUser(true);
+
+        if (myWallets.length) {
+          navigate(ROUTES.WALLET);
+        } else {
+          handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        onCloseLoading();
+      });
+  };
 
   return (
     <>
       <HomeLayout>
         {view === ADD_WALLET_PIPELINE.CREATE_PASSWORD && (
           <CreatePassword
-            handleConfirmClick={() => handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER)}
+            password1={password1}
+            password2={password2}
+            handlePassword1Change={handlePassword1Change}
+            handlePassword2Change={handlePassword2Change}
+            handleConfirmClick={handleRegister}
             handleLoginClick={() => handleView(ADD_WALLET_PIPELINE.LOGIN)}
+            isLoading={isLoadingOpen}
           />
         )}
         {view === ADD_WALLET_PIPELINE.WALLET_PROVIDER && (
@@ -125,7 +207,13 @@ function Auth() {
         )}
 
         {view === ADD_WALLET_PIPELINE.LOGIN && (
-          <Login handleRegisterClick={() => handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER)} />
+          <Login
+            password={password}
+            handlePasswordChange={handlePasswordChange}
+            handleRegisterClick={() => handleView(ADD_WALLET_PIPELINE.CREATE_PASSWORD)}
+            isLoading={isLoadingOpen}
+            handleLoginClick={handleLogin}
+          />
         )}
       </HomeLayout>
 

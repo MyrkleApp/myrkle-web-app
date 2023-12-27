@@ -12,7 +12,7 @@ function useAddWallet() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
   const [gemWalletSignIn] = useGemWalletSignIn();
 
-  const [view, setView] = useState(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
+  const [view, setView] = useState(ADD_WALLET_PIPELINE.CREATE_PASSWORD);
 
   const handleView = (view: string) => setView(view);
   const [dialogBoxMessage, setDialogBoxMessage] = useState("");

@@ -6,7 +6,6 @@ import { Link, useLocation } from "react-router-dom";
 const links = [
   { name: "home", path: `${ROUTES.LANDING}?section=home` },
   { name: "about", path: `${ROUTES.LANDING}?section=about` },
-  { name: "faq", path: ROUTES.FAQ },
   { name: "contact", path: ROUTES.CONTACT },
 ];
 
@@ -30,7 +29,7 @@ function Footer() {
     >
       <LogoIcon fontSize="100px" ml="50px" />
       <HStack spacing={10} mr="50px">
-        {links.slice(0, 3).map((link, i) => (
+        {links.slice(0, 2).map((link, i) => (
           <Link key={i} to={link.path}>
             <Text
               fontSize="xs"
@@ -48,10 +47,10 @@ function Footer() {
             fontSize="xs"
             fontWeight="bold"
             textTransform="uppercase"
-            color={getNavItemColor(links[3].path)}
+            color={getNavItemColor(links[2].path)}
             _hover={{ color: "#000" }}
           >
-            {links[3].name}
+            {links[2].name}
           </Text>
         </a>
       </HStack>
