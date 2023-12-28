@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
 import { useSelector } from "react-redux";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
-import { selectIsAuthUser } from "@/features/auth/redux/auth.selectors";
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
 
 function WalletButton() {
   const myWallets = useSelector(selectMyWallets);
-  const isAuthUser = useSelector(selectIsAuthUser);
+  const userId = useSelector(selectUserId);
 
   const handleNavigate = () => {
-    if (isAuthUser && myWallets.length > 0) {
+    if (userId && myWallets.length > 0) {
       return ROUTES.WALLET;
     }
     return ROUTES.AUTH;

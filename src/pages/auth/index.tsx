@@ -26,7 +26,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
-import { setAuthUser, setUserToken } from "@/features/auth/redux/auth.slice";
+import { setUserToken } from "@/features/auth/redux/auth.slice";
 
 function Auth() {
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ function Auth() {
 
   const dispatch = useDispatch();
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
-  const _setAuthUser = (value: boolean) => dispatch(setAuthUser(value));
 
   // registration
   const [password1, setPassword1] = useState("");
@@ -87,7 +86,6 @@ function Auth() {
         onCloseLoading();
 
         _setUserToken(res.data.key);
-        _setAuthUser(true);
 
         if (myWallets.length) {
           navigate(ROUTES.WALLET);

@@ -4,7 +4,7 @@ import { IAuthInitialState } from "../types";
 const initialState: IAuthInitialState = {
   userToken: "",
   deviceId: "",
-  isAuthUser: false,
+  userId: null,
 };
 
 const authSlice = createSlice({
@@ -17,12 +17,12 @@ const authSlice = createSlice({
     setDeviceId(state, { payload }: PayloadAction<string>) {
       state.deviceId = payload;
     },
-    setAuthUser(state, { payload }: PayloadAction<boolean>) {
-      state.isAuthUser = payload;
+    setUserId(state, { payload }: PayloadAction<number>) {
+      state.userId = payload;
     },
   },
 });
 
-export const { setUserToken, setDeviceId, setAuthUser } = authSlice.actions;
+export const { setUserToken, setDeviceId, setUserId } = authSlice.actions;
 
 export default authSlice.reducer;

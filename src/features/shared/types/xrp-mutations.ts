@@ -272,3 +272,11 @@ export interface IFlag {
 export interface IAuthNftTokenMinter extends IFlag {
   minter: string;
 }
+
+export interface IRecordTransaction {
+  wallet: string;
+  transaction_hash?: string;
+  amount?: number | string;
+  transaction_type?: string;
+  user: string | number;
+}

@@ -33,6 +33,7 @@ import {
   ISendXrp,
   ISortBestOffer,
   IToggleTokenFreeze,
+  IRecordTransaction,
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
@@ -574,6 +575,19 @@ export const xrpApi = createApi({
         };
       },
     }),
+
+    // =========================================
+    // record txns
+    // =========================================
+    recordTransaction: builder.mutation({
+      query(body: IRecordTransaction) {
+        return {
+          url: "transactions/",
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -670,4 +684,6 @@ export const {
   useCreateTokenMutation,
   useCreateNotificationMutation,
   useCreatePairingTokenMutation,
+  // record txns
+  useRecordTransactionMutation,
 } = xrpApi;

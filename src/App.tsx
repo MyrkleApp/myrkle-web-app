@@ -23,11 +23,13 @@ import { isDesktop } from "react-device-detect";
 import UnderConstruction from "./components/under-construction";
 import LandingPage from "./pages/landing";
 import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
+import useGetMe from "./features/auth/hooks/use-get-me";
 
 function App() {
   useGenerateDeviceId();
   useRehydrateSignInData();
   useRetrieveWallets();
+  useGetMe();
 
   if (!isDesktop) {
     return <UnderConstruction />;

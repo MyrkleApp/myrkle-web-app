@@ -162,3 +162,13 @@ export const checkWalletExists = (
     ) !== -1
   );
 };
+
+export const extractTxnJsonData = (data: any) => {
+  // const data = JSON.parse(txnJson);
+
+  return {
+    amount: data?.Amount ? data?.Amount / 1000000 : "",
+    wallet: data?.Account,
+    transactionType: data?.TransactionType || "",
+  };
+};

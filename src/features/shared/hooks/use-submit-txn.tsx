@@ -7,7 +7,7 @@ import {
 import { submitTransaction } from "@gemwallet/api";
 import { useSelector } from "react-redux";
 import { socket } from "../socket-io";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useLazyGetAccountChecksQuery,
   useLazyGetAccountEscrowsQuery,
@@ -19,9 +19,13 @@ import {
   useLazyGetPaymentTransactionsQuery,
   useLazyGetPendingOffersQuery,
   useLazyGetTxnStatusQuery,
+  useRecordTransactionMutation,
 } from "../redux/xrp.api";
 import { checkForGemWallet } from "../connections/gemwallet";
 import { TWalletProvider } from "@/features/wallet/types";
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
+import { extractTxnJsonData } from "@/helpers";
+import { IRecordTransaction } from "../types/xrp-mutations";
 
 const xummTimer = 15;
 
@@ -36,6 +40,7 @@ function useSubmitTxn(
   const userToken = useSelector(selectUserToken);
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);
+  const userId = useSelector(selectUserId);
 
   // =============================================================================================
   // state
@@ -49,6 +54,11 @@ function useSubmitTxn(
 
   const [xummTxnTimerCount, setXummTxnTimerCount] = useState(xummTimer);
   const [isXummCountDown, setIsXummCountDown] = useState(false);
+
+  // transaction data
+  const [transactionWallet, setTransactionWallet] = useState("");
+  const [transactionAmount, setTransactionAmount] = useState<any>("");
+  const [transactionType, setTransactionType] = useState("");
 
   // =============================================================================================
   // api & effect
@@ -65,6 +75,21 @@ function useSubmitTxn(
   const [getPendingLiquidity] = useLazyGetOrderBookLiquidityQuery();
   const [getTxnStatus] = useLazyGetTxnStatusQuery();
 
+  const [recordTransaction] = useRecordTransactionMutation();
+
+  const handleRecordTransaction = useCallback(() => {
+    if (userId === null) return;
+
+    const transactionObject: IRecordTransaction = {
+      wallet: transactionWallet,
+      user: userId,
+    };
+    if (transactionAmount) transactionObject.amount = transactionAmount;
+    if (transactionType) transactionObject.transaction_type = transactionType;
+
+    recordTransaction(transactionObject);
+  }, [userId, recordTransaction, transactionAmount, transactionType, transactionWallet]);
+
   useEffect(() => {
     if (isSuccess) {
       getBalance({ address, net });
@@ -78,6 +103,8 @@ function useSubmitTxn(
         getPendingOffers({ address, net });
         getPendingLiquidity({ address, net });
       }
+
+      handleRecordTransaction();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
@@ -95,7 +122,6 @@ function useSubmitTxn(
       const sdk = window.xrpl.crossmark;
       const { response } = await sdk.signAndSubmitAndWait(TxnReq);
       if (response.data.meta.isRejected) {
-        console.log("Transaction Rejected");
         setIsSuccess(false);
         setResponseMessage("Transaction rejected");
         setIsOpen(true);
@@ -109,7 +135,6 @@ function useSubmitTxn(
         setIsOpen(true);
         setIsLoading(false);
         if (errorCallback) errorCallback();
-        console.log("Error encountered during signing");
         return "Error encountered during signing";
       }
       if (response.data.meta.isFail) {
@@ -118,7 +143,6 @@ function useSubmitTxn(
         setIsOpen(true);
         setIsLoading(false);
         if (errorCallback) errorCallback();
-        console.log("Transaction Failed");
         return "Transaction Failed";
       }
       if (response.data.meta.isExpired) {
@@ -127,7 +151,6 @@ function useSubmitTxn(
         setIsOpen(true);
         setIsLoading(false);
         if (errorCallback) errorCallback();
-        console.log("Transaction Expired");
         return "Transaction Expired";
       }
       if (response.data.meta.isSuccess) {
@@ -136,7 +159,6 @@ function useSubmitTxn(
         setIsOpen(true);
         setIsLoading(false);
         if (successCallback) successCallback();
-        console.log({ status: "SUCCESS", hash: response.data.resp.result.hash });
         return { status: "SUCCESS", hash: response.data.resp.result.hash };
       }
     } catch (e) {
@@ -145,7 +167,6 @@ function useSubmitTxn(
       setIsOpen(true);
       setIsLoading(false);
       if (errorCallback) errorCallback();
-      console.log(e);
       return e;
     }
   };
@@ -153,23 +174,6 @@ function useSubmitTxn(
   // =============================================================================================
   // GEMWALLET
   // =============================================================================================
-
-  // export const submitTxn = async (transaction) => {
-  //   try {
-  //     let resp = await submitTransaction({ transaction });
-  //     if (resp.type === "reject") {
-  //       console.log("Transaction Rejected");
-  //       return "Transaction Rejected";
-  //     }
-  //     if (resp.result.hash) {
-  //       console.log({ status: "SUCCESS", hash: resp.result.hash });
-  //       return { status: "SUCCESS", hash: resp.result.hash };
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     return e;
-  //   }
-  // };
 
   const submitGemWalletTxn = async (
     transaction: any,
@@ -185,7 +189,6 @@ function useSubmitTxn(
 
       const resp = await submitTransaction({ transaction });
       if (resp.result?.hash) {
-        console.log({ status: "SUCCESS", hash: resp.result.hash });
         setIsSuccess(true);
         setResponseMessage("Transaction successful");
         setIsOpen(true);
@@ -194,7 +197,6 @@ function useSubmitTxn(
         return { status: "SUCCESS", hash: resp.result.hash };
       }
       if (resp.type === "reject") {
-        console.log("Transaction Rejected");
         setIsSuccess(false);
         setResponseMessage("Transaction Rejected");
         setIsOpen(true);
@@ -207,7 +209,6 @@ function useSubmitTxn(
       setIsOpen(true);
       setIsLoading(false);
       if (errorCallback) errorCallback();
-      console.log(e);
       return e;
     }
   };
@@ -233,7 +234,6 @@ function useSubmitTxn(
         setResponseMessage("Transaction not signed");
         setIsOpen(true);
         setIsLoading(false);
-        console.log("txn not-signed");
         return;
       }
 
@@ -312,6 +312,12 @@ function useSubmitTxn(
     }
 
     setIsOpen(false);
+
+    const { amount, wallet, transactionType } = extractTxnJsonData(data);
+
+    setTransactionAmount(amount);
+    setTransactionType(transactionType);
+    setTransactionWallet(wallet);
   };
 
   const handleCloseSubmitTxnRes = () => setIsOpen(false);
