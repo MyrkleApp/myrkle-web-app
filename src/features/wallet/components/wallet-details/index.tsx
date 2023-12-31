@@ -146,8 +146,8 @@ function WalletDetails() {
 
   return (
     <>
-      <Flex h="38%" bg="dark" borderRadius="25px" align="center">
-        <Box width="250px" h="200px" pos="relative">
+      <Flex h={["42%", null, null, "38%"]} bg="dark" borderRadius="25px" align="center">
+        <Box minW={["250px"]} h="200px" pos="relative">
           {network === "mainnet" && (
             <MotionBox
               pos="absolute"
@@ -174,8 +174,10 @@ function WalletDetails() {
           <Image
             src={network === "mainnet" ? xrpLogo : xrpTestnetLogo}
             alt=""
-            h={["80px", null, "110px", "140px"]}
-            w={["80px", null, "110px", "140px"]}
+            // h="140px"
+            // w="140px"
+            h={["80px", null, "120px", "140px"]}
+            w={["80px", null, "120px", "140px"]}
             pos="absolute"
             top="calc(50% - 1px)"
             left="calc(50% - 1px)"
@@ -183,7 +185,7 @@ function WalletDetails() {
           />
         </Box>
 
-        <Flex direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
+        <Flex ml={10} direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
           <HStack spacing={5} cursor="pointer" onClick={handleAddressClick}>
             <Text color="textDark" fontSize="13px" fontWeight="bold">
               Welcome
@@ -199,7 +201,7 @@ function WalletDetails() {
             <RenderElement
               isLoading={isBalanceLoading || isBalanceFetching}
               h="40px"
-              w="470px"
+              w={["300px", null, null, "470px"]}
               mt={4}
               mb={2}
             >
@@ -209,7 +211,7 @@ function WalletDetails() {
             </RenderElement>
           </Box>
 
-          <HStack spacing={3}>
+          <HStack spacing={3} pr={2} wrap="wrap">
             {actionLinks.map((actionLink, i) => (
               <Link key={i} to={actionLink.link}>
                 <AccountDetailButton

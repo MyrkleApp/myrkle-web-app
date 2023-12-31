@@ -13,9 +13,9 @@ export interface LayoutProps {
 }
 
 function Layout({ children }: LayoutProps) {
-  const [isLesserThan768] = useMediaQuery("(max-width: 768px)");
+  const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
 
-  if (isLesserThan768) {
+  if (isLesserThanAllowedSize) {
     return <UnderConstruction />;
   }
 
