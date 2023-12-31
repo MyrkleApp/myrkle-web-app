@@ -21,7 +21,7 @@ function Checks() {
           left="50%"
           transform="translate(-50%, -50%)"
           h="90%"
-          w="70%"
+          w={["100%", null, null, "90%", "70%"]}
           bg="dark"
           p="30px 35px"
           borderRadius="30px"

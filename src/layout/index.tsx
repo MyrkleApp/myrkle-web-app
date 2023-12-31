@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
@@ -6,12 +6,19 @@ import LogoIcon from "@/icons/logo";
 import FooterLogoIcon from "@/icons/footer-logo";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
+import UnderConstruction from "@/components/under-construction";
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
 function Layout({ children }: LayoutProps) {
+  const [isLesserThan768] = useMediaQuery("(max-width: 768px)");
+
+  if (isLesserThan768) {
+    return <UnderConstruction />;
+  }
+
   return (
     <Box h="100vh" w="100vw" overflow="hidden">
       <Box h="100vh" bg="darkest" pos="relative">

@@ -179,7 +179,13 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
         cursor="pointer"
         onClick={onOpen}
       >
-        <Flex justify="space-between" align="center" w="67%" h="100%" pr="20px">
+        <Flex
+          justify="space-between"
+          align="center"
+          w={["100%", null, null, "67%"]}
+          h="100%"
+          pr="20px"
+        >
           <HStack h="100%" w="100px">
             <Image
               src={
@@ -283,7 +289,14 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
           </VStack>
         </Flex>
 
-        <HStack justify="space-between" borderLeft="1px solid #353535" px="20px" w="33%" h="55%">
+        <HStack
+          display={["none", null, null, "flex"]}
+          justify="space-between"
+          borderLeft="1px solid #353535"
+          px="20px"
+          w="33%"
+          h="55%"
+        >
           <IconButton
             bg="secondary"
             h="100%"

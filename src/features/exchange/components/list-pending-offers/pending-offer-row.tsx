@@ -93,7 +93,7 @@ function PendingOfferRow({ offer }: PendingOfferRowProps) {
   return (
     <>
       <Flex
-        h="65px"
+        minH="65px"
         bg="secondary"
         borderRadius="7px"
         p={1}

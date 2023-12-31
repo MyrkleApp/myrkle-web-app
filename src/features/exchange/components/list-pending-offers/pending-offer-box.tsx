@@ -11,7 +11,7 @@ export interface OfferBoxProps {
 
 function PendingOfferBox({ token, issuer, amount }: OfferBoxProps) {
   return (
-    <HStack w="50%" h="100%" bg="darkest" borderRadius="5px" pl={2} pr={3}>
+    <HStack w="50%" bg="darkest" borderRadius="5px" pl={2} pr={3}>
       <TokenIcon token={token} issuer={issuer} h="30px" />
       <VStack spacing={0} align="flex-start">
         <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">

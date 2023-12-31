@@ -39,7 +39,7 @@ function LandingPage() {
     if (section === "home") {
       setActiveSection(1);
     } else if (section === "about") {
-      setActiveSection(6);
+      setActiveSection(9);
     }
   }, [section]);
 

@@ -10,8 +10,8 @@ function Settings() {
   return (
     <Layout>
       <Box p={5} h="100%" overflow="hidden auto">
-        <Flex gap="30px">
-          <Box w="35%">
+        <Flex gap="30px" direction={["column", null, null, "row"]}>
+          <Box w={["100%", null, null, "35%"]}>
             <HStack mb={5}>
               <Text className="font-face-proxima-nova-extrabld" fontSize="md">
                 My Wallet
@@ -22,7 +22,7 @@ function Settings() {
             <ListWalletProviders />
           </Box>
 
-          <Box w="65%">
+          <Box w={["100%", null, null, "65%"]}>
             <HStack mb={5}>
               <Text className="font-face-proxima-nova-extrabld" fontSize="md">
                 Change Password

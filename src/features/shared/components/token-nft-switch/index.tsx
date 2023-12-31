@@ -43,10 +43,10 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
       />
       <Text
         className="font-face-proxima-nova-extrabld"
-        fontSize={assetType === "token" ? "3vh" : "sm"}
+        fontSize={assetType === "token" ? "22px" : "sm"}
         fontWeight={assetType === "token" ? "bold" : "400"}
         pos="absolute"
-        left="48px"
+        left="43px"
         color={assetType === "token" ? "#fff" : "textDark"}
         cursor="pointer"
         onClick={_toggleAssetType}
@@ -56,7 +56,7 @@ function TokenNftSwitch({ sliderProps }: TokenNftSwitchProps) {
       <Spacer />
       <Text
         className="font-face-proxima-nova-extrabld"
-        fontSize={assetType === "nft" ? "3vh" : "sm"}
+        fontSize={assetType === "nft" ? "22px" : "sm"}
         fontWeight={assetType === "nft" ? "bold" : "400"}
         pos="absolute"
         right="39px"

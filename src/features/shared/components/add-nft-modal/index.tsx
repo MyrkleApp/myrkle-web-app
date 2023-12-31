@@ -122,13 +122,11 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
 
         const nftOfferInfo = await getNftOfferInfo({ id: nftSellId, net }).unwrap();
         if (!nftOfferInfo || isObjectEmpty(nftOfferInfo)) {
-          // handleReceiveNft();
           return;
         }
 
         const nftInfo = await getNftInfo({ id: nftOfferInfo?.nftoken_id, net }).unwrap();
         if (!nftInfo || isObjectEmpty(nftInfo)) {
-          // handleReceiveNft();
           return;
         }
 
@@ -147,25 +145,35 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
   // handlers
   // ========================================================================================
 
+  const handleCloseResponse = () => {
+    setNftSellId("");
+    setShowNftCard(false);
+    resetSubmitTxnResponse();
+    handleClose();
+  };
+
   const handleReset = () => {
     setNftSellId("");
     setShowNftCard(false);
     resetSubmitTxnResponse();
   };
 
-  const handleReload = () => {
-    // const id = nftSellId
-    // setNftSellId("")
-    // setTimeout(() => setNftSellId(id), 150)
+  const handleReload = async () => {
+    const nftOfferInfo = await getNftOfferInfo({ id: nftSellId, net }).unwrap();
+    if (!nftOfferInfo || isObjectEmpty(nftOfferInfo)) {
+      return;
+    }
+
+    const nftInfo = await getNftInfo({ id: nftOfferInfo?.nftoken_id, net }).unwrap();
+    if (!nftInfo || isObjectEmpty(nftInfo)) {
+      return;
+    }
+
+    getNftMetaData(nftInfo?.uri)
+      .unwrap()
+      .then(() => setShowNftCard(true))
+      .catch(() => setShowNftCard(false));
   };
-
-  // const handleConfirmClick = () => {
-  //   setView("proceed");
-  // };
-
-  // const handleProceed = () => {
-  //   receiveNft({ nft_sell_id: nftSellId, sender_addr: address });
-  // };
 
   if (view !== "default") {
     return (
@@ -173,18 +181,26 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
         {view === "loading" && <MyrkleLoader />}
 
         {view === "error-1" && (
-          <ResponseModal isError={true} message="Something went wrong" handleClose={handleReset} />
+          <ResponseModal
+            isError={true}
+            message="Something went wrong"
+            handleClose={handleCloseResponse}
+          />
         )}
 
         {view === "xumm-qr-code" && (
-          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleReset} />
+          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleCloseResponse} />
         )}
 
         {view === "error-2" && (
-          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
+          <ResponseModal
+            isError={true}
+            message={submitTxnResponseMsg}
+            handleClose={handleCloseResponse}
+          />
         )}
 
-        {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />}
+        {view === "success" && <ResponseModal isError={false} handleClose={handleCloseResponse} />}
       </>
     );
   }
@@ -225,9 +241,9 @@ function AddNftModal({ handleClose }: AddNftModalProps) {
               <NftAddCard
                 name={nftMetaData?.name}
                 image={nftMetaData?.image}
-                // image={nftFormatter(nftMetaData?.image)}
                 handleReload={handleReload}
                 handleReset={handleReset}
+                isLoading={isNftMetaDataLoading}
               />
             </MotionBox>
           )}

@@ -24,10 +24,9 @@ function ListOffers() {
       best_buy: true,
       best_sell: false,
       mainnet: network === "mainnet",
-    })
-      .unwrap()
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    }).unwrap();
+    // .then((res) => console.log(res))
+    // .catch((err) => console.log(err));
   }, [fromToken.token, fromToken.issuer, toToken.token, toToken.issuer, sortBestOffer, network]);
 
   if (isLoading) {

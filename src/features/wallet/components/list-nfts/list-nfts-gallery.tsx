@@ -7,6 +7,7 @@ import { useGetAccountNftsQuery } from "@/features/shared/redux/xrp.api";
 import Skeleton1 from "@/components/skeleton";
 import Backdrop from "@/components/backdrop";
 import AddNftModal from "@/features/shared/components/add-nft-modal";
+
 function ListNftsGallery() {
   const address = useSelector(selectAddress);
   const net = useSelector(selectNet);

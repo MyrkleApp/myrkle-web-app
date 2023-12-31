@@ -174,8 +174,8 @@ function WalletDetails() {
           <Image
             src={network === "mainnet" ? xrpLogo : xrpTestnetLogo}
             alt=""
-            h="140px"
-            w="140px"
+            h={["80px", null, "110px", "140px"]}
+            w={["80px", null, "110px", "140px"]}
             pos="absolute"
             top="calc(50% - 1px)"
             left="calc(50% - 1px)"
@@ -232,10 +232,10 @@ function WalletDetails() {
               onClick={onAccountInfoModalOpen}
               transition="0.25s linear all"
               _hover={{
-                width: "115px",
+                width: ["35px", null, null, null, "115px"],
                 borderRadius: "20px",
                 "& > .account-info-text": {
-                  display: "block",
+                  display: ["none", null, null, null, "block"],
                 },
               }}
             >

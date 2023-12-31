@@ -13,7 +13,7 @@ export interface OfferBoxProps {
 
 function OfferBox({ token, issuer, amount, isGive }: OfferBoxProps) {
   return (
-    <Box w="50%" h="100%" bg="darkest" borderRadius="5px" p="3px 8px 25px 7px">
+    <Box w="50%" bg="darkest" borderRadius="5px" p="3px 8px 25px 7px">
       <ItemLabel title={isGive ? "Give" : "Get"} mb={2} />
       <HStack>
         <TokenIcon token={token} issuer={issuer} h="40px" />

@@ -132,8 +132,8 @@ function OfferRow({ offer }: OfferRowProps) {
   return (
     <>
       <Flex
-        h="calc(50% - 10px)"
-        maxH="110px"
+        minH="calc(50% - 10px)"
+        // maxH="110px"
         bg="secondary"
         borderRadius="12px"
         p={3}
@@ -172,14 +172,14 @@ function OfferRow({ offer }: OfferRowProps) {
         {view === "default" && (
           <TxnDetailsModal
             handleClose={onClose}
-            fromTokenName={offer?.sell_token}
-            fromTokenIssuer={offer?.sell_issuer}
-            fromTokenAmount={offer?.sell_amount}
-            fromTokenIcon={isXrpToken({ token: offer?.sell_token }) ? xrpLogo : tokenPlaceholder}
-            toTokenName={offer?.buy_token}
-            toTokenIssuer={offer?.buy_issuer}
-            toTokenAmount={offer?.buy_amount}
-            toTokenIcon={isXrpToken({ token: offer?.buy_token }) ? xrpLogo : tokenPlaceholder}
+            fromTokenName={offer?.buy_token}
+            fromTokenIssuer={offer?.buy_issuer}
+            fromTokenAmount={offer?.buy_amount}
+            fromTokenIcon={isXrpToken({ token: offer?.buy_token }) ? xrpLogo : tokenPlaceholder}
+            toTokenName={offer?.sell_token}
+            toTokenIssuer={offer?.sell_issuer}
+            toTokenAmount={offer?.sell_amount}
+            toTokenIcon={isXrpToken({ token: offer?.sell_token }) ? xrpLogo : tokenPlaceholder}
             sequence={offer?.sequence}
             offerId={offer?.offer_id}
             creator={offer?.creator}
