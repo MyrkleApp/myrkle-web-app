@@ -4,29 +4,38 @@ import Manager from "./manager";
 import { TMintTokenStep } from "../../types";
 import Trustline from "./trustline";
 import CreateToken from "./create-token";
+import Issuer from "./issuer";
+import { TWalletProvider } from "@/features/wallet/types";
 
 function MintToken() {
   const [currentMintTokenStep, setCurrentMintTokenStep] = useState<TMintTokenStep>("form");
 
   // form
   const [tokenName, setTokenName] = useState("");
-  const [amount, setAmount] = useState("");
   const [tickSize, setTickSize] = useState<null | number>(null);
   const [totalSupply, setTotalSupply] = useState("");
   const [domain, setDomain] = useState("");
   const [transferFee, setTransferFee] = useState("0");
 
+  // issuer
+  const [issuerAddress, setIssuerAddress] = useState("");
+  const [issuerWalletProvider, setIssuerWalletProvider] = useState<TWalletProvider | "">("");
+
   // manager
   const [managerAddress, setManagerAddress] = useState("");
+  const [managerWalletProvider, setManagerWalletProvider] = useState<TWalletProvider | "">("");
 
   const handleTokenName = (value: string) => setTokenName(value);
-  const handleAmount = (value: string) => setAmount(value);
   const handleTickSize = (value: number) => setTickSize(value);
   const handleTotalSupply = (value: string) => setTotalSupply(value);
   const handleDomain = (value: string) => setDomain(value);
   const handleTransferFee = (value: string) => setTransferFee(value);
 
+  const handleIssuerAddress = (value: string) => setIssuerAddress(value);
+  const handleIssuerWalletProvider = (value: TWalletProvider) => setIssuerWalletProvider(value);
+
   const handleManagerAddress = (value: string) => setManagerAddress(value);
+  const handleManagerWalletProvider = (value: TWalletProvider) => setManagerWalletProvider(value);
 
   const handleMintTokenStep = (value: TMintTokenStep) => setCurrentMintTokenStep(value);
 
@@ -35,13 +44,11 @@ function MintToken() {
     return (
       <MintTokenForm
         tokenName={tokenName}
-        amount={amount}
         tickSize={tickSize}
         totalSupply={totalSupply}
         domain={domain}
         transferFee={transferFee}
         handleTokenName={handleTokenName}
-        handleAmount={handleAmount}
         handleTickSize={handleTickSize}
         handleTotalSupply={handleTotalSupply}
         handleDomain={handleDomain}
@@ -51,17 +58,35 @@ function MintToken() {
     );
 
   // step two
+  if (currentMintTokenStep === "issuer")
+    return (
+      <Issuer
+        handleIssuerAddress={handleIssuerAddress}
+        issuerAddress={issuerAddress}
+        domain={domain}
+        handleMintTokenStep={handleMintTokenStep}
+        tickSize={tickSize}
+        transferFee={transferFee}
+        issuerWalletProvider={issuerWalletProvider as TWalletProvider}
+        handleIssuerWalletProvider={handleIssuerWalletProvider}
+      />
+    );
+
+  // step three
   if (currentMintTokenStep === "manager")
     return (
       <Manager
         handleManagerAddress={handleManagerAddress}
         managerAddress={managerAddress}
+        issuerAddress={issuerAddress}
         domain={domain}
         handleMintTokenStep={handleMintTokenStep}
+        managerWalletProvider={managerWalletProvider as TWalletProvider}
+        handleManagerWalletProvider={handleManagerWalletProvider}
       />
     );
 
-  // step three
+  // step four
   if (currentMintTokenStep === "trustline") {
     return (
       <Trustline
@@ -73,7 +98,7 @@ function MintToken() {
     );
   }
 
-  // step four
+  // step five
   if (currentMintTokenStep === "create-token") {
     return (
       <CreateToken

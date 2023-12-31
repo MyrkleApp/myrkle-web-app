@@ -12,4 +12,4 @@ export type TSelectTokenAmountModalState =
   | "error-2"
   | "success";
 
-export type TMintTokenStep = "form" | "manager" | "trustline" | "create-token";
+export type TMintTokenStep = "form" | "issuer" | "manager" | "trustline" | "create-token";

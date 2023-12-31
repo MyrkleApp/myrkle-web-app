@@ -3,26 +3,28 @@ import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import AddressItem from "./address-item";
 import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 
-export interface WalletAccordionProps {
+export interface ManagerAddressAccordionProps {
   logo: React.ReactNode;
   wallets: IWalletAddress[];
   isDisabled?: boolean;
   // isActiveWalletProvider: boolean;
   walletProvider: TWalletProvider;
   handleManagerAddress: (value: string) => void;
+  handleManagerWalletProvider: (value: TWalletProvider) => void;
   handleProceed: () => void;
   [anyProp: string]: any;
 }
 
-function WalletAccordion({
+function ManagerAddressAccordion({
   logo,
   wallets,
   isDisabled,
   walletProvider,
   handleManagerAddress,
   handleProceed,
+  handleManagerWalletProvider,
   ...props
-}: WalletAccordionProps) {
+}: ManagerAddressAccordionProps) {
   const { isOpen, onToggle } = useDisclosure();
 
   const handleToggle = () => {
@@ -63,6 +65,8 @@ function WalletAccordion({
             selectedWalletProvider={walletProvider}
             handleManagerAddress={handleManagerAddress}
             handleProceed={handleProceed}
+            handleManagerWalletProvider={handleManagerWalletProvider}
+            issuerAddress={props.issuerAddress}
           />
         ))}
       </RenderAddressItems>
@@ -88,4 +92,4 @@ const RenderAddressItems = ({
   return <>{children}</>;
 };
 
-export default WalletAccordion;
+export default ManagerAddressAccordion;

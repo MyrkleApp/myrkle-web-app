@@ -8,7 +8,9 @@ export interface AddressItemProps {
   name?: string;
   address: string;
   selectedWalletProvider: TWalletProvider;
+  issuerAddress: string;
   handleManagerAddress: (value: string) => void;
+  handleManagerWalletProvider: (value: TWalletProvider) => void;
   handleProceed: () => void;
 }
 
@@ -16,8 +18,10 @@ function AddressItem({
   name,
   address,
   selectedWalletProvider,
+  issuerAddress,
   handleManagerAddress,
   handleProceed,
+  handleManagerWalletProvider,
 }: AddressItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -26,8 +30,11 @@ function AddressItem({
   // ======================================================================================================
 
   const handleAddressClick = () => {
+    if (address === issuerAddress) return;
+
     onOpen();
     handleManagerAddress(address);
+    handleManagerWalletProvider(selectedWalletProvider);
   };
 
   const handleProceedClick = () => {
@@ -47,7 +54,7 @@ function AddressItem({
             <Text
               fontSize="xs"
               color="textDark"
-              cursor="pointer"
+              cursor={address === issuerAddress ? "not-allowed" : "pointer"}
               onClick={handleAddressClick}
               // maxW="calc(100% - 80px)"
             >
@@ -77,6 +84,9 @@ function AddressItem({
             className="font-face-proxima-nova-extrabld"
           >
             Set token manager
+          </Text>
+          <Text fontSize="xs" fontWeight="bold">
+            You are about to take an permanent step that cannot be undone.
           </Text>
           <Text fontSize="xs" fontWeight="bold">
             Ensure that {address} is the currently active wallet on {selectedWalletProvider}

@@ -3,14 +3,13 @@ import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { TWalletProvider } from "@/features/wallet/types";
 import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import ManagerAddressAccordion from "../manager-address-accordion";
-// import ManagerCard from "./manager-card";
+import IssuerAddressAccordion from "../issuer-address-accordion";
 import MyrkleLogoIcon from "@/icons/logo";
 import XummLogoIcon from "@/icons/xumm-logo";
 import crossmarkLogo from "@/assets/crossmark-logo.png";
 import crossmarkText from "@/assets/crossmark-text.png";
 import gemWalletLogo from "@/assets/gem-wallet-logo.png";
-import { useAccountSetManagerMutation } from "@/features/shared/redux/xrp.api";
+import { useAccountSetIssuerMutation } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { useEffect, useState } from "react";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
@@ -21,25 +20,27 @@ import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import MintTokenProgress from "./mint-token-progress";
 
-export interface ManagerProps {
-  managerAddress: string;
+export interface IssuerProps {
   issuerAddress: string;
+  tickSize: null | number;
+  transferFee: string;
   domain: string;
-  managerWalletProvider: TWalletProvider;
-  handleManagerAddress: (value: string) => void;
+  issuerWalletProvider: TWalletProvider;
+  handleIssuerAddress: (value: string) => void;
+  handleIssuerWalletProvider: (value: TWalletProvider) => void;
   handleMintTokenStep: (val: TMintTokenStep) => void;
-  handleManagerWalletProvider: (value: TWalletProvider) => void;
 }
 
-function Manager({
-  managerAddress,
+function Issuer({
   issuerAddress,
   domain,
-  managerWalletProvider,
-  handleManagerAddress,
+  tickSize,
+  transferFee,
+  issuerWalletProvider,
+  handleIssuerAddress,
+  handleIssuerWalletProvider,
   handleMintTokenStep,
-  handleManagerWalletProvider,
-}: ManagerProps) {
+}: IssuerProps) {
   const [
     { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
     { handleSubmitTxn, resetSubmitTxnResponse },
@@ -49,7 +50,7 @@ function Manager({
 
   const [view, setView] = useState<TTxnPipeline>("default");
 
-  const [accountSetManager] = useAccountSetManagerMutation();
+  const [accountSetIssuer] = useAccountSetIssuerMutation();
 
   // ===========================================================================================
   // effects
@@ -65,7 +66,7 @@ function Manager({
     if (isSubmitTxnSuccess === null) return;
 
     if (isSubmitTxnSuccess) {
-      handleMintTokenStep("trustline");
+      handleMintTokenStep("manager");
     } else setView("error-2");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitTxnSuccess]);
@@ -77,13 +78,15 @@ function Manager({
   const handleAccountSetManager = () => {
     setView("loading");
 
-    accountSetManager({
-      manager_addr: managerAddress,
+    accountSetIssuer({
+      issuer_addr: issuerAddress,
+      ticksize: String(tickSize),
+      transferfee: transferFee,
       domain,
     })
       .unwrap()
       .then((res) => {
-        handleSubmitTxn(res, managerWalletProvider);
+        handleSubmitTxn(res, issuerWalletProvider);
       })
       .catch(() => setView("error-1"));
   };
@@ -95,31 +98,29 @@ function Manager({
 
   return (
     <>
-      <MintTokenProgress currentStep={2} />
+      <MintTokenProgress currentStep={1} />
       <Box px={3}>
-        <ItemLabel title="Set Manager" fontSize="md" />
-        <ManagerAddressAccordion
+        <ItemLabel title="Set Issuer" fontSize="md" />
+        <IssuerAddressAccordion
           mb={5}
           logo={<MyrkleLogoIcon fontSize="80px" />}
           wallets={getProviderWallets("myrkle")}
           isDisabled
           walletProvider="myrkle"
-          handleManagerAddress={handleManagerAddress}
+          handleIssuerAddress={handleIssuerAddress}
+          handleIssuerWalletProvider={handleIssuerWalletProvider}
           handleProceed={handleAccountSetManager}
-          handleManagerWalletProvider={handleManagerWalletProvider}
-          issuerAddress={issuerAddress}
         />
-        <ManagerAddressAccordion
+        <IssuerAddressAccordion
           mb={5}
           logo={<XummLogoIcon fontSize="80px" />}
           wallets={getProviderWallets("xumm")}
           walletProvider="xumm"
-          handleManagerAddress={handleManagerAddress}
+          handleIssuerAddress={handleIssuerAddress}
+          handleIssuerWalletProvider={handleIssuerWalletProvider}
           handleProceed={handleAccountSetManager}
-          handleManagerWalletProvider={handleManagerWalletProvider}
-          issuerAddress={issuerAddress}
         />
-        <ManagerAddressAccordion
+        <IssuerAddressAccordion
           logo={
             <HStack cursor="pointer" w="fit-content">
               <Image src={crossmarkLogo} alt="logo" h="20px" />
@@ -129,12 +130,11 @@ function Manager({
           mb={5}
           wallets={getProviderWallets("crossmark")}
           walletProvider="crossmark"
-          handleManagerAddress={handleManagerAddress}
+          handleIssuerAddress={handleIssuerAddress}
+          handleIssuerWalletProvider={handleIssuerWalletProvider}
           handleProceed={handleAccountSetManager}
-          handleManagerWalletProvider={handleManagerWalletProvider}
-          issuerAddress={issuerAddress}
         />
-        <ManagerAddressAccordion
+        <IssuerAddressAccordion
           logo={
             <HStack cursor="pointer" w="fit-content">
               <Image src={gemWalletLogo} alt="logo" h="20px" />
@@ -145,10 +145,9 @@ function Manager({
           }
           wallets={getProviderWallets("gemwallet")}
           walletProvider="gemwallet"
-          handleManagerAddress={handleManagerAddress}
+          handleIssuerAddress={handleIssuerAddress}
+          handleIssuerWalletProvider={handleIssuerWalletProvider}
           handleProceed={handleAccountSetManager}
-          handleManagerWalletProvider={handleManagerWalletProvider}
-          issuerAddress={issuerAddress}
         />
       </Box>
 
@@ -163,10 +162,9 @@ function Manager({
         {view === "error-2" && (
           <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleReset} />
         )}
-        {/* {view === "success" && <ResponseModal isError={false} handleClose={handleReset} />} */}
       </Backdrop>
     </>
   );
 }
 
-export default Manager;
+export default Issuer;

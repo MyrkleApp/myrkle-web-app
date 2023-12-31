@@ -4,7 +4,7 @@ import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { useCreateTrustlineMutation } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
 import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { TMintTokenStep } from "../../types";
@@ -13,6 +13,7 @@ import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import MintTokenProgress from "./mint-token-progress";
+import ProceedModal from "@/features/shared/components/proceed-modal";
 
 export interface TrustlineProps {
   managerAddress: string;
@@ -31,6 +32,8 @@ function Trustline({
     { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
     { handleSubmitTxn, resetSubmitTxnResponse },
   ] = useSubmitTxn("token");
+
+  const { isOpen: isProceedOpen, onOpen: onOpenProceed, onClose: onCloseProceed } = useDisclosure();
 
   const address = useSelector(selectAddress);
 
@@ -54,6 +57,7 @@ function Trustline({
   }, [isSubmitTxnSuccess]);
 
   const handleProceed = () => {
+    onCloseProceed();
     setView("loading");
 
     createTrustline({
@@ -84,10 +88,19 @@ function Trustline({
           adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet,
           consectetur adipiscing
         </Text>
-        <Button w="100%" onClick={handleProceed}>
+        <Button w="100%" onClick={onOpenProceed}>
           Proceed
         </Button>
       </Box>
+
+      <Backdrop isOpen={isProceedOpen}>
+        <ProceedModal
+          text="You are about to take a permanent step that cannot be undone."
+          isLoading={false}
+          handleProceed={handleProceed}
+          handleClose={onCloseProceed}
+        />
+      </Backdrop>
 
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
