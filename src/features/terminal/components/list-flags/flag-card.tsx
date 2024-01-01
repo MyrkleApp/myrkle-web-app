@@ -1,88 +1,14 @@
-import Backdrop from "@/components/backdrop";
-import MyrkleLoader from "@/components/myrkle-loader";
-import ResponseModal from "@/components/response-modal";
-import XummTxnModal from "@/components/xumm-txn-modal";
-import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
-import { TTxnPipeline } from "@/features/shared/types";
-import { selectAddress, selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
 import { Box, HStack, Spacer, Switch, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 export interface FlagCardProps {
   title: string;
   description?: string;
-  currentValue?: boolean;
-  mutation?: (value: any) => any;
-  lastAlteredFlag: string;
-  handleLastAlteredFlag: (title: string) => void;
+  isDisabled?: boolean;
+  isChecked: boolean;
+  handleSwitchClick?: () => void;
 }
 
-function FlagCard({
-  title,
-  description,
-  currentValue,
-  mutation,
-  lastAlteredFlag,
-  handleLastAlteredFlag,
-}: FlagCardProps) {
-  const address = useSelector(selectAddress);
-  const walletProvider = useSelector(selectWalletProvider);
-
-  const isActiveFlag = title === lastAlteredFlag;
-
-  const [switchValue, setSwitchValue] = useState(false);
-  const [view, setView] = useState<TTxnPipeline>("default");
-
-  const [
-    { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
-    { handleSubmitTxn, resetSubmitTxnResponse },
-  ] = useSubmitTxn("flag");
-
-  useEffect(() => {
-    if (xummTxnQrCode && isActiveFlag && walletProvider === "xumm") {
-      setView("xumm-qr-code");
-    }
-  }, [isActiveFlag, walletProvider, xummTxnQrCode]);
-
-  useEffect(() => {
-    if (isSubmitTxnSuccess === null) return;
-
-    if (isSubmitTxnSuccess && isActiveFlag) {
-      setView("success");
-    } else if (!isSubmitTxnSuccess && isActiveFlag) {
-      setView("error-2");
-    }
-  }, [isActiveFlag, isSubmitTxnSuccess]);
-
-  useEffect(() => {
-    setSwitchValue(!!currentValue);
-  }, [currentValue]);
-
-  const handleToggleSwitch = () => {
-    setSwitchValue(!switchValue);
-
-    if (!mutation) return;
-
-    setView("loading");
-    handleLastAlteredFlag(title);
-
-    mutation({ sender_addr: address, state: !switchValue })
-      .unwrap()
-      .then((res: any) => {
-        const successCallback = () => setView("success");
-        const errorCallback = () => setView("error-2");
-        handleSubmitTxn(res, successCallback, errorCallback);
-      })
-      .catch(() => setView("error-1"));
-  };
-
-  const handleClose = () => {
-    resetSubmitTxnResponse();
-    setView("default");
-    handleLastAlteredFlag("");
-  };
-
+function FlagCard({ title, description, isDisabled, isChecked, handleSwitchClick }: FlagCardProps) {
   return (
     <>
       <Box bg="dark" borderRadius="30px" p="30px" w="100%" h="100%" aspectRatio={1 / 0.8}>
@@ -91,27 +17,15 @@ function FlagCard({
             {title || "Flags name"}
           </Text>
           <Spacer />
-          <Switch colorScheme="whatsapp" isChecked={switchValue} onChange={handleToggleSwitch} />
+          <Switch
+            colorScheme="whatsapp"
+            isChecked={isChecked}
+            onChange={handleSwitchClick}
+            isDisabled={!!isDisabled}
+          />
         </HStack>
-
         <Text fontSize="sm">{description}</Text>
       </Box>
-
-      <Backdrop isOpen={view !== "default"}>
-        {view === "loading" && <MyrkleLoader />}
-
-        {view === "error-1" && <ResponseModal isError={true} handleClose={handleClose} />}
-
-        {view === "xumm-qr-code" && (
-          <XummTxnModal qrCodeImage={xummTxnQrCode} handleClose={handleClose} />
-        )}
-
-        {view === "error-2" && (
-          <ResponseModal isError={true} message={submitTxnResponseMsg} handleClose={handleClose} />
-        )}
-
-        {view === "success" && <ResponseModal isError={false} handleClose={handleClose} />}
-      </Backdrop>
     </>
   );
 }
