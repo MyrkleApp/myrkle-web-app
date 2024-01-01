@@ -50,7 +50,7 @@ function CreatePassword({
           color="textDark"
           placeholder="Enter password"
           mb={3}
-          // type="password"
+          type="password"
         />
         {password2! && !isPassword2Valid && (
           <Text fontSize="xs" color="danger">
@@ -67,7 +67,7 @@ function CreatePassword({
           color="textDark"
           placeholder="Re-enter password"
           mb={5}
-          // type="password"
+          type="password"
         />
         <Button
           w="100%"

@@ -32,6 +32,7 @@ function Login({
           fontSize="sm"
           focusBorderColor="textDark"
           placeholder="Enter password"
+          type="password"
         />
         <Button mt={5} w="100%" onClick={handleLoginClick} isLoading={isLoading}>
           login

@@ -1,19 +1,31 @@
 import { Box, Flex, HStack, Text, useMediaQuery } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 import LogoIcon from "@/icons/logo";
 import FooterLogoIcon from "@/icons/footer-logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import UnderConstruction from "@/components/under-construction";
+import { useSelector } from "react-redux";
+import { selectUserToken } from "@/features/auth/redux/auth.selectors";
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
 function Layout({ children }: LayoutProps) {
+  const navigate = useNavigate();
+
   const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
+
+  const userToken = useSelector(selectUserToken);
+
+  useEffect(() => {
+    if (!userToken) {
+      navigate(ROUTES.AUTH);
+    }
+  }, [navigate, userToken]);
 
   if (isLesserThanAllowedSize) {
     return <UnderConstruction />;

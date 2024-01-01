@@ -172,6 +172,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
         align="center"
         minH="75px"
         h="calc(100% / 3.25)"
+        maxH="300px"
         flexShrink={0}
         bg="dark"
         borderRadius="4vh"
@@ -186,7 +187,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
           h="100%"
           pr="20px"
         >
-          <HStack h="100%" w="100px">
+          <HStack h="100%" w={["100px", null, null, null, null, "200px"]}>
             <Image
               src={
                 isXrpToken({ token })
