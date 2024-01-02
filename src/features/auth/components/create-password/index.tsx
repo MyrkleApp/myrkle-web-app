@@ -4,6 +4,9 @@ import Button from "@/components/button";
 import { passwordRegex } from "@/constants";
 
 export interface CreatePasswordProps {
+  username: string;
+  handleUsernameChange: (e: any) => void;
+  usernameMessage: string;
   password1: string;
   password2: string;
   handlePassword1Change: (e: any) => void;
@@ -14,6 +17,9 @@ export interface CreatePasswordProps {
 }
 
 function CreatePassword({
+  username,
+  usernameMessage,
+  handleUsernameChange,
   password1,
   password2,
   handlePassword1Change,
@@ -30,10 +36,25 @@ function CreatePassword({
     <Box pos="absolute" top="50%" transform="translateY(-50%)">
       <HStack mb={4}>
         <Text fontSize="sm" fontWeight="bold">
-          Create Password
+          Register
         </Text>
       </HStack>
-      <Box bg="secondary" w="350px" minH="200px" borderRadius="15px" p="20px 20px 30px 20px">
+      <Box bg="secondary" w="350px" minH="260px" borderRadius="15px" p="20px 20px 30px 20px">
+        <Text fontSize="xs" color="danger">
+          {usernameMessage}
+        </Text>
+        <Input
+          value={username}
+          onChange={handleUsernameChange}
+          variant="flushed"
+          focusBorderColor="gray"
+          px="10px"
+          fontSize="sm"
+          color="textDark"
+          placeholder="Username"
+          name="username"
+          mb={3}
+        />
         {password1! && !isPassword1Valid && (
           <Text fontSize="xs" color="danger">
             Password must contain at least one lowercase, uppercase, one digit, and one special

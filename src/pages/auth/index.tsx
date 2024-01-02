@@ -21,12 +21,12 @@ import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { selectDeviceId } from "@/features/auth/redux/auth.selectors";
 import { useDisclosure } from "@chakra-ui/react";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { setUserToken } from "@/features/auth/redux/auth.slice";
+import { selectDeviceId } from "@/features/auth/redux/auth.selectors";
 
 function Auth() {
   const navigate = useNavigate();
@@ -43,14 +43,20 @@ function Auth() {
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
 
   // registration
+  const [username, setUsername] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
 
   // login
+  const [loginUsername, setLoginUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginMessage, setLoginMessage] = useState("");
 
   const { isOpen: isLoadingOpen, onOpen: onOpenLoading, onClose: onCloseLoading } = useDisclosure();
 
+  const handleLoginUsernameChange = (e: any) => setLoginUsername(e.target.value);
+  const handleUsernameChange = (e: any) => setUsername(e.target.value);
   const handlePassword1Change = (e: any) => setPassword1(e.target.value);
   const handlePassword2Change = (e: any) => setPassword2(e.target.value);
   const handlePasswordChange = (e: any) => setPassword(e.target.value);
@@ -60,12 +66,13 @@ function Auth() {
 
     axios
       .post(`${baseUrl}/auth/registration/`, {
+        username,
         password1,
         password2,
-        deviceID: deviceId,
       })
       .then(() => {
         handleView(ADD_WALLET_PIPELINE.LOGIN);
+        setUsernameMessage("");
         onCloseLoading();
       })
       .catch((err) => {
@@ -84,6 +91,7 @@ function Auth() {
       })
       .then((res: any) => {
         onCloseLoading();
+        setLoginMessage("");
 
         _setUserToken(res.data.key);
 
@@ -104,6 +112,9 @@ function Auth() {
       <HomeLayout>
         {view === ADD_WALLET_PIPELINE.CREATE_PASSWORD && (
           <CreatePassword
+            username={username}
+            handleUsernameChange={handleUsernameChange}
+            usernameMessage={usernameMessage}
             password1={password1}
             password2={password2}
             handlePassword1Change={handlePassword1Change}
@@ -206,7 +217,10 @@ function Auth() {
 
         {view === ADD_WALLET_PIPELINE.LOGIN && (
           <Login
+            username={loginUsername}
+            handleUsernameChange={handleLoginUsernameChange}
             password={password}
+            message={loginMessage}
             handlePasswordChange={handlePasswordChange}
             handleRegisterClick={() => handleView(ADD_WALLET_PIPELINE.CREATE_PASSWORD)}
             isLoading={isLoadingOpen}

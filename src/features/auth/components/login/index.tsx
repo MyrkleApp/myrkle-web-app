@@ -2,20 +2,28 @@ import Button from "@/components/button";
 import { Box, HStack, Input, Text } from "@chakra-ui/react";
 
 export interface LoginProps {
+  username: string;
+  handleUsernameChange: (e: any) => void;
   password: string;
   handlePasswordChange: (e: any) => void;
+  message: string;
   handleRegisterClick?: () => void;
   isLoading?: boolean;
   handleLoginClick?: () => void;
 }
 
 function Login({
+  username,
+  handleUsernameChange,
   password,
   handlePasswordChange,
+  message,
   handleRegisterClick,
   isLoading,
   handleLoginClick,
 }: LoginProps) {
+  const isButtonDisabled = !username.trim().length || !password.trim().length;
+
   return (
     <Box pos="absolute" top="50%" transform="translateY(-50%)">
       <HStack>
@@ -23,7 +31,20 @@ function Login({
           Log in
         </Text>
       </HStack>
-      <Box bg="secondary" w="350px" h="150px" borderRadius="15px" p="20px 25px">
+      <Box bg="secondary" w="350px" h="200px" borderRadius="15px" p="20px 25px">
+        <Text fontSize="xs" color="danger">
+          {message}
+        </Text>
+        <Input
+          value={username}
+          onChange={handleUsernameChange}
+          variant="flushed"
+          color="textDark"
+          fontSize="sm"
+          focusBorderColor="textDark"
+          placeholder="Enter username"
+          mb={3}
+        />
         <Input
           value={password}
           onChange={handlePasswordChange}
@@ -34,7 +55,13 @@ function Login({
           placeholder="Enter password"
           type="password"
         />
-        <Button mt={5} w="100%" onClick={handleLoginClick} isLoading={isLoading}>
+        <Button
+          mt={5}
+          w="100%"
+          onClick={handleLoginClick}
+          isLoading={isLoading}
+          isDisabled={isButtonDisabled}
+        >
           login
         </Button>
       </Box>
