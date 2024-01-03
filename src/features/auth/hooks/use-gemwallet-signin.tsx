@@ -10,6 +10,7 @@ import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { IAddExternalWallet } from "@/services/types";
 import { checkWalletExists } from "@/helpers";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
+import { selectUserId } from "../redux/auth.selectors";
 
 function useGemWalletSignIn() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function useGemWalletSignIn() {
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const myWallets = useSelector(selectMyWallets);
+  const userId = useSelector(selectUserId);
 
   const [error, setError] = useState("");
 
@@ -33,7 +35,7 @@ function useGemWalletSignIn() {
     try {
       const address = (await getAddress()).result?.address;
       const network = (await getNetwork()).result?.network;
-      if (address && network) {
+      if (address && network && userId !== null) {
         const myNetwork: any = network.toLowerCase();
 
         const isWalletExists = checkWalletExists(myWallets, address, "gemwallet");
@@ -49,7 +51,7 @@ function useGemWalletSignIn() {
           userToken: "",
           walletProvider: "gemwallet",
         });
-        handleSaveInBrowserDB({ address, walletProvider: "gemwallet" });
+        handleSaveInBrowserDB({ address, walletProvider: "gemwallet", userId });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

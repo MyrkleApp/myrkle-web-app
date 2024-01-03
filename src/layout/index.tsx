@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
@@ -7,8 +7,14 @@ import FooterLogoIcon from "@/icons/footer-logo";
 import { Link, useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import UnderConstruction from "@/components/under-construction";
-import { useSelector } from "react-redux";
-import { selectUserToken } from "@/features/auth/redux/auth.selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
+import MyrkleLoader from "@/components/myrkle-loader";
+import Backdrop from "@/components/backdrop";
+import axios from "axios";
+import { baseUrl } from "@/constants";
+import { setUserId } from "@/features/auth/redux/auth.slice";
+import { useCookie } from "react-use";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -19,16 +25,45 @@ function Layout({ children }: LayoutProps) {
 
   const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
 
-  const userToken = useSelector(selectUserToken);
+  const userId = useSelector(selectUserId);
+
+  const [userTokenCookie] = useCookie("user-token");
+
+  const dispatch = useDispatch();
+
+  const { isOpen: isLoaderOpen, onOpen: onLoaderOpen, onClose: onLoaderClose } = useDisclosure();
 
   useEffect(() => {
-    if (!userToken) {
+    if (userId !== null) return;
+
+    if (userTokenCookie) {
+      onLoaderOpen();
+
+      axios
+        .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userTokenCookie}` } })
+        .then((res) => {
+          dispatch(setUserId(res.data.pk));
+          onLoaderClose();
+        })
+        .catch(() => {
+          onLoaderClose();
+          navigate(ROUTES.AUTH);
+        });
+    } else {
       navigate(ROUTES.AUTH);
     }
-  }, [navigate, userToken]);
+  }, [dispatch, navigate, onLoaderClose, onLoaderOpen, userId, userTokenCookie]);
 
   if (isLesserThanAllowedSize) {
     return <UnderConstruction />;
+  }
+
+  if (isLoaderOpen) {
+    return (
+      <Backdrop isOpen w="100vw" h="100vh" bg="darkest" top={0} borderRadius="0">
+        <MyrkleLoader />
+      </Backdrop>
+    );
   }
 
   return (

@@ -172,3 +172,19 @@ export const extractTxnJsonData = (data: any) => {
     transactionType: data?.TransactionType || "",
   };
 };
+
+export const getDBWallets = (myWalletsDocs: any[], userId: number) => {
+  const wallets: IWalletAddress[] = [];
+
+  myWalletsDocs.forEach((walletDoc: any) => {
+    if (walletDoc.doc.userId === userId) {
+      wallets.push({
+        name: walletDoc.doc?.name || "",
+        address: walletDoc.doc.address,
+        walletProvider: walletDoc.doc.walletProvider,
+      });
+    }
+  });
+
+  return wallets;
+};

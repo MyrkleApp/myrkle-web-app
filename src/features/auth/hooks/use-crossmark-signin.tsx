@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
+import { selectUserId } from "../redux/auth.selectors";
 
 function useCrossmarkSignIn() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function useCrossmarkSignIn() {
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const myWallets = useSelector(selectMyWallets);
+  const userId = useSelector(selectUserId);
 
   const [error, setError] = useState("");
 
@@ -58,11 +60,11 @@ function useCrossmarkSignIn() {
         return { isWalletExists };
       }
 
-      if (response.data.meta.isSuccess) {
+      if (response.data.meta.isSuccess && userId !== null) {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
         _addWallet({ address, walletProvider: "crossmark", name: "" });
         storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
-        handleSaveInBrowserDB({ address, walletProvider: "crossmark" });
+        handleSaveInBrowserDB({ address, walletProvider: "crossmark", userId });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

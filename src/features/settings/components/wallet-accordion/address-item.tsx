@@ -2,6 +2,7 @@ import Backdrop from "@/components/backdrop";
 import Button from "@/components/button";
 import DialogBox from "@/components/dialog-box";
 import ToastElement from "@/components/toast-element";
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import { selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
 import { removeWallet, setAddress, setWalletProvider } from "@/features/wallet/redux/wallet.slice";
@@ -39,6 +40,7 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
   });
 
   const currentWalletProvider = useSelector(selectWalletProvider);
+  const userId = useSelector(selectUserId);
 
   const isActiveWalletProvider = currentWalletProvider === selectedWalletProvider;
   const isPreventSwitchWallet = isActiveWalletProvider && currentWalletProvider !== "xumm";
@@ -98,8 +100,8 @@ function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps
 
     const db = EXTERNAL_WALLET_DB();
 
-    if (selectedWalletProvider && selectedWalletProvider !== "myrkle") {
-      await db.removeWallet({ address, walletProvider: selectedWalletProvider });
+    if (selectedWalletProvider && selectedWalletProvider !== "myrkle" && userId !== null) {
+      await db.removeWallet({ address, walletProvider: selectedWalletProvider, userId });
     }
 
     onCloseRemoveWallet();

@@ -20,27 +20,28 @@ import useAddWallet from "@/features/shared/hooks/use-add-wallet";
 import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/constants";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useDisclosure } from "@chakra-ui/react";
-import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
-import { setUserToken } from "@/features/auth/redux/auth.slice";
-import { selectDeviceId } from "@/features/auth/redux/auth.selectors";
+import { setUserId, setUserToken } from "@/features/auth/redux/auth.slice";
+import { useCookie } from "react-use";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import { getDBWallets } from "@/helpers";
 
 function Auth() {
   const navigate = useNavigate();
+
+  const [, storeUserToken] = useCookie("user-token");
 
   const [
     { view, isDialogBoxOpen, dialogBoxMessage, qrCodeImage },
     { handleView, onCloseDialogBox, handleXummClick, handleCrossmarkClick, handleGemWalletClick },
   ] = useAddWallet();
 
-  const deviceId = useSelector(selectDeviceId);
-  const myWallets = useSelector(selectMyWallets);
-
   const dispatch = useDispatch();
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
+  const _setUserId = (id: number) => dispatch(setUserId(id));
 
   // registration
   const [username, setUsername] = useState("");
@@ -81,30 +82,40 @@ function Auth() {
       });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     onOpenLoading();
 
-    axios
-      .post(`${baseUrl}/auth/login/`, {
-        deviceID: deviceId,
+    try {
+      const res = await axios.post(`${baseUrl}/auth/login/`, {
+        username: loginUsername,
         password,
-      })
-      .then((res: any) => {
-        onCloseLoading();
-        setLoginMessage("");
-
-        _setUserToken(res.data.key);
-
-        if (myWallets.length) {
-          navigate(ROUTES.WALLET);
-        } else {
-          handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        onCloseLoading();
       });
+
+      onCloseLoading();
+      setLoginMessage("");
+
+      const token = res.data.key;
+
+      _setUserToken(token);
+      storeUserToken(token);
+
+      const user = await axios.get(`${baseUrl}/auth/user/`, {
+        headers: { Authorization: `Token ${token}` },
+      });
+      _setUserId(user.data.pk);
+
+      const db = EXTERNAL_WALLET_DB();
+      const myWalletsDocs = await db.getAllData();
+      const myWallets = getDBWallets(myWalletsDocs, user.data.pk);
+
+      if (myWallets.length) {
+        navigate(ROUTES.WALLET);
+      } else {
+        handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
+      }
+    } catch (err) {
+      onCloseLoading();
+    }
   };
 
   return (

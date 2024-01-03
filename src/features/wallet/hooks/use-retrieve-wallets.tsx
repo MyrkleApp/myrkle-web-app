@@ -1,24 +1,14 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setMyWallets } from "../redux/wallet.slice";
 import { IWalletAddress } from "../types";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
-
-const cleanupDBWallets = (myWalletsDocs: any[]) => {
-  const cleanedUpWallets: IWalletAddress[] = [];
-
-  myWalletsDocs.forEach((walletDoc: any) => {
-    cleanedUpWallets.push({
-      name: walletDoc.doc?.name || "",
-      address: walletDoc.doc.address,
-      walletProvider: walletDoc.doc.walletProvider,
-    });
-  });
-
-  return cleanedUpWallets;
-};
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
+import { getDBWallets } from "@/helpers";
 
 function useRetrieveWallets() {
+  const userId = useSelector(selectUserId);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,10 +17,13 @@ function useRetrieveWallets() {
     const retrieveWallets = async () => {
       const db = EXTERNAL_WALLET_DB();
       const myWalletsDocs = await db.getAllData();
-      _setMyWallets(cleanupDBWallets(myWalletsDocs));
+
+      if (userId !== null) {
+        _setMyWallets(getDBWallets(myWalletsDocs, userId));
+      }
     };
     retrieveWallets();
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   return null;
 }

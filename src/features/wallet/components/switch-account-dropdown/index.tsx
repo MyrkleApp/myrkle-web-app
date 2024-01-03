@@ -38,6 +38,7 @@ import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
 import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import ItemDescription from "@/components/item-description";
+import { selectUserId } from "@/features/auth/redux/auth.selectors";
 
 function SwitchAccountDropdown() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
@@ -56,6 +57,7 @@ function SwitchAccountDropdown() {
   const address = useSelector(selectAddress);
   const userToken = useSelector(selectUserToken);
   const network = useSelector(selectNetwork);
+  const userId = useSelector(selectUserId);
 
   // ======================================================================================================
   // dispatch
@@ -224,8 +226,8 @@ function SwitchAccountDropdown() {
   const handleDisconnect = async () => {
     const db = EXTERNAL_WALLET_DB();
 
-    if (walletProvider && walletProvider !== "myrkle") {
-      await db.removeWallet({ address, walletProvider });
+    if (walletProvider && walletProvider !== "myrkle" && userId !== null) {
+      await db.removeWallet({ address, walletProvider, userId });
     }
 
     clearSignInData();

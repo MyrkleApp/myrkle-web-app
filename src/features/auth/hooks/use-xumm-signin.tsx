@@ -11,6 +11,7 @@ import { IAddExternalWallet } from "@/services/types";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { checkWalletExists } from "@/helpers";
+import { selectUserId } from "../redux/auth.selectors";
 
 function useXummSignIn(handleCloseModal: () => void) {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function useXummSignIn(handleCloseModal: () => void) {
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const myWallets = useSelector(selectMyWallets);
+  const userId = useSelector(selectUserId);
 
   const [signInStatus, setSignInStatus] = useState<TConnectionStatus>("loading");
   const [qrCodeImage, setQrCodeImage] = useState("");
@@ -66,7 +68,7 @@ function useXummSignIn(handleCloseModal: () => void) {
       await db.addWallet(wallet);
     };
 
-    if (walletAddress) {
+    if (walletAddress && userId !== null) {
       const isWalletExists = checkWalletExists(myWallets, walletAddress, "xumm");
       if (isWalletExists) {
         setXummWalletExists(true);
@@ -75,7 +77,7 @@ function useXummSignIn(handleCloseModal: () => void) {
         setXummWalletExists(false);
       }
 
-      handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm" });
+      handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm", userId });
       navigate(ROUTES.WALLET);
       _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
 
