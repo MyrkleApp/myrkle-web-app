@@ -182,8 +182,8 @@ function MintTokenForm({
               objects
             </Box>
             <Box as="li" fontSize="xs">
-              Make sure the "active" wallet shown on Myrkle is the one you're currently using in
-              your wallet provider's app.
+              When using Crossmark or Gem-Wallet, make sure the issuer address and manager address
+              selected are the active addresses on the wallet provider.
             </Box>
           </Box>
         </DialogBox>

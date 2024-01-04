@@ -14,11 +14,13 @@ import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import MintTokenProgress from "./mint-token-progress";
 import ProceedModal from "@/features/shared/components/proceed-modal";
+import { TWalletProvider } from "@/features/wallet/types";
 
 export interface TrustlineProps {
   managerAddress: string;
   tokenName: string;
   totalSupply: string;
+  issuerWalletProvider: TWalletProvider;
   handleMintTokenStep: (val: TMintTokenStep) => void;
 }
 
@@ -26,6 +28,7 @@ function CreateToken({
   managerAddress,
   tokenName,
   totalSupply,
+  issuerWalletProvider,
   handleMintTokenStep,
 }: TrustlineProps) {
   const [
@@ -69,7 +72,7 @@ function CreateToken({
     })
       .unwrap()
       .then((res) => {
-        handleSubmitTxn(res);
+        handleSubmitTxn(res, issuerWalletProvider);
       })
       .catch(() => setView("error-1"));
   };
@@ -86,10 +89,7 @@ function CreateToken({
       <Box px={7}>
         <ItemLabel title="Create token" fontSize="md" />
         <Text fontSize="xs" mb={10}>
-          Here's the final step, click the button below complete the process. Lorem ipsum dolor sit
-          amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem
-          ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur
-          adipiscing
+          Final step! This transaction concludes the minting of {tokenName} token.
         </Text>
         <Button w="100%" onClick={onOpenProceed}>
           Proceed

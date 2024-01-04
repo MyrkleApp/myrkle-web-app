@@ -93,6 +93,7 @@ function MintToken() {
         managerAddress={managerAddress}
         tokenName={tokenName}
         totalSupply={totalSupply}
+        managerWalletProvider={managerWalletProvider as TWalletProvider}
         handleMintTokenStep={handleMintTokenStep}
       />
     );
@@ -105,6 +106,7 @@ function MintToken() {
         managerAddress={managerAddress}
         tokenName={tokenName}
         totalSupply={totalSupply}
+        issuerWalletProvider={issuerWalletProvider as TWalletProvider}
         handleMintTokenStep={handleMintTokenStep}
       />
     );

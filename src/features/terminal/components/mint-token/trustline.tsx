@@ -14,11 +14,13 @@ import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import MintTokenProgress from "./mint-token-progress";
 import ProceedModal from "@/features/shared/components/proceed-modal";
+import { TWalletProvider } from "@/features/wallet/types";
 
 export interface TrustlineProps {
   managerAddress: string;
   tokenName: string;
   totalSupply: string;
+  managerWalletProvider: TWalletProvider;
   handleMintTokenStep: (val: TMintTokenStep) => void;
 }
 
@@ -26,6 +28,7 @@ function Trustline({
   managerAddress,
   tokenName,
   totalSupply,
+  managerWalletProvider,
   handleMintTokenStep,
 }: TrustlineProps) {
   const [
@@ -68,7 +71,7 @@ function Trustline({
     })
       .unwrap()
       .then((res) => {
-        handleSubmitTxn(res);
+        handleSubmitTxn(res, managerWalletProvider);
       })
       .catch(() => setView("error-1"));
   };
@@ -84,9 +87,7 @@ function Trustline({
       <Box px={7}>
         <ItemLabel title="Create Trustline" fontSize="md" />
         <Text fontSize="xs" mb={10}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur
-          adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet,
-          consectetur adipiscing
+          Almost there! Set up a trustline for {tokenName} token
         </Text>
         <Button w="100%" onClick={onOpenProceed}>
           Proceed
