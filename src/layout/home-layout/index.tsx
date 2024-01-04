@@ -8,7 +8,7 @@ export interface HomeLayoutProps {
 
 function HomeLayout({ children }: HomeLayoutProps) {
   return (
-    <Flex h="100vh" bg="darker">
+    <Flex h="100vh" w="100vw" bg="darker">
       <Box w="50%" h="100%">
         <Image src={home1} alt="" w="90%" h="100%" objectFit="cover" />
       </Box>

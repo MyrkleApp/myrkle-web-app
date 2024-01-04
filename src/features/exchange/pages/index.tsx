@@ -43,7 +43,7 @@ function Exchange() {
           </HStack>
 
           {exchangeType === "swap" && (
-            <Flex h="calc(100% - 45px)" direction="column">
+            <Flex h="calc(100% - 45px)" minH="470px" direction="column">
               <Box h="60%" bg="dark" borderRadius="20px" px={4} py={6} mb="15px">
                 <ListOffers />
               </Box>

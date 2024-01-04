@@ -5,6 +5,7 @@ function History() {
   return (
     <Box
       h="calc(100% - 45px)"
+      minH="470px"
       maxH={["600px", null, null, "100%"]}
       bg="dark"
       borderRadius="30px"

@@ -12,7 +12,8 @@ function SendAssets() {
     <Flex
       justify="center"
       align="center"
-      h={["600px", null, null, "calc(100% - 45px)"]}
+      h="calc(100% - 45px)"
+      minH="470px"
       bg="dark"
       borderRadius="30px"
       p={8}

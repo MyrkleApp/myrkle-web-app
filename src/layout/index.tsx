@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
@@ -6,7 +6,6 @@ import LogoIcon from "@/icons/logo";
 import FooterLogoIcon from "@/icons/footer-logo";
 import { Link, useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
-import UnderConstruction from "@/components/under-construction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserId } from "@/features/auth/redux/auth.selectors";
 import MyrkleLoader from "@/components/myrkle-loader";
@@ -22,8 +21,6 @@ export interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
-
-  const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
 
   const userId = useSelector(selectUserId);
 
@@ -53,10 +50,6 @@ function Layout({ children }: LayoutProps) {
       navigate(ROUTES.AUTH);
     }
   }, [dispatch, navigate, onLoaderClose, onLoaderOpen, userId, userTokenCookie]);
-
-  if (isLesserThanAllowedSize) {
-    return <UnderConstruction />;
-  }
 
   if (isLoaderOpen) {
     return (

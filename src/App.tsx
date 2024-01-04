@@ -19,12 +19,11 @@ import Auth from "./pages/auth";
 import Settings from "./features/settings/pages";
 import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
-import { isDesktop } from "react-device-detect";
 import UnderConstruction from "./components/under-construction";
 import LandingPage from "./pages/landing";
 import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
 import useGetMe from "./features/auth/hooks/use-get-me";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useMediaQuery } from "@chakra-ui/react";
 
 function App() {
   useGenerateDeviceId();
@@ -32,7 +31,9 @@ function App() {
   useRetrieveWallets();
   useGetMe();
 
-  if (!isDesktop) {
+  const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
+
+  if (isLesserThanAllowedSize) {
     return <UnderConstruction />;
   }
 
