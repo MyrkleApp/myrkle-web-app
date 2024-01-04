@@ -24,6 +24,7 @@ import UnderConstruction from "./components/under-construction";
 import LandingPage from "./pages/landing";
 import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
 import useGetMe from "./features/auth/hooks/use-get-me";
+import { Flex } from "@chakra-ui/react";
 
 function App() {
   useGenerateDeviceId();
@@ -36,28 +37,30 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={ROUTES.LANDING} element={<LandingPage />} />
-        <Route path={ROUTES.AUTH} element={<Auth />} />
-        <Route path={ROUTES.WALLET} element={<Wallet />} />
-        <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />
-        <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />
-        <Route path={ROUTES.TRANSACTIONS} element={<Transaction />} />
-        <Route path={ROUTES.TERMINAL} element={<Terminal />} />
-        <Route path={ROUTES.TERMINAL_ASSET_MANAGER} element={<AssetManager />} />
-        <Route path={ROUTES.TERMINAL_NEW_ASSET} element={<NewAsset />} />
-        <Route path={ROUTES.TERMINAL_ADD_ASSET} element={<AddAsset />} />
-        <Route path={ROUTES.TERMINAL_BURN_ASSET} element={<BurnAsset />} />
-        <Route path={ROUTES.TERMINAL_CHECKS} element={<Checks />} />
-        <Route path={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS} element={<CreatedChecks />} />
-        <Route path={ROUTES.TERMINAL_ESCROWS} element={<Escrows />} />
-        <Route path={ROUTES.TERMINAL_ESCROWS_CREATED_ESCROWS} element={<CreatedEscrows />} />
-        <Route path={ROUTES.TERMINAL_FLAGS} element={<Flags />} />
-        <Route path={ROUTES.EXCHANGE} element={<Exchange />} />
-        <Route path={ROUTES.SETTINGS} element={<Settings />} />
-      </Routes>
-    </BrowserRouter>
+    <Flex justify="center" align="center" bg="#000000" h="100vh" w="100vw">
+      <BrowserRouter>
+        <Routes>
+          <Route path={ROUTES.LANDING} element={<LandingPage />} />
+          <Route path={ROUTES.AUTH} element={<Auth />} />
+          <Route path={ROUTES.WALLET} element={<Wallet />} />
+          <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />
+          <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />
+          <Route path={ROUTES.TRANSACTIONS} element={<Transaction />} />
+          <Route path={ROUTES.TERMINAL} element={<Terminal />} />
+          <Route path={ROUTES.TERMINAL_ASSET_MANAGER} element={<AssetManager />} />
+          <Route path={ROUTES.TERMINAL_NEW_ASSET} element={<NewAsset />} />
+          <Route path={ROUTES.TERMINAL_ADD_ASSET} element={<AddAsset />} />
+          <Route path={ROUTES.TERMINAL_BURN_ASSET} element={<BurnAsset />} />
+          <Route path={ROUTES.TERMINAL_CHECKS} element={<Checks />} />
+          <Route path={ROUTES.TERMINAL_CHECKS_CREATED_CHECKS} element={<CreatedChecks />} />
+          <Route path={ROUTES.TERMINAL_ESCROWS} element={<Escrows />} />
+          <Route path={ROUTES.TERMINAL_ESCROWS_CREATED_ESCROWS} element={<CreatedEscrows />} />
+          <Route path={ROUTES.TERMINAL_FLAGS} element={<Flags />} />
+          <Route path={ROUTES.EXCHANGE} element={<Exchange />} />
+          <Route path={ROUTES.SETTINGS} element={<Settings />} />
+        </Routes>
+      </BrowserRouter>
+    </Flex>
   );
 }
 

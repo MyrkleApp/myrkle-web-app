@@ -201,7 +201,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             />
             <Text
               className="font-face-proxima-nova-extrabld"
-              fontSize="3vh"
+              fontSize={["3vh", null, null, null, null, "40px"]}
               // textTransform="uppercase"
             >
               {token}
@@ -308,7 +308,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             _hover={{ bg: "secondary " }}
             onClick={() => navigate(tokenIconLink(ROUTES.TERMINAL_CHECKS))}
           >
-            <ChecksIcon stroke="textDark" fontSize="2.8vh" />
+            <ChecksIcon stroke="textDark" fontSize={["2.8vh", null, null, null, null, "30px"]} />
           </IconButton>
 
           <IconButton
@@ -321,7 +321,11 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             _hover={{ bg: "secondary " }}
             onClick={() => navigate(tokenIconLink(ROUTES.TERMINAL_ESCROWS))}
           >
-            <HourGlassIcon stroke="textDark" fill="textDark" fontSize="2.8vh" />
+            <HourGlassIcon
+              stroke="textDark"
+              fill="textDark"
+              fontSize={["2.8vh", null, null, null, null, "30px"]}
+            />
           </IconButton>
 
           <IconButton
@@ -334,7 +338,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             _hover={{ bg: "secondary " }}
             onClick={() => navigate(tokenIconLink(ROUTES.TRANSACTIONS))}
           >
-            <ArrowUpIcon stroke="none" fontSize="2.8vh" />
+            <ArrowUpIcon stroke="none" fontSize={["2.8vh", null, null, null, null, "30px"]} />
           </IconButton>
 
           <IconButton
@@ -350,7 +354,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             }}
             _hover={{ bg: "secondary " }}
           >
-            <ArrowDownIcon stroke="none" fontSize="2.8vh" />
+            <ArrowDownIcon stroke="none" fontSize={["2.8vh", null, null, null, null, "30px"]} />
           </IconButton>
 
           <IconButton
@@ -363,7 +367,11 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             _hover={{ bg: "secondary " }}
             onClick={() => navigate(tokenIconLink(ROUTES.EXCHANGE))}
           >
-            <ExchangeIcon stroke="textDark" fill="none" fontSize="2.8vh" />
+            <ExchangeIcon
+              stroke="textDark"
+              fill="none"
+              fontSize={["2.8vh", null, null, null, null, "30px"]}
+            />
           </IconButton>
         </HStack>
       </Flex>

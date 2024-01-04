@@ -60,15 +60,15 @@ function Layout({ children }: LayoutProps) {
 
   if (isLoaderOpen) {
     return (
-      <Backdrop isOpen w="100vw" h="100vh" bg="darkest" top={0} borderRadius="0">
+      <Backdrop isOpen w="100vw" h="100vh" bg="darkest" top={0} borderRadius="0" isFullscreen>
         <MyrkleLoader />
       </Backdrop>
     );
   }
 
   return (
-    <Box h="100vh" w="100vw" overflow="hidden">
-      <Box h="100vh" bg="darkest" pos="relative">
+    <Box h="100vh" w="100vw" overflow="hidden" maxH="900px" maxW="1800px">
+      <Box h="100%" bg="darkest" pos="relative">
         <Box
           h="100%"
           w={["100px", null, null, null, "250px"]}

@@ -45,7 +45,6 @@ function AssetsDropdown({ selectedToken, handleSelectedToken }: AssetsDropdownPr
         transform="translateY(-50%)"
         bg="#4F4F4F"
         cursor={isLoading ? "not-allowed" : "pointer"}
-        zIndex={2}
         borderRadius={isOpen ? "5px 5px 0 0" : "5px"}
         onClick={() => !isLoading && onToggle()}
       >

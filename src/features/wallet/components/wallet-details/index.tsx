@@ -205,7 +205,11 @@ function WalletDetails() {
               mt={4}
               mb={2}
             >
-              <Text className="font-face-proxima-nova-extrabld" color="#d5d6d4" fontSize={"9vh"}>
+              <Text
+                className="font-face-proxima-nova-extrabld"
+                color="#d5d6d4"
+                fontSize={["9vh", null, null, null, null, "60px"]}
+              >
                 ${totalBalance}
               </Text>
             </RenderElement>

@@ -31,7 +31,11 @@ function TransferFee({ token, issuer, amount }: TransferFeeProps) {
   };
 
   return (
-    <HStack pos="absolute" right={0} top="calc(20% - 28px)">
+    <HStack
+      pos="absolute"
+      right={0}
+      top={["calc(20% - 28px)", null, null, null, null, "calc(20% - 35px)"]}
+    >
       <Text fontSize="xs">Transfer fee:</Text>
       <Text fontSize="xs" color="success">
         {isXrpToken({ token }) ? "0" : formatNumber(tokenInfo?.transfer_fee, 1)}%
