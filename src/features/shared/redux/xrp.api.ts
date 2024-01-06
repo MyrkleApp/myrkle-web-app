@@ -43,6 +43,7 @@ export const xrpApi = createApi({
   reducerPath: "xrpApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${baseUrl}/api/v1/`,
+    timeout: 1000 * 20,
     // prepareHeaders: (headers, { getState }: any) => {
     //   const token = getState().auth.token;
     //   headers.set("Authorization", `Bearer ${token}`);

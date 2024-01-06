@@ -30,7 +30,7 @@ import { IRecordTransaction } from "../types/xrp-mutations";
 const xummTimer = 15;
 
 function useSubmitTxn(
-  txnType: "account-info" | "token" | "nft" | "check" | "escrow" | "flag" | "exchange",
+  txnType: "account-info" | "token" | "nft" | "check" | "escrow" | "flag" | "exchange" | "",
 ) {
   // =============================================================================================
   // selectors

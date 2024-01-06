@@ -90,6 +90,7 @@ function MintToken() {
   if (currentMintTokenStep === "trustline") {
     return (
       <Trustline
+        issuerAddress={issuerAddress}
         managerAddress={managerAddress}
         tokenName={tokenName}
         totalSupply={totalSupply}
@@ -103,6 +104,7 @@ function MintToken() {
   if (currentMintTokenStep === "create-token") {
     return (
       <CreateToken
+        issuerAddress={issuerAddress}
         managerAddress={managerAddress}
         tokenName={tokenName}
         totalSupply={totalSupply}

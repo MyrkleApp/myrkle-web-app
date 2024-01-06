@@ -43,7 +43,7 @@ function Manager({
   const [
     { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
     { handleSubmitTxn, resetSubmitTxnResponse },
-  ] = useSubmitTxn("token");
+  ] = useSubmitTxn("");
 
   const myWallets = useSelector(selectMyWallets);
 

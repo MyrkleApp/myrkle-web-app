@@ -3,10 +3,8 @@ import ItemLabel from "@/components/item-label";
 import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import { useCreateTrustlineMutation } from "@/features/shared/redux/xrp.api";
 import { TTxnPipeline } from "@/features/shared/types";
-import { selectAddress } from "@/features/wallet/redux/wallet.selectors";
 import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { TMintTokenStep } from "../../types";
 import Backdrop from "@/components/backdrop";
 import MyrkleLoader from "@/components/myrkle-loader";
@@ -17,6 +15,7 @@ import ProceedModal from "@/features/shared/components/proceed-modal";
 import { TWalletProvider } from "@/features/wallet/types";
 
 export interface TrustlineProps {
+  issuerAddress: string;
   managerAddress: string;
   tokenName: string;
   totalSupply: string;
@@ -25,6 +24,7 @@ export interface TrustlineProps {
 }
 
 function Trustline({
+  issuerAddress,
   managerAddress,
   tokenName,
   totalSupply,
@@ -34,11 +34,9 @@ function Trustline({
   const [
     { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
     { handleSubmitTxn, resetSubmitTxnResponse },
-  ] = useSubmitTxn("token");
+  ] = useSubmitTxn("");
 
   const { isOpen: isProceedOpen, onOpen: onOpenProceed, onClose: onCloseProceed } = useDisclosure();
-
-  const address = useSelector(selectAddress);
 
   const [view, setView] = useState<TTxnPipeline>("default");
 
@@ -64,7 +62,7 @@ function Trustline({
     setView("loading");
 
     createTrustline({
-      issuer_addr: address,
+      issuer_addr: issuerAddress,
       manager_addr: managerAddress,
       token_name: tokenName,
       total_supply: totalSupply,
@@ -96,10 +94,12 @@ function Trustline({
 
       <Backdrop isOpen={isProceedOpen}>
         <ProceedModal
-          text="You are about to take a permanent step that cannot be undone."
+          text={`Heads up! For smooth transactions, ensure ${managerAddress} matches your provider's active wallet.`}
           isLoading={false}
           handleProceed={handleProceed}
           handleClose={onCloseProceed}
+          h="280px"
+          w="330px"
         />
       </Backdrop>
 
