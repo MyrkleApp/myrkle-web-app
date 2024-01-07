@@ -1,25 +1,27 @@
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserToken } from "../redux/auth.selectors";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { baseUrl } from "@/constants";
 import axios from "axios";
-import { setUserId } from "../redux/auth.slice";
+import { setUserId, setUserToken } from "../redux/auth.slice";
+import { useCookie } from "react-use";
 
 function useGetMe() {
-  const userToken = useSelector(selectUserToken);
+  const [userTokenCookie] = useCookie("user-token");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userToken) {
+    if (userTokenCookie) {
+      dispatch(setUserToken(userTokenCookie));
+
       axios
-        .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userToken}` } })
+        .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userTokenCookie}` } })
         .then((res) => {
           dispatch(setUserId(res.data.pk));
         })
         .catch((err) => console.log(err));
     }
-  }, [userToken, dispatch]);
+  }, [userTokenCookie, dispatch]);
 
   return null;
 }

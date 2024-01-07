@@ -34,22 +34,29 @@ import {
   ISortBestOffer,
   IToggleTokenFreeze,
   IRecordTransaction,
+  IAddressBook,
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
 import { baseUrl } from "@/constants";
+import { RootState } from "@/store";
+
+const ADDRESS_BOOK_TYPE = "ADDRESS_BOOK";
+const ADDRESS_BOOK_ID = "ADDRESS_BOOK_LIST";
 
 export const xrpApi = createApi({
   reducerPath: "xrpApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${baseUrl}/api/v1/`,
     timeout: 1000 * 20,
-    // prepareHeaders: (headers, { getState }: any) => {
-    //   const token = getState().auth.token;
-    //   headers.set("Authorization", `Bearer ${token}`);
-    // },
+    prepareHeaders: (headers, { getState }: any) => {
+      const reduxState = getState() as RootState;
+      const token = reduxState.auth.userToken;
+      headers.set("Authorization", `Token ${token}`);
+    },
     mode: "cors",
   }),
+  tagTypes: [ADDRESS_BOOK_TYPE],
   endpoints: (builder) => ({
     getBalance: builder.query({
       query: ({ address, net }: IAddressNet) => `get-balance/${address}/?${net}`,
@@ -578,7 +585,7 @@ export const xrpApi = createApi({
     }),
 
     // =========================================
-    // record txns
+    // none blockchain stuff
     // =========================================
     recordTransaction: builder.mutation({
       query(body: IRecordTransaction) {
@@ -588,6 +595,26 @@ export const xrpApi = createApi({
           body,
         };
       },
+    }),
+    getAddressBook: builder.query({
+      query: () => `address-books/`,
+      providesTags: (data) =>
+        data
+          ? [
+              ...data.results.map(({ id }: any) => ({ type: ADDRESS_BOOK_TYPE, id }) as const),
+              { type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID },
+            ]
+          : [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }],
+    }),
+    addressBook: builder.mutation({
+      query(body: IAddressBook) {
+        return {
+          url: "address-books/",
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
     }),
   }),
 });
@@ -685,6 +712,8 @@ export const {
   useCreateTokenMutation,
   useCreateNotificationMutation,
   useCreatePairingTokenMutation,
-  // record txns
+  // none blockchain stuff
   useRecordTransactionMutation,
+  useLazyGetAddressBookQuery,
+  useAddressBookMutation,
 } = xrpApi;

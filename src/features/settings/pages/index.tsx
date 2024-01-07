@@ -1,10 +1,10 @@
-import Button from "@/components/button";
 import Layout from "@/layout";
 import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
-// import AddressBookItem from "../components/address-book-item";
 import ListWalletProviders from "../components/list-wallet-providers";
 import AddWallet from "../components/add-wallet";
 import ChangePassword from "../components/change-password";
+import AddAddress from "../components/add-address";
+import ListAddressBook from "../components/list-address-book";
 
 function Settings() {
   return (
@@ -30,12 +30,12 @@ function Settings() {
                 Address book
               </Text>
               <Spacer />
-              <Button h="30px" w="130px">
-                add address
-              </Button>
+              <AddAddress />
             </HStack>
 
-            <Text fontSize="sm">We could not find any addresses in your address book.</Text>
+            <ListAddressBook />
+
+            {/* <Text fontSize="sm">We could not find any addresses in your address book.</Text> */}
 
             {/* <AddressBookItem />
             <AddressBookItem />

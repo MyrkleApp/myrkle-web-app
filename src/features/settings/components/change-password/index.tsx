@@ -6,7 +6,7 @@ import axios from "axios";
 import { baseUrl, passwordRegex } from "@/constants";
 import ToastElement from "@/components/toast-element";
 import { useSelector } from "react-redux";
-import { selectUserToken } from "@/features/wallet/redux/wallet.selectors";
+import { selectUserToken } from "@/features/auth/redux/auth.selectors";
 
 function ChangePassword() {
   const userToken = useSelector(selectUserToken);
@@ -23,8 +23,8 @@ function ChangePassword() {
   const toast = useToast({
     position: "top",
     containerStyle: {
-      ml: "400px",
-      width: "200px",
+      // ml: "350px",
+      w: "300px",
     },
   });
 
@@ -52,14 +52,22 @@ function ChangePassword() {
         resetData();
 
         toast({
-          render: () => <ToastElement bg="success">Password changed successfully</ToastElement>,
+          render: () => (
+            <ToastElement bg="success" w="250px" fontWeight="bold" fontSize="lg">
+              Password changed successfully
+            </ToastElement>
+          ),
         });
       })
       .catch(() => {
         resetData();
 
         toast({
-          render: () => <ToastElement bg="danger">An error occurred!</ToastElement>,
+          render: () => (
+            <ToastElement bg="danger" w="250px" fontWeight="bold" fontSize="lg">
+              Sorry, an error occurred!
+            </ToastElement>
+          ),
         });
       });
   };

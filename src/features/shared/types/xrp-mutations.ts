@@ -280,3 +280,9 @@ export interface IRecordTransaction {
   transaction_type?: string;
   user: string | number;
 }
+
+export interface IAddressBook {
+  name: string;
+  address: string;
+  user: string | number;
+}

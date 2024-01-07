@@ -1,9 +1,13 @@
 import Button from "@/components/button";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box, CloseButton, HStack, Spacer, Text, useOutsideClick } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-// import AddressItem from "./address-item";
+import { selectUserToken } from "@/features/auth/redux/auth.selectors";
+import { useLazyGetAddressBookQuery } from "@/features/shared/redux/xrp.api";
+import { Box, CloseButton, HStack, Spacer, useOutsideClick } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import RenderAddressBook from "./render-address-book";
+import AddressItem from "./address-item";
 
 export interface AddressBookModalProps {
   handleClose: () => void;
@@ -12,7 +16,17 @@ export interface AddressBookModalProps {
 
 function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps) {
   const ref = useRef(null);
-  const [preSelectedAddress] = useState(-1);
+  const [preSelectedAddress, setPreSelectedAddress] = useState("");
+
+  const userToken = useSelector(selectUserToken);
+
+  const [getAddressBook, { data, isLoading, isFetching }] = useLazyGetAddressBookQuery();
+
+  useEffect(() => {
+    if (userToken) {
+      getAddressBook({}, true);
+    }
+  }, [getAddressBook, userToken]);
 
   useOutsideClick({
     ref,
@@ -20,7 +34,7 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
   });
 
   const handleConfirmClick = () => {
-    handleAddress("bdhskdjvdlkdnownelekwnfewlfsfnslkfneslneslvne");
+    handleAddress(preSelectedAddress);
     handleClose();
   };
 
@@ -48,25 +62,22 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
       </HStack>
 
       <Box pr={1} mb={4} mt={3} h="calc(100% - 110px)" overflow="hidden auto">
-        <Text fontSize="sm" mt={5}>
-          We could not find any addresses in your address book.
-        </Text>
-        {/* {Array(10)
-          .fill(null)
-          .map((_, i) => (
+        <RenderAddressBook isLoading={isLoading || isFetching} isEmpty={!data?.results?.length}>
+          {data?.results?.map((item: any) => (
             <AddressItem
-              key={i}
-              name="address name"
-              address="bdhskdjvdlkdnownelekwnfewlfsfnslkfneslneslvne"
-              isActive={i === preSelectedAddress}
-              handleClick={() => setPreSelectedAddress(i)}
+              key={item.id}
+              name={item.name}
+              address={item.address}
+              isActive={item.address === preSelectedAddress}
+              handleClick={() => setPreSelectedAddress(item.address)}
             />
-          ))} */}
+          ))}
+        </RenderAddressBook>
       </Box>
       <Button
         w="100%"
-        bg={preSelectedAddress < 0 ? "secondary" : "primary"}
-        isDisabled={preSelectedAddress < 0}
+        bg={preSelectedAddress ? "primary" : "secondary"}
+        isDisabled={!preSelectedAddress}
         onClick={handleConfirmClick}
       >
         confirm

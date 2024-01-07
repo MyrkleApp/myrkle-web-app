@@ -2,7 +2,12 @@ import CopyIcon from "@/icons/copy";
 import RemoveAccountIcon from "@/icons/remove-account";
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 
-function AddressBookItem() {
+export interface AddressBookItemProps {
+  name: string;
+  address: string;
+}
+
+function AddressBookItem({ name, address }: AddressBookItemProps) {
   return (
     <Flex
       align="center"
@@ -13,9 +18,9 @@ function AddressBookItem() {
       mb={3}
       borderRadius="40px"
     >
-      <Text fontSize="sm">Bukkas kills</Text>
+      <Text fontSize="sm">{name}</Text>
       <Text fontSize="sm" color="textDark">
-        JDFWIDBWBSDFBOFBNBKLJNDFDUFBNEIBUENBJVG
+        {address}
       </Text>
       <HStack>
         <Box bg="darkest" p="0 5px" borderRadius="4px">
