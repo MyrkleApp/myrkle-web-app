@@ -1,10 +1,10 @@
 import Button from "@/components/button";
 import Layout from "@/layout";
 import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
-import PasswordItem from "../components/password-item";
 // import AddressBookItem from "../components/address-book-item";
 import ListWalletProviders from "../components/list-wallet-providers";
 import AddWallet from "../components/add-wallet";
+import ChangePassword from "../components/change-password";
 
 function Settings() {
   return (
@@ -23,19 +23,7 @@ function Settings() {
           </Box>
 
           <Box w={["100%", null, null, "65%"]}>
-            <HStack mb={5}>
-              <Text className="font-face-proxima-nova-extrabld" fontSize="md">
-                Change Password
-              </Text>
-              <Spacer />
-              <Button h="30px" w="130px" bg="#999999">
-                save
-              </Button>
-            </HStack>
-
-            <PasswordItem name="Old password" />
-            <PasswordItem name="New password" />
-            <PasswordItem name="Confirm New password" />
+            <ChangePassword />
 
             <HStack my={7}>
               <Text className="font-face-proxima-nova-extrabld" fontSize="sm">

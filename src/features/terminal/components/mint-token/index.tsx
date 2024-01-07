@@ -39,6 +39,18 @@ function MintToken() {
 
   const handleMintTokenStep = (value: TMintTokenStep) => setCurrentMintTokenStep(value);
 
+  const clearMintTokenState = () => {
+    setTokenName("");
+    setTickSize(null);
+    setTotalSupply("");
+    setDomain("");
+    setTransferFee("0");
+    setIssuerAddress("");
+    setIssuerWalletProvider("");
+    setManagerAddress("");
+    setManagerWalletProvider("");
+  };
+
   // step one
   if (currentMintTokenStep === "form")
     return (
@@ -110,6 +122,7 @@ function MintToken() {
         totalSupply={totalSupply}
         issuerWalletProvider={issuerWalletProvider as TWalletProvider}
         handleMintTokenStep={handleMintTokenStep}
+        clearMintTokenState={clearMintTokenState}
       />
     );
   }

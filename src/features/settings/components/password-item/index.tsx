@@ -1,11 +1,18 @@
 import EyeIcon from "@/icons/eye";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { useState } from "react";
 
 export interface PasswordItemProps {
   name: string;
+  value: string;
+  handleChange: (e: any) => void;
 }
 
-function PasswordItem({ name }: PasswordItemProps) {
+function PasswordItem({ name, value, handleChange }: PasswordItemProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => setShowPassword((prevValue) => !prevValue);
+
   return (
     <Flex
       justify="space-between"
@@ -19,9 +26,21 @@ function PasswordItem({ name }: PasswordItemProps) {
       <Text fontSize="sm" ml={5}>
         {name}
       </Text>
-      <Flex justify="flex-end" align="center" bg="dark" w="70%" h="100%" p={2} borderRadius="30px">
-        <EyeIcon />
-      </Flex>
+      <InputGroup w="70%">
+        <Input
+          bg="dark"
+          p={2}
+          borderRadius="30px"
+          border="none"
+          focusBorderColor="gray"
+          type={showPassword ? "text" : "password"}
+          value={value}
+          onChange={handleChange}
+        />
+        <InputRightElement>
+          <EyeIcon cursor="pointer" onClick={toggleShowPassword} opacity={showPassword ? 0.2 : 1} />
+        </InputRightElement>
+      </InputGroup>
     </Flex>
   );
 }

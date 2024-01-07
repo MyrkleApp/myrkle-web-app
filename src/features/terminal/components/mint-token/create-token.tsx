@@ -21,6 +21,7 @@ export interface TrustlineProps {
   totalSupply: string;
   issuerWalletProvider: TWalletProvider;
   handleMintTokenStep: (val: TMintTokenStep) => void;
+  clearMintTokenState: () => void;
 }
 
 function CreateToken({
@@ -30,6 +31,7 @@ function CreateToken({
   totalSupply,
   issuerWalletProvider,
   handleMintTokenStep,
+  clearMintTokenState,
 }: TrustlineProps) {
   const [
     { isSubmitTxnSuccess, xummTxnQrCode, submitTxnResponseMsg },
@@ -53,6 +55,7 @@ function CreateToken({
 
     if (isSubmitTxnSuccess) {
       setView("success");
+      clearMintTokenState();
     } else setView("error-2");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitTxnSuccess]);
