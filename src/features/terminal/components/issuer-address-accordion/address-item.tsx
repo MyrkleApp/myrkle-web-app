@@ -72,7 +72,7 @@ function AddressItem({
       </Box>
 
       <Backdrop isOpen={isOpen}>
-        <DialogBox handleClose={onClose} h="250px">
+        <DialogBox handleClose={onClose} w="350px" h="280px">
           <Text
             fontSize="lg"
             fontWeight="bold"
@@ -81,11 +81,11 @@ function AddressItem({
           >
             Set token issuer
           </Text>
-          <Text fontSize="xs" fontWeight="bold">
-            You are about to take an permanent step that cannot be undone.
+          <Text fontSize="sm" fontWeight="bold" mb={3}>
+            You are about to take an permanent step that cannot be undone!
           </Text>
-          <Text fontSize="xs" fontWeight="bold">
-            Ensure that {address} is the currently active wallet on {selectedWalletProvider}
+          <Text fontSize="sm" fontWeight="bold">
+            Ensure that {address} is the currently active wallet on {selectedWalletProvider}.
           </Text>
           <Flex justify="space-between" mt="30px">
             <Button

@@ -616,6 +616,15 @@ export const xrpApi = createApi({
       },
       invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
     }),
+    deleteAddress: builder.mutation({
+      query(id: number) {
+        return {
+          url: `address-books/${id}/`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
+    }),
   }),
 });
 
@@ -716,4 +725,5 @@ export const {
   useRecordTransactionMutation,
   useLazyGetAddressBookQuery,
   useAddressBookMutation,
+  useDeleteAddressMutation,
 } = xrpApi;

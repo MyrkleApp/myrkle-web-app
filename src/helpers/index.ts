@@ -2,8 +2,8 @@ import { IToken } from "@/features/shared/types";
 import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import { Buffer } from "buffer";
 
-export const ellipsisAtCenter = (text: string) => {
-  if (text.length < 10) return text;
+export const ellipsisAtCenter = (text: string, allowedLength?: number) => {
+  if (text.length < (allowedLength || 10)) return text;
   return `${text.slice(0, 5)} ... ${text.slice(-5)}`;
 };
 

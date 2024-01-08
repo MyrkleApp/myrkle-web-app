@@ -19,6 +19,7 @@ import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import MintTokenProgress from "./mint-token-progress";
+import ArrowLeftIcon from "@/icons/arrow-left";
 
 export interface IssuerProps {
   issuerAddress: string;
@@ -98,6 +99,7 @@ function Issuer({
 
   return (
     <>
+      <ArrowLeftIcon mb={2} cursor="pointer" onClick={() => handleMintTokenStep("form")} />
       <MintTokenProgress currentStep={1} />
       <Box px={3}>
         <ItemLabel title="Set Issuer" fontSize="md" />

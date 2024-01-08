@@ -35,8 +35,13 @@ function ListAddressBook() {
 
   return (
     <>
-      {data?.results?.map((addressItem: any, i: number) => (
-        <AddressBookItem key={i} name={addressItem.name} address={addressItem.address} />
+      {data?.results?.map((addressItem: any) => (
+        <AddressBookItem
+          key={addressItem.id}
+          id={addressItem.id}
+          name={addressItem.name}
+          address={addressItem.address}
+        />
       ))}
     </>
   );
