@@ -15,7 +15,7 @@ function ListTxns() {
 
   useEffect(() => {
     if (address) {
-      getPaymentTxns({ address, net });
+      getPaymentTxns({ address, net }, true);
     }
   }, [address, getPaymentTxns, net, network]);
 

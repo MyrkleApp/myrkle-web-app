@@ -2,9 +2,13 @@ import { IToken } from "@/features/shared/types";
 import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import { Buffer } from "buffer";
 
-export const ellipsisAtCenter = (text: string, allowedLength?: number) => {
-  if (text.length < (allowedLength || 10)) return text;
-  return `${text.slice(0, 5)} ... ${text.slice(-5)}`;
+export const ellipsisAtCenter = (text: string, allowedLength?: number, isNotSpaced?: boolean) => {
+  const _allowedLength = allowedLength || 10;
+  if (text.length < _allowedLength) return text;
+  const beforeEllipsis = text.slice(0, Math.floor(_allowedLength / 2));
+  const afterEllipsis = text.slice(-Math.floor(_allowedLength / 2));
+  if (isNotSpaced) return `${beforeEllipsis}...${afterEllipsis}`;
+  return `${beforeEllipsis} ... ${afterEllipsis}`;
 };
 
 export const isXrpToken = (tokenObj: any) => {

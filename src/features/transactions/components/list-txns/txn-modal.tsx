@@ -21,8 +21,9 @@ import { useSelector } from "react-redux";
 import { useGetPayTxnInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
 import ListFlags from "./list-flags";
-import { formatNumber } from "@/helpers";
+import { ellipsisAtCenter, formatNumber } from "@/helpers";
 import TokenIcon from "@/features/shared/components/token-icon";
+import HoverDetail from "@/components/hover-detail";
 
 export interface TxnModalProps {
   txn: any;
@@ -89,8 +90,18 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
         </Button>
         <HStack px={4} bg="darkest" borderRadius="10px" mb={4}>
           <TokenIcon token={txn?.token} issuer={txn?.issuer} />
-          <Text className="font-face-proxima-nova-black" fontSize="3xl">
-            {txn?.token}
+          <Text
+            className="font-face-proxima-nova-black"
+            fontSize="3xl"
+            pos="relative"
+            _hover={{
+              "#hover-detail": {
+                display: "block",
+              },
+            }}
+          >
+            <HoverDetail text={txn?.token} />
+            {ellipsisAtCenter(txn?.token, 6, true)}
           </Text>
           <Spacer />
           <Text className="font-face-proxima-nova-black" fontSize="3xl">

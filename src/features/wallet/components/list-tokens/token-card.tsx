@@ -34,6 +34,7 @@ import useSubmitTxn from "@/features/shared/hooks/use-submit-txn";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import useGetTokenInfo from "../../hooks/use-get-token-info";
 import IssuerData from "@/features/shared/components/issuer-data.tsx";
+import HoverDetail from "@/components/hover-detail";
 
 export interface TokenCardProps {
   token: string;
@@ -187,7 +188,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
           h="100%"
           pr="20px"
         >
-          <HStack h="100%" w={["100px", null, null, null, null, "200px"]}>
+          <HStack h="100%" w={["160px", null, null, null, null, "200px"]}>
             <Image
               src={
                 isXrpToken({ token })
@@ -202,9 +203,15 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             <Text
               className="font-face-proxima-nova-extrabld"
               fontSize={["3vh", null, null, null, null, "33px"]}
-              // textTransform="uppercase"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
             >
-              {token}
+              <HoverDetail text={token} />
+              {ellipsisAtCenter(token, 6, true)}
             </Text>
           </HStack>
 
@@ -224,25 +231,12 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             <Box
               pos="relative"
               _hover={{
-                div: {
+                "#hover-detail": {
                   display: "block",
                 },
               }}
             >
-              <Box
-                display="none"
-                pos="absolute"
-                top={-4}
-                left="50%"
-                transform="translateX(-50%)"
-                border="1px solid black"
-                borderRadius="10px"
-                bg="#000"
-                p="1px 5px"
-                fontSize="xs"
-              >
-                {isXrpToken({ token }) ? xrpData.pair : tokenData?.pair}
-              </Box>
+              <HoverDetail text={isXrpToken({ token }) ? xrpData.pair : tokenData?.pair} />
               <Text
                 fontSize="sm"
                 fontWeight="bold"

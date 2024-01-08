@@ -3,8 +3,9 @@ import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
 import TxnModal from "./txn-modal";
-import { formatDate, formatNumber } from "@/helpers";
+import { ellipsisAtCenter, formatDate, formatNumber } from "@/helpers";
 import TokenIcon from "@/features/shared/components/token-icon";
+import HoverDetail from "@/components/hover-detail";
 
 export interface TxnCardProps {
   txn: any;
@@ -39,8 +40,18 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
           <HStack>
             <TokenIcon token={txn.token} issuer={txn?.issuer} h="28px" />
 
-            <Text fontSize="xs" textTransform="uppercase">
-              {txn.token}
+            <Text
+              fontSize="xs"
+              textTransform="uppercase"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
+            >
+              <HoverDetail text={txn.token} top={-5} />
+              {ellipsisAtCenter(txn.token, 6, true)}
             </Text>
           </HStack>
         </GridItem>

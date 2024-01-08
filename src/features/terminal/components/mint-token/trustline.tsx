@@ -98,8 +98,8 @@ function Trustline({
           isLoading={false}
           handleProceed={handleProceed}
           handleClose={onCloseProceed}
-          h="280px"
-          w="330px"
+          h="340px"
+          w="370px"
         />
       </Backdrop>
 
