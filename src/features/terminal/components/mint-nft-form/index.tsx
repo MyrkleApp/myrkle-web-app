@@ -118,11 +118,13 @@ function MintNftForm() {
   };
 
   const handleRoyaltiesMinusIconClick = () => {
+    if (!isTransferable) return;
     if (Number(royaltiesPercent) <= 0) return;
     setRoyaltiesPercent(Number(Number(royaltiesPercent) - 0.01).toFixed(2));
   };
 
   const handleRoyaltiesChange = (e: any) => {
+    if (!isTransferable) return;
     if (!e.target.value.match(numbersOnlyRegex)) return;
     if (Number(e.target.value) > 50) return;
     setRoyaltiesPercent(e.target.value);

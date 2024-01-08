@@ -201,7 +201,7 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
             />
             <Text
               className="font-face-proxima-nova-extrabld"
-              fontSize={["3vh", null, null, null, null, "40px"]}
+              fontSize={["3vh", null, null, null, null, "33px"]}
               // textTransform="uppercase"
             >
               {token}
