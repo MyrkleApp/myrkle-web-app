@@ -21,13 +21,14 @@ import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/constants";
 import { useDispatch } from "react-redux";
-import { useDisclosure } from "@chakra-ui/react";
+import { Text, useDisclosure } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { setUserId, setUserToken } from "@/features/auth/redux/auth.slice";
-import { useCookie } from "react-use";
+import { useCookie, useDebounce } from "react-use";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { getDBWallets } from "@/helpers";
+import ResponseModal from "@/components/response-modal";
 
 function Auth() {
   const navigate = useNavigate();
@@ -45,16 +46,33 @@ function Auth() {
 
   // registration
   const [username, setUsername] = useState("");
-  const [usernameMessage, setUsernameMessage] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [isUsernameError, setUsernameError] = useState(false);
 
   // login
   const [loginUsername, setLoginUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginMessage, setLoginMessage] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const {
+    isOpen: isErrorResponseOpen,
+    onOpen: onOpenErrorResponse,
+    onClose: onCloseErrorResponse,
+  } = useDisclosure();
   const { isOpen: isLoadingOpen, onOpen: onOpenLoading, onClose: onCloseLoading } = useDisclosure();
+
+  useDebounce(
+    () => {
+      // call api to check if username exists
+      setUsernameError(false);
+    },
+    200,
+    [username],
+  );
 
   const handleLoginUsernameChange = (e: any) => setLoginUsername(e.target.value);
   const handleUsernameChange = (e: any) => setUsername(e.target.value);
@@ -77,8 +95,9 @@ function Auth() {
         onCloseLoading();
       })
       .catch((err) => {
-        console.log(err);
         onCloseLoading();
+        setErrorMessage(err.response.data.errors[0]?.detail);
+        onOpenErrorResponse();
       });
   };
 
@@ -113,8 +132,10 @@ function Auth() {
       } else {
         handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
       }
-    } catch (err) {
+    } catch (err: any) {
       onCloseLoading();
+      setErrorMessage(err.response.data.errors[0]?.detail);
+      onOpenErrorResponse();
     }
   };
 
@@ -125,7 +146,11 @@ function Auth() {
           <CreatePassword
             username={username}
             handleUsernameChange={handleUsernameChange}
-            usernameMessage={usernameMessage}
+            usernameMessage={
+              <Text fontSize="xs" color={isUsernameError ? "danger" : "success"}>
+                {usernameMessage}
+              </Text>
+            }
             password1={password1}
             password2={password2}
             handlePassword1Change={handlePassword1Change}
@@ -242,6 +267,10 @@ function Auth() {
 
       <Backdrop isOpen={isDialogBoxOpen} w="100vw" h="100vh" borderRadius="0" top={0}>
         <DialogBox handleClose={onCloseDialogBox} message={dialogBoxMessage} />
+      </Backdrop>
+
+      <Backdrop isOpen={isErrorResponseOpen} w="100vw" h="100vh" borderRadius="0" top={0}>
+        <ResponseModal isError={true} message={errorMessage} handleClose={onCloseErrorResponse} />
       </Backdrop>
     </>
   );

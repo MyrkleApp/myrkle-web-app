@@ -6,7 +6,7 @@ import { passwordRegex } from "@/constants";
 export interface CreatePasswordProps {
   username: string;
   handleUsernameChange: (e: any) => void;
-  usernameMessage: string;
+  usernameMessage: React.ReactNode;
   password1: string;
   password2: string;
   handlePassword1Change: (e: any) => void;
@@ -40,9 +40,7 @@ function CreatePassword({
         </Text>
       </HStack>
       <Box bg="secondary" w="350px" minH="260px" borderRadius="15px" p="20px 20px 30px 20px">
-        <Text fontSize="xs" color="danger">
-          {usernameMessage}
-        </Text>
+        {usernameMessage}
         <Input
           value={username}
           onChange={handleUsernameChange}
