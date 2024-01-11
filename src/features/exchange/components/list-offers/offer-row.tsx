@@ -100,8 +100,8 @@ function OfferRow({ offer }: OfferRowProps) {
       sell_type: offer?.sell_token,
       buy_amount: offer?.sell_amount,
       sell_amount: offer?.buy_amount,
-      buy_issuer: offer?.sell_issuer,
-      sell_issuer: offer?.buy_issuer,
+      buy_issuer: offer?.buy_issuer,
+      sell_issuer: offer?.sell_issuer,
       tf_sell: tfSell,
       tf_fill_or_kill: tfFillOrKill,
       tf_immediate_or_cancel: tfImmediateOrCancel,
@@ -132,7 +132,8 @@ function OfferRow({ offer }: OfferRowProps) {
   return (
     <>
       <Flex
-        minH="calc(50% - 10px)"
+        minH="120px"
+        // minH="calc(50% - 10px)"
         // maxH="110px"
         bg="secondary"
         borderRadius="12px"

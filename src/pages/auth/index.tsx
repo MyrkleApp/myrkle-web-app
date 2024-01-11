@@ -50,6 +50,9 @@ function Auth() {
   const [password2, setPassword2] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isUsernameError, setUsernameError] = useState(false);
+  const [isCheckUsernameLoading, setCheckUsernameLoading] = useState(false);
+
+  const isValidUserame = !isUsernameError && !isCheckUsernameLoading;
 
   // login
   const [loginUsername, setLoginUsername] = useState("");
@@ -67,10 +70,27 @@ function Auth() {
 
   useDebounce(
     () => {
-      // call api to check if username exists
+      setCheckUsernameLoading(true);
+
+      axios
+        .post(`${baseUrl}/auth/check-username/`, { username })
+        .then((res) => {
+          if (res.data) {
+            setUsernameMessage("this username already exists");
+            setUsernameError(true);
+          } else {
+            setUsernameMessage("");
+            setUsernameError(false);
+          }
+          setCheckUsernameLoading(false);
+        })
+        .catch(() => {
+          setCheckUsernameLoading(false);
+        });
+
       setUsernameError(false);
     },
-    200,
+    500,
     [username],
   );
 
@@ -145,9 +165,10 @@ function Auth() {
         {view === ADD_WALLET_PIPELINE.CREATE_PASSWORD && (
           <CreatePassword
             username={username}
+            isValidUserame={isValidUserame}
             handleUsernameChange={handleUsernameChange}
             usernameMessage={
-              <Text fontSize="xs" color={isUsernameError ? "danger" : "success"}>
+              <Text fontSize="xs" color="danger">
                 {usernameMessage}
               </Text>
             }

@@ -1,5 +1,6 @@
 import Button from "@/components/button";
-import { Box, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, HStack, Input, Spacer, Text } from "@chakra-ui/react";
+// import ForgotPassword from "../forgot-password";
 
 export interface LoginProps {
   username: string;
@@ -77,6 +78,8 @@ function Login({
         >
           Register
         </Text>
+        <Spacer />
+        {/* <ForgotPassword /> */}
       </HStack>
     </Box>
   );

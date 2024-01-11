@@ -93,7 +93,8 @@ function PendingLiquidityRow({ offer }: OfferRowProps) {
   return (
     <>
       <Flex
-        minH="calc(50% - 10px)"
+        minH="120px"
+        // minH="calc(50% - 10px)"
         // maxH="110px"
         bg="secondary"
         borderRadius="12px"
