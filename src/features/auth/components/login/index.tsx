@@ -1,6 +1,6 @@
 import Button from "@/components/button";
 import { Box, HStack, Input, Spacer, Text } from "@chakra-ui/react";
-// import ForgotPassword from "../forgot-password";
+import ForgotPasswordButton from "../forgot-password-button";
 
 export interface LoginProps {
   username: string;
@@ -11,6 +11,7 @@ export interface LoginProps {
   handleRegisterClick?: () => void;
   isLoading?: boolean;
   handleLoginClick?: () => void;
+  handleForgotPasswordClick: () => void;
 }
 
 function Login({
@@ -22,6 +23,7 @@ function Login({
   handleRegisterClick,
   isLoading,
   handleLoginClick,
+  handleForgotPasswordClick,
 }: LoginProps) {
   const isButtonDisabled = !username.trim().length || !password.trim().length;
 
@@ -79,7 +81,7 @@ function Login({
           Register
         </Text>
         <Spacer />
-        {/* <ForgotPassword /> */}
+        <ForgotPasswordButton handleClick={handleForgotPasswordClick} />
       </HStack>
     </Box>
   );

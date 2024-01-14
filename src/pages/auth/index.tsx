@@ -21,7 +21,7 @@ import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/constants";
 import { useDispatch } from "react-redux";
-import { Text, useDisclosure } from "@chakra-ui/react";
+import { Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { setUserId, setUserToken } from "@/features/auth/redux/auth.slice";
@@ -29,6 +29,9 @@ import { useCookie, useDebounce } from "react-use";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { getDBWallets } from "@/helpers";
 import ResponseModal from "@/components/response-modal";
+import Button from "@/components/button";
+import ToastElement from "@/components/toast-element";
+import ForgotPassword from "@/features/auth/components/forgot-password";
 
 function Auth() {
   const navigate = useNavigate();
@@ -51,6 +54,7 @@ function Auth() {
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isUsernameError, setUsernameError] = useState(false);
   const [isCheckUsernameLoading, setCheckUsernameLoading] = useState(false);
+  const [recoveryKey, setRecoveryKey] = useState("recovery key goes here");
 
   const isValidUserame = !isUsernameError && !isCheckUsernameLoading;
 
@@ -62,11 +66,26 @@ function Auth() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const {
+    isOpen: isSuccessRegisterOpen,
+    onOpen: onOpenSuccessRegister,
+    onClose: onCloseSuccessRegister,
+  } = useDisclosure();
+
+  const {
     isOpen: isErrorResponseOpen,
     onOpen: onOpenErrorResponse,
     onClose: onCloseErrorResponse,
   } = useDisclosure();
   const { isOpen: isLoadingOpen, onOpen: onOpenLoading, onClose: onCloseLoading } = useDisclosure();
+
+  const toast = useToast({
+    position: "top",
+    containerStyle: {
+      width: "200px",
+      display: "flex",
+      justifyContent: "center",
+    },
+  });
 
   useDebounce(
     () => {
@@ -109,10 +128,12 @@ function Auth() {
         password1,
         password2,
       })
-      .then(() => {
-        handleView(ADD_WALLET_PIPELINE.LOGIN);
+      .then((res: any) => {
+        // handleView(ADD_WALLET_PIPELINE.LOGIN);
         setUsernameMessage("");
         onCloseLoading();
+        setRecoveryKey(res.data.recovery_key);
+        onOpenSuccessRegister();
       })
       .catch((err) => {
         onCloseLoading();
@@ -159,6 +180,14 @@ function Auth() {
     }
   };
 
+  const handleCopyRecoveryKey = () => {
+    navigator.clipboard?.writeText(recoveryKey);
+
+    toast({
+      render: () => <ToastElement />,
+    });
+  };
+
   return (
     <>
       <HomeLayout>
@@ -179,6 +208,7 @@ function Auth() {
             handleConfirmClick={handleRegister}
             handleLoginClick={() => handleView(ADD_WALLET_PIPELINE.LOGIN)}
             isLoading={isLoadingOpen}
+            handleForgotPasswordClick={() => handleView(ADD_WALLET_PIPELINE.FORGOT_PASSWORD)}
           />
         )}
         {view === ADD_WALLET_PIPELINE.WALLET_PROVIDER && (
@@ -282,9 +312,46 @@ function Auth() {
             handleRegisterClick={() => handleView(ADD_WALLET_PIPELINE.CREATE_PASSWORD)}
             isLoading={isLoadingOpen}
             handleLoginClick={handleLogin}
+            handleForgotPasswordClick={() => handleView(ADD_WALLET_PIPELINE.FORGOT_PASSWORD)}
           />
         )}
+
+        {view === ADD_WALLET_PIPELINE.FORGOT_PASSWORD && <ForgotPassword handleView={handleView} />}
       </HomeLayout>
+
+      <Backdrop isOpen={isSuccessRegisterOpen} w="100vw" h="100vh" borderRadius="0" top={0}>
+        <DialogBox handleClose={onCloseSuccessRegister} w="350px" h="280px">
+          <Text fontWeight="bold">This is your recovery key!</Text>
+          <Text fontSize="xs">
+            Ensure to back it up to restore your account or else you will lose access to it forever.
+          </Text>
+          <Text
+            fontSize="xs"
+            bg="secondary"
+            p="10px 15px"
+            mt="20px"
+            borderRadius="7px"
+            cursor="pointer"
+            textAlign="center" // PXBTWE9 sammy3
+            onClick={handleCopyRecoveryKey}
+          >
+            {recoveryKey}
+          </Text>
+          <Text fontSize="2xs" textAlign="center">
+            click to copy
+          </Text>
+          <Button
+            mt="25px"
+            w="100%"
+            onClick={() => {
+              handleView(ADD_WALLET_PIPELINE.LOGIN);
+              onCloseSuccessRegister();
+            }}
+          >
+            I have backed up my recovery key
+          </Button>
+        </DialogBox>
+      </Backdrop>
 
       <Backdrop isOpen={isDialogBoxOpen} w="100vw" h="100vh" borderRadius="0" top={0}>
         <DialogBox handleClose={onCloseDialogBox} message={dialogBoxMessage} />

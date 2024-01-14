@@ -2,7 +2,7 @@ import { Box, Flex, HStack, Input, Text } from "@chakra-ui/react";
 import LoginButtonText from "../login-button-text";
 import Button from "@/components/button";
 import { passwordRegex } from "@/constants";
-// import ForgotPassword from "../forgot-password";
+import ForgotPasswordButton from "../forgot-password-button";
 
 export interface CreatePasswordProps {
   username: string;
@@ -16,6 +16,7 @@ export interface CreatePasswordProps {
   handleConfirmClick: () => void;
   handleLoginClick: () => void;
   isLoading?: boolean;
+  handleForgotPasswordClick: () => void;
 }
 
 function CreatePassword({
@@ -30,6 +31,7 @@ function CreatePassword({
   handleConfirmClick,
   handleLoginClick,
   isLoading,
+  handleForgotPasswordClick,
 }: CreatePasswordProps) {
   const isPassword1Valid = password1.match(passwordRegex);
   const isPassword2Valid = password2 === password1;
@@ -103,7 +105,7 @@ function CreatePassword({
       </Box>
       <Flex justify="space-between">
         <LoginButtonText handleLoginClick={handleLoginClick} />
-        {/* <ForgotPassword mt={4} /> */}
+        <ForgotPasswordButton mt={4} handleClick={handleForgotPasswordClick} />
       </Flex>
     </Box>
   );

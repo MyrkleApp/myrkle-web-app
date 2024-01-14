@@ -25,18 +25,6 @@ export interface OfferRowProps {
   offer: any;
 }
 
-// sender_addr: xummConnectionData.account,
-//           buy: order.sell_amount,
-//           sell: order.buy_amount,
-//           tf_sell: tfSell,
-//           tf_fill_or_kill: tfFillOrKill,
-//           tf_immediate_or_cancel: tfImmediateOrCancel,
-//           buy_type: checkIsXrpToken(getToken.tokenName) ? "xrp" : getToken.tokenName,
-//           sell_type: checkIsXrpToken(giveToken.tokenName) ? "xrp" : giveToken.tokenName,
-//           buy_issuer: order.sell_issuer,
-//           sell_issuer: order.buy_issuer,
-//           network: xummConnectionData.network,
-
 function OfferRow({ offer }: OfferRowProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 

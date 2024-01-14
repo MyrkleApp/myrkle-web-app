@@ -13,6 +13,7 @@ const ADD_WALLET_PIPELINE = {
   IMPORT_PRIVATE_KEY: "import-private-key",
   XUMM: "xumm",
   LOGIN: "login",
+  FORGOT_PASSWORD: "forgot-password",
 };
 
 export default ADD_WALLET_PIPELINE;

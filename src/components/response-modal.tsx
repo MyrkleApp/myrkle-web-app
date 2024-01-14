@@ -52,7 +52,7 @@ function ResponseModal({ isError, message, handleClose }: ResponseModalProps) {
       <Text fontSize="sm" fontWeight="bold" mb={4}>
         {isError
           ? message || "Get detailed information of the transaction from your wallet provider"
-          : "Your transaction was successful"}
+          : message || "Your transaction was successful"}
       </Text>
       {isOpen ? (
         <Text fontSize="xs" onClick={onClose}>
