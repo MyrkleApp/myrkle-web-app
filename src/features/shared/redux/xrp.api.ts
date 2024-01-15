@@ -35,6 +35,7 @@ import {
   IToggleTokenFreeze,
   IRecordTransaction,
   IAddressBook,
+  IWallet,
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { nftFormatter } from "@/helpers";
@@ -43,6 +44,8 @@ import { RootState } from "@/store";
 
 const ADDRESS_BOOK_TYPE = "ADDRESS_BOOK";
 const ADDRESS_BOOK_ID = "ADDRESS_BOOK_LIST";
+const WALLET_ADDRESS_TYPE = "WALLET_ADDRESS";
+// const WALLET_ADDRESS_ID = "WALLET_ADDRESS_LIST";
 
 export const xrpApi = createApi({
   reducerPath: "xrpApi",
@@ -56,7 +59,7 @@ export const xrpApi = createApi({
     },
     mode: "cors",
   }),
-  tagTypes: [ADDRESS_BOOK_TYPE],
+  tagTypes: [ADDRESS_BOOK_TYPE, WALLET_ADDRESS_TYPE],
   endpoints: (builder) => ({
     getBalance: builder.query({
       query: ({ address, net }: IAddressNet) => `get-balance/${address}/?${net}`,
@@ -616,7 +619,7 @@ export const xrpApi = createApi({
       },
       invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
     }),
-    deleteAddress: builder.mutation({
+    deleteAddressBookItem: builder.mutation({
       query(id: number) {
         return {
           url: `address-books/${id}/`,
@@ -624,6 +627,26 @@ export const xrpApi = createApi({
         };
       },
       invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
+    }),
+    getMyWallets: builder.query({
+      query: () => `wallets/`,
+      // providesTags: (data) =>
+      //   data
+      //     ? [
+      //         ...data.results.map(({ id }: any) => ({ type: ADDRESS_BOOK_TYPE, id }) as const),
+      //         { type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID },
+      //       ]
+      //     : [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }],
+    }),
+    addNewWallet: builder.mutation({
+      query(body: IWallet) {
+        return {
+          url: "wallets/",
+          method: "POST",
+          body,
+        };
+      },
+      // invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
     }),
   }),
 });
@@ -725,5 +748,7 @@ export const {
   useRecordTransactionMutation,
   useLazyGetAddressBookQuery,
   useAddressBookMutation,
-  useDeleteAddressMutation,
+  useDeleteAddressBookItemMutation,
+  useLazyGetMyWalletsQuery,
+  useAddNewWalletMutation,
 } = xrpApi;

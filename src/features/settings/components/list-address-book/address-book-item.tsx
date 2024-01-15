@@ -1,7 +1,7 @@
 import Backdrop from "@/components/backdrop";
 import ToastElement from "@/components/toast-element";
 import ProceedModal from "@/features/shared/components/proceed-modal";
-import { useDeleteAddressMutation } from "@/features/shared/redux/xrp.api";
+import { useDeleteAddressBookItemMutation } from "@/features/shared/redux/xrp.api";
 import { ellipsisAtCenter } from "@/helpers";
 import CopyIcon from "@/icons/copy";
 import RemoveAccountIcon from "@/icons/remove-account";
@@ -16,7 +16,7 @@ export interface AddressBookItemProps {
 function AddressBookItem({ id, name, address }: AddressBookItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [deleteAddress, { isLoading }] = useDeleteAddressMutation();
+  const [deleteAddress, { isLoading }] = useDeleteAddressBookItemMutation();
 
   const toast = useToast({
     position: "top",

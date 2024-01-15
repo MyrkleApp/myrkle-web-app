@@ -7,6 +7,8 @@
 //   fee?: string;
 // }
 
+import { TWalletProvider } from "@/features/wallet/types";
+
 // export interface ISendToken extends ISendXrp {
 //   token: string;
 //   issuer: string;
@@ -285,4 +287,10 @@ export interface IAddressBook {
   name: string;
   address: string;
   user: string | number;
+}
+
+export interface IWallet {
+  address: string;
+  provider: TWalletProvider;
+  user: number;
 }

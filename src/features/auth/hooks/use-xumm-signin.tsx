@@ -8,10 +8,11 @@ import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { IAddExternalWallet } from "@/services/types";
-import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+// import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { checkWalletExists } from "@/helpers";
 import { selectUserId } from "../redux/auth.selectors";
+import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
 
 function useXummSignIn(handleCloseModal: () => void) {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function useXummSignIn(handleCloseModal: () => void) {
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [isXummWalletExists, setXummWalletExists] = useState<null | boolean>(null);
+
+  const [addNewWallet] = useAddNewWalletMutation();
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
@@ -63,9 +66,17 @@ function useXummSignIn(handleCloseModal: () => void) {
   }, []);
 
   useEffect(() => {
-    const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
-      const db = EXTERNAL_WALLET_DB();
-      await db.addWallet(wallet);
+    const handleSaveNewWallet = async (wallet: IAddExternalWallet) => {
+      if (userId === null) return;
+
+      addNewWallet({
+        address: wallet.address,
+        provider: wallet.walletProvider,
+        user: userId,
+      });
+
+      // const db = EXTERNAL_WALLET_DB();
+      // await db.addWallet(wallet);
     };
 
     if (walletAddress && userId !== null) {
@@ -77,7 +88,7 @@ function useXummSignIn(handleCloseModal: () => void) {
         setXummWalletExists(false);
       }
 
-      handleSaveInBrowserDB({ address: walletAddress, walletProvider: "xumm", userId });
+      handleSaveNewWallet({ address: walletAddress, walletProvider: "xumm", userId });
       navigate(ROUTES.WALLET);
       _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
 

@@ -4,13 +4,14 @@ import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
 import { ISignIn, IWalletAddress } from "@/features/wallet/types";
 import { checkWalletExists } from "@/helpers";
 import ROUTES from "@/routes";
-import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+// import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { IAddExternalWallet } from "@/services/types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { selectUserId } from "../redux/auth.selectors";
+import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
 
 function useCrossmarkSignIn() {
   const navigate = useNavigate();
@@ -26,9 +27,19 @@ function useCrossmarkSignIn() {
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
   const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
-  const handleSaveInBrowserDB = async (wallet: IAddExternalWallet) => {
-    const db = EXTERNAL_WALLET_DB();
-    await db.addWallet(wallet);
+  const [addNewWallet] = useAddNewWalletMutation();
+
+  const handleSaveNewWallet = async (wallet: IAddExternalWallet) => {
+    if (userId === null) return;
+
+    addNewWallet({
+      address: wallet.address,
+      provider: wallet.walletProvider,
+      user: userId,
+    });
+
+    // const db = EXTERNAL_WALLET_DB();
+    // await db.addWallet(wallet);
   };
 
   const crossmarkSignIn = async () => {
@@ -64,7 +75,7 @@ function useCrossmarkSignIn() {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
         _addWallet({ address, walletProvider: "crossmark", name: "" });
         storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
-        handleSaveInBrowserDB({ address, walletProvider: "crossmark", userId });
+        handleSaveNewWallet({ address, walletProvider: "crossmark", userId });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {
