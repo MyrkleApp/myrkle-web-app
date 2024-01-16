@@ -43,7 +43,7 @@ import { selectUserId } from "@/features/auth/redux/auth.selectors";
 function SwitchAccountDropdown() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
   const [gemWalletSignIn] = useGemWalletSignIn();
-  const [signInData, storeSignInData, clearSignInData] = useLocalStorage<ISignIn>("sign-in-data");
+  const [, storeSignInData, clearSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   // const { newExternalProvider, newAddress, isWalletInStorage, resetExternalProviderState } =
   //   useExternalWalletEvent();
@@ -191,14 +191,12 @@ function SwitchAccountDropdown() {
   const handleSwitchWallet = () => {
     if (!selectedWallet) return;
 
-    if (signInData !== undefined) {
-      storeSignInData({
-        userToken,
-        network,
-        address: selectedWallet.address,
-        walletProvider: selectedWallet.walletProvider,
-      });
-    }
+    storeSignInData({
+      userToken,
+      network,
+      address: selectedWallet.address,
+      walletProvider: selectedWallet.walletProvider,
+    });
 
     _setAddress(selectedWallet.address);
     _setWalletProvider(selectedWallet.walletProvider);

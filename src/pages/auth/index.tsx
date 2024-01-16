@@ -26,12 +26,14 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { setUserId, setUserToken } from "@/features/auth/redux/auth.slice";
 import { useCookie, useDebounce } from "react-use";
-import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
-import { getDBWallets } from "@/helpers";
 import ResponseModal from "@/components/response-modal";
 import Button from "@/components/button";
 import ToastElement from "@/components/toast-element";
 import ForgotPassword from "@/features/auth/components/forgot-password";
+import { useLazyGetMyWalletsQuery } from "@/features/shared/redux/xrp.api";
+import { formatMyWallets } from "@/helpers";
+import { setMyWallets } from "@/features/wallet/redux/wallet.slice";
+import { IWalletAddress } from "@/features/wallet/types";
 
 function Auth() {
   const navigate = useNavigate();
@@ -46,6 +48,9 @@ function Auth() {
   const dispatch = useDispatch();
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
   const _setUserId = (id: number) => dispatch(setUserId(id));
+  const _setMyWallets = (myWallets: IWalletAddress[]) => dispatch(setMyWallets(myWallets));
+
+  const [getMyWallets] = useLazyGetMyWalletsQuery();
 
   // registration
   const [username, setUsername] = useState("");
@@ -162,13 +167,14 @@ function Auth() {
       const user = await axios.get(`${baseUrl}/auth/user/`, {
         headers: { Authorization: `Token ${token}` },
       });
-      _setUserId(user.data.pk);
+      const userId = user.data.pk;
+      _setUserId(userId);
 
-      const db = EXTERNAL_WALLET_DB();
-      const myWalletsDocs = await db.getAllData();
-      const myWallets = getDBWallets(myWalletsDocs, user.data.pk);
+      const myWalletsData = await getMyWallets({}).unwrap();
+      const myFormattedWallets = formatMyWallets(myWalletsData.results);
 
-      if (myWallets.length) {
+      if (myFormattedWallets.length) {
+        _setMyWallets(myFormattedWallets);
         navigate(ROUTES.WALLET);
       } else {
         handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
