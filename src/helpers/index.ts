@@ -21,12 +21,20 @@ export const isXrpToken = (tokenObj: any) => {
 
 export const nftFormatter = (text: string) => {
   if (text.includes("ipfs://")) {
-    return text.replace("ipfs://", "https://ipfs.io/ipfs/");
+    return text.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/");
   }
-  if (!text.includes("ipfs://") && !text.includes("https://ipfs.io/ipfs/")) {
-    return `https://ipfs.io/ipfs/${text}`;
+  if (!text.includes("ipfs://") && !text.includes("https://cloudflare-ipfs.com/ipfs/")) {
+    return `https://cloudflare-ipfs.com/ipfs/${text}`;
   }
   return text;
+
+  // if (text.includes("ipfs://")) {
+  //   return text.replace("ipfs://", "https://ipfs.io/ipfs/");
+  // }
+  // if (!text.includes("ipfs://") && !text.includes("https://ipfs.io/ipfs/")) {
+  //   return `https://ipfs.io/ipfs/${text}`;
+  // }
+  // return text;
 };
 
 export const tokenFormatter = (text: string) => {
@@ -191,4 +199,14 @@ export const getDBWallets = (myWalletsDocs: any[], userId: number) => {
   });
 
   return wallets;
+};
+
+export const formatMyWallets = (wallets: any) => {
+  const myWallets: IWalletAddress[] = [];
+
+  wallets.forEach((wallet: any) => {
+    myWallets.push({ name: "", address: wallet.address, walletProvider: wallet.provider });
+  });
+
+  return myWallets;
 };

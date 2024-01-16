@@ -6,7 +6,7 @@ import { useRef } from "react";
 import ArrowRight2Icon from "@/icons/arrow-right-2";
 import ArrowLeft2Icon from "@/icons/arrow-left-2";
 import NftEditables from "./nft-editables";
-import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
+import { useGetNftMetaData2Query } from "@/features/shared/redux/token.api";
 import { nftFormatter } from "@/helpers";
 import Skeleton1 from "@/components/skeleton";
 import ROUTES from "@/routes";

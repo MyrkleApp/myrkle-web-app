@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import Skeleton1 from "@/components/skeleton";
-import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
+import { useGetNftMetaData2Query } from "@/features/shared/redux/token.api";
 import { nftFormatter } from "@/helpers";
 
 export interface NftItemProps {

@@ -2,7 +2,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import Button from "@/components/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
-import { useGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
+import { useGetNftMetaData2Query } from "@/features/shared/redux/token.api";
 import Skeleton1 from "@/components/skeleton";
 import { nftFormatter } from "@/helpers";
 

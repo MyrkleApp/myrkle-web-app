@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGetTokenInfo } from "../types/token-queries";
-import { cleanupTokenList, tokenFormatter } from "@/helpers";
+import { cleanupTokenList, nftFormatter, tokenFormatter } from "@/helpers";
 import { xrpToken } from "@/constants";
 import { Buffer } from "buffer";
 
@@ -68,6 +68,17 @@ export const tokenApi = createApi({
         return [xrpToken, ...cleanupTokenList(res.tokens)];
       },
     }),
+
+    // =============================================================================
+    // nft
+    // =============================================================================
+
+    getNftMetaData2: builder.query({
+      query: (url: string) => nftFormatter(url),
+      transformResponse: (res: any) => {
+        return { ...res, image: nftFormatter(res.image) };
+      },
+    }),
   }),
 });
 
@@ -79,4 +90,6 @@ export const {
   useGetFeeQuery,
   useGetPriceQuery,
   useGetMainnetTokensQuery,
+  useGetNftMetaData2Query,
+  useLazyGetNftMetaData2Query,
 } = tokenApi;

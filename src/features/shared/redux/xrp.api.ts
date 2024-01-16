@@ -38,7 +38,6 @@ import {
   IWallet,
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
-import { nftFormatter } from "@/helpers";
 import { baseUrl } from "@/constants";
 import { RootState } from "@/store";
 
@@ -76,12 +75,6 @@ export const xrpApi = createApi({
     }),
     getNftInfo: builder.query({
       query: ({ id, net }: IIdNet) => `info/get-nft-info/?nft_id=${id}&${net}`,
-    }),
-    getNftMetaData2: builder.query({
-      query: (url: string) => nftFormatter(url),
-      transformResponse: (res: any) => {
-        return { ...res, image: nftFormatter(res.image) };
-      },
     }),
     getNetworkFee: builder.query({
       query: ({ address, net }: IAddressNet) => `get-network-fee/${address}/?${net}`,
@@ -663,8 +656,6 @@ export const {
   useLazyGetAccountNftsQuery,
   useGetNftInfoQuery,
   useLazyGetNftInfoQuery,
-  useGetNftMetaData2Query,
-  useLazyGetNftMetaData2Query,
   useGetNftOfferInfoQuery,
   useLazyGetNftOfferInfoQuery,
   useGetNetworkFeeQuery,

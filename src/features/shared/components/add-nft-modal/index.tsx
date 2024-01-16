@@ -17,10 +17,10 @@ import { AnimatePresence } from "framer-motion";
 import { useDebounce } from "react-use";
 import {
   useLazyGetNftInfoQuery,
-  useLazyGetNftMetaData2Query,
   useLazyGetNftOfferInfoQuery,
   useReceiveNftMutation,
 } from "../../redux/xrp.api";
+import { useLazyGetNftMetaData2Query } from "../../redux/token.api";
 import { useSelector } from "react-redux";
 import { selectAddress, selectNet } from "@/features/wallet/redux/wallet.selectors";
 import { isObjectEmpty } from "@/helpers";

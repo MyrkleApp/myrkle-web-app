@@ -2,7 +2,8 @@ import { HStack, Image, Spacer, Text, VStack, useToast } from "@chakra-ui/react"
 import CopyIcon from "@/icons/copy";
 import { ellipsisAtCenter, isObjectEmpty } from "@/helpers";
 import ToastElement from "@/components/toast-element";
-import { useGetNftInfoQuery, useLazyGetNftMetaData2Query } from "@/features/shared/redux/xrp.api";
+import { useGetNftInfoQuery } from "@/features/shared/redux/xrp.api";
+import { useLazyGetNftMetaData2Query } from "@/features/shared/redux/token.api";
 import { useSelector } from "react-redux";
 import { selectNet } from "@/features/wallet/redux/wallet.selectors";
 import Skeleton1 from "@/components/skeleton";
