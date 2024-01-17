@@ -98,6 +98,17 @@ function Layout({ children }: LayoutProps) {
           <Box h="30px">{/* bottom */}</Box>
         </Box>
 
+        <Box pos="absolute" bottom="5px" left="20px">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdErVhFbxkteOUOAbDdWa1YZvQ-ykYSUxg_t3Kp7IS4XABJBQ/viewform?usp=sf_link"
+            target="_blank"
+          >
+            <Text color="#c0bdbd" fontWeight="bold" fontSize="xs" textDecoration="underline">
+              Report an issue
+            </Text>
+          </a>
+        </Box>
+
         <HStack pos="absolute" bottom="-10px" right="20px">
           <Text color="#4C4C4C" fontWeight="bold" fontSize="sm">
             powered by

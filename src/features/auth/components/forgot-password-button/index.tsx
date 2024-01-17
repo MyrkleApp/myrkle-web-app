@@ -8,7 +8,13 @@ export interface ForgotPasswordButtonProps {
 function ForgotPasswordButton({ handleClick, ...props }: ForgotPasswordButtonProps) {
   return (
     <>
-      <Text fontSize="xs" cursor="pointer" onClick={handleClick} {...props}>
+      <Text
+        fontSize="xs"
+        cursor="pointer"
+        onClick={handleClick}
+        _hover={{ color: "primary" }}
+        {...props}
+      >
         Forgot password?
       </Text>
     </>

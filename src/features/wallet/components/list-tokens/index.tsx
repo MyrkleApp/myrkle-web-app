@@ -29,7 +29,7 @@ function ListTokens() {
   return (
     <Flex direction="column" h="100%" gap={2} pr={4}>
       <TokenCard
-        token="xrp"
+        token="XRP"
         issuer={"000000000000000000000000"}
         amount={Number(xrpBalanceData?.balance)}
         xrpData={xrpData}
