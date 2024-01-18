@@ -2,6 +2,7 @@ import { tokenFormatter } from "@/helpers";
 import axios from "axios";
 import { useState } from "react";
 import { Buffer } from "buffer";
+import { useGetPriceQuery } from "@/features/shared/redux/token.api";
 
 const formatNumber = (value: any) => {
   const splitValue = String(value).split(".");
@@ -31,6 +32,8 @@ const isHex = (val: any) => {
 function useGetTokenInfo() {
   const [tokenInfo, setTokenInfo] = useState<any>({});
 
+  const { data: xrpData } = useGetPriceQuery({});
+
   async function getTokenInfo(tokenName: string, issuerAdrress: string) {
     try {
       const info = (
@@ -38,8 +41,11 @@ function useGetTokenInfo() {
           `https://s1.xrplmeta.org/token/${tokenName}:${issuerAdrress}?include_changes=true`,
         )
       ).data;
-      const multiplier = (await axios.get("https://data.messari.io/api/v1/assets/xrp/metrics")).data
-        .data.market_data.price_usd;
+
+      const multiplier = xrpData?.data.market_data.price_usd;
+
+      // const multiplier = (await axios.get("https://data.messari.io/api/v1/assets/xrp/metrics")).data
+      //   .data.market_data.price_usd;
 
       const resp = {
         name: info.currency,
