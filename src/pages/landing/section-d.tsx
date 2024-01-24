@@ -12,27 +12,28 @@ function SectionD() {
       h="100vh"
       pos="relative"
       overflow="hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      initial={{ opacity: 0, y: 200 }}
+      viewport={{ once: true }}
+      whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }}
     >
       <Image src={d1} alt="" pos="absolute" bottom="10%" left={0} h="50%" />
       <Image src={d2} alt="" pos="absolute" right={0} bottom={0} h="80%" />
 
       <WhiteRing
         initial={{ ...generateAnimateObject(0, -20) }}
-        animate={{ ...generateAnimateObject(-15, -10) }}
+        whileInView={{ ...generateAnimateObject(-15, -10) }}
       />
       <WhiteRing
         initial={{ ...generateAnimateObject(-15, -10) }}
-        animate={{ ...generateAnimateObject(15, -10) }}
+        whileInView={{ ...generateAnimateObject(15, -10) }}
       />
       <WhiteRing
         initial={{ ...generateAnimateObject(15, -10) }}
-        animate={{ ...generateAnimateObject(0, 0) }}
+        whileInView={{ ...generateAnimateObject(0, 0) }}
       />
       <WhiteRing
         initial={{ ...generateAnimateObject(0, 0) }}
-        animate={{ ...generateAnimateObject(0, -20) }}
+        whileInView={{ ...generateAnimateObject(0, -20) }}
       />
 
       <Text

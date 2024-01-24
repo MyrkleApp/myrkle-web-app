@@ -14,8 +14,9 @@ function SectionA() {
       h="100vh"
       pos="relative"
       overflow="hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      initial={{ opacity: 0, y: 200 }}
+      viewport={{ once: true }}
+      whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }}
     >
       <Flex justify="space-between" align="center" pos="absolute" w="100%" top="15%">
         <Image src={spark1} alt="" w="calc(50% - 200px)" />

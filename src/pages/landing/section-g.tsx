@@ -9,8 +9,9 @@ function SectionG() {
       h="100vh"
       pos="relative"
       overflow="hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      initial={{ opacity: 0, y: 200 }}
+      viewport={{ once: true }}
+      whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }}
     >
       <Box pos="absolute" top="22%" left="50%" w="70%" transform="translate(-50%)" zIndex={1}>
         <MotionText

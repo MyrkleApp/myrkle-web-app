@@ -17,6 +17,7 @@ function WhiteRing({ ...props }: any) {
       //   transform: `translate(calc(-50% - ${leftOffset}px), calc(-50% - ${topOffset}px))`,
       //   transition: { duration: 0.8 },
       // }}
+      viewport={{ once: true }}
       {...props}
     />
   );

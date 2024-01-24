@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import SectionA from "./section-a";
 import HomeNavbar from "@/layout/home-layout/navbar";
@@ -92,10 +91,29 @@ function LandingPage() {
   }, [scrollDown, scrollUp]);
 
   return (
-    <Box w="100vw" h="100vh" pos="relative" overflow="hidden" bg="darker">
+    <Box
+      w="100vw"
+      h="100vh"
+      pos="relative"
+      bg="darker"
+      overflowX="hidden"
+      overflowY="hidden"
+      _hover={{ overflowY: "scroll" }}
+    >
       <HomeNavbar />
 
-      <AnimatePresence>
+      <SectionA />
+      <SectionB />
+      <SectionC />
+      <SectionD />
+      <SectionE />
+      <SectionF />
+      <SectionG />
+      <SectionH />
+      <SectionI />
+      <SectionJ />
+
+      {/* <AnimatePresence>
         {activeSection === 1 && <SectionA />}
         {activeSection === 2 && <SectionB />}
         {activeSection === 3 && <SectionC />}
@@ -106,7 +124,7 @@ function LandingPage() {
         {activeSection === 8 && <SectionH />}
         {activeSection === 9 && <SectionI />}
         {activeSection === 10 && <SectionJ />}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </Box>
   );
 }
