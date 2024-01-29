@@ -104,7 +104,6 @@ function useSubmitTxn(
         getPendingLiquidity({ address, net });
       }
 
-      return;
       handleRecordTransaction();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
