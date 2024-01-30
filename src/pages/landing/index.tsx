@@ -3,16 +3,17 @@ import { useCallback, useEffect, useState } from "react";
 import SectionA from "./section-a";
 import HomeNavbar from "@/layout/home-layout/navbar";
 import SectionB from "./section-b";
-import SectionC from "./section-c";
-import SectionD from "./section-d";
-import SectionE from "./section-e";
-import SectionF from "./section-f";
-import SectionG from "./section-g";
-import SectionH from "./section-h";
+// import SectionC from "./section-c";
+// import SectionD from "./section-d";
+// import SectionE from "./section-e";
+// import SectionF from "./section-f";
+// import SectionG from "./section-g";
+// import SectionH from "./section-h";
 import SectionI from "./section-i";
 import SectionJ from "./section-j";
 import { useDebounce } from "react-use";
 import { useSearchParams } from "react-router-dom";
+import BubbleSection from "./bubble-section";
 
 function LandingPage() {
   const [searchParams] = useSearchParams();
@@ -91,25 +92,18 @@ function LandingPage() {
   }, [scrollDown, scrollUp]);
 
   return (
-    <Box
-      w="100vw"
-      h="100vh"
-      pos="relative"
-      bg="darker"
-      overflowX="hidden"
-      overflowY="hidden"
-      _hover={{ overflowY: "scroll" }}
-    >
+    <Box w="100vw" h="100vh" pos="relative" bg="darker" overflow="hidden scroll">
       <HomeNavbar />
 
       <SectionA />
       <SectionB />
-      <SectionC />
+      <BubbleSection />
+      {/* <SectionC />
       <SectionD />
-      <SectionE />
-      <SectionF />
+      <SectionE /> */}
+      {/* <SectionF />
       <SectionG />
-      <SectionH />
+      <SectionH /> */}
       <SectionI />
       <SectionJ />
 
