@@ -96,6 +96,9 @@ function LandingPage() {
       <HomeNavbar />
 
       <SectionA />
+
+      <Box h="100px" />
+
       <SectionB />
       <BubbleSection />
       {/* <SectionC />
