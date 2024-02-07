@@ -10,6 +10,7 @@ import a4 from "@/assets/landing-page/a4.png";
 function SectionA() {
   return (
     <MotionBox
+      id="home"
       w="100vw"
       h="100vh"
       pos="relative"

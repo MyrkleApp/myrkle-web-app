@@ -11,7 +11,7 @@ import ellipse8 from "@/assets/landing-page/ellipse-8.png";
 
 function BubbleSection() {
   return (
-    <Box mt="200px" h="1200px" pos="relative">
+    <Box id="about" mt="200px" h="1200px" pos="relative">
       <Image src={ellipse1} pos="absolute" alt="" top="15px" left="65%" />
       <Image src={ellipse2} pos="absolute" alt="" top="23%" left="30%" />
       <Image src={ellipse3} pos="absolute" alt="" top="25%" left="70%" />

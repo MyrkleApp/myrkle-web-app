@@ -1,13 +1,13 @@
 import LogoIcon from "@/icons/logo";
 import ROUTES from "@/routes";
 import { Flex, HStack, Text } from "@chakra-ui/react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import WalletButton from "./wallet-button";
 
 const links = [
-  { name: "home", path: `${ROUTES.LANDING}?section=home` },
-  { name: "about", path: `${ROUTES.LANDING}?section=about` },
-  { name: "contact", path: ROUTES.CONTACT },
+  { name: "home", path: `#home` },
+  { name: "about", path: `#about` },
+  { name: "twitter", path: ROUTES.CONTACT },
 ];
 
 function HomeNavbar() {
@@ -30,7 +30,7 @@ function HomeNavbar() {
       <LogoIcon fontSize="80px" ml="50px" />
       <HStack spacing={10} mr="50px">
         {links.slice(0, 2).map((link, i) => (
-          <Link key={i} to={link.path}>
+          <a key={i} href={link.path}>
             <Text
               fontSize="xs"
               fontWeight="bold"
@@ -40,7 +40,7 @@ function HomeNavbar() {
             >
               {link.name}
             </Text>
-          </Link>
+          </a>
         ))}
         <a href="https://twitter.com/MyrkleApp" target="_blank">
           <Text

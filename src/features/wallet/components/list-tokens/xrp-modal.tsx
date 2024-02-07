@@ -258,6 +258,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
           h="calc(100% - 230px)"
           borderRadius="12px"
           boxShadow="0 2px 8px #00000040"
+          overflow="hidden auto"
         >
           <Box
             bg="#5757573B"

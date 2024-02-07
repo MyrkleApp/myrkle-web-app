@@ -1,3 +1,4 @@
+import { ellipsisAtCenter } from "@/helpers";
 import { HStack, Image, Spacer, Text, VStack } from "@chakra-ui/react";
 
 export interface TokenItemProps {
@@ -20,7 +21,7 @@ function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
           {token}
         </Text>
         <Text fontSize="xs" mt="-2px">
-          {issuer}
+          {ellipsisAtCenter(issuer, 18)}
         </Text>
       </VStack>
       <Spacer />

@@ -109,16 +109,16 @@ function TxnDetailsModal({
           h="20%"
         >
           <HStack>
-            <Text fontSize={["2.2vh", null, null, null, null, "25px"]}>Transaction type</Text>
+            <Text fontSize={["15px", null, null, null, null, "25px"]}>Transaction type</Text>
             <Spacer />
-            <Text fontSize={["2vh", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
               {isCreateOffer ? "Offer Create" : isMatchOffer ? "Offer Match" : "Offer Cancel"}
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize={["2.2vh", null, null, null, null, "25px"]}>Creator</Text>
+            <Text fontSize={["15px", null, null, null, null, "25px"]}>Creator</Text>
             <Spacer />
-            <Text fontSize={["2vh", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
               {isCreateOffer
                 ? ellipsisAtCenter(address)
                 : isCancelOffer
@@ -127,16 +127,16 @@ function TxnDetailsModal({
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize={["2.2vh", null, null, null, null, "25px"]}>Rate</Text>
+            <Text fontSize={["15px", null, null, null, null, "25px"]}>Rate</Text>
             <Spacer />
-            <Text fontSize={["2vh", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
               {Number(fromTokenAmount) / Number(toTokenAmount) || "-- --"}
             </Text>
           </HStack>
         </Flex>
 
         <Flex direction="column" align="center" justify="center" pos="absolute" bottom="0" w="100%">
-          <Text fontSize={["2.2vh", null, null, null, null, "25px"]} mb={3}>
+          <Text fontSize={["15px", null, null, null, null, "25px"]} mb={3}>
             {proceedText || "Do you want to proceed?"}
           </Text>
           <Button
