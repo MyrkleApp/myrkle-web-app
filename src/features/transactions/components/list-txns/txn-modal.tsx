@@ -109,7 +109,7 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
           </Text>
         </HStack>
         <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
-          <ItemLabel title="Index" fontSize="2xs" mb={0} />
+          <ItemLabel title="Transaction index" fontSize="2xs" mb={0} />
           <RenderElement isLoading={isTxnInfoLoading} w="100%" h="20px">
             <Text fontSize="sm">{txnInfo?.index}</Text>
           </RenderElement>
