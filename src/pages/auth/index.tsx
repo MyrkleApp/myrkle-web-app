@@ -24,7 +24,11 @@ import { useDispatch } from "react-redux";
 import { Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
-import { setUserId, setUserToken } from "@/features/auth/redux/auth.slice";
+import {
+  setUserId,
+  setUserToken,
+  setUsername as setUsernameReduxStore,
+} from "@/features/auth/redux/auth.slice";
 import { useCookie, useDebounce } from "react-use";
 import ResponseModal from "@/components/response-modal";
 import Button from "@/components/button";
@@ -48,6 +52,7 @@ function Auth() {
   const dispatch = useDispatch();
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
   const _setUserId = (id: number) => dispatch(setUserId(id));
+  const _setUsernameReduxStore = (username: string) => dispatch(setUsernameReduxStore(username));
   const _setMyWallets = (myWallets: IWalletAddress[]) => dispatch(setMyWallets(myWallets));
 
   const [getMyWallets] = useLazyGetMyWalletsQuery();
@@ -169,6 +174,7 @@ function Auth() {
       });
       const userId = user.data.pk;
       _setUserId(userId);
+      _setUsernameReduxStore(user.data.username);
 
       const myWalletsData = await getMyWallets({}).unwrap();
       const myFormattedWallets = formatMyWallets(myWalletsData.results);

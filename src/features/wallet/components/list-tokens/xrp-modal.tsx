@@ -258,7 +258,7 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
           h="calc(100% - 230px)"
           borderRadius="12px"
           boxShadow="0 2px 8px #00000040"
-          overflow="hidden auto"
+          // overflow="hidden auto"
         >
           <Box
             bg="#5757573B"
@@ -270,7 +270,9 @@ function XrpModal({ data, handleClose }: TokenCardModalProps) {
             right="7px"
             zIndex={-1}
           />
-          <XrpEditables data={data} />
+          <Box mt="15px" h="calc(100% - 30px)" w="calc(100% - 15px)" overflow="hidden auto">
+            <XrpEditables data={data} />
+          </Box>
         </Box>
       </Box>
     </Flex>

@@ -28,7 +28,7 @@ function OfferBox({ token, issuer, amount, isGive }: OfferBoxProps) {
           )}
         </VStack>
         <Spacer />
-        <Text fontWeight="bold" fontSize="2xl">
+        <Text fontWeight="bold" fontSize="xl" wordBreak="break-all">
           {formatNumber(amount)}
         </Text>
       </HStack>

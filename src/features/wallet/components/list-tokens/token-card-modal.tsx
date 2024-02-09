@@ -361,13 +361,15 @@ function TokenCardModal({
             right="7px"
             zIndex={-1}
           />
-          <TokenEditables
-            data={data}
-            accountTokenInfo={accountTokenInfo}
-            limit={limit}
-            issuer={issuer}
-            icon={data?.icon || tokenPlaceholder}
-          />
+          <Box mt="15px" h="calc(100% - 30px)" w="calc(100% - 15px)" overflow="hidden auto">
+            <TokenEditables
+              data={data}
+              accountTokenInfo={accountTokenInfo}
+              limit={limit}
+              issuer={issuer}
+              icon={data?.icon || tokenPlaceholder}
+            />
+          </Box>
         </Box>
       </Box>
     </Flex>

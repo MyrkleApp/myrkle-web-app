@@ -18,6 +18,7 @@ import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import { numbersOnlyRegex, today } from "@/constants";
 import { ICreateXrpEscrow } from "@/features/shared/types/xrp-mutations";
+import AddressBook from "@/features/transactions/components/address-book";
 
 export interface TokenDetailProps {
   token: any;
@@ -128,10 +129,13 @@ function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
         </Box>
         <Box mb={2}>
           <ItemLabel title="Receiver address" mb={1} />
-          <Input
-            value={receiverAddress}
-            onChange={(e: any) => setReceiverAddress(e.target.value)}
-          />
+          <HStack>
+            <Input
+              value={receiverAddress}
+              onChange={(e: any) => setReceiverAddress(e.target.value)}
+            />
+            <AddressBook handleAddress={(data) => setReceiverAddress(data)} showOnlyIcon />
+          </HStack>
         </Box>
         <Box mb={2}>
           <ItemLabel title="Amount" mb={1} />

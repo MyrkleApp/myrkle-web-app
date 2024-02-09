@@ -81,7 +81,7 @@ function TokenEditables({ data, limit, issuer, accountTokenInfo, icon }: TokenEd
         <Box w="57%">
           <HStack ml={5}>
             <Image src={icon} alt="xrp" h="22px" />
-            <Text fontSize="xs" letterSpacing={2}>
+            <Text fontSize="xs" letterSpacing={0.5}>
               {formatNumber(limit || "")}
             </Text>
           </HStack>

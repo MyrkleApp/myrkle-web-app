@@ -67,7 +67,7 @@ function TxnDetailsModal({
       left="50%"
       transform="translate(-50%, -50%)"
     >
-      <Box w="calc(100% - 60px)" h="calc(100% - 80px)" pos="relative">
+      <Box w="calc(100% - 60px)" h="calc(100% - 60px)" pos="relative">
         <HStack>
           <Text fontWeight="bold" textTransform="capitalize">
             {title || ""}
@@ -109,16 +109,16 @@ function TxnDetailsModal({
           h="20%"
         >
           <HStack>
-            <Text fontSize={["15px", null, null, null, null, "25px"]}>Transaction type</Text>
+            <Text fontSize={["12px", null, null, null, "17px", "25px"]}>Transaction type</Text>
             <Spacer />
-            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["12px", null, null, null, "17px", "20px"]} fontWeight="bold">
               {isCreateOffer ? "Offer Create" : isMatchOffer ? "Offer Match" : "Offer Cancel"}
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize={["15px", null, null, null, null, "25px"]}>Creator</Text>
+            <Text fontSize={["12px", null, null, null, "17px", "25px"]}>Creator</Text>
             <Spacer />
-            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["12px", null, null, null, "17px", "20px"]} fontWeight="bold">
               {isCreateOffer
                 ? ellipsisAtCenter(address)
                 : isCancelOffer
@@ -127,21 +127,21 @@ function TxnDetailsModal({
             </Text>
           </HStack>
           <HStack>
-            <Text fontSize={["15px", null, null, null, null, "25px"]}>Rate</Text>
+            <Text fontSize={["12px", null, null, null, "17px", "25px"]}>Rate</Text>
             <Spacer />
-            <Text fontSize={["13px", null, null, null, null, "20px"]} fontWeight="bold">
+            <Text fontSize={["12px", null, null, null, "17px", "20px"]} fontWeight="bold">
               {Number(fromTokenAmount) / Number(toTokenAmount) || "-- --"}
             </Text>
           </HStack>
         </Flex>
 
         <Flex direction="column" align="center" justify="center" pos="absolute" bottom="0" w="100%">
-          <Text fontSize={["15px", null, null, null, null, "25px"]} mb={3}>
+          <Text fontSize={["12px", null, null, null, "17px", "25px"]} mb={3}>
             {proceedText || "Do you want to proceed?"}
           </Text>
           <Button
             w="80%"
-            h={["7vh", null, null, null, null, "70px"]}
+            h={["40px", null, null, null, null, "70px"]}
             letterSpacing={1}
             onClick={handleProceed}
           >

@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import TokenItem from "../select-token-dropdown/token-item";
 import { useEffect, useState } from "react";
 import { numbersOnlyRegex, today } from "@/constants";
@@ -19,6 +19,7 @@ import Backdrop from "@/components/backdrop";
 import MyrkleLoader from "@/components/myrkle-loader";
 import ResponseModal from "@/components/response-modal";
 import XummTxnModal from "@/components/xumm-txn-modal";
+import AddressBook from "@/features/transactions/components/address-book";
 
 export interface TokenDetailProps {
   token: any;
@@ -116,10 +117,13 @@ function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
         </Box>
         <Box mb={2}>
           <ItemLabel title="Receiver address" mb={1} />
-          <Input
-            value={receiverAddress}
-            onChange={(e: any) => setReceiverAddress(e.target.value)}
-          />
+          <HStack>
+            <Input
+              value={receiverAddress}
+              onChange={(e: any) => setReceiverAddress(e.target.value)}
+            />
+            <AddressBook handleAddress={(data) => setReceiverAddress(data)} showOnlyIcon />
+          </HStack>
         </Box>
         <Box mb={2}>
           <ItemLabel title="Amount" mb={1} />
@@ -147,6 +151,7 @@ function TokenDetail({ token, handleTokenClick }: TokenDetailProps) {
 
         <Button
           w="100%"
+          minH="40px"
           onClick={handleConfirm}
           color="#fff"
           bg={isSubmitDisabled ? "secondary" : "primary"}

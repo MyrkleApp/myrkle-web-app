@@ -31,6 +31,7 @@ import { cleanupTokenBalance, formatNumber } from "@/helpers";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
 import { setTotalBalance } from "../../redux/wallet.slice";
+import { selectUserName } from "@/features/auth/redux/auth.selectors";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon, link: ROUTES.TERMINAL_CHECKS },
@@ -77,6 +78,7 @@ function WalletDetails() {
   const net = useSelector(selectNet);
   const totalBalance = useSelector(selectTotalBalance);
   const network = useSelector(selectNetwork);
+  const username = useSelector(selectUserName);
 
   // =======================================================================================
   // api
@@ -186,13 +188,13 @@ function WalletDetails() {
         </Box>
 
         <Flex ml={10} direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
-          <HStack spacing={5} cursor="pointer" onClick={handleAddressClick}>
+          <HStack spacing={4} cursor="pointer" onClick={handleAddressClick}>
             <Text color="textDark" fontSize="13px" fontWeight="bold">
               Welcome
             </Text>
             <RenderElement isLoading={false} h="20px">
-              <Text color="textDark" fontSize="13px" fontWeight="bold">
-                {address}
+              <Text color="textDark" fontSize="13px" fontWeight="bold" textTransform="capitalize">
+                {username || "-- --"}
               </Text>
             </RenderElement>
           </HStack>
@@ -227,39 +229,41 @@ function WalletDetails() {
                 />
               </Link>
             ))}
-            <Box
-              display="flex"
-              alignItems="center"
-              bg="secondary"
-              borderRadius="50%"
-              h="35px"
-              w="35px"
-              cursor="pointer"
-              onClick={onAccountInfoModalOpen}
-              transition="0.25s linear all"
-              _hover={{
-                width: ["35px", null, null, null, "115px"],
-                borderRadius: "20px",
-                "& > .account-info-text": {
-                  display: ["none", null, null, null, "block"],
-                },
-              }}
-            >
-              <InfoIcon pos="absolute" ml="9px" />
-              <AnimatePresence>
-                <MotionText
-                  className="account-info-text"
-                  display="none"
-                  pos="absolute"
-                  ml={9}
-                  w="90px"
-                  color="textDark"
-                  fontSize="xs"
-                  fontWeight={600}
-                >
-                  account info
-                </MotionText>
-              </AnimatePresence>
+            <Box w="117px">
+              <Box
+                display="flex"
+                alignItems="center"
+                bg="secondary"
+                borderRadius="50%"
+                h="35px"
+                w="35px"
+                cursor="pointer"
+                onClick={onAccountInfoModalOpen}
+                transition="0.25s linear all"
+                _hover={{
+                  width: ["35px", null, null, null, "115px"],
+                  borderRadius: "20px",
+                  "& > .account-info-text": {
+                    display: ["none", null, null, null, "block"],
+                  },
+                }}
+              >
+                <InfoIcon pos="absolute" ml="9px" />
+                <AnimatePresence>
+                  <MotionText
+                    className="account-info-text"
+                    display="none"
+                    pos="absolute"
+                    ml={9}
+                    w="90px"
+                    color="textDark"
+                    fontSize="xs"
+                    fontWeight={600}
+                  >
+                    account info
+                  </MotionText>
+                </AnimatePresence>
+              </Box>
             </Box>
           </HStack>
         </Flex>

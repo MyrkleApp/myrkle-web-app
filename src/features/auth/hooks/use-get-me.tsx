@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { baseUrl } from "@/constants";
 import axios from "axios";
-import { setUserId, setUserToken } from "../redux/auth.slice";
+import { setUserId, setUserToken, setUsername } from "../redux/auth.slice";
 import { useCookie } from "react-use";
 
 function useGetMe() {
@@ -18,6 +18,7 @@ function useGetMe() {
         .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userTokenCookie}` } })
         .then((res) => {
           dispatch(setUserId(res.data.pk));
+          dispatch(setUsername(res.data.username));
         })
         .catch((err) => console.log(err));
     }

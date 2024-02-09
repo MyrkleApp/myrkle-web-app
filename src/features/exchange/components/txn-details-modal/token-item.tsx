@@ -1,5 +1,7 @@
+import { xrpIssuer } from "@/constants";
+import TokenIcon from "@/features/shared/components/token-icon";
 import { ellipsisAtCenter } from "@/helpers";
-import { HStack, Image, Spacer, Text, VStack } from "@chakra-ui/react";
+import { HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 
 export interface TokenItemProps {
   token: string;
@@ -8,10 +10,11 @@ export interface TokenItemProps {
   amount: number | string;
 }
 
-function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
+function TokenItem({ token, issuer, amount }: TokenItemProps) {
   return (
     <HStack bg="dark" borderRadius="10px" h="100%" pl={3} pr={1}>
-      <Image src={icon} alt="" h="65%" />
+      <TokenIcon token={token} issuer={issuer} h="65%" />
+      {/* <Image src={icon} alt="" h="65%" /> */}
       <VStack spacing={0} align="flex-start">
         <Text
           className="font-face-proxima-nova-extrabld"
@@ -21,7 +24,7 @@ function TokenItem({ token, issuer, icon, amount }: TokenItemProps) {
           {token}
         </Text>
         <Text fontSize="xs" mt="-2px">
-          {ellipsisAtCenter(issuer, 18)}
+          {issuer !== xrpIssuer ? ellipsisAtCenter(issuer, 18) : ""}
         </Text>
       </VStack>
       <Spacer />

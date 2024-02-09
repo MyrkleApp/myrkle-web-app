@@ -5,21 +5,28 @@ import AddressBookModal from "./address-book-modal";
 
 export interface AddressBookProps {
   handleAddress: (address: string) => void;
+  showOnlyIcon?: boolean;
 }
 
-function AddressBook({ handleAddress }: AddressBookProps) {
+function AddressBook({ handleAddress, showOnlyIcon }: AddressBookProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <HStack onClick={onOpen} cursor="pointer">
-        <Square bg="secondary" size="50px" borderRadius="10px">
-          <AddressBookIcon fontSize="2xl" />
+      {!showOnlyIcon ? (
+        <HStack onClick={onOpen} cursor="pointer">
+          <Square bg="secondary" size="50px" borderRadius="10px">
+            <AddressBookIcon fontSize="2xl" />
+          </Square>
+          <Text color="textDark" fontSize="sm" fontWeight="bold">
+            Address Book
+          </Text>
+        </HStack>
+      ) : (
+        <Square bg="secondary" size="40px" borderRadius="7px" onClick={onOpen} cursor="pointer">
+          <AddressBookIcon fontSize="xl" />
         </Square>
-        <Text color="textDark" fontSize="sm" fontWeight="bold">
-          Address Book
-        </Text>
-      </HStack>
+      )}
 
       <Backdrop isOpen={isOpen}>
         <AddressBookModal handleClose={onClose} handleAddress={handleAddress} />
