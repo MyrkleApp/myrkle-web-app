@@ -148,7 +148,12 @@ function WalletDetails() {
 
   return (
     <>
-      <Flex h={["42%", null, null, "38%"]} bg="dark" borderRadius="25px" align="center">
+      <Flex
+        h={["auto", null, null, "calc(46%)", "38%"]}
+        bg="dark"
+        borderRadius="25px"
+        align="center"
+      >
         <Box minW={["250px"]} h="200px" pos="relative">
           {network === "mainnet" && (
             <MotionBox
@@ -188,7 +193,7 @@ function WalletDetails() {
         </Box>
 
         <Flex ml={10} direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
-          <HStack spacing={4} cursor="pointer" onClick={handleAddressClick}>
+          <HStack spacing={1} cursor="pointer" onClick={handleAddressClick}>
             <Text color="textDark" fontSize="13px" fontWeight="bold">
               Welcome
             </Text>
