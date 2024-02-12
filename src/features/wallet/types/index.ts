@@ -29,6 +29,7 @@ export interface ISignIn {
 }
 
 export interface IWalletAddress {
+  id: number;
   name: string;
   address: string;
   walletProvider: TWalletProvider;

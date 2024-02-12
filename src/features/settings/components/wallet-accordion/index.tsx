@@ -60,6 +60,7 @@ function WalletAccordion({
         {wallets.map((_, i) => (
           <AddressItem
             key={i}
+            id={wallets[i].id}
             name={wallets[i].name}
             address={wallets[i].address}
             selectedWalletProvider={walletProvider}

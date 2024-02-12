@@ -44,7 +44,7 @@ import { RootState } from "@/store";
 const ADDRESS_BOOK_TYPE = "ADDRESS_BOOK";
 const ADDRESS_BOOK_ID = "ADDRESS_BOOK_LIST";
 const WALLET_ADDRESS_TYPE = "WALLET_ADDRESS";
-// const WALLET_ADDRESS_ID = "WALLET_ADDRESS_LIST";
+const WALLET_ADDRESS_ID = "WALLET_ADDRESS_LIST";
 
 export const xrpApi = createApi({
   reducerPath: "xrpApi",
@@ -623,13 +623,13 @@ export const xrpApi = createApi({
     }),
     getMyWallets: builder.query({
       query: () => `wallets/`,
-      // providesTags: (data) =>
-      //   data
-      //     ? [
-      //         ...data.results.map(({ id }: any) => ({ type: ADDRESS_BOOK_TYPE, id }) as const),
-      //         { type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID },
-      //       ]
-      //     : [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }],
+      providesTags: (data) =>
+        data
+          ? [
+              ...data.results.map(({ id }: any) => ({ type: WALLET_ADDRESS_TYPE, id }) as const),
+              { type: WALLET_ADDRESS_TYPE, id: WALLET_ADDRESS_ID },
+            ]
+          : [{ type: WALLET_ADDRESS_TYPE, id: WALLET_ADDRESS_ID }],
     }),
     addNewWallet: builder.mutation({
       query(body: IWallet) {
@@ -639,7 +639,16 @@ export const xrpApi = createApi({
           body,
         };
       },
-      // invalidatesTags: [{ type: ADDRESS_BOOK_TYPE, id: ADDRESS_BOOK_ID }] as any,
+      invalidatesTags: [{ type: WALLET_ADDRESS_TYPE, id: WALLET_ADDRESS_ID }] as any,
+    }),
+    deleteWallet: builder.mutation({
+      query(id: number) {
+        return {
+          url: `wallets/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [{ type: WALLET_ADDRESS_TYPE, id: WALLET_ADDRESS_ID }] as any,
     }),
   }),
 });
@@ -742,4 +751,5 @@ export const {
   useDeleteAddressBookItemMutation,
   useLazyGetMyWalletsQuery,
   useAddNewWalletMutation,
+  useDeleteWalletMutation,
 } = xrpApi;

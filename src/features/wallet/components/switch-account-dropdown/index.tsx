@@ -36,9 +36,10 @@ import { checkForCrossmark } from "@/features/shared/connections/crossmark";
 import useCrossmarkSignIn from "@/features/auth/hooks/use-crossmark-signin";
 import useGemWalletSignIn from "@/features/auth/hooks/use-gemwallet-signin";
 import { checkForGemWallet } from "@/features/shared/connections/gemwallet";
-import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+// import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import ItemDescription from "@/components/item-description";
 import { selectUserId } from "@/features/auth/redux/auth.selectors";
+import { useDeleteWalletMutation } from "@/features/shared/redux/xrp.api";
 
 function SwitchAccountDropdown() {
   const [crossmarkSignIn] = useCrossmarkSignIn();
@@ -66,6 +67,12 @@ function SwitchAccountDropdown() {
   const dispatch = useDispatch();
   const _setAddress = (address: string) => dispatch(setAddress(address));
   const _setWalletProvider = (provider: TWalletProvider) => dispatch(setWalletProvider(provider));
+
+  // ======================================================================================================
+  // dispatch
+  // ======================================================================================================
+
+  const [deleteWallet, { isLoading: isDeleteWalletLoading }] = useDeleteWalletMutation();
 
   // ======================================================================================================
   // state & disclosure & ref & xumm signin
@@ -222,14 +229,21 @@ function SwitchAccountDropdown() {
   };
 
   const handleDisconnect = async () => {
-    const db = EXTERNAL_WALLET_DB();
+    // const db = EXTERNAL_WALLET_DB();
 
-    if (walletProvider && walletProvider !== "myrkle" && userId !== null) {
-      await db.removeWallet({ address, walletProvider, userId });
+    const activeWallet = myWallets.find(
+      (wallet) => wallet.address === address && wallet.walletProvider === walletProvider,
+    );
+
+    if (walletProvider && walletProvider !== "myrkle" && userId !== null && activeWallet) {
+      // await db.removeWallet({ address, walletProvider, userId });
+      deleteWallet(activeWallet.id)
+        .unwrap()
+        .then(() => {
+          clearSignInData();
+          document.location.reload();
+        });
     }
-
-    clearSignInData();
-    document.location.reload();
   };
 
   return (
@@ -402,7 +416,14 @@ function SwitchAccountDropdown() {
             This will disconnect your current wallet. Are you sure you want to proceed?
           </Text>
           <Flex justify="flex-end" mt="60px">
-            <Button h="30px" mr={2} bg="danger" color="#fff" onClick={handleDisconnect}>
+            <Button
+              h="30px"
+              mr={2}
+              bg="danger"
+              color="#fff"
+              onClick={handleDisconnect}
+              isLoading={isDeleteWalletLoading}
+            >
               confirm
             </Button>
             <Button h="30px" onClick={onCloseConfirmDisconnect}>

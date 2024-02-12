@@ -185,27 +185,32 @@ export const extractTxnJsonData = (data: any) => {
   };
 };
 
-export const getDBWallets = (myWalletsDocs: any[], userId: number) => {
-  const wallets: IWalletAddress[] = [];
+// export const getDBWallets = (myWalletsDocs: any[], userId: number) => {
+//   const wallets: IWalletAddress[] = [];
 
-  myWalletsDocs.forEach((walletDoc: any) => {
-    if (walletDoc.doc.userId === userId) {
-      wallets.push({
-        name: walletDoc.doc?.name || "",
-        address: walletDoc.doc.address,
-        walletProvider: walletDoc.doc.walletProvider,
-      });
-    }
-  });
+//   myWalletsDocs.forEach((walletDoc: any) => {
+//     if (walletDoc.doc.userId === userId) {
+//       wallets.push({
+//         name: walletDoc.doc?.name || "",
+//         address: walletDoc.doc.address,
+//         walletProvider: walletDoc.doc.walletProvider,
+//       });
+//     }
+//   });
 
-  return wallets;
-};
+//   return wallets;
+// };
 
 export const formatMyWallets = (wallets: any) => {
   const myWallets: IWalletAddress[] = [];
 
   wallets.forEach((wallet: any) => {
-    myWallets.push({ name: "", address: wallet.address, walletProvider: wallet.provider });
+    myWallets.push({
+      id: wallet.id,
+      name: "",
+      address: wallet.address,
+      walletProvider: wallet.provider,
+    });
   });
 
   return myWallets;

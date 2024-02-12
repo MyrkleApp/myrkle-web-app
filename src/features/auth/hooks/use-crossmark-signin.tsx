@@ -1,7 +1,7 @@
 import { checkForCrossmark } from "@/features/shared/connections/crossmark";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
-import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
-import { ISignIn, IWalletAddress } from "@/features/wallet/types";
+import { signIn } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn } from "@/features/wallet/types";
 import { checkWalletExists } from "@/helpers";
 import ROUTES from "@/routes";
 // import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
@@ -25,7 +25,7 @@ function useCrossmarkSignIn() {
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
-  const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
+  // const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
   const [addNewWallet] = useAddNewWalletMutation();
 
@@ -73,7 +73,7 @@ function useCrossmarkSignIn() {
 
       if (response.data.meta.isSuccess && userId !== null) {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
-        _addWallet({ address, walletProvider: "crossmark", name: "" });
+        // _addWallet({ address, walletProvider: "crossmark", name: "" });
         storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
         handleSaveNewWallet({ address, walletProvider: "crossmark", userId });
         navigate(ROUTES.WALLET);

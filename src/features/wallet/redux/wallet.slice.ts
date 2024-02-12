@@ -35,6 +35,18 @@ const walletSlice = createSlice({
     },
     setMyWallets(state, { payload }: PayloadAction<IWalletAddress[]>) {
       state.myWallets = [...new Set(payload)];
+
+      // const uniqueArray = payload.reduce((acc, obj) => {
+      //   const key = obj.address + '|' + obj.walletProvider; // combining key1 and key2 with a separator
+      //   if (!acc.has(key)) {
+      //     acc.set(key, obj);
+      //   }
+      //   return acc;
+      // }, new Map()).values();
+
+      // const uniqueAddresses = Array.from(uniqueArray) as IWalletAddress[]
+
+      // state.myWallets = uniqueAddresses;
     },
     addWallet(state, { payload }: PayloadAction<IWalletAddress>) {
       const walletIndex = state.myWallets.findIndex(

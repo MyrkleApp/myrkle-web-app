@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { TConnectionStatus } from "@/features/shared/types";
 import { socket } from "@/features/shared/socket-io";
 import { useDispatch, useSelector } from "react-redux";
-import { addWallet, signIn } from "@/features/wallet/redux/wallet.slice";
-import { ISignIn, IWalletAddress } from "@/features/wallet/types";
+import { signIn } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn } from "@/features/wallet/types";
 import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
@@ -31,7 +31,7 @@ function useXummSignIn(handleCloseModal: () => void) {
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
-  const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
+  // const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
   const resetSignInQrCode = () => setQrCodeImage("");
 
@@ -90,7 +90,7 @@ function useXummSignIn(handleCloseModal: () => void) {
 
       handleSaveNewWallet({ address: walletAddress, walletProvider: "xumm", userId });
       navigate(ROUTES.WALLET);
-      _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
+      // _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
 
       if (handleCloseModal) {
         handleCloseModal();
