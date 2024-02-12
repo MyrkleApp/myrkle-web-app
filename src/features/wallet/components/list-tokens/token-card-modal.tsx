@@ -137,7 +137,13 @@ function TokenCardModal({
           <Spacer />
 
           <VStack align="flex-end" spacing="0">
-            <Text fontWeight="bold" fontSize="2xl" textTransform="uppercase">
+            <Text
+              fontWeight="bold"
+              fontSize="2xl"
+              textTransform="uppercase"
+              wordBreak="break-all"
+              textAlign="right"
+            >
               {formatNumber(amount)}
             </Text>
             <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">

@@ -82,11 +82,15 @@ export const numberWithCommas = (x: string | number) => {
 export const formatNumber = (x: number | string, decimals?: number) => {
   if (isNaN(Number(x))) return "-- --";
 
-  if (Number(x) < 1) {
+  if (Number(x) < 1 && Number(x) > 0) {
     const firstNonZeroNumberIndex = String(x)
       .split("")
       .findIndex((char) => Number(char) > 0);
     return String(x).slice(0, firstNonZeroNumberIndex + 3);
+  }
+
+  if (Number(x) < 0) {
+    return numberWithCommas(Number(x).toFixed(2));
   }
 
   return numberWithCommas(Number(x).toFixed(decimals || 3));
