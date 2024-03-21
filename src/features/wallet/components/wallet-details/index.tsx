@@ -31,7 +31,7 @@ import { cleanupTokenBalance, formatNumber } from "@/helpers";
 import ROUTES from "@/routes";
 import { Link } from "react-router-dom";
 import { setTotalBalance } from "../../redux/wallet.slice";
-import { selectUserName } from "@/features/auth/redux/auth.selectors";
+// import { selectUserName } from "@/features/auth/redux/auth.selectors";
 
 const actionLinks = [
   { text: "Check", icon: ChecksIcon, link: ROUTES.TERMINAL_CHECKS },
@@ -78,7 +78,7 @@ function WalletDetails() {
   const net = useSelector(selectNet);
   const totalBalance = useSelector(selectTotalBalance);
   const network = useSelector(selectNetwork);
-  const username = useSelector(selectUserName);
+  // const username = useSelector(selectUserName);
 
   // =======================================================================================
   // api
@@ -193,16 +193,25 @@ function WalletDetails() {
         </Box>
 
         <Flex ml={10} direction="column" justify="space-between" pt={"2%"} pb={"2.2%"} h="100%">
-          <HStack spacing={1} cursor="pointer" onClick={handleAddressClick}>
+          <Text
+            color="textDark"
+            fontSize="13px"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={handleAddressClick}
+          >
+            {address ? `Welcome ${address}` : "-- --"}
+          </Text>
+          {/* <HStack spacing={1} cursor="pointer" onClick={handleAddressClick}>
             <Text color="textDark" fontSize="13px" fontWeight="bold">
               Welcome
             </Text>
             <RenderElement isLoading={false} h="20px">
-              <Text color="textDark" fontSize="13px" fontWeight="bold" textTransform="capitalize">
-                {username || "-- --"}
+              <Text color="textDark" fontSize="13px" fontWeight="bold">
+                {address || "-- --"}
               </Text>
             </RenderElement>
-          </HStack>
+          </HStack> */}
 
           <Box mt="-15px">
             <RenderElement

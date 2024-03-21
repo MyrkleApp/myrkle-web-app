@@ -9,6 +9,7 @@ export interface IWalletInitialState {
   walletProvider: TWalletProvider | "";
   myWallets: IWalletAddress[];
   totalBalance: string;
+  addressBookList: IAddressBookItem[];
 }
 
 export type TAddTokenModalType = "add-token-form" | "select-token";
@@ -29,8 +30,13 @@ export interface ISignIn {
 }
 
 export interface IWalletAddress {
-  id: number;
+  // id: number;
   name: string;
   address: string;
   walletProvider: TWalletProvider;
+}
+
+export interface IAddressBookItem {
+  name: string;
+  address: string;
 }

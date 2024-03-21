@@ -1,22 +1,30 @@
 import Backdrop from "@/components/backdrop";
 import ToastElement from "@/components/toast-element";
 import ProceedModal from "@/features/shared/components/proceed-modal";
-import { useDeleteAddressBookItemMutation } from "@/features/shared/redux/xrp.api";
+import { deleteAddressBookItem } from "@/features/wallet/redux/wallet.slice";
+import { IAddressBookItem } from "@/features/wallet/types";
+// import { useDeleteAddressBookItemMutation } from "@/features/shared/redux/xrp.api";
 import { ellipsisAtCenter } from "@/helpers";
 import CopyIcon from "@/icons/copy";
 import RemoveAccountIcon from "@/icons/remove-account";
+import ADDRESS_BOOK_DB from "@/services/db/address-book-db";
 import { Box, Flex, HStack, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 
 export interface AddressBookItemProps {
-  id: number;
+  // id: number;
   name: string;
   address: string;
 }
 
-function AddressBookItem({ id, name, address }: AddressBookItemProps) {
+function AddressBookItem({ name, address }: AddressBookItemProps) {
+  const dispatch = useDispatch();
+
+  const _deleteAddressBookItem = (item: IAddressBookItem) => dispatch(deleteAddressBookItem(item));
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [deleteAddress, { isLoading }] = useDeleteAddressBookItemMutation();
+  // const [deleteAddress, { isLoading }] = useDeleteAddressBookItemMutation();
 
   const toast = useToast({
     position: "top",
@@ -34,9 +42,13 @@ function AddressBookItem({ id, name, address }: AddressBookItemProps) {
   };
 
   const handleDeleteAddress = () => {
-    deleteAddress(id)
-      .unwrap()
+    const addressBookDB = ADDRESS_BOOK_DB();
+
+    addressBookDB
+      .removeAddressBookItem({ name, address })
       .then(() => {
+        _deleteAddressBookItem({ name, address });
+
         toast({
           render: () => (
             <ToastElement bg="success" w="250px" fontWeight="bold" fontSize="lg">
@@ -92,7 +104,7 @@ function AddressBookItem({ id, name, address }: AddressBookItemProps) {
       <Backdrop isOpen={isOpen}>
         <ProceedModal
           text={`You are about to delete ${name || "this address"} from your address book.`}
-          isLoading={isLoading}
+          isLoading={false}
           handleProceed={handleDeleteAddress}
           handleClose={onClose}
           h="280px"

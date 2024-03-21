@@ -3,16 +3,22 @@ import { MotionBox } from "@/components/motion-elements";
 import { Box, Text, useOutsideClick } from "@chakra-ui/react";
 import Input from "@/components/input";
 import Button from "@/components/button";
-import { useAddressBookMutation } from "@/features/shared/redux/xrp.api";
-import { selectUserId } from "@/features/auth/redux/auth.selectors";
-import { useSelector } from "react-redux";
+// import { useAddressBookMutation } from "@/features/shared/redux/xrp.api";
+// import { selectUserId } from "@/features/auth/redux/auth.selectors";
+import { useDispatch } from "react-redux";
+import ADDRESS_BOOK_DB from "@/services/db/address-book-db";
+import { addAddressBookItem } from "@/features/wallet/redux/wallet.slice";
+import { IAddressBookItem } from "@/features/wallet/types";
 
 export interface AddAddressModalProps {
   handleClose: () => void;
 }
 
 function AddAddressModal({ handleClose }: AddAddressModalProps) {
-  const userId = useSelector(selectUserId);
+  // const userId = useSelector(selectUserId);
+
+  const dispatch = useDispatch();
+  const _addAddressBookItem = (item: IAddressBookItem) => dispatch(addAddressBookItem(item));
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -21,7 +27,7 @@ function AddAddressModal({ handleClose }: AddAddressModalProps) {
 
   const ref = useRef(null);
 
-  const [addToAddressBook, { isLoading }] = useAddressBookMutation();
+  // const [addToAddressBook, { isLoading }] = useAddressBookMutation();
 
   useOutsideClick({
     ref,
@@ -35,16 +41,23 @@ function AddAddressModal({ handleClose }: AddAddressModalProps) {
   };
 
   const handleSubmit = () => {
-    if (userId === null) return;
+    const addressBookDB = ADDRESS_BOOK_DB();
 
-    addToAddressBook({
-      name,
-      address,
-      user: userId,
-    })
-      .unwrap()
-      .then(() => resetData())
-      .catch(() => resetData());
+    addressBookDB.addAddressBookItem({ name, address }).then(() => {
+      _addAddressBookItem({ name, address });
+      resetData();
+    });
+
+    // if (userId === null) return;
+
+    // addToAddressBook({
+    //   name,
+    //   address,
+    //   user: userId,
+    // })
+    //   .unwrap()
+    //   .then(() => resetData())
+    //   .catch(() => resetData());
   };
 
   return (
@@ -84,7 +97,7 @@ function AddAddressModal({ handleClose }: AddAddressModalProps) {
           bg={isSubmitDisabled ? "secondary" : "primary"}
           isDisabled={isSubmitDisabled}
           onClick={handleSubmit}
-          isLoading={isLoading}
+          // isLoading={isLoading}
         >
           confirm
         </Button>

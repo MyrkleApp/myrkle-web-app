@@ -29,7 +29,10 @@ function AccountItem({
   handleNewWallet,
 }: AccountItemProps) {
   const handleWalletAddressClick = (wallet: IWalletAddress) => {
-    if (isActiveProvider && wallet.walletProvider !== "xumm") return;
+    //* this prevents switching wallets within same wallet provider
+
+    // if (isActiveProvider && wallet.walletProvider !== "xumm") return;
+
     handleSelectedWallet(wallet);
   };
 
@@ -66,11 +69,12 @@ function AccountItem({
                 <HStack key={i} mb={1}>
                   <Text
                     fontSize="2xs"
-                    cursor={
-                      isActiveProvider && wallet.walletProvider !== "xumm"
-                        ? "not-allowed"
-                        : "pointer"
-                    }
+                    cursor="pointer"
+                    // cursor={
+                    //   isActiveProvider && wallet.walletProvider !== "xumm"
+                    //     ? "not-allowed"
+                    //     : "pointer"
+                    // }
                     onClick={() => handleWalletAddressClick(wallet)}
                   >
                     {ellipsisAtCenter(wallet.address)}

@@ -1,13 +1,14 @@
 import Button from "@/components/button";
 import ItemLabel from "@/components/item-label";
 import { MotionBox } from "@/components/motion-elements";
-import { selectUserToken } from "@/features/auth/redux/auth.selectors";
-import { useLazyGetAddressBookQuery } from "@/features/shared/redux/xrp.api";
+// import { selectUserToken } from "@/features/auth/redux/auth.selectors";
+// import { useLazyGetAddressBookQuery } from "@/features/shared/redux/xrp.api";
 import { Box, CloseButton, HStack, Spacer, useOutsideClick } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import RenderAddressBook from "./render-address-book";
 import AddressItem from "./address-item";
+import { selectAddressBookList } from "@/features/wallet/redux/wallet.selectors";
 
 export interface AddressBookModalProps {
   handleClose: () => void;
@@ -18,15 +19,16 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
   const ref = useRef(null);
   const [preSelectedAddress, setPreSelectedAddress] = useState("");
 
-  const userToken = useSelector(selectUserToken);
+  // const userToken = useSelector(selectUserToken);
+  const addressBookList = useSelector(selectAddressBookList);
 
-  const [getAddressBook, { data, isLoading, isFetching }] = useLazyGetAddressBookQuery();
+  // const [getAddressBook, { data, isLoading, isFetching }] = useLazyGetAddressBookQuery();
 
-  useEffect(() => {
-    if (userToken) {
-      getAddressBook({}, true);
-    }
-  }, [getAddressBook, userToken]);
+  // useEffect(() => {
+  //   if (userToken) {
+  //     getAddressBook({}, true);
+  //   }
+  // }, [getAddressBook, userToken]);
 
   useOutsideClick({
     ref,
@@ -62,10 +64,10 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
       </HStack>
 
       <Box pr={1} mb={4} mt={3} h="calc(100% - 110px)" overflow="hidden auto">
-        <RenderAddressBook isLoading={isLoading || isFetching} isEmpty={!data?.results?.length}>
-          {data?.results?.map((item: any) => (
+        <RenderAddressBook isLoading={false} isEmpty={!addressBookList.length}>
+          {addressBookList.map((item: any, index: number) => (
             <AddressItem
-              key={item.id}
+              key={index}
               name={item.name}
               address={item.address}
               isActive={item.address === preSelectedAddress}

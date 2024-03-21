@@ -3,10 +3,10 @@ import {
   Box,
   Flex,
   HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  // Menu,
+  // MenuButton,
+  // MenuItem,
+  // MenuList,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -15,34 +15,34 @@ import AddWallet from "../components/add-wallet";
 import ChangePassword from "../components/change-password";
 import AddAddress from "../components/add-address";
 import ListAddressBook from "../components/list-address-book";
-import LogoutIcon from "@/icons/logout";
-import { useNavigate } from "react-router-dom";
-import ROUTES from "@/routes";
-import { useCookie } from "react-use";
-import { useDispatch } from "react-redux";
-import { setUserToken } from "@/features/auth/redux/auth.slice";
-import { setMyWallets } from "@/features/wallet/redux/wallet.slice";
+// import LogoutIcon from "@/icons/logout";
+// import { useNavigate } from "react-router-dom";
+// import ROUTES from "@/routes";
+// import { useCookie } from "react-use";
+// import { useDispatch } from "react-redux";
+// import { setUserToken } from "@/features/auth/redux/auth.slice";
+// import { setMyWallets } from "@/features/wallet/redux/wallet.slice";
 
 function Settings() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [, , clearUserToken] = useCookie("user-token");
+  // const [, , clearUserToken] = useCookie("user-token");
 
-  const dispatch = useDispatch();
-  const _setUserToken = (userToken: string) => dispatch(setUserToken(userToken));
-  const _clearMyWallets = () => dispatch(setMyWallets([]));
+  // const dispatch = useDispatch();
+  // const _setUserToken = (userToken: string) => dispatch(setUserToken(userToken));
+  // const _clearMyWallets = () => dispatch(setMyWallets([]));
 
-  const handleLogout = () => {
-    navigate(ROUTES.AUTH);
-    clearUserToken();
-    _setUserToken("");
-    _clearMyWallets();
-  };
+  // const handleLogout = () => {
+  //   navigate(ROUTES.AUTH);
+  //   clearUserToken();
+  //   _setUserToken("");
+  //   _clearMyWallets();
+  // };
 
   return (
     <Layout>
       <Flex justify="flex-end" pr={3}>
-        <Menu>
+        {/* <Menu>
           <MenuButton>
             <LogoutIcon fill="#fff" fontSize="2xl" />
           </MenuButton>
@@ -51,7 +51,7 @@ function Settings() {
               Logout
             </MenuItem>
           </MenuList>
-        </Menu>
+        </Menu> */}
       </Flex>
       <Box p={5} mt="10px" h="calc(100% - 40px)" overflow="hidden auto">
         <Flex gap="30px" direction={["column", null, null, "row"]}>

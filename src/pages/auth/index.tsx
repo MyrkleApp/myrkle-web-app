@@ -22,8 +22,8 @@ import axios from "axios";
 import { baseUrl } from "@/constants";
 import { useDispatch } from "react-redux";
 import { Text, useDisclosure, useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import ROUTES from "@/routes";
+// import { useNavigate } from "react-router-dom";
+// import ROUTES from "@/routes";
 import {
   setUserId,
   setUserToken,
@@ -34,13 +34,13 @@ import ResponseModal from "@/components/response-modal";
 import Button from "@/components/button";
 import ToastElement from "@/components/toast-element";
 import ForgotPassword from "@/features/auth/components/forgot-password";
-import { useLazyGetMyWalletsQuery } from "@/features/shared/redux/xrp.api";
-import { formatMyWallets } from "@/helpers";
-import { setMyWallets } from "@/features/wallet/redux/wallet.slice";
-import { IWalletAddress } from "@/features/wallet/types";
+// import { useLazyGetMyWalletsQuery } from "@/features/shared/redux/xrp.api";
+// import { formatMyWallets } from "@/helpers";
+// import { setMyWallets } from "@/features/wallet/redux/wallet.slice";
+// import { IWalletAddress } from "@/features/wallet/types";
 
 function Auth() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [, storeUserToken] = useCookie("user-token");
 
@@ -53,9 +53,9 @@ function Auth() {
   const _setUserToken = (token: string) => dispatch(setUserToken(token));
   const _setUserId = (id: number) => dispatch(setUserId(id));
   const _setUsernameReduxStore = (username: string) => dispatch(setUsernameReduxStore(username));
-  const _setMyWallets = (myWallets: IWalletAddress[]) => dispatch(setMyWallets(myWallets));
+  // const _setMyWallets = (myWallets: IWalletAddress[]) => dispatch(setMyWallets(myWallets));
 
-  const [getMyWallets] = useLazyGetMyWalletsQuery();
+  // const [getMyWallets] = useLazyGetMyWalletsQuery();
 
   // registration
   const [username, setUsername] = useState("");
@@ -176,15 +176,15 @@ function Auth() {
       _setUserId(userId);
       _setUsernameReduxStore(user.data.username);
 
-      const myWalletsData = await getMyWallets({}).unwrap();
-      const myFormattedWallets = formatMyWallets(myWalletsData.results);
+      //   const myWalletsData = await getMyWallets({}).unwrap();
+      //   const myFormattedWallets = formatMyWallets(myWalletsData.results);
 
-      if (myFormattedWallets.length) {
-        _setMyWallets(myFormattedWallets);
-        navigate(ROUTES.WALLET);
-      } else {
-        handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
-      }
+      //   if (myFormattedWallets.length) {
+      //     _setMyWallets(myFormattedWallets);
+      //     navigate(ROUTES.WALLET);
+      //   } else {
+      //     handleView(ADD_WALLET_PIPELINE.WALLET_PROVIDER);
+      //   }
     } catch (err: any) {
       onCloseLoading();
       setErrorMessage(err.response.data.errors[0]?.detail);

@@ -1,5 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ISignIn, IWalletAddress, IWalletInitialState, TNetwork, TWalletProvider } from "../types";
+import {
+  IAddressBookItem,
+  ISignIn,
+  IWalletAddress,
+  IWalletInitialState,
+  TNetwork,
+  TWalletProvider,
+} from "../types";
 
 const initialState: IWalletInitialState = {
   assetType: "token",
@@ -10,6 +17,7 @@ const initialState: IWalletInitialState = {
   walletProvider: "",
   myWallets: [],
   totalBalance: "-- --",
+  addressBookList: [],
 };
 
 // rGiyqjWjhsRZ8FUjBL2k5ciUa2tcptTX9W
@@ -79,6 +87,19 @@ const walletSlice = createSlice({
     setWalletProvider(state, { payload }: PayloadAction<TWalletProvider>) {
       state.walletProvider = payload;
     },
+    setAddressBookList(state, { payload }: PayloadAction<IAddressBookItem[]>) {
+      state.addressBookList = payload;
+    },
+    addAddressBookItem(state, { payload }: PayloadAction<IAddressBookItem>) {
+      state.addressBookList.push(payload);
+    },
+    deleteAddressBookItem(state, { payload }: PayloadAction<IAddressBookItem>) {
+      let addressBookList = [...state.addressBookList];
+      addressBookList = addressBookList.filter(
+        (item) => item.name !== payload.name && item.address !== payload.address,
+      );
+      state.addressBookList = addressBookList;
+    },
   },
 });
 
@@ -92,6 +113,9 @@ export const {
   setTotalBalance,
   setAddress,
   setWalletProvider,
+  setAddressBookList,
+  addAddressBookItem,
+  deleteAddressBookItem,
 } = walletSlice.actions;
 
 export default walletSlice.reducer;

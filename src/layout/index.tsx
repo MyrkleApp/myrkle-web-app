@@ -1,63 +1,63 @@
-import { Box, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
+import React from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 import LogoIcon from "@/icons/logo";
 import FooterLogoIcon from "@/icons/footer-logo";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserId } from "@/features/auth/redux/auth.selectors";
-import MyrkleLoader from "@/components/myrkle-loader";
-import Backdrop from "@/components/backdrop";
-import axios from "axios";
-import { baseUrl } from "@/constants";
-import { setUserId } from "@/features/auth/redux/auth.slice";
-import { useCookie } from "react-use";
+// import { useDispatch, useSelector } from "react-redux";
+// import { selectUserId } from "@/features/auth/redux/auth.selectors";
+// import MyrkleLoader from "@/components/myrkle-loader";
+// import Backdrop from "@/components/backdrop";
+// import axios from "axios";
+// import { baseUrl } from "@/constants";
+// import { setUserId } from "@/features/auth/redux/auth.slice";
+// import { useCookie } from "react-use";
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
 function Layout({ children }: LayoutProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const userId = useSelector(selectUserId);
+  // const userId = useSelector(selectUserId);
 
-  const [userTokenCookie] = useCookie("user-token");
+  // const [userTokenCookie] = useCookie("user-token");
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const { isOpen: isLoaderOpen, onOpen: onLoaderOpen, onClose: onLoaderClose } = useDisclosure();
+  // const { isOpen: isLoaderOpen, onOpen: onLoaderOpen, onClose: onLoaderClose } = useDisclosure();
 
-  useEffect(() => {
-    if (userId !== null) return;
+  // useEffect(() => {
+  //   if (userId !== null) return;
 
-    if (userTokenCookie) {
-      onLoaderOpen();
+  //   if (userTokenCookie) {
+  //     onLoaderOpen();
 
-      axios
-        .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userTokenCookie}` } })
-        .then((res) => {
-          dispatch(setUserId(res.data.pk));
-          onLoaderClose();
-        })
-        .catch(() => {
-          onLoaderClose();
-          navigate(ROUTES.AUTH);
-        });
-    } else {
-      navigate(ROUTES.AUTH);
-    }
-  }, [dispatch, navigate, onLoaderClose, onLoaderOpen, userId, userTokenCookie]);
+  //     axios
+  //       .get(`${baseUrl}/auth/user/`, { headers: { Authorization: `Token ${userTokenCookie}` } })
+  //       .then((res) => {
+  //         dispatch(setUserId(res.data.pk));
+  //         onLoaderClose();
+  //       })
+  //       .catch(() => {
+  //         onLoaderClose();
+  //         navigate(ROUTES.AUTH);
+  //       });
+  //   } else {
+  //     navigate(ROUTES.AUTH);
+  //   }
+  // }, [dispatch, navigate, onLoaderClose, onLoaderOpen, userId, userTokenCookie]);
 
-  if (isLoaderOpen) {
-    return (
-      <Backdrop isOpen w="100vw" h="100vh" bg="darkest" top={0} borderRadius="0" isFullscreen>
-        <MyrkleLoader />
-      </Backdrop>
-    );
-  }
+  // if (isLoaderOpen) {
+  //   return (
+  //     <Backdrop isOpen w="100vw" h="100vh" bg="darkest" top={0} borderRadius="0" isFullscreen>
+  //       <MyrkleLoader />
+  //     </Backdrop>
+  //   );
+  // }
 
   return (
     <Box h="100vh" w="100vw" overflow="hidden" maxH="900px" maxW="1800px">

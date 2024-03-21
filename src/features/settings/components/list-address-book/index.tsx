@@ -1,44 +1,47 @@
-import Skeleton1 from "@/components/skeleton";
-import { useLazyGetAddressBookQuery } from "@/features/shared/redux/xrp.api";
+// import Skeleton1 from "@/components/skeleton";
+// import { useLazyGetAddressBookQuery } from "@/features/shared/redux/xrp.api";
 import { Text } from "@chakra-ui/react";
 import AddressBookItem from "./address-book-item";
 import { useSelector } from "react-redux";
-import { selectUserToken } from "@/features/auth/redux/auth.selectors";
-import { useEffect } from "react";
+// import { selectUserToken } from "@/features/auth/redux/auth.selectors";
+// import { useEffect } from "react";
+import { selectAddressBookList } from "@/features/wallet/redux/wallet.selectors";
 
 function ListAddressBook() {
-  const userToken = useSelector(selectUserToken);
+  const addressBookList = useSelector(selectAddressBookList);
 
-  const [getAddressBook, { data, isLoading, isFetching }] = useLazyGetAddressBookQuery();
+  // const userToken = useSelector(selectUserToken);
 
-  useEffect(() => {
-    if (userToken) {
-      getAddressBook({}, true);
-    }
-  }, [getAddressBook, userToken]);
+  // const [getAddressBook, { data, isLoading, isFetching }] = useLazyGetAddressBookQuery();
 
-  if (isLoading || isFetching) {
-    return (
-      <>
-        {Array(4)
-          .fill(null)
-          .map((_, i) => (
-            <Skeleton1 key={i} h="55px" mb={3} borderRadius={0} />
-          ))}
-      </>
-    );
-  }
+  // useEffect(() => {
+  //   if (userToken) {
+  //     getAddressBook({}, true);
+  //   }
+  // }, [getAddressBook, userToken]);
 
-  if (!data?.results?.length) {
+  // if (isLoading || isFetching) {
+  //   return (
+  //     <>
+  //       {Array(4)
+  //         .fill(null)
+  //         .map((_, i) => (
+  //           <Skeleton1 key={i} h="55px" mb={3} borderRadius={0} />
+  //         ))}
+  //     </>
+  //   );
+  // }
+
+  if (!addressBookList.length) {
     return <Text fontSize="sm">We could not find any addresses in your address book.</Text>;
   }
 
   return (
     <>
-      {data?.results?.map((addressItem: any) => (
+      {addressBookList.map((addressItem: any) => (
         <AddressBookItem
           key={addressItem.id}
-          id={addressItem.id}
+          // id={addressItem.id}
           name={addressItem.name}
           address={addressItem.address}
         />

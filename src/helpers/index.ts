@@ -1,5 +1,5 @@
 import { IToken } from "@/features/shared/types";
-import { IWalletAddress, TWalletProvider } from "@/features/wallet/types";
+import { IAddressBookItem, IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import { Buffer } from "buffer";
 
 export const ellipsisAtCenter = (text: string, allowedLength?: number, isNotSpaced?: boolean) => {
@@ -189,33 +189,58 @@ export const extractTxnJsonData = (data: any) => {
   };
 };
 
-// export const getDBWallets = (myWalletsDocs: any[], userId: number) => {
-//   const wallets: IWalletAddress[] = [];
+export const getDBWallets = (myWalletsDocs: any[]) => {
+  const wallets: IWalletAddress[] = [];
 
-//   myWalletsDocs.forEach((walletDoc: any) => {
-//     if (walletDoc.doc.userId === userId) {
-//       wallets.push({
-//         name: walletDoc.doc?.name || "",
-//         address: walletDoc.doc.address,
-//         walletProvider: walletDoc.doc.walletProvider,
-//       });
-//     }
-//   });
+  myWalletsDocs.forEach((walletDoc: any) => {
+    const walletIndex = wallets.findIndex(
+      (wallet) =>
+        wallet.address === walletDoc.doc.address &&
+        wallet.walletProvider === walletDoc.doc.walletProvider,
+    );
 
-//   return wallets;
-// };
-
-export const formatMyWallets = (wallets: any) => {
-  const myWallets: IWalletAddress[] = [];
-
-  wallets.forEach((wallet: any) => {
-    myWallets.push({
-      id: wallet.id,
-      name: "",
-      address: wallet.address,
-      walletProvider: wallet.provider,
-    });
+    if (walletIndex === -1) {
+      wallets.push({
+        name: walletDoc.doc?.name || "",
+        address: walletDoc.doc.address,
+        walletProvider: walletDoc.doc.walletProvider,
+      });
+    }
   });
 
-  return myWallets;
+  return wallets;
 };
+
+export const getAddressBookDBList = (myWalletsDocs: any[]) => {
+  const addressBookList: IAddressBookItem[] = [];
+
+  myWalletsDocs.forEach((walletDoc: any) => {
+    const walletIndex = addressBookList.findIndex(
+      (wallet) => wallet.address === walletDoc.doc.address && wallet.name === walletDoc.doc.name,
+    );
+
+    if (walletIndex === -1) {
+      addressBookList.push({
+        name: walletDoc.doc?.name || "",
+        address: walletDoc.doc.address,
+      });
+    }
+  });
+
+  return addressBookList;
+};
+
+// export const formatMyWallets = (wallets: any) => {
+//   const myWallets: IWalletAddress[] = [];
+
+//   wallets.forEach((wallet: any) => {
+//     myWallets.push({
+//       id: wallet.id,
+//       name: "",
+//       address: wallet.address,
+//       walletProvider: wallet.provider,
+//     });
+//   });
+
+//   return myWallets;
+// };

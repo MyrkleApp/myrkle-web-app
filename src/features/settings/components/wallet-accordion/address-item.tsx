@@ -2,12 +2,12 @@ import Backdrop from "@/components/backdrop";
 import Button from "@/components/button";
 import DialogBox from "@/components/dialog-box";
 import ToastElement from "@/components/toast-element";
-import { selectUserId } from "@/features/auth/redux/auth.selectors";
-import { useDeleteWalletMutation } from "@/features/shared/redux/xrp.api";
+// import { selectUserId } from "@/features/auth/redux/auth.selectors";
+// import { useDeleteWalletMutation } from "@/features/shared/redux/xrp.api";
 import { socket, xummSignInJson } from "@/features/shared/socket-io";
 import { selectWalletProvider } from "@/features/wallet/redux/wallet.selectors";
-import { setAddress, setWalletProvider } from "@/features/wallet/redux/wallet.slice";
-import { ISignIn, TWalletProvider } from "@/features/wallet/types";
+import { removeWallet, setAddress, setWalletProvider } from "@/features/wallet/redux/wallet.slice";
+import { ISignIn, IWalletAddress, TWalletProvider } from "@/features/wallet/types";
 import CopyIcon from "@/icons/copy";
 import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import {
@@ -24,13 +24,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocalStorage } from "react-use";
 
 export interface AddressItemProps {
-  id: number;
   name?: string;
   address: string;
   selectedWalletProvider: TWalletProvider;
 }
 
-function AddressItem({ id, name, address, selectedWalletProvider }: AddressItemProps) {
+function AddressItem({ name, address, selectedWalletProvider }: AddressItemProps) {
   const [signInData, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const toast = useToast({
@@ -42,7 +41,7 @@ function AddressItem({ id, name, address, selectedWalletProvider }: AddressItemP
   });
 
   const currentWalletProvider = useSelector(selectWalletProvider);
-  const userId = useSelector(selectUserId);
+  // const userId = useSelector(selectUserId);
 
   const isActiveWalletProvider = currentWalletProvider === selectedWalletProvider;
   const isPreventSwitchWallet = isActiveWalletProvider && currentWalletProvider !== "xumm";
@@ -61,13 +60,13 @@ function AddressItem({ id, name, address, selectedWalletProvider }: AddressItemP
   const dispatch = useDispatch();
   const _setAddress = (address: string) => dispatch(setAddress(address));
   const _setWalletProvider = (provider: TWalletProvider) => dispatch(setWalletProvider(provider));
-  // const _removeWallet = (wallet: IWalletAddress) => dispatch(removeWallet(wallet));
+  const _removeWallet = (wallet: IWalletAddress) => dispatch(removeWallet(wallet));
 
   // ======================================================================================================
   // api
   // ======================================================================================================
 
-  const [deleteWallet] = useDeleteWalletMutation();
+  // const [deleteWallet] = useDeleteWalletMutation();
 
   // ======================================================================================================
   // handlers
@@ -104,17 +103,12 @@ function AddressItem({ id, name, address, selectedWalletProvider }: AddressItemP
   };
 
   const handleRemoveWallet = async () => {
-    // TODO: use only the deleteWallet method and update the ui thereafter
-    // "_removeWallet" creates more complexity and is redundant
-
-    // _removeWallet({ id, name: "", address, walletProvider: selectedWalletProvider });
-
-    deleteWallet(id);
+    _removeWallet({ name: "", address, walletProvider: selectedWalletProvider });
 
     const db = EXTERNAL_WALLET_DB();
 
-    if (selectedWalletProvider && selectedWalletProvider !== "myrkle" && userId !== null) {
-      await db.removeWallet({ address, walletProvider: selectedWalletProvider, userId });
+    if (selectedWalletProvider && selectedWalletProvider !== "myrkle") {
+      await db.removeWallet({ address, walletProvider: selectedWalletProvider });
     }
 
     onCloseRemoveWallet();

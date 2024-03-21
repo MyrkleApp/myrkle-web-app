@@ -3,19 +3,21 @@ import wallet from "@/assets/wallet.png";
 import walletHover from "@/assets/wallet-hover.png";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
-import { useSelector } from "react-redux";
-import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
-import { selectUserId } from "@/features/auth/redux/auth.selectors";
+// import { useSelector } from "react-redux";
+// import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
+// import { selectUserId } from "@/features/auth/redux/auth.selectors";
 
 function WalletButton() {
-  const myWallets = useSelector(selectMyWallets);
-  const userId = useSelector(selectUserId);
+  // const myWallets = useSelector(selectMyWallets);
+  // const userId = useSelector(selectUserId);
 
   const handleNavigate = () => {
-    if (userId && myWallets.length > 0) {
-      return ROUTES.WALLET;
-    }
-    return ROUTES.AUTH;
+    return ROUTES.WALLET;
+
+    // if (userId && myWallets.length > 0) {
+    //   return ROUTES.WALLET;
+    // }
+    // return ROUTES.AUTH;
   };
 
   return (

@@ -4,14 +4,14 @@ import { signIn } from "@/features/wallet/redux/wallet.slice";
 import { ISignIn } from "@/features/wallet/types";
 import { checkWalletExists } from "@/helpers";
 import ROUTES from "@/routes";
-// import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { IAddExternalWallet } from "@/services/types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import { selectUserId } from "../redux/auth.selectors";
-import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
+// import { selectUserId } from "../redux/auth.selectors";
+// import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
 
 function useCrossmarkSignIn() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function useCrossmarkSignIn() {
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const myWallets = useSelector(selectMyWallets);
-  const userId = useSelector(selectUserId);
+  // const userId = useSelector(selectUserId);
 
   const [error, setError] = useState("");
 
@@ -27,19 +27,19 @@ function useCrossmarkSignIn() {
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
   // const _addWallet = (data: IWalletAddress) => dispatch(addWallet(data));
 
-  const [addNewWallet] = useAddNewWalletMutation();
+  // const [addNewWallet] = useAddNewWalletMutation();
 
   const handleSaveNewWallet = async (wallet: IAddExternalWallet) => {
-    if (userId === null) return;
+    const db = EXTERNAL_WALLET_DB();
+    await db.addWallet(wallet);
 
-    addNewWallet({
-      address: wallet.address,
-      provider: wallet.walletProvider,
-      user: userId,
-    });
+    // if (userId === null) return;
 
-    // const db = EXTERNAL_WALLET_DB();
-    // await db.addWallet(wallet);
+    // addNewWallet({
+    //   address: wallet.address,
+    //   provider: wallet.walletProvider,
+    //   user: userId,
+    // });
   };
 
   const crossmarkSignIn = async () => {
@@ -71,11 +71,11 @@ function useCrossmarkSignIn() {
         return { isWalletExists };
       }
 
-      if (response.data.meta.isSuccess && userId !== null) {
+      if (response.data.meta.isSuccess) {
         _signIn({ address, network, userToken: "", walletProvider: "crossmark" });
         // _addWallet({ address, walletProvider: "crossmark", name: "" });
         storeSignInData({ address, network, userToken: "", walletProvider: "crossmark" });
-        handleSaveNewWallet({ address, walletProvider: "crossmark", userId });
+        handleSaveNewWallet({ address, walletProvider: "crossmark" });
         navigate(ROUTES.WALLET);
       }
     } catch (e) {

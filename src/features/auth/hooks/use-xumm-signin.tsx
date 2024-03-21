@@ -8,11 +8,11 @@ import { useLocalStorage } from "react-use";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/routes";
 import { IAddExternalWallet } from "@/services/types";
-// import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
+import EXTERNAL_WALLET_DB from "@/services/db/external-wallet-db";
 import { selectMyWallets } from "@/features/wallet/redux/wallet.selectors";
 import { checkWalletExists } from "@/helpers";
-import { selectUserId } from "../redux/auth.selectors";
-import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
+// import { selectUserId } from "../redux/auth.selectors";
+// import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
 
 function useXummSignIn(handleCloseModal: () => void) {
   const navigate = useNavigate();
@@ -20,14 +20,14 @@ function useXummSignIn(handleCloseModal: () => void) {
   const [, storeSignInData] = useLocalStorage<ISignIn>("sign-in-data");
 
   const myWallets = useSelector(selectMyWallets);
-  const userId = useSelector(selectUserId);
+  // const userId = useSelector(selectUserId);
 
   const [signInStatus, setSignInStatus] = useState<TConnectionStatus>("loading");
   const [qrCodeImage, setQrCodeImage] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [isXummWalletExists, setXummWalletExists] = useState<null | boolean>(null);
 
-  const [addNewWallet] = useAddNewWalletMutation();
+  // const [addNewWallet] = useAddNewWalletMutation();
 
   const dispatch = useDispatch();
   const _signIn = (data: ISignIn) => dispatch(signIn(data));
@@ -67,19 +67,19 @@ function useXummSignIn(handleCloseModal: () => void) {
 
   useEffect(() => {
     const handleSaveNewWallet = async (wallet: IAddExternalWallet) => {
-      if (userId === null) return;
+      const db = EXTERNAL_WALLET_DB();
+      await db.addWallet(wallet);
 
-      addNewWallet({
-        address: wallet.address,
-        provider: wallet.walletProvider,
-        user: userId,
-      });
+      // if (userId === null) return;
 
-      // const db = EXTERNAL_WALLET_DB();
-      // await db.addWallet(wallet);
+      // addNewWallet({
+      //   address: wallet.address,
+      //   provider: wallet.walletProvider,
+      //   user: userId,
+      // });
     };
 
-    if (walletAddress && userId !== null) {
+    if (walletAddress) {
       const isWalletExists = checkWalletExists(myWallets, walletAddress, "xumm");
       if (isWalletExists) {
         setXummWalletExists(true);
@@ -88,7 +88,7 @@ function useXummSignIn(handleCloseModal: () => void) {
         setXummWalletExists(false);
       }
 
-      handleSaveNewWallet({ address: walletAddress, walletProvider: "xumm", userId });
+      handleSaveNewWallet({ address: walletAddress, walletProvider: "xumm" });
       navigate(ROUTES.WALLET);
       // _addWallet({ address: walletAddress, walletProvider: "xumm", name: "" });
 

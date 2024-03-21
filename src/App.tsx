@@ -21,15 +21,17 @@ import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-d
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
 import UnderConstruction from "./components/under-construction";
 import LandingPage from "./pages/landing";
-import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
-import useGetMe from "./features/auth/hooks/use-get-me";
+// import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
+// import useGetMe from "./features/auth/hooks/use-get-me";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
+import useRetrieveAddressBookList from "./features/wallet/hooks/use-retrieve-address-book";
 
 function App() {
-  useGenerateDeviceId();
+  // useGenerateDeviceId();
+  // useGetMe();
   useRehydrateSignInData();
   useRetrieveWallets();
-  useGetMe();
+  useRetrieveAddressBookList();
 
   const [isLesserThanAllowedSize] = useMediaQuery("(max-width: 920px)");
 

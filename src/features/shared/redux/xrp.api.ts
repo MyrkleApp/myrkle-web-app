@@ -39,7 +39,6 @@ import {
 } from "../types/xrp-mutations";
 import { IAddressNet, ICheckTokenExists, IGetAccountTokenInfo, IIdNet } from "../types/xrp-queries";
 import { baseUrl } from "@/constants";
-import { RootState } from "@/store";
 
 const ADDRESS_BOOK_TYPE = "ADDRESS_BOOK";
 const ADDRESS_BOOK_ID = "ADDRESS_BOOK_LIST";
@@ -51,11 +50,11 @@ export const xrpApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${baseUrl}/api/v1/`,
     timeout: 1000 * 20,
-    prepareHeaders: (headers, { getState }: any) => {
-      const reduxState = getState() as RootState;
-      const token = reduxState.auth.userToken;
-      headers.set("Authorization", `Token ${token}`);
-    },
+    // prepareHeaders: (headers, { getState }: any) => {
+    //   const reduxState = getState() as RootState;
+    //   const token = reduxState.auth.userToken;
+    //   headers.set("Authorization", `Token ${token}`);
+    // },
     mode: "cors",
   }),
   tagTypes: [ADDRESS_BOOK_TYPE, WALLET_ADDRESS_TYPE],
