@@ -19,11 +19,11 @@ import Settings from "./features/settings/pages";
 import useRehydrateSignInData from "./features/auth/hooks/use-rehydrate-signin-data";
 import useRetrieveWallets from "./features/wallet/hooks/use-retrieve-wallets";
 import UnderConstruction from "./components/under-construction";
-import LandingPage from "./pages/landing";
 // import useGenerateDeviceId from "./features/auth/hooks/use-generate-device-id";
 // import useGetMe from "./features/auth/hooks/use-get-me";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import useRetrieveAddressBookList from "./features/wallet/hooks/use-retrieve-address-book";
+import Auth from "./pages/auth";
 
 function App() {
   // useGenerateDeviceId();
@@ -42,8 +42,8 @@ function App() {
     <Flex justify="center" align="center" bg="#000000" h="100vh" w="100vw">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate replace to={ROUTES.WALLET} />} />
-          <Route path={ROUTES.LANDING} element={<LandingPage />} />
+          <Route path={ROUTES.LANDING} element={<Navigate replace to={ROUTES.AUTH} />} />
+          <Route path={ROUTES.AUTH} element={<Auth />} />
           <Route path={ROUTES.WALLET} element={<Wallet />} />
           <Route path={ROUTES.WALLET_NFT_GALLERY} element={<NftGallery />} />
           <Route path={ROUTES.WALLET_NFT_DETAIL} element={<NftDetail />} />

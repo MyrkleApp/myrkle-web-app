@@ -242,7 +242,7 @@ function SwitchAccountDropdown() {
     }
 
     clearSignInData();
-    document.location.reload();
+    document.location = "/";
 
     // const activeWallet = myWallets.find(
     //   (wallet) => wallet.address === address && wallet.walletProvider === walletProvider,

@@ -4,7 +4,7 @@ import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import crossmarkLogo from "@/assets/crossmark-logo.png";
 import crossmarkText from "@/assets/crossmark-text.png";
 import gemWalletLogo from "@/assets/gem-wallet-logo.png";
-import LoginButtonText from "../login-button-text";
+// import LoginButtonText from "../login-button-text";
 
 export interface SelectWalletProviderProps {
   handleMyrkleClick?: () => void;
@@ -21,8 +21,8 @@ function SelectWalletProvider({
   handleXummClick,
   handleCrossmarkClick,
   handleGemWalletClick,
-  handleLoginClick,
-  hideLogin,
+  // handleLoginClick,
+  // hideLogin,
   ...props
 }: SelectWalletProviderProps) {
   return (
@@ -72,7 +72,7 @@ function SelectWalletProvider({
           </Box>
         </Box>
 
-        {!hideLogin && <LoginButtonText handleLoginClick={handleLoginClick} />}
+        {/* {!hideLogin && <LoginButtonText handleLoginClick={handleLoginClick} />} */}
       </Box>
     </>
   );
