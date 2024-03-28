@@ -277,10 +277,10 @@ export interface IAuthNftTokenMinter extends IFlag {
 
 export interface IRecordTransaction {
   wallet: string;
-  transaction_hash?: string;
-  amount?: number | string;
-  transaction_type?: string;
-  user: string | number;
+  transaction_hash: string;
+  amount: number | string;
+  transaction_type: string;
+  wallet_provider: TWalletProvider;
 }
 
 export interface IAddressBook {

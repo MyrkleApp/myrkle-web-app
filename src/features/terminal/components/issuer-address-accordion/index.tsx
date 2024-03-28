@@ -29,8 +29,6 @@ function IssuerAddressAccordion({
   const handleToggle = () => {
     if (isDisabled) return;
     onToggle();
-
-    console.log("hello world");
   };
 
   return (
