@@ -8,6 +8,7 @@ import FlagIcon from "@/icons/flag";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
 import HourGlassIcon from "@/icons/hour-glass";
+import Dapps from "../components/dapps";
 
 function Terminal() {
   // todo: remove this rubbish!
@@ -78,6 +79,8 @@ function Terminal() {
             </IconContainer>
           </Link>
         </SimpleGrid>
+
+        <Dapps />
       </Box>
     </Layout>
   );

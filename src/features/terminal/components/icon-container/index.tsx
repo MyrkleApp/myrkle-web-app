@@ -48,6 +48,9 @@ function IconContainer({ children, title, handleClick, ...props }: IconContainer
           visibility={props.visibility || "visible"}
           position="absolute"
           bottom="-40px"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overflow="hidden"
         >
           {title}
         </Text>
