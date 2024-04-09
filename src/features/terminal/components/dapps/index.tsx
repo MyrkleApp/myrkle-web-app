@@ -36,19 +36,25 @@ function Dapps() {
     <Box px={10} mt={10}>
       <HStack
         py={1}
-        px={8}
-        borderRadius="5px"
+        pl={4}
+        pr={2}
+        borderRadius="12px"
         mb={5}
         bg="#242424"
         cursor="pointer"
         onClick={onToggle}
       >
-        <Text fontWeight="bold" color="success" fontSize="sm">
-          Dapps
+        <Text fontWeight="bold" color={isOpen ? "success" : "textDark"} fontSize="sm">
+          XRPL DAPPS
         </Text>
         <Spacer />
-        <Square bg="success" borderRadius="5px" p={1}>
-          <ArrowDownIcon size="sm" />
+        <Square
+          bg={isOpen ? "success" : "secondary"}
+          borderRadius="8px"
+          p={1}
+          sx={{ "*": { color: "#ffffff" } }}
+        >
+          <ArrowDownIcon fontSize="mg" transform={`rotate(${isOpen ? "180" : "0"}deg)`} />
         </Square>
       </HStack>
 
