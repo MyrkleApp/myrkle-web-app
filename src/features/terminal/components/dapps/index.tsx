@@ -61,7 +61,7 @@ function Dapps() {
       <AnimatePresence>
         {isOpen && (
           <MotionBox initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <SimpleGrid columns={[2, 4, 6, 8]} spacing={8}>
+            <SimpleGrid columns={[2, 3, 4, 5]} spacing={8}>
               {dappsList.map((dappItem, i) => (
                 <a href={dappItem.link} target="_blank" key={i}>
                   <IconContainer title={dappItem.name} aspectRatio={1}>

@@ -57,9 +57,6 @@ function useSubmitTxn(
   const [addressPerformingTxn, setAddressPerformingTxn] = useState("");
   const [transactionAmount, setTransactionAmount] = useState<any>("");
   const [transactionType, setTransactionType] = useState("");
-  const [walletProviderPerformingTxn, setWalletProviderPerformingTxn] = useState<
-    TWalletProvider | ""
-  >("");
 
   // =============================================================================================
   // api & effect
@@ -232,20 +229,19 @@ function useSubmitTxn(
                 transaction_hash: res.transactionId,
                 amount: transactionAmount,
                 transaction_type: transactionType,
-                wallet_provider: walletProviderPerformingTxn as TWalletProvider,
+                wallet_provider: "xumm",
               });
             } else {
               setIsSuccess(false);
               setResponseMessage(
                 "Get detailed information of the transaction from your wallet provider",
               );
-
               recordTransaction({
                 wallet: addressPerformingTxn,
                 transaction_hash: res.transactionId,
                 amount: transactionAmount,
                 transaction_type: transactionType,
-                wallet_provider: walletProviderPerformingTxn as TWalletProvider,
+                wallet_provider: "xumm",
               });
             }
           });
@@ -300,14 +296,13 @@ function useSubmitTxn(
     setTransactionAmount(amount);
     setTransactionType(transactionType);
     setAddressPerformingTxn(wallet);
-    setWalletProviderPerformingTxn(walletProviderToUse);
 
     if (walletProviderToUse === "crossmark") {
       submitCrossmarkTxn(data, {
         wallet,
         amount,
         transaction_type: transactionType,
-        wallet_provider: walletProviderToUse,
+        wallet_provider: "crossmark",
       });
     }
 
@@ -316,7 +311,7 @@ function useSubmitTxn(
         wallet,
         amount,
         transaction_type: transactionType,
-        wallet_provider: walletProviderToUse,
+        wallet_provider: "gemwallet",
       });
     }
 
