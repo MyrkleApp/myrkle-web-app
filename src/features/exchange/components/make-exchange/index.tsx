@@ -40,6 +40,7 @@ import ThickArrowDownIcon from "@/icons/thick-arrow-down";
 import { useLocalStorage } from "react-use";
 import ItemDescription from "@/components/item-description";
 import { optionsData } from "./data";
+import ExternalLinkIcon from "@/icons/external-link";
 
 function MakeExchange() {
   const [searchParams] = useSearchParams();
@@ -368,6 +369,19 @@ function MakeExchange() {
       >
         confirm
       </Button>
+
+      <a href="https://swap.anodos.finance/" target="_blank">
+        <Text pos="absolute" fontSize="xs" bottom="-12px">
+          Checkout{" "}
+          <Text as="span" color="success">
+            AMM
+          </Text>{" "}
+          on{" "}
+          <Text as="span">
+            ANODOS FINANCE <ExternalLinkIcon mt="-5px" />
+          </Text>
+        </Text>
+      </a>
 
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}

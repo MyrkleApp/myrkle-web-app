@@ -18,7 +18,6 @@ function SendAssets() {
       borderRadius="30px"
       p={8}
       mr={[2, null, null, 0]}
-      pb="50px"
     >
       <Box h="100%" w="100%" pos="relative">
         <Flex justify="center">
