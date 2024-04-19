@@ -26,6 +26,7 @@ import MyrkleLoader from "@/components/myrkle-loader";
 import XummTxnModal from "@/components/xumm-txn-modal";
 import { ISendToken, ISendXrp } from "@/features/shared/types/xrp-mutations";
 import TransferFee from "../transfer-fee";
+import ExternalLinkIcon from "@/icons/external-link";
 
 function SendToken() {
   const [searchParams] = useSearchParams();
@@ -332,6 +333,19 @@ function SendToken() {
           confirm
         </Button>
       </MotionBox>
+
+      <a href="https://apps.anodos.finance/" target="_blank">
+        <Text pos="absolute" fontSize="xs" bottom="-25px">
+          Checkout{" "}
+          <Text as="span" color="success">
+            AMM
+          </Text>{" "}
+          on{" "}
+          <Text as="span">
+            ANODOS FINANCE <ExternalLinkIcon mt="-5px" />
+          </Text>
+        </Text>
+      </a>
 
       <Backdrop isOpen={view !== "default"}>
         {view === "loading" && <MyrkleLoader />}
