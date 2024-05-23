@@ -148,12 +148,7 @@ function WalletDetails() {
 
   return (
     <>
-      <Flex
-        h={["auto", null, null, "calc(46%)", "38%"]}
-        bg="dark"
-        borderRadius="25px"
-        align="center"
-      >
+      <Flex h="40%" bg="dark" borderRadius="25px" align="center">
         <Box minW={["250px"]} h="200px" pos="relative">
           {network === "mainnet" && (
             <MotionBox

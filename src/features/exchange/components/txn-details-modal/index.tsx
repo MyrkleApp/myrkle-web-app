@@ -130,7 +130,7 @@ function TxnDetailsModal({
             <Text fontSize={["12px", null, null, null, "17px", "25px"]}>Rate</Text>
             <Spacer />
             <Text fontSize={["12px", null, null, null, "17px", "20px"]} fontWeight="bold">
-              {Number(fromTokenAmount) / Number(toTokenAmount) || "-- --"}
+              {(Number(fromTokenAmount) / Number(toTokenAmount)).toFixed(3) || "-- --"}
             </Text>
           </HStack>
         </Flex>

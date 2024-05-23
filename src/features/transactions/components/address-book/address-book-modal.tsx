@@ -47,7 +47,6 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      h="450px"
       w="350px"
       px={7}
       py={5}
@@ -63,7 +62,14 @@ function AddressBookModal({ handleClose, handleAddress }: AddressBookModalProps)
         <CloseButton onClick={handleClose} />
       </HStack>
 
-      <Box pr={1} mb={4} mt={3} h="calc(100% - 110px)" overflow="hidden auto">
+      <Box
+        pr={1}
+        mb={4}
+        mt={3}
+        minH="200px"
+        maxH={["calc(100vh - 270px)", null, null, null, null, "550px"]}
+        overflow="hidden auto"
+      >
         <RenderAddressBook isLoading={false} isEmpty={!addressBookList.length}>
           {addressBookList.map((item: any, index: number) => (
             <AddressItem

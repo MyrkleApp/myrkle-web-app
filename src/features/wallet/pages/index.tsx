@@ -17,7 +17,7 @@ function Wallet() {
     <Layout>
       <WalletDetails />
 
-      <Box h="calc(62% - 50px)" pos="absolute" bottom="0" w="100%">
+      <Box h="calc(60% - 30px)" pos="absolute" bottom="0" w="100%">
         <HStack mb={3} pr="22px">
           <AddAsset />
           <TokenNftSwitch />

@@ -70,148 +70,175 @@ function TxnModal({ txn, handleClose }: TxnModalProps) {
       w="700px"
       h="470px"
       maxH="100%"
-      overflow="hidden auto"
       bg="darker"
       p={5}
       borderRadius="20px"
-      gap="30px"
     >
-      <Box w="50%">
-        <Button
-          className="font-face-proxima-nova-black"
-          w="100%"
-          h="35px"
-          fontWeight="bold"
-          mb={7}
-          leftIcon={<ArrowLeftIcon ml="-70px" />}
-          onClick={handleClose}
-        >
-          Transaction Detail
-        </Button>
-        <HStack px={4} bg="darkest" borderRadius="10px" mb={4}>
-          <TokenIcon token={txn?.token} issuer={txn?.issuer} />
-          <Text
+      <Flex h="calc(100% - 10px)" w="100%" pr={1} mt="5px" gap="30px" overflow="hidden auto">
+        <Box w="50%">
+          <Button
             className="font-face-proxima-nova-black"
-            fontSize="3xl"
-            pos="relative"
-            _hover={{
-              "#hover-detail": {
-                display: "block",
-              },
-            }}
+            w="100%"
+            h="35px"
+            fontWeight="bold"
+            mb={7}
+            leftIcon={<ArrowLeftIcon ml="-70px" />}
+            onClick={handleClose}
           >
-            <HoverDetail text={txn?.token} />
-            {ellipsisAtCenter(txn?.token, 6, true)}
-          </Text>
-          <Spacer />
-          <Text className="font-face-proxima-nova-black" fontSize="3xl">
-            {formatNumber(txn?.amount)}
-          </Text>
-        </HStack>
-        <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
-          <ItemLabel title="Transaction index" fontSize="2xs" mb={0} />
-          <RenderElement isLoading={isTxnInfoLoading} w="100%" h="20px">
-            <Text fontSize="sm">{txnInfo?.index}</Text>
-          </RenderElement>
-        </Box>
-        <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
-          <ItemLabel title="Transaction ID" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">{txn?.txid}</Text>
-        </Box>
-        <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2} pos="relative">
-          <ItemLabel title="Sender" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">{txn?.sender}</Text>
-          <Box w="5px" h="20px" bg="danger" pos="absolute" left={0} top={0} mt="14px" />
-        </Box>
-        <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={7} pos="relative">
-          <ItemLabel title="Receiver" fontSize="2xs" mb={0} />
-          <Text fontSize="sm">{txn?.receiver}</Text>
-          <Box w="5px" h="20px" bg="primary" pos="absolute" left={0} top={0} mt="14px" />
-        </Box>
-        <Button
-          w="100%"
-          textAlign="left"
-          justifyContent="space-between"
-          onClick={() => setFlagView(true)}
-          rightIcon={<ArrowRightFlatIcon fontSize="xs" />}
-        >
-          View Flags
-        </Button>
-      </Box>
-
-      <Box w="50%" pos="relative">
-        <HStack pos="absolute" right={0}>
-          <VStack spacing={0} align="flex-end">
-            <Text fontSize="xs">Status</Text>
-            <Text fontSize="2xs" mt={-1} color={isSuccessTxn ? "success" : "danger"}>
-              {isSuccessTxn ? "Success" : "Failed"}
+            Transaction Detail
+          </Button>
+          <HStack px={4} bg="darkest" borderRadius="10px" mb={4}>
+            <TokenIcon token={txn?.token} issuer={txn?.issuer} />
+            <Text
+              className="font-face-proxima-nova-black"
+              fontSize="3xl"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
+            >
+              <HoverDetail text={txn?.token} />
+              {ellipsisAtCenter(txn?.token, 6, true)}
             </Text>
-          </VStack>
-          <Box h="30px" w="30px" borderRadius="50%" bg={isSuccessTxn ? "success" : "danger"} />
-        </HStack>
-        <AnimatePresence>
-          {isFlagView && (
-            <MotionBox
-              pos="absolute"
-              mt="3px"
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
+            <Spacer />
+            <Text
+              className="font-face-proxima-nova-black"
+              fontSize="3xl"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
             >
-              <IconButton
-                size="xs"
-                isRound
-                bg="primary"
-                aria-label={"back"}
-                onClick={() => setFlagView(false)}
-              >
-                <ArrowLeftIcon />
-              </IconButton>
-            </MotionBox>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {!isFlagView && (
-            <MotionBox
-              w="100%"
-              h="300px"
-              pos="absolute"
-              top="62px"
-              bg="#292929"
-              borderRadius="15px"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              zIndex={0}
-            >
-              <Box
-                w="53%"
-                h="calc(100% - 20px)"
+              <HoverDetail text={formatNumber(txn?.amount)} />
+              {ellipsisAtCenter(formatNumber(txn?.amount), 10, true)}
+            </Text>
+          </HStack>
+          <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
+            <ItemLabel title="Transaction index" fontSize="2xs" mb={0} />
+            <RenderElement isLoading={isTxnInfoLoading} w="100%" h="20px">
+              <Text fontSize="sm">{txnInfo?.index}</Text>
+            </RenderElement>
+          </Box>
+          <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2}>
+            <ItemLabel title="Transaction ID" fontSize="2xs" mb={0} />
+            <Text fontSize="sm">{txn?.txid}</Text>
+          </Box>
+          <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={2} pos="relative">
+            <ItemLabel title="Sender" fontSize="2xs" mb={0} />
+            <Text fontSize="sm">{txn?.sender}</Text>
+            <Box w="5px" h="20px" bg="danger" pos="absolute" left={0} top={0} mt="14px" />
+          </Box>
+          <Box px={4} py="2px" bg="dark" borderRadius="10px" mb={5} pos="relative">
+            <ItemLabel title="Receiver" fontSize="2xs" mb={0} />
+            <Text fontSize="sm">{txn?.receiver}</Text>
+            <Box w="5px" h="20px" bg="primary" pos="absolute" left={0} top={0} mt="14px" />
+          </Box>
+          <Button
+            w="100%"
+            textAlign="left"
+            justifyContent="space-between"
+            onClick={() => setFlagView(true)}
+            rightIcon={<ArrowRightFlatIcon fontSize="xs" />}
+          >
+            View Flags
+          </Button>
+        </Box>
+
+        <Box w="50%" pos="relative" h="100%">
+          <HStack pos="absolute" right={0}>
+            <VStack spacing={0} align="flex-end">
+              <Text fontSize="xs">Status</Text>
+              <Text fontSize="2xs" mt={-1} color={isSuccessTxn ? "success" : "danger"}>
+                {isSuccessTxn ? "Success" : "Failed"}
+              </Text>
+            </VStack>
+            <Box h="30px" w="30px" borderRadius="50%" bg={isSuccessTxn ? "success" : "danger"} />
+          </HStack>
+          <AnimatePresence>
+            {isFlagView && (
+              <MotionBox
                 pos="absolute"
-                top="10px"
-                right="10px"
-                bg="dark"
-                borderRadius="15px"
-                zIndex={-1}
-              />
-              <ListTxnsEditables txn={txn} txnInfo={txnInfo} isTxnInfoLoading={isTxnInfoLoading} />
-            </MotionBox>
-          )}
-        </AnimatePresence>
+                mt="3px"
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+              >
+                <IconButton
+                  size="xs"
+                  isRound
+                  bg="primary"
+                  aria-label={"back"}
+                  onClick={() => setFlagView(false)}
+                >
+                  <ArrowLeftIcon />
+                </IconButton>
+              </MotionBox>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isFlagView ? (
+              <ListFlags txnInfo={txnInfo} />
+            ) : (
+              <>
+                <MotionBox
+                  w="100%"
+                  h="295px"
+                  pos="absolute"
+                  top="62px"
+                  bg="#292929"
+                  borderRadius="15px"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  zIndex={0}
+                >
+                  <Box
+                    w="53%"
+                    h="calc(100% - 20px)"
+                    pos="absolute"
+                    top="10px"
+                    right="10px"
+                    bg="dark"
+                    borderRadius="15px"
+                    zIndex={-1}
+                  />
+                  <ListTxnsEditables
+                    txn={txn}
+                    txnInfo={txnInfo}
+                    isTxnInfoLoading={isTxnInfoLoading}
+                  />
+                  <Button
+                    as="a"
+                    href={`${explorerBaseUrl[network]}/${txn.txid}`}
+                    target="_blank"
+                    w="100%"
+                    mt={9}
+                  >
+                    View Block in Explorer
+                  </Button>
+                </MotionBox>
+              </>
+            )}
+          </AnimatePresence>
 
-        <AnimatePresence>{isFlagView && <ListFlags txnInfo={txnInfo} />}</AnimatePresence>
+          {/* <AnimatePresence>{isFlagView && <ListFlags txnInfo={txnInfo} />}</AnimatePresence> */}
 
-        <Button
-          as="a"
-          href={`${explorerBaseUrl[network]}/${txn.txid}`}
-          target="_blank"
-          w="100%"
-          pos="absolute"
-          bottom="7px"
-        >
-          View Block in Explorer
-        </Button>
-      </Box>
+          {/* <Button
+            as="a"
+            href={`${explorerBaseUrl[network]}/${txn.txid}`}
+            target="_blank"
+            w="100%"
+            // pos="absolute"
+            // bottom="7px"
+          >
+            View Block in Explorer
+          </Button> */}
+        </Box>
+      </Flex>
     </Flex>
   );
 }
