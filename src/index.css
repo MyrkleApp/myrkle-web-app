@@ -72,3 +72,9 @@ p {
 .font-face-proxima-nova-extrabld {
   font-family: "ProximaNovaExtraBold";
 }
+
+.text-overflow-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

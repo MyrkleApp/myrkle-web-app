@@ -9,6 +9,7 @@ import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
 import IssuerData from "@/features/shared/components/issuer-data.tsx";
 import { useGetBalanceQuery } from "@/features/shared/redux/xrp.api";
 import { useSearchParams } from "react-router-dom";
+import HoverDetail from "@/components/hover-detail";
 
 export interface TokenItemProps {
   token?: any;
@@ -56,7 +57,11 @@ function TokenItem({ token, handleClick, isDisabled, useUrlTokenBalance }: Token
     >
       <Image src={isXrpToken(token) ? xrpLogo : data?.icon || tokenPlaceholder} alt="" h="35px" />
       <VStack align="flex-start" spacing={0}>
-        <Text fontSize={isXrpToken(token) ? "md" : "xs"} fontWeight="bold">
+        <Text
+          className="text-overflow-ellipsis"
+          fontSize={isXrpToken(token) ? "md" : "xs"}
+          fontWeight="bold"
+        >
           {token?.token}
         </Text>
         {isIssuerData ? (
@@ -72,8 +77,19 @@ function TokenItem({ token, handleClick, isDisabled, useUrlTokenBalance }: Token
         )}
       </VStack>
       <Spacer />
-      <Text fontSize="2xs" mt={7}>
-        Balance: {formatNumber(balanceToDisplay, 2)}
+      <Text
+        fontSize="2xs"
+        mt={7}
+        pos="relative"
+        _hover={{
+          "#hover-detail": {
+            display: "block",
+          },
+        }}
+      >
+        Balance:
+        <HoverDetail text={formatNumber(balanceToDisplay, 2)} />
+        {ellipsisAtCenter(formatNumber(balanceToDisplay, 2), 10, true)}
       </Text>
     </HStack>
   );

@@ -23,13 +23,14 @@ import TokenEditables from "./token-editables";
 import { selectAddress, selectNet, selectNetwork } from "../../redux/wallet.selectors";
 import { useSelector } from "react-redux";
 import tokenPlaceholder from "@/assets/token-placeholder.png";
-import { formatNumber, isPositiveChange } from "@/helpers";
+import { ellipsisAtCenter, formatNumber, isPositiveChange } from "@/helpers";
 import { useGetAccountTokenInfoQuery } from "@/features/shared/redux/xrp.api";
 import RenderElement from "@/components/render-element";
 import { Link } from "react-router-dom";
 import ROUTES from "@/routes";
 import AddressModal from "../wallet-details/address-modal";
 import IssuerData from "@/features/shared/components/issuer-data.tsx";
+import HoverDetail from "@/components/hover-detail";
 
 export interface TokenCardModalProps {
   data: any;
@@ -117,8 +118,19 @@ function TokenCardModal({
           <HStack>
             <Image src={data?.icon || tokenPlaceholder} alt="logo" h="35px" />
             <VStack align="flex-start" spacing="0">
-              <Text fontWeight="bold" fontSize="md" textTransform="uppercase">
-                {token}
+              <Text
+                fontWeight="bold"
+                fontSize="md"
+                textTransform="uppercase"
+                pos="relative"
+                _hover={{
+                  "#hover-detail": {
+                    display: "block",
+                  },
+                }}
+              >
+                <HoverDetail text={token} w="150px" />
+                {ellipsisAtCenter(token, 10, true)}
               </Text>
               {network === "mainnet" && (
                 <Text
@@ -143,8 +155,15 @@ function TokenCardModal({
               textTransform="uppercase"
               wordBreak="break-all"
               textAlign="right"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
             >
-              {formatNumber(amount)}
+              <HoverDetail text={formatNumber(amount)} w="150px" />
+              {ellipsisAtCenter(formatNumber(amount), 10, true)}
             </Text>
             <Text fontSize="sm" fontWeight="bold" mt="-2px" color="textDark">
               ${network === "mainnet" ? tokenBalanceToUSD : "-- --"}
@@ -166,12 +185,23 @@ function TokenCardModal({
             bg="dark"
             borderRadius="12px"
             px={4}
-            py={3}
-            mb={2}
+            py={[0, null, 1, null, 3]}
+            mb={[0, null, null, null, 2]}
             boxShadow="0 2px 8px #00000040"
           >
-            <Text fontWeight="bold" fontSize="sm">
-              {accountTokenInfo?.index}
+            <Text
+              // className="text-overflow-ellipsis"
+              fontWeight="bold"
+              fontSize="sm"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
+            >
+              <HoverDetail text={accountTokenInfo?.index} w="100%" />
+              {ellipsisAtCenter(accountTokenInfo?.index, 37, true)}
             </Text>
           </Box>
         </RenderElement>
@@ -193,8 +223,18 @@ function TokenCardModal({
               imageProps={{ h: "20px" }}
             />
           ) : (
-            <Text fontWeight="bold" fontSize="sm">
-              {issuer}
+            <Text
+              fontWeight="bold"
+              fontSize="sm"
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
+            >
+              <HoverDetail text={issuer} w="100%" />
+              {ellipsisAtCenter(issuer, 37, true)}
             </Text>
           )}
         </Box>
@@ -204,7 +244,7 @@ function TokenCardModal({
           pos="absolute"
           bottom={0}
           bg="dark"
-          h="calc(100% - 273px)"
+          h={["calc(100% - 230px)", null, null, null, "calc(100% - 260px)"]}
           borderRadius="12px"
           p={4}
           boxShadow="0 2px 8px #00000040"

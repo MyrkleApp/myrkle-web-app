@@ -1,6 +1,7 @@
 import { HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 import { ellipsisAtCenter, formatNumber } from "@/helpers";
 import TokenIcon from "@/features/shared/components/token-icon";
+import HoverDetail from "@/components/hover-detail";
 
 export interface OfferBoxProps {
   token: string;
@@ -22,8 +23,18 @@ function PendingOfferBox({ token, issuer, amount }: OfferBoxProps) {
         </Text>
       </VStack>
       <Spacer />
-      <Text fontWeight="bold" fontSize="lg">
-        {formatNumber(amount || "")}
+      <Text
+        fontWeight="bold"
+        fontSize="lg"
+        pos="relative"
+        _hover={{
+          "#hover-detail": {
+            display: "block",
+          },
+        }}
+      >
+        <HoverDetail text={formatNumber(amount || "")} />
+        {ellipsisAtCenter(formatNumber(amount || ""), 8, true)}
       </Text>
     </HStack>
   );

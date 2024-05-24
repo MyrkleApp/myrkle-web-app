@@ -268,8 +268,15 @@ function TokenCard({ token, issuer, amount, limit, xrpData, isFrozen }: TokenCar
               fontWeight="bold"
               textTransform="uppercase"
               mr={1}
+              pos="relative"
+              _hover={{
+                "#hover-detail": {
+                  display: "block",
+                },
+              }}
             >
-              {formatNumber(amount)}
+              <HoverDetail text={formatNumber(amount)} />
+              {ellipsisAtCenter(formatNumber(amount), 10, true)}
             </Text>
             <Text color="textDark" fontSize="xs" fontWeight="bold" className="token-card-balance">
               $

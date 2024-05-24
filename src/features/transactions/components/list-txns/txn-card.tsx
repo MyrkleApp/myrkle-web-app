@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import txnIn from "@/assets/txn-in.png";
 import txnOut from "@/assets/txn-out.png";
 import Backdrop from "@/components/backdrop";
@@ -62,8 +62,9 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
           alignItems="center"
           justifyContent="center"
         >
-          <Box
-            w="100%"
+          <Flex
+            justify="center"
+            w="calc(100% - 20px)"
             position="relative"
             _hover={{
               "#hover-detail": {
@@ -81,6 +82,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
               whiteSpace="nowrap"
               overflow="hidden"
               textAlign="center"
+              // maxW="80px"
               // _hover={{
               //   "#hover-detail": {
               //     display: "block",
@@ -90,7 +92,7 @@ function TxnCard({ txn, isCreditTxn }: TxnCardProps) {
               {/* <HoverDetail text={`${isCreditTxn ? "+" : "-"}${txn.amount}`} top={-5} /> */}
               {`${isCreditTxn ? "+" : "-"}${formatNumber(txn.amount)}`} {/**  txn.amount */}
             </Text>
-          </Box>
+          </Flex>
 
           {/* <Text fontSize="xs" textTransform="uppercase" color={isCreditTxn ? "success" : "danger"}>
             {`${isCreditTxn ? "+" : "-"}${formatNumber(txn.amount)}`}

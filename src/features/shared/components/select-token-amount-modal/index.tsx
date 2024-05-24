@@ -163,7 +163,12 @@ function SelectTokenAmountModal({
                 }}
               >
                 <Image src={selectedToken?.icon} alt="" h="25px" />
-                <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
+                <Text
+                  className="text-overflow-ellipsis"
+                  fontSize="xs"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                >
                   {selectedToken?.token}
                 </Text>
                 <Spacer />

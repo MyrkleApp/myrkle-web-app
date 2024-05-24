@@ -49,7 +49,12 @@ function TokenItem({ token, handleClick }: TokenItemProps) {
         alt=""
         h="30px"
       />
-      <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
+      <Text
+        className="text-overflow-ellipsis"
+        fontSize="sm"
+        fontWeight="bold"
+        textTransform="uppercase"
+      >
         {token.token}
       </Text>
     </HStack>

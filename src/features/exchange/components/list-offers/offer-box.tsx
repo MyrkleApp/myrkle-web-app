@@ -2,6 +2,7 @@ import ItemLabel from "@/components/item-label";
 import { Box, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 import { ellipsisAtCenter, formatNumber, isXrpToken } from "@/helpers";
 import TokenIcon from "@/features/shared/components/token-icon";
+import HoverDetail from "@/components/hover-detail";
 
 export interface OfferBoxProps {
   token: string;
@@ -28,8 +29,18 @@ function OfferBox({ token, issuer, amount, isGive }: OfferBoxProps) {
           )}
         </VStack>
         <Spacer />
-        <Text fontWeight="bold" fontSize="xl" wordBreak="break-all">
-          {formatNumber(amount)}
+        <Text
+          fontWeight="bold"
+          fontSize="xl"
+          pos="relative"
+          _hover={{
+            "#hover-detail": {
+              display: "block",
+            },
+          }}
+        >
+          <HoverDetail text={formatNumber(amount)} />
+          {ellipsisAtCenter(formatNumber(amount), 8, true)}
         </Text>
       </HStack>
     </Box>
