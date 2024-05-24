@@ -4,6 +4,7 @@ import { Buffer } from "buffer";
 
 export const ellipsisAtCenter = (text: string, allowedLength?: number, isNotSpaced?: boolean) => {
   const _allowedLength = allowedLength || 10;
+  if (!text) return "";
   if (text.length < _allowedLength) return text;
   const beforeEllipsis = text.slice(0, Math.floor(_allowedLength / 2));
   const afterEllipsis = text.slice(-Math.floor(_allowedLength / 2));
