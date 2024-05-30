@@ -245,3 +245,8 @@ export const getAddressBookDBList = (myWalletsDocs: any[]) => {
 
 //   return myWallets;
 // };
+
+export function openDhaliPaymentDialog() {
+  const myWindow = window.open("https://pay.dhali.io/", "MsgWindow", "width=500,height=500");
+  myWindow?.focus();
+}

@@ -378,7 +378,7 @@ function MakeExchange() {
           </Text>{" "}
           on{" "}
           <Text as="span">
-            ANODOS FINANCE <ExternalLinkIcon mt="-5px" />
+            ANODOS FINANCE <ExternalLinkIcon mt="-5px" stroke="#00DF16" />
           </Text>
         </Text>
       </a>
