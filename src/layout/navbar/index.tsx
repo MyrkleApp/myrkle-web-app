@@ -5,6 +5,7 @@ import NetworkToggler from "@/features/wallet/components/network-toggler";
 import SwitchAccountDropdown from "@/features/wallet/components/switch-account-dropdown";
 import { useSelector } from "react-redux";
 import { selectNetwork } from "@/features/wallet/redux/wallet.selectors";
+import SignTransaction from "@/features/shared/components/sign-transaction";
 
 function Navbar() {
   const network = useSelector(selectNetwork);
@@ -19,6 +20,7 @@ function Navbar() {
       </HStack>
       <Spacer />
       <HStack>
+        <SignTransaction />
         <SwitchAccountDropdown />
         {/* <AccountTypeDropdown /> */}
         <NetworkToggler />
