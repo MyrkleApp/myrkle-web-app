@@ -22,12 +22,24 @@ export const isXrpToken = (tokenObj: any) => {
 
 export const nftFormatter = (text: string) => {
   if (text.includes("ipfs://")) {
-    return text.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/");
+    return text.replace("ipfs://", "https://ipfs.io/ipfs/");
   }
-  if (!text.includes("ipfs://") && !text.includes("https://cloudflare-ipfs.com/ipfs/")) {
-    return `https://cloudflare-ipfs.com/ipfs/${text}`;
+  if (!text.includes("ipfs://") && !text.includes("https://ipfs.io/ipfs/")) {
+    return `https://ipfs.io/ipfs/${text}`;
   }
   return text;
+
+  // former
+
+  // if (text.includes("ipfs://")) {
+  //   return text.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/");
+  // }
+  // if (!text.includes("ipfs://") && !text.includes("https://cloudflare-ipfs.com/ipfs/")) {
+  //   return `https://cloudflare-ipfs.com/ipfs/${text}`;
+  // }
+  // return text;
+
+  // former
 
   // if (text.includes("ipfs://")) {
   //   return text.replace("ipfs://", "https://ipfs.io/ipfs/");
