@@ -25,6 +25,7 @@ import { checkForGemWallet } from "../connections/gemwallet";
 import { TWalletProvider } from "@/features/wallet/types";
 import { extractTxnJsonData } from "@/helpers";
 import { IRecordTransaction } from "../types/xrp-mutations";
+import sdk from "@crossmarkio/sdk";
 
 const xummTimer = 15;
 
@@ -101,8 +102,8 @@ function useSubmitTxn(
     txnDetails: Omit<IRecordTransaction, "transaction_hash">,
   ) => {
     try {
-      const sdk = window.xrpl.crossmark;
-      const { response } = await sdk.signAndSubmitAndWait(TxnReq);
+      // const sdk = window.xrpl.crossmark;
+      const { response } = await sdk.methods.signAndSubmitAndWait(TxnReq);
       if (response.data.meta.isRejected) {
         setIsSuccess(false);
         setResponseMessage("Transaction rejected");

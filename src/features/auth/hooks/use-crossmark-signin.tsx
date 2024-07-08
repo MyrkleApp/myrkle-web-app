@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
+import sdk from "@crossmarkio/sdk";
 // import { selectUserId } from "../redux/auth.selectors";
 // import { useAddNewWalletMutation } from "@/features/shared/redux/xrp.api";
 
@@ -45,8 +46,8 @@ function useCrossmarkSignIn() {
   const crossmarkSignIn = async () => {
     try {
       checkForCrossmark();
-      const sdk = window.xrpl.crossmark;
-      const { response } = await sdk.signInAndWait();
+      // const sdk = window.xrpl.crossmark;
+      const { response } = await sdk.methods.signInAndWait();
       if (response.data.meta.isRejected) {
         // console.log("You have to sign in to continue");
         setError("You have to sign in to continue");
