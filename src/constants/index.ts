@@ -1,7 +1,7 @@
 import xrpLogo from "@/assets/xrp-logo.svg";
 
 // main api endpoint
-export const baseUrl = "https://myrkle-backend.onrender.com";
+export const baseUrl = "https://xrpl-backend.myrkle.app/";
 
 export const numbersOnlyRegex = /^(?:\d+(?:\.\d*)?|\.\d+)?$/;
 export const xrpIssuer = Array(27).fill("0").join("");
