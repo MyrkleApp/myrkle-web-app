@@ -29,7 +29,14 @@ function useExternalWalletEvent() {
     // try {
     // setTimeout(async () => {
     if (checkForCrossmark() === true) {
-      const sdk = window.xrpl.crossmark;
+      type CrossmarkSdk = {
+        on: (
+          event: "user-change" | "network-change" | "signout",
+          callback: (data?: { network?: { type: string } }) => void,
+        ) => void;
+        session: { address: string; network?: { type: string } };
+      };
+      const sdk = window.xrpl.crossmark as unknown as CrossmarkSdk;
 
       sdk.on("user-change", () => {
         try {
